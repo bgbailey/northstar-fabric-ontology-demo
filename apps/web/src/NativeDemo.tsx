@@ -18,8 +18,8 @@ function EntityCard({ data }: NodeProps<EntityNode>) {
     <Handle type="target" position={Position.Left} />
     <span className="eyebrow">{data.source}</span>
     <button className="entity-title nodrag nopan" onClick={data.inspect}
-      aria-label={`Inspect native entity ${data.label}`}><strong>{data.label}</strong></button>
-    <small>{data.metrics ? `${data.metrics} source-backed metrics` : data.keys.join(" · ") || "Business context"}</small>
+      aria-label={`Inspect ontology entity ${data.label}`}><strong>{data.label}</strong></button>
+    <small>{data.metrics ? `${data.metrics} metrics linked to source measures` : data.keys.join(" · ") || "Business context"}</small>
     <Handle type="source" position={Position.Right} />
   </div>;
 }
@@ -66,7 +66,7 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
       style: { stroke: focus || edgeId === item.id ? "var(--cp-accent)" : "var(--cp-border-strong)",
         strokeWidth: edgeId === item.id ? 3 : focus ? 2 : 1.5 },
       markerEnd: { type: MarkerType.ArrowClosed, color: "var(--cp-accent)" },
-      ariaLabel: `${item.id}. Native direction: ${item.source} to ${item.target}.`,
+      ariaLabel: `${item.id}. Relationship direction in Fabric: ${item.source} to ${item.target}.`,
     }));
     return { nodes, edges };
   }, [recording, focus, lens, selected, edgeId]);
@@ -92,7 +92,7 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
     </header>
 
     <section className="card answer-hero" aria-label="Recorded business answer">
-      <p className="eyebrow">HISTORICAL TWO-MODEL NATIVE ANSWER</p>
+      <p className="eyebrow">HISTORICAL TWO-MODEL ANSWER IN FABRIC</p>
       <h2>{recording.question.split(". ")[0].replace(/\.$/, "")}.</h2>
       <div className="answer-scope">
         <span><strong>Service period</strong>{recordedPeriod(recording)}</span>
@@ -115,14 +115,14 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
         aria-controls="recorded-evidence">Inspect the captured answer</button>
         <details><summary>Full recorded request</summary><p>{recording.question}</p></details></div>
     </section>
-    <p className="recorded-boundary">Recorded native-agent answer and API/MCP metadata. No live connection, new query or model call
-      is running. This archived built-in-agent answer is not proof of custom-application execution or current reader access.</p>
+    <p className="recorded-boundary">Recorded answer from the ontology agent in Fabric and API/MCP metadata. No live connection, new query or model call
+      is running. This archived answer in Fabric is not proof of custom-application execution or current demo user access.</p>
 
     <section className="architecture-strip" aria-label="Source models to ontology to answer">
       <div><span className="eyebrow">SOURCE MODELS</span><strong>{recording.sources.length} calculation owners</strong>
         <small>Exact model · home table · measure</small></div>
       <span className="architecture-arrow" aria-hidden="true">→</span>
-      <div><span className="eyebrow">ONTOLOGY BUSINESS LAYER</span><strong>{recording.entities.length} entities · {recording.relationships.length} native links</strong>
+      <div><span className="eyebrow">ONTOLOGY BUSINESS LAYER</span><strong>{recording.entities.length} entities · {recording.relationships.length} ontology links</strong>
         <small>Shared identities, relationships and captured meaning</small></div>
       <span className="architecture-arrow" aria-hidden="true">→</span>
       <div><span className="eyebrow">EVIDENCED ANSWER</span><strong>{recording.rows.length} returned account rows</strong>
@@ -133,7 +133,7 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
       {inventory.map(item => <article className="source-model" key={item.id} data-source-id={item.id}>
         <p className="eyebrow">{sourceLabel(item.id)} / SOURCE SEMANTIC MODEL</p>
         <h2>{known(item.name)}</h2>
-        <p><strong>{item.entities.length}</strong> native entities · <strong>{item.metrics.length}</strong> source-backed metric bindings</p>
+        <p><strong>{item.entities.length}</strong> ontology entities · <strong>{item.metrics.length}</strong> metrics linked to source measures</p>
         <div className="source-homes">{[...new Set(item.metrics.map(metric => metric.home_table))].map(home =>
           <span key={home}>{home}</span>)}</div>
         <button onClick={() => {
@@ -144,9 +144,9 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
     </section>
 
     <section className="card graph-card" aria-labelledby="ontology-title">
-      <div className="section-heading"><div><p className="eyebrow">ACTUAL CAPTURED NATIVE DEFINITION</p>
+      <div className="section-heading"><div><p className="eyebrow">CAPTURED DEFINITION IN FABRIC</p>
         <h2 id="ontology-title">See the business layer above the models</h2></div>
-        <span className="status-pill observed">{recording.metrics.length} source-backed metric bindings</span></div>
+        <span className="status-pill observed">{recording.metrics.length} metrics linked to source measures</span></div>
       <div className="ontology-toolbar">
         <div role="group" aria-label="Definition lens" className="segmented-controls">
           <button aria-pressed={lens === "sources"} onClick={() => setLens("sources")}>By source model</button>
@@ -159,10 +159,10 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
           <button aria-pressed={!focus} onClick={() => { setFocus(false); setEdgeId(null); }}>Full ontology</button>
         </div>
       </div>
-      <div className="graph-key"><span><i className="legend-entity" />Native entity</span>
-        <span><i className="legend-edge" />Native relationship direction</span>
+      <div className="graph-key"><span><i className="legend-entity" />Ontology entity</span>
+        <span><i className="legend-edge" />Relationship direction in Fabric</span>
         <span>{graph.nodes.length} of {recording.entities.length} entities · {graph.edges.length} of {recording.relationships.length} links visible</span></div>
-      <div className={`native-graph ${focus ? "focused-graph" : "full-graph"}`} aria-label="Recorded native ontology definition graph">
+      <div className={`native-graph ${focus ? "focused-graph" : "full-graph"}`} aria-label="Recorded ontology definition graph">
         <ReactFlow key={`${focus}-${lens}`} nodes={graph.nodes} edges={graph.edges} nodeTypes={nodeTypes}
           fitView fitViewOptions={{ padding: 0.16 }} minZoom={0.2} maxZoom={2}
           nodesDraggable={false} nodesConnectable={false} deleteKeyCode={null}
@@ -174,7 +174,7 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
         </ReactFlow>
       </div>
       <p className="muted graph-caption">Two lenses, the same captured facts—not a controlled comparison or an accuracy proof.
-        Pan, zoom or fit the view. Arrows show native definition direction, not internal execution or a materialized instance graph.</p>
+        Pan, zoom or fit the view. Arrows show definition direction in Fabric, not internal execution or a materialized instance graph.</p>
       <details className="graph-access">
         <summary>Browse entities &amp; relationships by keyboard</summary>
         <div className="entity-picker" aria-label="Captured entities">{recording.entities.map(item =>
@@ -183,31 +183,31 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
             inspectEntity(item.id);
           }}>{item.id}</button>)}</div>
         <label>Inspect a captured relationship<select value={edgeId ?? ""} onChange={event => setEdgeId(event.target.value || null)}>
-          <option value="">Select a native relationship</option>
+          <option value="">Select an ontology relationship</option>
           {recording.relationships.map(item => <option key={item.id} value={item.id}>{item.id}</option>)}
         </select></label>
       </details>
     </section>
 
-    <section className="detail-grid" aria-label="Selected native context">
+    <section className="detail-grid" aria-label="Selected ontology context">
       <article className="card entity-detail" aria-live="polite">
-        <p className="eyebrow">{relationship ? "NATIVE RELATIONSHIP" : `${sourceLabel(entity?.source_id ?? "")} / NATIVE ENTITY`}</p>
+        <p className="eyebrow">{relationship ? "ONTOLOGY RELATIONSHIP" : `${sourceLabel(entity?.source_id ?? "")} / ONTOLOGY ENTITY`}</p>
         <h2>{relationship?.id ?? entity?.id ?? "Select an entity"}</h2>
-        {relationship ? <><dl><dt>Native source</dt><dd>{relationship.source}</dd>
-          <dt>Native target</dt><dd>{relationship.target}</dd></dl>
-          <p>Structural relationship only. Selecting this link does not establish that the native agent traversed it.</p></>
+        {relationship ? <><dl><dt>Relationship source</dt><dd>{relationship.source}</dd>
+          <dt>Relationship target</dt><dd>{relationship.target}</dd></dl>
+          <p>Structural relationship only. Selecting this link does not establish that the ontology agent in Fabric traversed it.</p></>
           : entity && <><p>{known(entity.description)}</p>
             <dl><dt>Source model</dt><dd>{known(source?.name)}</dd>
               <dt>Backing table</dt><dd>{known(entity.backing_table)}</dd>
-              <dt>Native keys</dt><dd>{entity.keys.join(", ") || "Not defined in this capture"}</dd></dl>
+              <dt>Entity keys</dt><dd>{entity.keys.join(", ") || "Not defined in this capture"}</dd></dl>
             <details><summary>{entity.properties.length} recorded properties</summary>
               <p>{entity.properties.join(", ") || "No properties captured"}</p></details></>}
         <h3>Captured business meaning</h3>
         <span className="origin-tag">CAPTURED_NATIVE_ANNOTATION</span>
         {annotations.length ? annotations.map((text, index) => <blockquote className="guidance" key={index}>{text}</blockquote>)
           : <p className="muted">No guidance annotation captured on this selection.</p>}
-        <p className="context-origin">Origin: recorded native context · {annotationOwner ?? "No selection"}<br />
-          Capture: {captureTime(recording.context_captured_at)} · definition/native_mcp hashes in provenance.</p>
+        <p className="context-origin">Origin: recorded ontology context in Fabric · {annotationOwner ?? "No selection"}<br />
+          Capture: {captureTime(recording.context_captured_at)} · definition/MCP hashes in provenance.</p>
       </article>
       <article className="card metric-detail">
         <p className="eyebrow">SOURCE-OWNED CALCULATIONS</p>
@@ -219,39 +219,39 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
             <dl><dt>Owning model</dt><dd>{known(owner.source?.name)}</dd>
               <dt>Home table</dt><dd>{known(metric.home_table)}</dd>
               <dt>Source measure</dt><dd>{known(metric.name)}</dd>
-              <dt>Native binding</dt><dd><code>{metric.id}</code></dd></dl>
+              <dt>Metric link</dt><dd><code>{metric.id}</code></dd></dl>
             <button onClick={() => showEvidence(metric)} aria-controls="recorded-evidence">Inspect binding &amp; captured query</button>
           </details>;
         })}</div> : <p className="muted">This entity carries business context; no metric binding is captured on it.</p>}
-        <p className="muted">Observed native EXTERNALMEASURE proxies. No formula is copied or replaced by this viewer.</p>
+        <p className="muted">Observed EXTERNALMEASURE metrics linked to source measures. No formula is copied or replaced by this viewer.</p>
       </article>
     </section>
 
     <section className="card context-authority" aria-label="Context and rule authority">
       <div className="section-heading"><div><p className="eyebrow">MEANING IS NOT AUTOMATIC EXECUTION</p>
-        <h2>What context is actually captured?</h2></div><span className="status-pill">{annotationCount} guidance annotations in this packet</span></div>
+        <h2>What context is actually captured?</h2></div><span className="status-pill">{annotationCount} guidance annotations in this recording</span></div>
       <div className="authority-grid">
         <div><span className="origin-tag">CAPTURED_NATIVE_ANNOTATION</span><h3>Linked business guidance</h3>
-          <p>Inspect actual entity and relationship annotations above. Their presence is not proof of native use or enforcement.</p></div>
+          <p>Inspect actual entity and relationship annotations above. Their presence is not proof of use or enforcement in Fabric.</p></div>
         <div><span className="origin-tag">FORMAL_NATIVE_RULE</span><h3>Formal Rule count: {recording.native_rule_count}</h3>
           <p>{recording.native_rule_count === 0 ? "No formal Rule objects in this capture."
-            : "Count only: no formal Rule payload in this packet."} No rule use or execution is established.</p></div>
-        <div><span className="origin-tag">SOURCE_AI_PREPARATION</span><h3>Not captured in this packet</h3>
-          <p>Native annotations do not establish source AI-preparation content or its propagation to a consumer.</p></div>
+            : "Count only: no formal Rule payload in this recording."} No rule use or execution is established.</p></div>
+        <div><span className="origin-tag">SOURCE_AI_PREPARATION</span><h3>Not captured in this recording</h3>
+          <p>Ontology annotations do not establish source AI-preparation content or its propagation to a consumer.</p></div>
         <div><span className="origin-tag">CUSTOM_CONSTRAINT</span><h3>No application run captured</h3>
-          <p>This built-in-agent recording does not establish custom planner consumption or deterministic constraint enforcement.</p></div>
+          <p>This ontology-agent recording does not establish custom planner consumption or deterministic constraint enforcement.</p></div>
       </div>
     </section>
 
     <details id="recorded-evidence" ref={evidenceRef} className="card evidence-drawer"
       open={evidenceOpen} onToggle={event => setEvidenceOpen(event.currentTarget.open)}>
       <summary>Source queries &amp; recorded account results</summary>
-      <p className="muted">DAX displayed by the native agent with its answer. Internal tool timings and execution steps were not captured.</p>
+      <p className="muted">DAX displayed by the ontology agent in Fabric with its answer. Internal tool timings and execution steps were not captured.</p>
       {selectedMetric && binding && <section className="binding-evidence" aria-label="Selected metric evidence">
         <p className="eyebrow">INSPECTABLE BINDING · NOT AN INTERNAL REASONING TRACE</p>
         <h3>{selectedMetric.name}</h3>
         <ol className="evidence-path">
-          <li><span>Native binding</span><strong>{known(binding.entity?.id)}</strong><code>{selectedMetric.id}</code></li>
+          <li><span>Metric link</span><strong>{known(binding.entity?.id)}</strong><code>{selectedMetric.id}</code></li>
           <li><span>Source calculation owner</span><strong>{known(binding.source?.name)}</strong>
             <code>{selectedMetric.home_table} / {selectedMetric.name}</code></li>
           <li><span>Captured source query</span><strong>{binding.queries.length ? `${binding.queries.length} matching captured query` : "Not captured for this binding"}</strong>
@@ -289,10 +289,10 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
         No paired GA IQ run was captured here. These lenses do not demonstrate a speed or accuracy advantage.</p>
     </section>
     <details className="card provenance-drawer">
-      <summary>Provenance &amp; evidence gaps / still thin</summary>
-      <p>Answer origin: BUILT_IN_NATIVE_AGENT. Display mode: {recording.mode}.</p>
+      <summary>Limits of this recording</summary>
+      <p>Answer origin: BUILT_IN_NATIVE_AGENT. Display mode: {recording.mode}. See <code>docs/limitations.md</code>.</p>
       <p>Context captured <time dateTime={recording.context_captured_at}>{captureTime(recording.context_captured_at)}</time>.</p>
-      <p>Packet created {captureTime(recording.created_at)}. Creation time is not answer or context capture time.</p>
+      <p>Recording created {captureTime(recording.created_at)}. Creation time is not answer or context capture time.</p>
       <dl><dt>Source data refresh</dt><dd>Not captured</dd><dt>Source-model revision/refresh</dt><dd>Not captured</dd>
         <dt>Ontology refresh time</dt><dd>Not captured; context acquisition is a separate clock</dd>
         <dt>Context acquisition</dt><dd>{captureTime(recording.context_captured_at)}</dd></dl>
@@ -300,7 +300,7 @@ export function NativeDemo({ recording }: { recording: RecordedDemo }) {
       <ul>{recording.limitations.map(text => <li key={text}>{text}</li>)}</ul>
       <h3>Original capture hashes</h3><pre>{JSON.stringify(recording.source_hashes, null, 2)}</pre>
     </details>
-    <footer>Display-only recording from synthetic Northstar Wireless DEV data. The six additional models, formal Rule payloads,
-      three multihop stories, Foundry integration and current live application execution are not demonstrated by this view.</footer>
+    <footer>Display-only recording from synthetic Northstar Wireless demo tenant data. The six additional models, formal Rule payloads,
+      three multihop stories, Foundry integration and current live application execution are not demonstrated by this view. See <code>docs/limitations.md</code>.</footer>
   </main>;
 }

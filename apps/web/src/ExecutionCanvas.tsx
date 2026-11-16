@@ -57,7 +57,7 @@ export function ExecutionCanvas({ nodes, events }: { nodes: PlanNodeView[]; even
   return <section className="card">
     <h2>Observed execution</h2>
     <p className="muted">Planned nodes stay grey until an actual runtime event arrives. This is local engine execution,
-      not model-generated reasoning or a native service trace.</p>
+      not model-generated reasoning or an internal service trace in Fabric.</p>
     <div className="native-graph execution-graph">
       <ReactFlow key={nodes.map(node => node.id).join("|")} nodes={graph.nodes} edges={graph.edges}
         nodeTypes={nodeTypes} fitView minZoom={0.15} maxZoom={1.5} nodesDraggable={false}

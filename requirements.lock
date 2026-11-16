@@ -1,3 +1,8 @@
+# Universal cross-platform Python dependency lock for Linux, macOS, and Windows.
+# Produce or refresh from pyproject.toml with `uv pip compile --universal --group dev pyproject.toml -o requirements.lock`
+# (or `python -m pip freeze --exclude-editable` in a clean virtual environment), keeping Windows-only
+# transitive packages (`colorama`, `pywin32`, `tzdata`) gated with `; sys_platform == "win32"` so
+# `python -m pip install -r requirements.lock` succeeds on Linux, macOS, and Windows.
 annotated-doc==0.0.5
 annotated-types==0.8.0
 anyio==4.15.1
@@ -6,7 +11,7 @@ certifi==2026.7.22
 cffi==2.1.1
 charset-normalizer==3.5.1
 click==8.5.0
-colorama==0.4.6
+colorama==0.4.6; sys_platform == "win32"
 cryptography==50.0.1
 duckdb==1.5.5
 fastapi==0.141.1
@@ -36,7 +41,7 @@ pytest==9.1.1
 pytest-asyncio==1.4.0
 python-dotenv==1.2.3
 python-multipart==0.0.32
-pywin32==312
+pywin32==312; sys_platform == "win32"
 referencing==0.37.0
 requests==2.34.2
 rpds-py==2026.6.3

@@ -11,8 +11,8 @@
     "status": "HISTORICAL_EVIDENCE_ACCEPTED",
     "deliveredOn": "2026-10-22",
     "lastAcceptedLiveRehearsalOn": "2026-10-28",
-    "recordedPacket": ".copilot/docs/northstar-recorded-live-v6-2026-10-28.json",
-    "recordedLibrary": ".copilot/docs/northstar-demo-library-v2-2026-10-28.json",
+    "recordedPacket": "recordings/northstar-recorded-live-v6-2026-10-28.json",
+    "recordedLibrary": "recordings/northstar-demo-library-v2-2026-10-28.json",
     "handoff": "docs/demo-streams.md",
     "publicDistribution": "SANITIZED_HISTORICAL_DISPLAY_ONLY",
     "privateRawEvidenceIncluded": false,
@@ -20,7 +20,7 @@
     "readinessPolicy": "Establish current playback and native live readiness separately per stream; historical acceptance is not a current reader grant.",
     "demoStreams": {
       "observedOn": "2026-10-28",
-      "recordedLibrary": ".copilot/docs/northstar-demo-library-v2-2026-10-28.json",
+      "recordedLibrary": "recordings/northstar-demo-library-v2-2026-10-28.json",
       "executive": {
         "separateNativeItem": true,
         "semanticModelsReused": ["subscriptions", "finance"],
@@ -42,7 +42,7 @@
         "sourceProxies": 64,
         "formalNativeRules": 4,
         "acceptedRecordedPairs": 10,
-        "recordedPacket": ".copilot/docs/northstar-recorded-live-v6-2026-10-28.json"
+        "recordedPacket": "recordings/northstar-recorded-live-v6-2026-10-28.json"
       },
       "latestLiveRehearsal": {
         "executedOn": "2026-10-28",
@@ -630,5 +630,5 @@
     "distributedDomainTopology": ["E22"]
   },
   "releaseClaimPolicy": "PASS is necessary but not sufficient: a result that correctly detects an unsupported feature passes experiment hygiene, not the feature claim. Claim gates also require the recorded feature outcome to be SUPPORTED with evidence.",
-  "sourceIdResolution": "See the public source register in TelcoIQ_Coding_Plan_v1.txt."
+  "sourceIdResolution": "docs/sources.md"
 }

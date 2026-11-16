@@ -144,13 +144,24 @@ async def test_actual_metadata_revalidation_renews_only_verification_not_origina
 
 
 @pytest.mark.parametrize("change", ["schema", "entity", "stale", "session", "tamper"])
-async def test_revalidation_never_accepts_drift_stale_reads_or_changed_acquisition(tmp_path, change):
+async def test_revalidation_never_accepts_drift_stale_reads_or_changed_acquisition(
+    tmp_path, change, monkeypatch,
+):
     snapshot, binding, inputs, state, _ = reader_case(tmp_path)
     bundle = await acquire_reader_context(snapshot, binding, **inputs)
     original = bundle.verification_receipt
+    clock = [original.checked_at + timedelta(seconds=5)]
+
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return clock[0] if tz is not None else clock[0].replace(tzinfo=None)
+
+    monkeypatch.setattr(reader_module, "datetime", Clock)
 
     async def actual_probe(current):
         receipt = await inputs["probe"](current)
+        receipt = receipt.model_copy(update={"checked_at": clock[0]})
         if change == "schema":
             receipt.source_schema_hashes["finance"] = "f" * 64
         elif change == "entity":

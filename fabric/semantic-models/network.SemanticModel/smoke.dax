@@ -1,5 +1,5 @@
 // Model-linked query artifact; execute only after target binding.
-// model: network.SemanticModel; live execution NOT_RUN
+// model: network.SemanticModel
 EVALUATE
 SUMMARIZECOLUMNS(
 	'Calendar'[date],

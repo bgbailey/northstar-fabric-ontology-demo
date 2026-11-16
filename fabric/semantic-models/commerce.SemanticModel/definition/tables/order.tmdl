@@ -8,7 +8,6 @@ table 'Orders'
 		displayFolder: Commerce and Devices
 		lineageTag: c82fc1a5-1afe-5dda-b8dd-1972f41e5731
 		annotation MetricId = commerce.orders
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Orders cancelled before fulfilment.
@@ -17,7 +16,6 @@ table 'Orders'
 		displayFolder: Commerce and Devices
 		lineageTag: 7f8d8181-223c-5c9d-a31f-6fe9cf2aebba
 		annotation MetricId = commerce.cancellations
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

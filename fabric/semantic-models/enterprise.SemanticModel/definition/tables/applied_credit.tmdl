@@ -8,7 +8,6 @@ table 'Applied Credits'
 		displayFolder: Enterprise Services
 		lineageTag: d1443339-7d10-5323-ae83-36c6dee57c9d
 		annotation MetricId = enterprise.applied_credits
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

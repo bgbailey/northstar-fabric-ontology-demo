@@ -8,7 +8,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: 9ffe8697-fcb7-5669-b654-66347f2b3d2e
 		annotation MetricId = finance.recognized_service_revenue
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Recognized service revenue minus service-month credits.
@@ -17,7 +16,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: c48983d7-8170-5869-9e9c-623e636bc86a
 		annotation MetricId = finance.net_recognized_revenue
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Attributed monthly service cost, not device or offer cost.
@@ -26,7 +24,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: 209be5fa-0deb-5a30-b038-bcbf49ddd273
 		annotation MetricId = finance.service_cost
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Net recognized service revenue minus attributed service cost.
@@ -35,7 +32,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: e9a20368-9115-581c-88eb-42cba611cfbc
 		annotation MetricId = finance.contribution_margin
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.
@@ -44,7 +40,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: f036149c-443a-5f43-981d-a7225c153536
 		annotation MetricId = finance.margin_percent
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.
@@ -53,7 +48,6 @@ table 'Account Month'
 		displayFolder: Billing and Finance
 		lineageTag: dd5ecaf6-7843-5e2c-bce8-b17bba562a98
 		annotation MetricId = finance.revenue_per_active_line
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.

@@ -8,7 +8,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 8ef7e038-8379-5e4c-af5c-056a81dd59ec
 		annotation MetricId = subscriptions.active_lines_eom
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = semi_additive
 
 	/// Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed.
@@ -17,7 +16,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 74a5ed7d-bd77-5434-9974-d7b618dae265
 		annotation MetricId = subscriptions.active_accounts_eom
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Transitions from inactive to active.
@@ -26,7 +24,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 0216cbcc-9fde-5030-9064-c07ece1fc7c2
 		annotation MetricId = subscriptions.gross_adds
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Disconnects from the opening-active cohort.
@@ -35,7 +32,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: edd0ba5a-b1a1-589a-9b02-89c344acc653
 		annotation MetricId = subscriptions.disconnects
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Gross additions less cohort-qualified disconnects.
@@ -44,7 +40,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 9230925e-944a-54b6-960e-5b509b921f12
 		annotation MetricId = subscriptions.net_adds
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Lines active at the start of the month. Requires one month per result; never sum snapshots over time.
@@ -53,7 +48,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 2f0f9108-fe41-5374-bd7f-6e8f678f844f
 		annotation MetricId = subscriptions.opening_active_lines
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = semi_additive
 
 	/// Opening-cohort disconnects divided by opening-active lines; recompute from pooled components.
@@ -62,7 +56,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: 510b6915-1f62-54fd-8515-5838a778b204
 		annotation MetricId = subscriptions.churn_rate
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time.
@@ -71,7 +64,6 @@ table 'Subscription Month'
 		displayFolder: Customer and Subscriptions
 		lineageTag: dfcea01d-06c8-5ad6-99db-6b1e411b782f
 		annotation MetricId = subscriptions.average_active_lines
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = semi_additive
 
 	/// Technical identity; join only through the declared mapping.

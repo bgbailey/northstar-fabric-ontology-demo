@@ -9,6 +9,6 @@
 *.parquet binary
 *.png binary
 # Captured artifacts retain the exact bytes used by their provenance hashes.
-.copilot/docs/** -text
-.copilot/evidence/** -text
+recordings/*.json -text
 tests/fixtures/*.json -text
+tests/fixtures/acceptance/*.json -text

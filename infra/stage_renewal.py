@@ -23,7 +23,7 @@ def stage(packet_dir: Path, output: Path, *, model_proposal: Path | None = None)
         raise FileExistsError("Proposal output exists; stage a new revision instead of overwriting")
     packet_dir = packet_dir.resolve()
     packet = read_packet(packet_dir)
-    model_proposal = model_proposal or ROOT / "infra" / "azure-openai-proposal.json"
+    model_proposal = model_proposal or ROOT / "infra" / "azure-openai-proposal.example.json"
     source_files = [packet_dir / "packet.json", *[
         packet_dir / entry["file"] for entry in packet["packetFiles"]
     ]]

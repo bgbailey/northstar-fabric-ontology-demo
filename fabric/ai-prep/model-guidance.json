@@ -3,7 +3,7 @@
   "status": "DRAFT_NOT_APPLIED",
   "scope": "All eight synthetic Northstar source models; local preparation, not deployed AI state.",
   "sourceCatalogRevision": "4207c93cccc7fa887f24cbf7c13af07464c0bef34592da69ffb61e92334b6688",
-  "sourceSlaGuidanceSha256": "e6014f6a0ec35db09f6cd58d944e4c5853a945b709ebb9afc3c3a51b1440f1e0",
+  "sourceSlaGuidanceSha256": "e4de00e02b1d26e16c5fc897eb42ca18bb91c5cab280cada947cc75386bc3f17",
   "generatorSha256": "67d174dee3a2fee7fd11965683a33268336adf1f807db0b1ae8e36f251a3f7e3",
   "applicationRoute": "Review and apply through supported Prep data for AI tooling under exact authoring approval; preserve all existing user-authored Copilot parts. No deployed artifacts are written by this generator.",
   "definitionContract": {

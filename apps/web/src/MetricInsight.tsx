@@ -39,7 +39,7 @@ export function MetricInsight({ answer }: { answer: AnswerView }) {
     <p>Subscriptions supplies line status; Finance supplies revenue and margin.
       Shared customer identity and period meaning let an agent bring them into one review.</p>
     <p className="muted">Application-owned review criterion over original source values, not a new measure,
-      native Rule enforcement or proof of a billing error. Investigate credit, cost and timing context;
+      Rule enforcement in Fabric or proof of a billing error. Investigate credit, cost and timing context;
       no cause, complete-population total or automatic action is inferred.</p>
   </aside>;
 }

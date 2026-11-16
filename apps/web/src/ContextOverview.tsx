@@ -36,8 +36,8 @@ export function ContextOverview({ context, serverMode }: { context: unknown; ser
       <h2>{offline ? "Reviewed synthetic business contracts" : "Current context provenance"}</h2></div>
       <span className="status-pill">{projection?.mode ?? "NO VALIDATED CONTEXT PROJECTION"}</span></div>
     <p>{offline
-      ? "These are application-owned local contracts, not native ontology metadata. They make identity, grain and period requirements inspectable before local execution."
-      : "A sign-in, configured endpoint or tool inventory is not a native ontology capture. This panel does not perform authorization probes or execute queries."}</p>
+      ? "These are application-owned local contracts, not ontology metadata in Fabric. They make identity, grain and period requirements inspectable before local execution."
+      : "A sign-in, configured endpoint or tool inventory is not an ontology capture from Fabric. This panel does not perform authorization probes or execute queries."}</p>
     {projection ? <>
       <dl className="context-summary"><dt>Source</dt><dd>{projection.source || "Not provided"}</dd>
         <dt>Revision</dt><dd>{projection.revision || "Not provided"}</dd>
@@ -60,7 +60,7 @@ export function ContextOverview({ context, serverMode }: { context: unknown; ser
       </div>
       <h3>Supplied provenance</h3><ul>{projection.provenance.map((text, index) => <li key={index}>{text}</li>)}</ul>
     </> : <p className="muted">{summary ?? "No supported context DTO has been provided for this view."}</p>}
-    <p className="muted">Native entity, source-metric binding and formal Rule payloads are not projected by this Context DTO.
+    <p className="muted">Ontology entity, metric link to a source measure and formal Rule payloads in Fabric are not projected by this Context DTO.
       They cannot be inferred from relationship contracts or a tool inventory. The recorded viewer is a separate, explicitly captured experience.</p>
     <details><summary>Inspect actual supplied payload · {serverMode}</summary>
       <pre>{JSON.stringify(context, null, 2) ?? "No payload"}</pre></details>

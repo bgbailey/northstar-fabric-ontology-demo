@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "defaultPaths": [
+    "README.md",
+    "docs",
+    "apps/web/src"
+  ],
+  "rules": [
+    {
+      "id": "evidence-gaps-still-thin",
+      "pattern": "Evidence gaps\\s*/\\s*still thin|\\bstill thin\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'Limitations' (or 'Limits of this recording' in the web app) and link to docs/limitations.md."
+    },
+    {
+      "id": "livedax",
+      "pattern": "\\bLiveDax\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Remove LiveDax annotations; track live verification in docs/architecture/platform-status.md."
+    },
+    {
+      "id": "not-run",
+      "pattern": "\\bNOT_RUN\\b",
+      "ignoreCase": false,
+      "scope": "all",
+      "replacement": "Use 'not yet run' (NOT_RUN may remain only in eval/validation JSON)."
+    },
+    {
+      "id": "local-checkout-paths",
+      "pattern": "(?:[A-Za-z]:\\\\dev\\\\|[A-Za-z]:/dev/|[A-Za-z]:\\\\Users\\\\|[A-Za-z]:/Users/)",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Remove local checkout or user-profile file paths."
+    },
+    {
+      "id": "dangling-plan-names",
+      "pattern": "[T]elcoIQ_Coding_Plan|[t]elco-iq-implementation-plan",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Remove internal plan file references."
+    },
+    {
+      "id": "hero-packet-or-stream",
+      "pattern": "\\bhero[- ](?:packet|stream)s?\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'service assurance scenario'."
+    },
+    {
+      "id": "managed-native",
+      "pattern": "\\bmanaged[- ]native\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'in Fabric' or 'the ontology agent in Fabric'."
+    },
+    {
+      "id": "source-proxy",
+      "pattern": "\\bsource[- ]prox(?:y|ies)\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'metric linked to a source measure'."
+    },
+    {
+      "id": "generation-2",
+      "pattern": "\\bgeneration[-]?2\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'Fabric IQ ontology (current experience)'."
+    },
+    {
+      "id": "lab-only",
+      "pattern": "\\blab[-_]only\\b",
+      "ignoreCase": true,
+      "scope": "all",
+      "replacement": "Use 'demo tenant'."
+    },
+    {
+      "id": "experiment-task-ids",
+      "pattern": "\\b(?:E0[1-9]|E1[0-9]|E2[0-4]|TQ-\\d{3})\\b",
+      "ignoreCase": false,
+      "scope": "all",
+      "excludeFiles": [
+        "docs/evaluation/validation-backlog.md"
+      ],
+      "replacement": "Describe the question in plain words; keep experiment/task IDs in the validation backlog only."
+    },
+    {
+      "id": "p0",
+      "pattern": "\\bP0\\b",
+      "ignoreCase": false,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'quickstart'."
+    },
+    {
+      "id": "dev-environment",
+      "pattern": "\\bDEV\\b",
+      "ignoreCase": false,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'demo tenant'."
+    },
+    {
+      "id": "partial-caps",
+      "pattern": "\\bPARTIAL\\b",
+      "ignoreCase": false,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'partial result' followed by what is excluded."
+    },
+    {
+      "id": "internal-work-terms",
+      "pattern": "\\b(?:lanes?|parents?|swarms?)\\b",
+      "ignoreCase": true,
+      "scope": "prose_and_ui",
+      "replacement": "Remove internal workflow vocabulary (lane, parent, swarm)."
+    },
+    {
+      "id": "packet",
+      "pattern": "\\bpackets?\\b",
+      "ignoreCase": true,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'recording'."
+    },
+    {
+      "id": "reader",
+      "pattern": "\\breaders?\\b",
+      "ignoreCase": true,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'demo user'."
+    },
+    {
+      "id": "native",
+      "pattern": "\\bnative\\b",
+      "ignoreCase": true,
+      "scope": "prose_and_ui",
+      "replacement": "Use 'in Fabric' or 'the ontology agent in Fabric'."
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "model": "digital",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "digital.sessions",
     "digital.authenticated_sessions",

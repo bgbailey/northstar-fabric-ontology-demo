@@ -1,149 +1,59 @@
-# Northstar Wireless customer demo
+# Northstar presenter guide
 
-## Native-first run of show
+## Run of show
 
-Use `docs\demo-streams.md` as the authoritative entry point and dated
-per-mode readiness guide. Start in the existing small ontology in Fabric,
-using `docs\executive-demo-script.md`; then include the full Customer360
-SLA exposure/account-priority segment. Neither segment is omitted.
+Use [demo-streams.md](demo-streams.md) as the entry point for startup and readiness checks. Open in Microsoft Fabric with the two-model quickstart ontology ([executive-demo-script.md](executive-demo-script.md)), then transition to the service assurance SLA exposure and account-priority segment ([architecture/hero-scenario.md](architecture/hero-scenario.md)).
 
-The custom application supports comparison, original evidence and explicit
-recorded fallback. It is not the native Fabric agent. Before live interaction,
-open the independent two-stream recording and verify the selected captures.
-Only use a live question after actual current-run authorization and rehearsal;
-old source proofs, PIDs and successful captures are not reusable grants.
+The local web viewer (`apps/web`) provides side-by-side evidence, DAX query receipts, and recorded fallback; it does not replace the product experience in Fabric. Before presenting live, verify recorded playback first and run live questions only after fresh demo user sign-in and rehearsal in your demo tenant.
 
-## Keep both streams
+## Two ontology scopes
 
-The requested experience has two separate native scopes: a small executive
-ontology over two existing semantic models, and the full eight-model
-Customer360 environment. The small item now has actual4entity/3relationship/
-14source-proxy/2Rule readback and a genuine source-checked native answer.
-The earlier
-four-entity filtered view is not a substitute for it.
+Northstar includes a compact quickstart ontology over two semantic models (four entity types, three relationships, 14 metrics linked to source measures, and two rules; contract at `fabric/ontology/executive-demo.json`) alongside the eight-model Customer360 estate (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) and the four-model service assurance scenario. Calculations remain in their source semantic models.
 
-Use `docs\executive-demo-script.md` for the short "why ontology" narrative
-and the three advanced stories below for the deep dive. The structural small
-native contract is `fabric\ontology\executive-demo.json`. Do not replace the
-large ontology, clone the source models or copy their calculations.
-The executive presentation focuses on three measures while preserving the
-other generated native source proxies. Full routing/status:
-`docs\demo-streams.md`.
+## Choose the server mode
 
-## Choose the mode deliberately
+Run from the repository root after building `apps/web/dist` (`npm --prefix apps/web run build`). These commands work in bash and PowerShell (`./tools/start-demo.ps1` is an optional PowerShell wrapper):
 
-| Mode | Start command | Meaning |
+| Mode | Command | Meaning |
 |---|---|---|
-| Both native streams | `.\tools\start-demo.ps1 -RecordedLibrary .copilot\docs\northstar-demo-library-v2-2026-10-28.json -Port 8767` | Small native executive answer first; October28Customer360 stories second; no new query or current sign-in during playback |
-| Full recorded comparisons only | `.\tools\start-demo.ps1 -RecordedComparisons .copilot\docs\northstar-recorded-live-v6-2026-10-28.json -Port 8767` | Three fresh October28pairs plus seven preserved earlier captures; no automatic live fallback |
-| Live reader | `.\tools\start-demo.ps1 -ReaderConfig <private-reader.json> -LiveConfig <private-live.json>` | Current approved reader, model and source/native checks; no automatic recording/fixture fallback |
-| Original native-agent warm-up | `.\tools\start-demo.ps1 -RecordedNative <original-native-packet.json> -Port 8768` | Separate historical built-in-native answer; not the final application comparison |
+| Both recorded streams | `python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` | Quickstart answer from the ontology agent in Fabric first, Customer360 and service assurance stories second; no sign-in or live calls |
+| Recorded comparisons only | `python -m telco_iq.cli serve --recorded-comparisons recordings/northstar-recorded-live-v6-2026-10-28.json --port 8767` | Ten recorded evaluation arm pairs with no live fallback |
+| Live demo user comparison | `python -m telco_iq.cli serve --reader-config <private-demo-user.json> --live-config <private-live.json> --port 8765` | Approved demo user session in a demo tenant (see [live demo user setup](reader-demo.md)); no silent recording or fixture fallback |
+| Single ontology-agent recording | `python -m telco_iq.cli serve --recorded-native recordings/northstar-two-model-recorded-demo-2026-09-30.json --port 8768` | Historical two-model capture from the ontology agent in Fabric |
 
-Open the printed localhost address. The source build must exist in
-`apps\web\dist`. Do not use `-Offline` as a substitute for a live failure.
-Private configuration stays outside this repository and OneDrive.
+Keep private configuration files outside the repository and outside synchronized folders. For the two-model evaluation arm walkthrough inside Customer360, see [getting-started-demo-script.md](getting-started-demo-script.md).
 
-For the supporting three-domain/two-model comparison, select a Getting started
-capture within Customer360. Use `docs\getting-started-demo-script.md` for
-source-measure reuse and fair net-benefit wording. Public packets are sanitized
-display projections; internal run notes and raw private captures are excluded.
+## Explain the two evaluation arms
 
-## Explain the two approaches
+Each evaluation arm (one side of a controlled comparison) uses the same language model, the same model-level AI preparation, and the same execution validators:
 
-Both application arms use the same model/version, prepared source information
-and execution safeguards. The left starts from model schemas and equivalent
-flat guidance. The right consumes the real generation-2 ontology's entities,
-relationships, source-backed metric links and Rules as connected context.
-The application still executes governed source queries and reviewed operators.
-It does not claim that only ontology can join data or that an execution canvas
-is a hidden native-agent reasoning trace.
+- **Models and flat guidance:** starts from semantic-model schemas and equivalent flat business instructions.
+- **Ontology context in Fabric:** reads entity types, relationships, metrics linked to source measures, and plain-language rules from the Fabric IQ ontology (current experience, preview checked 16 November 2026).
 
-Eight domain models own64source measures. The actual native context contains
-59entities,105relationships,64source proxies and4formal Rules. A source proxy
-does not transfer calculation ownership away from its semantic model.
+Both arms execute governed DAX queries on the semantic models that own the measures. The execution canvas displays observed application steps, not an internal reasoning trace from the ontology agent in Fabric.
 
-## Three stories
+## Three multi-domain stories
 
-| Story | Customer question | Interpretation boundary |
+| Story | Business question | Interpretation boundary |
 |---|---|---|
-| SLA exposure | Which contracts were incident-exposed, what monthly credit exposure is reported, and which known affected accounts deserve financial attention? | Incident/serving/contract validity must overlap. Contract-month credit and account-month Finance are separate views. Unknown credit inputs cannot support a complete credit ranking |
-| Incident recovery | Which actually exposed accounts show opening-cohort churn and repeat care contacts, and what August randomized offer evidence exists? | Keep July account assessment separate from August assignments. Preserve consent/eligibility, treatment/control denominators and unknown mappings; association is not causation |
-| Checkout release | How do June/July conversion and journey time vary by release/device, and what do explicit order links and mix evidence tell us? | Keep anonymous eligible sessions in the denominator. Session-key attribution only. Booked merchandise is not recognized service revenue; before/after differences alone are not causal |
+| Service assurance (SLA exposure) | Which enterprise contracts were exposed to July incidents, what contract-month credit exposure applies, and which affected accounts rank highest by margin and revenue? | Incident, service-site assignment, and contract validity intervals must overlap; contract-month credits and account-month finance stay in separate views; unknown credit rows exclude a complete credit ranking |
+| Incident recovery | Which exposed accounts show opening-cohort churn and repeat care contacts, and what August randomized retention-offer evidence exists? | Keep July account metrics separate from August offer assignments; preserve randomized treatment/control denominators and consent exclusions; association is not causation |
+| Checkout release | How do June and July checkout conversion and median journey duration vary by release and device, alongside linked orders and campaign mix? | Keep all eligible sessions (including anonymous sessions) in conversion denominators; attribute orders only by explicit `session_key`; booked merchandise is not recognized service revenue |
 
-### Selected Customer360 segment: SLA exposure and account priority
+### Service assurance live rehearsal prompt
 
-The native live rehearsal question is:
+> For July 2026, identify known-mapped enterprise contracts exposed to network incidents overlapping serving-site and contract validity. Show source-owned Credit Exposure at contract-month grain, preserving unknown inputs and coverage warnings. In a separate account-month view, prioritize the top 10 known-mapped affected accounts by Contribution Margin descending, with Recognized Service Revenue in cents. Report unknown-mapping exclusions. Do not duplicate account Finance across contracts, allocate monthly credit to one incident, or treat partial results as a complete exposure total.
 
-> For July 2026, identify known-mapped enterprise contracts exposed to network
-> incidents overlapping serving-site and contract validity. Show source-owned
-> Credit Exposure at contract-month grain, preserving unknown inputs and
-> coverage warnings. In a separate account-month view, prioritize the top 10
-> known-mapped affected accounts by Contribution Margin descending, with
-> Recognized Service Revenue in cents. Report unknown-mapping exclusions.
-> Do not duplicate account Finance across contracts, allocate monthly credit
-> to one incident, or treat partial results as a complete exposure total.
+When using recorded playback (`Customer360 deep dive` -> `SLA exposure and account priority (Oct 28 live)`), point out the seven contract-month rows, the separate six-account priority view, and the partial result notice (showing excluded unmapped observations and null-key rows). Across the October 28 SLA exposure (7 contract-month rows), incident recovery (12 account rows), and checkout release (4 month/release/device rows) runs, 335 known metric cells were verified against source query responses.
 
-This is a proposed native rehearsal, not a claim that the large managed-native
-agent already answered it. It is business scoping, not an operator itinerary.
-Do not add expected accounts, amounts or a scripted DAG.
+## Presenting the evidence
 
-If that native answer is not established, select **Customer360 deep dive** ->
-**SLA exposure and account priority (Oct 28 live)** in the recorded library.
-Say: "This is the October28application consumer of the real native context,
-not the managed-native agent's internal execution."
-Show7contract-month rows and the separate6account priorities with their
-original PARTIAL qualifications. Keep source-owned metric/home links visible.
+1. Select a story preset to populate the business question without triggering a hidden call or canned answer.
+2. Read the primary answer table and its status pill first; a partial result (with excluded unmapped observations or null-key rows) describes a known-mapped cohort rather than the full population, and unknown values are never zero.
+3. Expand additional grain-specific views separately so contract-month amounts, distinct counts, ratios, and medians are never summed across incompatible grains.
+4. Open a DAX receipt and the execution canvas to show the exact semantic-model query and watermark clocks.
+5. Keep data, semantic-model, ontology, and context-cache clocks distinct; exporting a recording does not refresh source data.
 
-All three final October28stories executed in both arms with common source
-state and actual postflight: SLA7contract-month rows, recovery12account rows,
-checkout4month/release/device rows.335known metric cells were checked against
-original source responses. Overall PARTIAL status and separate source-grain
-views remain explicit. The earlier failed traditional recovery arm is still
-available in its historical capture; it is not the latest result.
+## Limitations
 
-The final checkout preset matches the accepted live question exactly:
-supporting raw session evidence is checkout-eligible, while **every** eligible
-anonymous/unmapped/no-order session remains in governed performance
-denominators. Do not remove anonymous rows or filter by purchase success.
-
-## Supporting application comparison and evidence
-
-1. Select the business story. A preset fills the question; it does not execute
-   or retrieve a hidden answer. Run a fresh application pair only under its
-   separate current operation approval, not as the default native opening.
-2. Read the business table and its status before opening technical details.
-   PARTIAL may be an honest known-mapped cohort, not a complete population.
-   Unknown/null values are not zero. A failed arm stays failed.
-3. Expand a separate result view only when discussing its source grain.
-   Do not sum contract amounts, monthly distinct counts, rates or medians
-   across views. Account-level Finance is not multiplied across contracts.
-4. Inspect a source-query receipt and the execution canvas to show what
-   actually ran. The graph represents observed application execution.
-5. Open the data/source-model/ontology/context clocks. Their meanings are
-   independent; an export timestamp does not refresh a source observation.
-6. If live access fails, explicitly launch/select recorded-live mode. Its
-   badge, original capture time, partial qualifications and failed arms remain
-   visible. There is no silent fallback.
-
-## Useful variations
-
-Change the incident cohort or reporting month, preserving valid periods and
-measure definitions. A live variation must make a fresh plan and source calls.
-Changing a recording selector only displays another saved capture.
-
-An empty campaign period is evidence that the requested campaign comparison
-is unavailable for that period, not zero lift. A missing treatment/control
-arm is undefined. Recommendations do not execute outreach or financial actions.
-
-## Evidence gaps / still thin
-
-The starter July/August pairs are COMPLETE in both arms with common source
-state. The latest advanced stories are PARTIAL/common-state in both arms;
-their source exclusions are not complete-population totals. Earlier
-NOT_COMPARABLE captures remain historical. The old guided comparison is a
-focused large-item slice, while the executive stream now has a genuinely
-separate small native item. No general ontology accuracy or performance
-advantage is claimed.
-Managed `ask_ontology` consideration of Rules and automatic source-instruction
-inheritance remain unverified; the controlled application retrieves/supplies
-the reviewed guidance explicitly.
+See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

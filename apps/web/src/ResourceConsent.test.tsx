@@ -192,7 +192,7 @@ describe("explicit reviewed resource consent", () => {
     expect(fetch.mock.calls.map(([path]) => path)).toEqual([
       "/api/health", "/api/capabilities", "/api/comparison/readiness",
     ]);
-    expect(container.textContent).toContain("not a reader item grant");
+    expect(container.textContent).toContain("not a demo user item grant");
     expect(container.textContent).not.toContain("unit-csrf");
     await act(async () => button(permissionNames[resource]).click());
     expect(fetch).toHaveBeenLastCalledWith(`/auth/consent/${resource}`, expect.objectContaining({

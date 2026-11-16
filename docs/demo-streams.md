@@ -1,69 +1,47 @@
-# Customer demo run guide
+# Northstar demo run guide
 
 **Keep the trusted calculations. Connect their meaning.**
 
-All names and business data in this example are synthetic. Public recordings
-are sanitized display projections, not deployment configuration or live grants.
+All customer names and business data in Northstar are synthetic. Public recordings in `recordings/` are sanitized display projections, not deployment configuration or live demo tenant grants.
 
-| Segment | Live primary | Supporting recorded view |
+| Segment | Live primary surface | Supporting recorded view |
 |---|---|---|
-| Executive quickstart | Small native ontology in your approved Fabric environment | **Executive quickstart**: four entities, three focus measures and one historical native answer |
-| Customer360 deep dive | Existing full native ontology, after its own successful rehearsal | **Customer360 deep dive** -> **SLA exposure and account priority (Oct 28 live)** |
+| Executive quickstart | Small Fabric IQ ontology (current experience) in your approved demo tenant | **Executive quickstart**: four entity types, three focus measures, and one source-checked answer from the ontology agent in Fabric |
+| Service assurance and Customer360 deep dive | Service assurance ontology or full Customer360 ontology in Fabric after rehearsal | **Customer360 deep dive** -> **SLA exposure and account priority (Oct 28 live)** |
 
-Include both segments. The full graph is not the opening executive explanation.
-Recovery and checkout are additional deep-dive choices.
+Include both segments. Open with the small four-entity quickstart rather than the full 59-entity graph, then transition to the service assurance SLA exposure and account-priority story. Incident recovery and checkout release remain available as extra deep-dive stories.
 
 ## Run of show
 
-1. Show the two existing source models and original measure homes.
-2. Show the small native ontology's customer bridge, period meaning and Rules.
-3. Ask the connected July business question. Treat the answer as a review
-   candidate, not a billing diagnosis or action authorization.
-4. Use a self-contained month variation only after a fresh approved rehearsal.
-   Do not supply expected values, account answers or an execution itinerary.
-5. Include the Customer360 SLA segment. Keep contract-month credit separate
-   from account-month financial priorities, with unknown inputs and exclusions.
-6. Use the existing application comparison to explain equal source preparation
-   and shared facts. Matching numbers are expected, not a manufactured ontology win.
+1. Show the existing semantic models and original measure home tables.
+2. Show the quickstart ontology's customer bridge, period meaning, and rules in Fabric.
+3. Ask the connected July business question. Treat the returned candidate as a review prompt for an analyst, not a billing diagnosis or automated action.
+4. Run a month variation (such as August) live only after a fresh rehearsal in your demo tenant, without supplying expected values or a query plan in the prompt.
+5. Move to the service assurance SLA exposure segment (`SLA exposure and account priority`). Keep contract-month credit settlement separate from account-month finance measures, with unknown inputs and exclusions reported explicitly.
+6. Use the two-arm comparison viewer (where each evaluation arm receives the same model-level AI preparation and business facts) to show source-query receipts. Matching numbers confirm that both arms use the same semantic model calculations.
 
-Use `executive-demo-script.md` and `presenter-guide.md` for the questions.
-The application's executive selector is recorded-only, not a live native UI.
+See [executive-demo-script.md](executive-demo-script.md), [architecture/hero-scenario.md](architecture/hero-scenario.md), and [presenter-guide.md](presenter-guide.md) for talk tracks.
 
-## Recorded fallback
+## Recorded playback
 
-```powershell
-.\tools\start-demo.ps1 -RecordedLibrary .copilot\docs\northstar-demo-library-v2-2026-10-28.json -Port 8767
+Start the recorded demo server from the repository root (works in bash and PowerShell after building `apps/web`):
+
+```bash
+python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767
 ```
 
-Open `http://localhost:8767/`. No sign-in, model call or source query runs when
-you select a recording. The executive recording retains its October28native
-answer and independently checked source values. Customer360 includes ten
-historical application pairs; the latest SLA, recovery and checkout pairs
-executed in both arms with PARTIAL/common-source-state qualifications.
+On Windows PowerShell, `./tools/start-demo.ps1 -RecordedLibrary recordings/northstar-demo-library-v2-2026-10-28.json -Port 8767` is an optional wrapper.
 
-The selected SLA recording shows seven contract-month rows and separate
-six-account priorities. Unknown credit inputs do not become a complete credit
-total or ranking. Its application graph is not a managed-native service trace.
+Open `http://localhost:8767/`. Selecting a stream or story makes no sign-in, model call, or Fabric query. The executive stream displays the October 28 answer from the ontology agent in Fabric alongside independent source-verification queries. The Customer360 stream includes ten historical evaluation arm pairs; the latest SLA exposure, incident recovery, and checkout release pairs ran in both arms and report partial results (excluding unmapped observations and null-key rows) with verified common source state.
 
-Public projection notices explain source-environment redaction. Retained
-hashes identify privately retained originals, not byte-identical public files.
-Do not present the sanitized archive as raw service output or current proof.
+The recorded SLA exposure run returns seven contract-month rows and a separate six-account financial priority table, keeping unknown credit inputs distinct from zero. Its execution graph shows local application steps, not an internal trace of the ontology agent in Fabric.
 
-## Readiness and fallback
+## Live readiness and fallback
 
-Verify playback independently before a presentation. Live readiness is a
-separate check for each item/question: actual identity/tenant, exact existing
-targets, permissions, discovered tools, reviewed source bindings and clocks.
-An old configuration, token, accepted recording or capacity resume is not proof.
+Verify recorded playback before every session. Live readiness in a demo tenant is checked separately per item and per demo user: verify signed-in user and tenant identity, target items, permissions, discovered MCP tools, and source freshness (see [live demo user setup](reader-demo.md) and [architecture/platform-status.md](architecture/platform-status.md)).
 
-On a bounded failed or unknown live request, retain the outcome and explicitly
-select the dated recording. Do not replay a consumed intent, relax safeguards,
-execute returned code or silently substitute a fixture.
+If a live call times out or fails, keep that outcome honest and switch explicitly to the dated recording rather than silently substituting local fixture data.
 
-## Evidence gaps / still thin
+## Limitations
 
-The native executive and advanced application paths are different consumers.
-Managed-native internal queries/model usage, Rule consideration and automatic
-source-AI inheritance remain unexposed. Independent source checks retain their
-own observation times. No exclusive-join, general accuracy/performance,
-causal or automatic-action claim is established.
+See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

@@ -1,133 +1,118 @@
-# Northstar ontology demo
+# Northstar Fabric IQ ontology demo
 
-A synthetic telecommunications example of a Microsoft Fabric generation-2
-ontology over existing semantic models. **Semantic models own the calculations;
-ontology supplies connected business context.**
+Northstar is a synthetic telecommunications demonstration and accelerator showing a **Fabric IQ ontology (current experience)** over existing Power BI semantic models as one shared context layer for agents. **Semantic models own the calculations; the ontology supplies connected business context.**
 
-All customer names, accounts and business records are fictional. No real
-customer data, deployment identifiers, credentials, operator configuration or
-internal run logs are included.
+All customer names, accounts, contracts, and business records are fictional. No real customer data, demo tenant identifiers, credentials, or private run logs are included.
+
+For the target architecture, four-model service assurance scenario, and current preview capabilities, see [docs/architecture/README.md](docs/architecture/README.md), [docs/architecture/hero-scenario.md](docs/architecture/hero-scenario.md), and [docs/architecture/platform-status.md](docs/architecture/platform-status.md).
 
 ## What this demonstrates
 
-| Stream | Native scope | Customer question |
+| Stream | Scope in Fabric | Business question |
 |---|---|---|
-| Executive quickstart | Two existing models, four entities, three relationships, fourteen retained source proxies and two Rules | Which customers have no month-end lines, recognized service revenue and negative contribution margin? |
-| Customer360 deep dive | Eight models, 59 entities, 105 relationships, 64 source proxies and four Rules | How do incident exposure, recovery and checkout questions connect across domains? |
+| Executive quickstart | Separate Fabric IQ ontology (current experience) over two semantic models (Subscriptions, Finance), four entity types, three relationships, 14 metrics linked to source measures, and two rules | Which customers have zero month-end active lines, positive recognized service revenue, and negative contribution margin? |
+| Service assurance and Customer360 deep dive | Four-model service assurance scenario (Network, Enterprise services, Finance, Care) within the wider eight-model estate (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) | Which enterprise customers were served from sites hit by July incidents, what SLA credit exposure sits on their contracts, how much revenue and margin is at stake, and who has escalated cases? |
 
-The executive presentation focuses on three existing measures: Active Lines
-EOM, Recognized Service Revenue and Contribution Margin. Their source models
-remain authoritative. A consumer can also coordinate those models without
-ontology; the benefit here is explicit, reusable customer identity, period,
-relationships and metric meaning, not an exclusive ability to join data.
+Each semantic model retains ownership of its governed DAX measures (such as `Active Lines EOM`, `Credit Exposure`, `Recognized Service Revenue`, and `Contribution Margin`), grain, and security roles. An evaluation arm (one side of a controlled comparison) that queries semantic models directly can also coordinate cross-domain joins; the value under test is reusable, reviewable identity, validity-period, grain, and metric context shared across agents rather than copied into every prompt.
 
-For live presentations, lead with the actual ontology experience in Fabric.
-Use this application's comparison, evidence viewer and explicit recorded
-playback as supporting material. Start with the small executive stream, then
-include the Customer360 SLA exposure/account-priority story.
-
-See [the run guide](docs/demo-streams.md),
-[executive script](docs/executive-demo-script.md) and
-[native setup procedure](docs/executive-native-setup.md).
+For live sessions, lead with the ontology agent in Fabric and use the local web viewer for side-by-side evidence and recorded playback. See the [demo run guide](docs/demo-streams.md), [executive script](docs/executive-demo-script.md), and [quickstart ontology setup](docs/executive-native-setup.md).
 
 ## Run the recorded demo
 
-Use Python 3.12 or later and Node.js 24 or later. From PowerShell:
+Requires Python 3.12 or later and Node.js 24 or later.
 
-```powershell
+Create and activate a virtual environment:
+
+```bash
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.lock
-.\.venv\Scripts\python.exe -m pip install --no-deps -e .
-Push-Location apps\web
-npm ci --no-audit --no-fund
-npm run build
-Pop-Location
-.\tools\start-demo.ps1 -RecordedLibrary .copilot\docs\northstar-demo-library-v2-2026-10-28.json -Port 8767
+# Linux / macOS (bash or zsh):
+. .venv/bin/activate
+# Windows (PowerShell):
+# .\.venv\Scripts\Activate.ps1
 ```
 
-Open `http://localhost:8767/`. Switching streams displays saved evidence; it
-does not sign in, call a model or query Fabric.
+Install dependencies, build the web viewer, and start recorded playback (works in bash and PowerShell):
 
-The recordings are **sanitized display projections** of synthetic lab
-observations. Source-environment names and internal references are generalized.
-Retained provenance hashes identify privately retained originals, not the
-sanitized files. Business values, source-measure ownership, original observation
-times, PARTIAL qualifications and historical failed arms are preserved.
+```bash
+python -m pip install -r requirements.lock
+python -m pip install --no-deps -e .
+npm --prefix apps/web ci --no-audit --no-fund
+npm --prefix apps/web run build
+python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767
+```
 
-| Mode | Command or requirement |
+Open `http://localhost:8767/`. Switching streams displays saved evidence from `recordings/`; it does not sign in, call a model, or query Microsoft Fabric. On Windows PowerShell, `./tools/start-demo.ps1` is also available as an optional wrapper.
+
+Recordings in `recordings/` are sanitized display projections of synthetic demo tenant runs. Environment identifiers are removed, while business values, source-measure ownership, original observation timestamps, partial result qualifications (with excluded unmapped or null-key rows), and historical failed evaluation arms are preserved.
+
+| Mode | Cross-platform command or requirement |
 |---|---|
-| Both recorded streams | `.\tools\start-demo.ps1 -RecordedLibrary .copilot\docs\northstar-demo-library-v2-2026-10-28.json -Port 8767` |
-| Full recorded comparisons | `.\tools\start-demo.ps1 -RecordedComparisons .copilot\docs\northstar-recorded-live-v6-2026-10-28.json -Port 8767` |
-| Local synthetic execution | Generate data as below, then use `.\tools\start-demo.ps1 -Offline -Port 8766` |
-| Live application comparison | Provide your own separately approved private reader/live configuration and acquire current source/native proof; see [reader setup](docs/reader-demo.md) |
+| Both recorded streams | `python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` |
+| Recorded evaluation arm comparisons | `python -m telco_iq.cli serve --recorded-comparisons recordings/northstar-recorded-live-v6-2026-10-28.json --port 8767` |
+| Local synthetic fixture workbench | Generate miniature data below, then run `python -m telco_iq.cli serve --data data/generated/miniature --port 8766` |
+| Live demo user comparison | Supply private demo user and demo tenant configuration outside the repository; see [live demo user setup](docs/reader-demo.md) |
 
-For local fixture execution:
+To generate local synthetic fixture data:
 
-```powershell
-.\.venv\Scripts\python.exe tools\build_data.py --profile miniature --seed 20260929 --output data\generated\miniature
-.\tools\start-demo.ps1 -Offline -Port 8766
+```bash
+python tools/build_data.py --profile miniature --seed 20260929 --output data/generated/miniature
+python -m telco_iq.cli serve --data data/generated/miniature --port 8766
 ```
 
-Fixture execution is not a live Fabric demonstration. Recorded mode never
-silently becomes live or falls back to fixtures.
+Local fixture execution runs DuckDB SQL over synthetic Parquet files; it is not a live Microsoft Fabric session, and recorded mode never falls back silently to fixtures or live endpoints.
 
-## Architecture
+## Current repository status
+
+| Surface | Status in this repository |
+|---|---|
+| Synthetic data and semantic models | Deterministic data generator plus eight Direct Lake TMDL semantic model templates with 64 governed measures and sample `East Region` role definitions |
+| Quickstart ontology and answer in Fabric | Structural contract (`fabric/ontology/executive-demo.json`), setup guide, and sanitized recording of an answer from the ontology agent in Fabric checked against independent source DAX queries |
+| Customer360 and service assurance recordings | Sanitized recording of the eight-model ontology in Fabric plus ten recorded evaluation arm runs, including three multi-domain runs with 335 source-checked metric cells and explicit partial result exclusions |
+| Architecture and platform tracking | Target architecture with diagrams ([docs/architecture/README.md](docs/architecture/README.md)), service assurance specification ([docs/architecture/hero-scenario.md](docs/architecture/hero-scenario.md)), and preview capability status ([docs/architecture/platform-status.md](docs/architecture/platform-status.md), checked 16 November 2026) |
+
+## Architecture summary
 
 | Layer | Responsibility |
 |---|---|
-| Semantic models | Original governed measures, source grains and enforced access |
-| Native ontology | Entities, relationships, source-backed metric links and natural-language Rules |
-| Managed native consumer | Queries using the supported Fabric experience or separately reviewed native MCP surface |
-| Comparison application | Equal source AI preparation and business facts, typed planning, governed per-model queries and reviewed operators |
-| Recorded viewer | Display-only projections with explicit capture dates and qualifications |
+| Power BI semantic models (Direct Lake) | Governed DAX measures, table grains, and row-level security enforced where queries run |
+| Fabric IQ ontology (current experience) | Entity types, cross-model relationships, metrics linked to source measures, and plain-language rules |
+| Ontology agent in Fabric and MCP endpoints | Interactive Plan/Act authoring and questions in Fabric, plus item-scoped ontology MCP (preview) separate from the generally available Fabric IQ MCP server for semantic models and reports |
+| Evaluation and evidence viewer | Fair comparison across evaluation arms with identical model-level AI preparation, guarded execution, and recorded playback |
 
-GA Fabric IQ MCP and the item-scoped ontology MCP are separate clients.
-GA IQ targets reports and semantic models; it does not consume ontology items.
-The application execution graph is not a managed-native internal trace.
-The displayed ontology is a definition graph, not a materialized instance graph.
-
-## Source-model preparation and development
-
-`fabric\ai-prep\model-guidance.json` contains review-only preparation drafts.
-Apply preparation through supported Power BI tooling in your own environment;
-draft files are not proof that any model is configured.
-Both application comparison arms receive the same available instructions and
-equivalent business facts.
+`fabric/ai-prep/model-guidance.json` contains review-only AI preparation drafts. Apply model preparation through supported Power BI tooling in your demo tenant; both evaluation arms receive the same model instructions and equivalent business facts.
 
 | Path | Purpose |
 |---|---|
-| `src\telco_iq` | Guarded runtime, MCP clients, typed planning/execution and display contracts |
-| `apps\web` | Comparison, ontology and source-evidence viewer |
-| `fabric\semantic-models` | Source model templates and source-owned measure definitions |
-| `fabric\ontology` | Structural contracts and supported bootstrap guidance |
-| `data\contracts`, `data\fixtures` | Synthetic source contracts and small fixtures |
-| `eval` | Independent offline evaluation; excluded from runtime packaging |
-| `.copilot\docs` | Selected sanitized recorded display packets |
-| `.copilot\evidence` | Sanitized local acceptance fixtures used by deployment tests, not live grants |
+| `src/telco_iq` | Guarded runtime, MCP clients, typed plan validation/execution, and display contracts |
+| `apps/web` | Evidence, ontology, and comparison viewer |
+| `fabric/semantic-models` | Direct Lake semantic model templates (TMDL) and source-owned measure definitions |
+| `fabric/ontology` | Ontology contracts and authoring guidance |
+| `data/contracts`, `data/fixtures` | Synthetic data contracts and miniature Parquet fixtures |
+| `eval` | Independent offline oracle, evaluation runners, and validation register (excluded from runtime packaging) |
+| `recordings` | Sanitized recorded demo streams and comparison runs |
+| `tests/fixtures/acceptance` | Sanitized local acceptance fixtures used by offline deployment tests |
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m ruff check src tests tools eval
-Push-Location apps\web
-npm test
-npm run build
-Pop-Location
+Run offline checks in bash or PowerShell:
+
+```bash
+python -m pytest -q
+python -m ruff check src tests tools eval
+npm --prefix apps/web test
+npm --prefix apps/web run build
 ```
 
-Keep all target identifiers, authentication state and approval receipts outside
-the repository and synchronized folders. Never commit tokens, certificates,
-private keys or cloud configuration. Public recordings cannot authorize live
-execution. Live operations need a fresh exact-target approval and reader proof.
-Never delete or empty a Fabric workspace.
+## Security
 
-## Evidence gaps / still thin
+Keep all demo tenant identifiers, authentication tokens, certificates, and operation approvals outside the repository and outside cloud-synchronized folders. Live queries, model inference, and item creation require explicit human approval for the exact target, and this project never deletes or empties a Microsoft Fabric workspace. Read [docs/security.md](docs/security.md) for architecture security boundaries and [SECURITY.md](SECURITY.md) to report vulnerabilities.
 
-The included executive native answer is one historical source-checked result.
-Independent native/source observations retain different times; matching values
-do not establish a shared source-state window. Advanced application stories
-remain PARTIAL with explicit exclusions.
+## Limitations
 
-Managed-native internal queries/model usage, actual Rule consideration and
-automatic source-AI inheritance are not exposed by these captures. No general
-accuracy, speed, productivity, RLS/OLS, causal or automatic-action claim is made.
-Current live readiness must be established in the environment where you run it.
+See [docs/limitations.md](docs/limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.
+
+## Licence and notices
+
+Released under the [MIT License](LICENSE). See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SUPPORT.md](SUPPORT.md), and [CHANGELOG.md](CHANGELOG.md).
+
+**Sample notice:** This repository is a sample demonstration and accelerator, and is not an official Microsoft product or supported offering.
+
+**Trademarks:** Microsoft, Power BI, Microsoft Fabric, Microsoft Purview, Microsoft Entra, Microsoft Foundry, Copilot Studio, Microsoft 365, Copilot, and GitHub are trademarks of the Microsoft group of companies. Product names and icons in documentation and architecture diagrams remain the property of their respective trademark owners and are used for architectural illustration only.

@@ -8,7 +8,6 @@ table 'Credits'
 		displayFolder: Billing and Finance
 		lineageTag: 28b87061-7bf9-5503-b033-50f552354fcf
 		annotation MetricId = finance.posted_credits
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

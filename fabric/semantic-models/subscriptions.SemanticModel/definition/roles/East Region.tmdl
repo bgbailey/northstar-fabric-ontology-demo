@@ -1,4 +1,4 @@
-/// Synthetic East-region restriction; membership absent and source enforcement NOT_RUN.
+/// Synthetic East-region sample role; membership absent and configured per demo tenant.
 role 'East Region'
 	modelPermission: read
 

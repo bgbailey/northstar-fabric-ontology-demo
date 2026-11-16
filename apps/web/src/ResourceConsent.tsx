@@ -33,7 +33,7 @@ export function ResourceConsent({ resources, enabled, pending, onConsent, onExis
     <h2>Optional resource permissions</h2>
     <p>Use an existing grant first, or explicitly start browser consent if Microsoft requires it.
       Fabric Item.ReadWrite.All is a read/write delegated permission,
-      not a reader item grant. Storage user_impersonation acts as the same signed-in user.
+      not a demo user item grant. Storage user_impersonation acts as the same signed-in user.
       Neither grants new workspace or item rights.</p>
     <p className="muted">Configuration and consent are separate from current source authorization,
       probes and execution. Consent does not make the live demo ready.</p>

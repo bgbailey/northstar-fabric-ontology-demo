@@ -1006,7 +1006,7 @@ def test_approved_companion_hash_cannot_replace_actual_packet_root(tmp_path, pac
 
 
 def real_dependency_files():
-    return {task: ROOT / ".copilot" / "evidence" / (task + "-acceptance.json")
+    return {task: ROOT / "tests" / "fixtures" / "acceptance" / (task + "-acceptance.json")
             for task in ("TQ-003", "TQ-004", "TQ-005")}
 
 

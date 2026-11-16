@@ -2,7 +2,7 @@
   "model": "network",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "network.eligible_site_minutes",
     "network.unavailable_site_minutes",

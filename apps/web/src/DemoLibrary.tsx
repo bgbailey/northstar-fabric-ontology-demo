@@ -86,8 +86,8 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
   return <main>
     <header><div><p className="eyebrow">NORTHSTAR WIRELESS / EXECUTIVE QUICKSTART</p>
       <h1>Keep the measures. Connect the meaning.</h1>
-      <p>A separate small native ontology, not a filtered Customer360 graph.</p></div>
-      <span className="badge">RECORDED NATIVE ANSWER</span></header>
+      <p>A separate small Fabric IQ ontology (current experience) in Fabric, not a filtered Customer360 graph.</p></div>
+      <span className="badge">RECORDED ANSWER IN FABRIC</span></header>
     <section className="card" aria-label="Executive demo scope">
       <h2>Three domains. Two semantic models. Four entities.</h2>
       <p>Customers, Subscriptions and Finance share customer identity and period meaning.
@@ -99,12 +99,12 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
           }</td>
         </tr>)}</tbody></table></div>
     </section>
-    <section className="card" aria-label="Executive native business answer">
+    <section className="card" aria-label="Executive business answer in Fabric">
       <p className="eyebrow">ONE CONNECTED QUESTION</p>
       <h2>Which July customers have no active lines, positive recognized revenue and negative margin?</h2>
-      <details><summary>Exact submitted native question</summary><p>{recording.question}</p></details>
-      <p className="muted">Native answer captured {recording.captured_at}. Selecting this stream does not run a query.</p>
-      <div className="table-scroll"><table aria-label="Source-checked native executive answer">
+      <details><summary>Exact submitted question</summary><p>{recording.question}</p></details>
+      <p className="muted">Answer captured in Fabric {recording.captured_at}. Selecting this stream does not run a query.</p>
+      <div className="table-scroll"><table aria-label="Source-checked executive answer in Fabric">
         <thead><tr><th>Customer account</th><th>Active Lines EOM</th><th>Recognized revenue · cents</th>
           <th>Contribution margin · cents</th></tr></thead>
         <tbody>{recording.rows.map(row => <tr key={row.account_id}><td>{row.account_id}</td>
@@ -113,7 +113,7 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
           <td>{row.contribution_margin_cents.toLocaleString("en-US")}</td></tr>)}</tbody>
       </table></div>
       <p>Review candidates only, not a billing diagnosis, causal conclusion, complete-population total or automatic action.</p>
-      <details><summary>Original native response, identifier-redacted</summary><pre>{recording.native_answer_text}</pre></details>
+      <details><summary>Original response from the ontology agent in Fabric, identifier-redacted</summary><pre>{recording.native_answer_text}</pre></details>
     </section>
     <RecordedOntologyView ontology={recording.ontology} gettingStarted focusMetricIds={recording.focus_metric_ids} />
     <section className="card" aria-label="Executive presenter talk track">
@@ -122,20 +122,20 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
       <p><strong>Make shared meaning explicit.</strong> The same customer, the same month and the correct revenue definition.</p>
       <p><strong>Ask a connected question.</strong> An agent can reuse those decisions rather than redefine them for each consumer.</p>
       <p className="muted">A capable consumer can also join the models. This is not an exclusive computation,
-        accuracy or speed claim. The managed native reference is separate from the full stream's paired application comparison.</p>
+        accuracy or speed claim. The answer from the ontology agent in Fabric is separate from the full stream's paired evaluation arm comparison.</p>
     </section>
     <details className="card"><summary>Original source-measure verification and clocks</summary>
-      <p className="muted">These are independent source-verification queries, not the native service's internal trace.
-        Native-answer and source-observation times remain separate.</p>
+      <p className="muted">These are independent source-verification queries, not an internal trace from the ontology agent in Fabric.
+        Answer capture and source-observation times remain separate.</p>
       {recording.source_queries.map((query, index) => <details key={`${query.model}:${index}`}>
         <summary>{query.model} · original source query</summary><pre>{query.dax}</pre>
         <p>Observed {query.observed_at}</p><pre>{query.response_sha256}</pre>
       </details>)}
       <pre>{JSON.stringify(recording.source_clocks, null, 2)}</pre>
-      <p>Native response:</p><pre>{recording.native_response_sha256}</pre>
+      <p>Response hash in Fabric:</p><pre>{recording.native_response_sha256}</pre>
       <p>Source-value review:</p><pre>{recording.source_measure_review_sha256}</pre>
     </details>
-    <footer>{recording.limitations.map(item => <p key={item}>{item}</p>)}</footer>
+    <footer><p><strong>Limits of this recording</strong> (see <code>docs/limitations.md</code>):</p>{recording.limitations.map(item => <p key={item}>{item}</p>)}</footer>
   </main>;
 }
 
@@ -143,7 +143,7 @@ export function DemoLibraryView({ library }: { library: RecordedDemoLibrary }) {
   const [stream, setStream] = useState<"executive" | "customer360">("executive");
   return <>
     <section className="card" aria-label="Choose the demo stream">
-      <p className="eyebrow">TWO NATIVE ONTOLOGIES / TWO CONVERSATIONS</p>
+      <p className="eyebrow">TWO ONTOLOGIES IN FABRIC / TWO CONVERSATIONS</p>
       <div className="story-presets demo-stream-switch" role="group" aria-label="Demo streams">
         <button aria-pressed={stream === "executive"} onClick={() => setStream("executive")}>
           Executive quickstart · 2 models
@@ -152,7 +152,7 @@ export function DemoLibraryView({ library }: { library: RecordedDemoLibrary }) {
           Customer360 deep dive · 8 models
         </button>
       </div>
-      <p className="muted">Explicit recorded playback. Separate native definitions and original capture clocks;
+      <p className="muted">Explicit recorded playback. Separate ontology definitions in Fabric and original capture clocks;
         no sign-in, model call or source query runs when switching streams.</p>
     </section>
     {stream === "executive" ? <ExecutiveDemoView recording={library.executive} />

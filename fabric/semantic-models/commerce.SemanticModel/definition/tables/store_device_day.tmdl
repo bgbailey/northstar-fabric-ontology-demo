@@ -8,7 +8,6 @@ table 'Store Device Day'
 		displayFolder: Commerce and Devices
 		lineageTag: 482becd0-1f53-5115-a50b-d5168ffca44d
 		annotation MetricId = commerce.inventory_eod
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = semi_additive
 
 	/// Store-device-day stockout observations; across devices this is not distinct store days.
@@ -17,7 +16,6 @@ table 'Store Device Day'
 		displayFolder: Commerce and Devices
 		lineageTag: 984b23dc-7031-531b-9eae-4f74de45ab5e
 		annotation MetricId = commerce.stockout_store_days
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

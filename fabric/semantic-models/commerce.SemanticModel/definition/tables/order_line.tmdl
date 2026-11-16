@@ -8,7 +8,6 @@ table 'Order Lines'
 		displayFolder: Commerce and Devices
 		lineageTag: e9d0b341-4891-5f4a-9836-02f55fe66698
 		annotation MetricId = commerce.units
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Booked device revenue, intentionally distinct from finance recognized service revenue.
@@ -17,7 +16,6 @@ table 'Order Lines'
 		displayFolder: Commerce and Devices
 		lineageTag: d4fed25a-b016-5420-bd39-3850686b2da9
 		annotation MetricId = commerce.booked_revenue
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Units actually fulfilled.
@@ -26,7 +24,6 @@ table 'Order Lines'
 		displayFolder: Commerce and Devices
 		lineageTag: 90ad0319-32d0-59a6-92e7-bc8ebcdfc292
 		annotation MetricId = commerce.fulfilled_units
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Returned units divided by fulfilled units, attributed to order month.
@@ -35,7 +32,6 @@ table 'Order Lines'
 		displayFolder: Commerce and Devices
 		lineageTag: cfdf3be7-2846-5d86-a9ff-6d449aca7eff
 		annotation MetricId = commerce.device_return_rate
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.

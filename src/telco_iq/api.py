@@ -576,7 +576,7 @@ def create_app(
 
     @app.get("/api/capabilities")
     async def capabilities():
-        register = json.loads((root / "experiments" / "register.json").read_text(encoding="utf-8"))
+        register = json.loads((root / "eval" / "validation" / "register.json").read_text(encoding="utf-8"))
         return {
             "experiments": [
                 {k: e[k] for k in ("id", "title", "phase", "status")} for e in register["experiments"]

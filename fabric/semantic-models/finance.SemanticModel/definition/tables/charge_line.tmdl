@@ -8,7 +8,6 @@ table 'Charge Lines'
 		displayFolder: Billing and Finance
 		lineageTag: 9ea22949-2e52-53d8-829c-fb7dd4849d5b
 		annotation MetricId = finance.billed_charges
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

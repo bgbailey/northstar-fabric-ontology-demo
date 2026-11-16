@@ -2,7 +2,7 @@
   "model": "commerce",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "commerce.orders",
     "commerce.units",

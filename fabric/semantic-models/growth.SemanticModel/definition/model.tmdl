@@ -4,9 +4,6 @@ model Model
 	sourceQueryCulture: en-US
 	defaultPowerBIDataSourceVersion: powerBI_V3
 	discourageImplicitMeasures
-	annotation LiveDax = NOT_RUN
-	annotation DirectLake = NOT_RUN
-	annotation SourceRls = NOT_RUN
 	annotation SourceRevision = 1.0
 
 ref table 'Offer Assignments'

@@ -12,10 +12,10 @@
   ],
   "validation": {
     "sql_reference": "SEE_TARGETED_TESTS",
-    "tmdl_engine_parse": "NOT_RUN",
-    "live_dax": "NOT_RUN",
-    "direct_lake": "NOT_RUN",
-    "source_rls": "NOT_RUN"
+    "tmdl_engine_parse": "PENDING_DEMO_TENANT",
+    "live_dax": "PENDING_DEMO_TENANT",
+    "direct_lake": "PENDING_DEMO_TENANT",
+    "source_rls": "PENDING_DEMO_TENANT"
   },
   "models": [
     {
@@ -1388,22 +1388,10 @@
           "toColumn": "market_id"
         },
         {
-          "fromTable": "contract",
-          "fromColumn": "month",
-          "toTable": "calendar_date",
-          "toColumn": "date"
-        },
-        {
           "fromTable": "service_site_map",
           "fromColumn": "market_id",
           "toTable": "market",
           "toColumn": "market_id"
-        },
-        {
-          "fromTable": "service_site_map",
-          "fromColumn": "month",
-          "toTable": "calendar_date",
-          "toColumn": "date"
         },
         {
           "fromTable": "service_site_map",

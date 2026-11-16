@@ -24,7 +24,7 @@ vi.mock("@xyflow/react", () => ({
   MarkerType: { ArrowClosed: "arrow" }, Position: { Left: "left", Right: "right" },
 }));
 
-// Explicit synthetic transport fixture, not a replacement for the P0 recording.
+// Explicit synthetic transport fixture, not a replacement for the quickstart recording.
 const packet: RecordedDemo = {
   schema_version: "1.0", mode: "RECORDED_NATIVE_DEMO",
   captured_at: "2026-09-30T21:01:00Z", context_captured_at: "2026-09-30T21:00:00Z",
@@ -109,14 +109,14 @@ describe("recorded ontology customer experience DOM", () => {
     expect(container.querySelector(".badge")?.textContent).toBe("RECORDED");
     expect(container.textContent).not.toContain("RECORDED LIVE");
     expect([...container.querySelectorAll("time")].map(time => time.dateTime)).toEqual([packet.captured_at, packet.context_captured_at]);
-    expect(container.textContent).toContain("Packet created Not recorded");
+    expect(container.textContent).toContain("Recording created Not recorded");
     expect(container.textContent).toContain("Source data refresh");
     expect(container.textContent).toContain("Not captured; context acquisition is a separate clock");
   });
-  it("keeps source panels, counts and identical native facts in both lenses", async () => {
+  it("keeps source panels, counts and identical ontology facts in both lenses", async () => {
     await render();
-    expect(container.querySelector('[data-source-id="subscriptions"]')?.textContent).toContain("2 native entities · 1 source-backed");
-    expect(container.querySelector('[data-source-id="finance"]')?.textContent).toContain("3 native entities · 2 source-backed");
+    expect(container.querySelector('[data-source-id="subscriptions"]')?.textContent).toContain("2 ontology entities · 1 metrics linked");
+    expect(container.querySelector('[data-source-id="finance"]')?.textContent).toContain("3 ontology entities · 2 metrics linked");
     await click("Full ontology");
     const connected = facts();
     expect(connected.nodes).toHaveLength(5); expect(connected.edges).toHaveLength(4);
@@ -145,7 +145,7 @@ describe("recorded ontology customer experience DOM", () => {
     expect(inspector?.textContent).toContain("Unit lineage verification guidance.");
     expect(inspector?.textContent).toContain("CAPTURED_NATIVE_ANNOTATION");
     expect(inspector?.textContent).toContain(packet.context_captured_at);
-    expect(inspector?.textContent).toContain("does not establish that the native agent traversed it");
+    expect(inspector?.textContent).toContain("does not establish that the ontology agent in Fabric traversed it");
   });
   it("provides real keyboard-focusable entity controls and reveals out-of-focus nodes", async () => {
     await render();
@@ -203,7 +203,7 @@ describe("recorded ontology customer experience DOM", () => {
   it("preserves capture origins and unknown metadata without current-time or model-owner fallbacks", async () => {
     await render({ ...packet, created_at: "2026-10-01T08:00:00Z",
       sources: packet.sources.map(source => ({ ...source, name: "" })), queries: [] });
-    expect(container.textContent).toContain("Packet created 2026-10-01T08:00:00Z");
+    expect(container.textContent).toContain("Recording created 2026-10-01T08:00:00Z");
     expect(container.textContent).toContain("Not established by captured queries");
     expect(container.querySelector(".source-model h2")?.textContent).toBe("Not captured");
     expect(container.querySelector(".entity-detail")?.textContent).toContain("Source modelNot captured");
@@ -219,9 +219,9 @@ describe("current Context DTO presentation", () => {
       right_table: "month_b", left_keys: ["account_key"], right_keys: ["account_key"],
       cardinality: "one_to_one", version: "1", purposes: ["Same-month unit contract."] }],
     rules: [{ id: "R-unit", statement: "Unknown is not zero." }],
-    provenance: ["Application-owned synthetic intent; NOT native ontology context"],
+    provenance: ["Application-owned synthetic intent; NOT ontology context in Fabric"],
   };
-  it("renders supplied contracts and origins without presenting an offline Rule as native", async () => {
+  it("renders supplied contracts and origins without presenting an offline Rule as ontology context in Fabric", async () => {
     expect(isContextProjection(context)).toBe(true);
     await act(async () => root.render(<ContextOverview context={context} serverMode="OFFLINE_SYNTHETIC" />));
     expect(container.textContent).toContain("Reviewed synthetic business contracts");
@@ -232,7 +232,7 @@ describe("current Context DTO presentation", () => {
     expect(container.textContent).not.toContain("FORMAL_NATIVE_RULE");
   });
   it.each([null, {}, { ...context, relationships: [{}] }, { ...context, rules: [{ payload: {} }] }])(
-    "does not promote missing or unsupported metadata to a native graph", async value => {
+    "does not promote missing or unsupported metadata to an ontology graph", async value => {
       expect(isContextProjection(value)).toBe(false);
       await act(async () => root.render(<ContextOverview context={value} serverMode="LIVE_CONFIGURED" />));
       expect(container.textContent).toContain("NO VALIDATED CONTEXT PROJECTION");
@@ -241,9 +241,9 @@ describe("current Context DTO presentation", () => {
     });
   it("preserves an actual blocked detail without inventing a live entity/rule contract", async () => {
     await act(async () => root.render(<ContextOverview serverMode="LIVE_CONFIGURED"
-      context={{ status: "BLOCKED_CAPABILITY", detail: "No native context bound; no static context fallback in reader mode." }} />));
-    expect(container.textContent).toContain("No native context bound");
-    expect(container.textContent).toContain("not a native ontology capture");
+      context={{ status: "BLOCKED_CAPABILITY", detail: "No ontology context bound; no static context fallback in demo user mode." }} />));
+    expect(container.textContent).toContain("No ontology context bound");
+    expect(container.textContent).toContain("not an ontology capture from Fabric");
     expect(container.querySelector(".authority-grid")).toBeNull();
   });
 });

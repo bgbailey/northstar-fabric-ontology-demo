@@ -12,8 +12,7 @@
       "skills/semantic-model-authoring/references/dax-guidelines.md",
       "skills/semantic-model-authoring/references/tmdl-guidelines.md",
       "skills/semantic-model-authoring/references/semantic-model-ai-readiness.md"
-    ],
-    "statusCaveat": "Aggregate prescribed refresh remains blocked by unrelated local checkout changes. The clean skills-for-fabric HEAD was confirmed against public main by the parent on 2026-10-14 at 22:44 ET; this local follow-up independently read the same clean commit. Guidance is not current tenant capability evidence. No ontology-v1 recipes or cloud operations are used."
+    ]
   },
   "comparisonArms": {
     "flat": "All model instructions and every sharedCrossDomainFacts entry below.",

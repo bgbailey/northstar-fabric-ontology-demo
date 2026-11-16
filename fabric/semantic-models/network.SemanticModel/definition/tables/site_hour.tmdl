@@ -8,7 +8,6 @@ table 'Site Hour'
 		displayFolder: Network Operations
 		lineageTag: bc2bd04a-bff0-5f57-98b6-c5c37bab819a
 		annotation MetricId = network.eligible_site_minutes
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Per-site interval-unioned unavailability, without double-counting overlaps.
@@ -17,7 +16,6 @@ table 'Site Hour'
 		displayFolder: Network Operations
 		lineageTag: 620e4d44-602a-52f7-939a-2b5a642d3769
 		annotation MetricId = network.unavailable_site_minutes
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Eligible-minute weighted availability; not the mean of site percentages.
@@ -26,7 +24,6 @@ table 'Site Hour'
 		displayFolder: Network Operations
 		lineageTag: 3c525956-6906-5afb-9581-97eb54e06063
 		annotation MetricId = network.availability_percent
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Observed failed network sessions, distinct from digital checkout sessions.
@@ -35,7 +32,6 @@ table 'Site Hour'
 		displayFolder: Network Operations
 		lineageTag: 329dd045-2cd1-5053-9114-3ab6d464ec40
 		annotation MetricId = network.failed_sessions
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Failed divided by monitored network sessions.
@@ -44,7 +40,6 @@ table 'Site Hour'
 		displayFolder: Network Operations
 		lineageTag: 102acea1-3cf7-5649-b03d-2e895dc703f8
 		annotation MetricId = network.service_degradation_percent
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.

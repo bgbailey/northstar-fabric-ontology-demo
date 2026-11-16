@@ -8,7 +8,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: a32411de-b57b-52bb-be02-5c3bf7b91787
 		annotation MetricId = care.new_cases
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Cases resolved by source observation, attributed to opening month.
@@ -17,7 +16,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: b450b86b-91bf-5a5f-8fe6-f1f0e702f4d6
 		annotation MetricId = care.resolved_cases
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Subsequent same-reason contacts within seven days for the same account.
@@ -26,7 +24,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: 89756569-56bd-5667-8ccd-a4f92c5b378f
 		annotation MetricId = care.repeat_contacts
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Distinct contacted accounts, not the sum of period-level distinct counts.
@@ -35,7 +32,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: c16cdd51-14aa-578e-8bea-ab14aaaeb552
 		annotation MetricId = care.contacted_accounts
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Cases escalated at least once.
@@ -44,7 +40,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: 24cf0d44-d558-59f6-966a-dca149e975fa
 		annotation MetricId = care.escalated_cases
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator.
@@ -53,7 +48,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: 9616d7bb-8b02-59d4-b524-ec50350568e9
 		annotation MetricId = care.first_contact_resolution
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Mean observed duration among resolved cases; unresolved durations remain null.
@@ -62,7 +56,6 @@ table 'Cases'
 		displayFolder: Customer Care
 		lineageTag: a50e092a-c974-5f92-a5f7-e57fbe135240
 		annotation MetricId = care.mean_resolution_hours
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.

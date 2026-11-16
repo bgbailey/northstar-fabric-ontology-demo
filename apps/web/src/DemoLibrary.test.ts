@@ -45,7 +45,7 @@ describe("separate executive native archive", () => {
     expect(isRecordedExecutiveDemo({ ...value, native_answer_matches_source_values: false })).toBe(false);
     expect(isRecordedExecutiveDemo({ ...value, native_answer_origin: "LOCAL_CRITERION" })).toBe(false);
   });
-  it("retains other original source proxies without expanding the three-measure presentation", () => {
+  it("retains other metrics linked to source measures without expanding the three-measure presentation", () => {
     const value = fixture();
     value.ontology.metrics.push({ ...value.ontology.metrics[1], id: "finance.extra_original" });
     expect(isRecordedExecutiveDemo(value)).toBe(true);

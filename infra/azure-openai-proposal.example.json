@@ -1,12 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "proposalDate": "2026-10-01",
   "status": "STAGED",
   "configurationStatus": "UNCONFIGURED",
   "liveStatus": "NOT_RUN",
   "deploymentAuthorized": false,
   "inferenceAuthorized": false,
-  "purpose": "New isolated DEV Azure OpenAI deployment for synthetic Northstar Wireless typed-plan proposals across two equal-information arms.",
+  "purpose": "Example Azure OpenAI deployment configuration for synthetic Northstar typed-plan proposals across two equal-information evaluation arms.",
   "selection": {
     "resource": "NOT_SELECTED",
     "deployment": "NOT_SELECTED",
@@ -60,19 +59,19 @@
     "unknownOutcomes": "Timeout, cancellation, HTTP failure, malformed envelopes and missing/untrusted usage retain the maximum reservation. Invalid plans remain paid. Only validated counts from the pinned model may reconcile cost; call count is never refunded."
   },
   "approvalRequirements": [
-    "Exact DEV resource/deployment and expected response model version; real target identifiers stay in private local configuration outside repository and OneDrive.",
+    "Exact demo Azure subscription resource/deployment and expected response model version; real target identifiers stay in private local configuration outside repository and synchronized folders.",
     "Exact artifact/configuration/context revision digests, including shared ledger location and all token/request/byte/time/pricing limits.",
     "Separate explicit operations for resource/deployment creation, any role assignments, paid-plan-proposal and teardown; staging grants none.",
     "Verified availability/quota and dated model capability/pricing evidence; user-chosen request cap and total operational cost cap in a selected currency.",
     "Explicit absolute expiry, TTL, teardown owner, exact owned-resource inventory and teardown mechanism. No inference past expiry.",
-    "Separate approval for later read-only cloud discovery/login if required; no discovery was performed while preparing this proposal."
+    "Separate approval for later read-only cloud discovery/login if required; no discovery was performed while preparing this example."
   ],
   "teardown": {
     "status": "NOT_CONFIGURED",
     "owner": "NOT_SELECTED",
     "expiry": null,
     "ttlHours": null,
-    "mechanism": "After exact approval, remove only resources/deployments/roles created and owned by this proposal. Do not alter shared capacity, existing resources or unrelated roles. Preserve sanitized receipts and ledger until final cost reconciliation."
+    "mechanism": "After exact approval, remove only resources/deployments/roles created and owned by the deployment. Do not alter shared capacity, existing resources or unrelated roles. Preserve sanitized receipts and ledger until final cost reconciliation."
   },
   "implementation": {
     "module": "telco_iq.model_provider",
@@ -110,10 +109,10 @@
       "supports": "Inference User role versus separate resource/deployment creation permissions"
     }
   ],
-  "evidenceGapsStillThin": [
+  "limitations": [
     "No model/version/region/SKU/resource is selected and no availability, quota or actual price has been verified.",
     "No selected-model context ceiling, exact returned model string or paid inference has been observed.",
-    "No private configured target, currently valid paid approval, deployed resource, assigned role or teardown guard exists for this proposal.",
+    "No private configured target, currently valid paid approval, deployed resource, assigned role or teardown guard exists in this example.",
     "Application-side ledger is not an Azure billing control and cannot account for calls made outside this approved adapter. Dedicated owned scope and external operational controls require separate review."
   ]
 }

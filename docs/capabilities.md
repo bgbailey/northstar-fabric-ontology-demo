@@ -1,28 +1,21 @@
 # Capability boundaries
 
+This page summarizes what the Northstar demonstration establishes today versus what remains out of scope. For Microsoft Learn capability statuses checked on 16 November 2026, see [architecture/platform-status.md](architecture/platform-status.md).
+
 | Surface | Demonstrated | Not established |
 |---|---|---|
-| Source measure reuse | Original source-model measures, source/home links and independent numerical checks | Ontology ownership of replacement calculations |
-| Small native item | Four source-backed entities, three relationships, fourteen retained proxies and two real Rules | A filtered large graph being equivalent to a separate native item |
-| Executive native answer | One historical synthetic account candidate with source-checked values and correct homes | Native internal model/DAX trace, shared native/source observation window or broad accuracy |
-| Application comparison | Same application model, source preparation, business facts and validators in both arms | An intentionally weak baseline or a managed-native same-model benchmark |
-| Advanced stories | Actual historical source execution, preserved grains, unknowns, exclusions and PARTIAL results | Population-wide totals, complete credit rankings or causal release effects |
-| Recorded viewer | Explicit historical playback with no live auth/source/model call | Current identity, source freshness, authorization or new inference |
-| Offline fixtures | Local typed execution and independent arithmetic | Live DAX engine, native ontology service, source RLS/OLS or cloud deployment |
+| Source measure reuse | Original semantic-model measures, home-table links, and independent numerical checks | Ontology ownership of replacement calculations |
+| Quickstart ontology item in Fabric | Four source-backed entity types, three relationships, 14 retained metrics linked to source measures, and two rules | A filtered wide graph being equivalent to a dedicated small ontology item |
+| Executive answer in Fabric | One synthetic account candidate from the ontology agent in Fabric with source-checked values and home tables | Internal agent model/DAX trace, shared observation window, or general accuracy advantage |
+| Evaluation arm comparison | Two evaluation arms (semantic models with flat guidance, and ontology-grounded) using the same model, AI preparation, business facts, and validators | An intentionally weakened baseline or an unverified superiority claim |
+| Service assurance and deep-dive stories | Historical source execution preserving grains, unknowns, exclusions, and partial results (with unmapped observations and null-key rows excluded) | Population-wide totals, complete credit rankings, or causal release effects |
+| Recorded viewer | Explicit playback from `recordings/` with no live sign-in, source query, or model call | Current demo user identity, source freshness, authorization, or new inference |
+| Offline fixtures | Local typed plan execution and independent DuckDB reference arithmetic | Live DAX engine execution, ontology service calls in Fabric, row-level security, or cloud deployment |
 
-GA Fabric IQ MCP and direct ontology MCP are separate consumption surfaces.
-Each GA query targets one semantic model; the consumer coordinates models.
-Natural-language Rules supply context, not executable enforcement.
-Graph materialization is optional and is not supported for semantic-model
-bindings in the documented projection path.
+The generally available Fabric IQ MCP server and the item-scoped ontology MCP endpoint (preview, checked 16 November 2026) are separate surfaces. Each Fabric IQ MCP query targets one semantic model; the calling agent coordinates cross-model steps. Plain-language rules in the ontology provide business guidance, not executable policy enforcement. Ontology-managed graph projection is optional (preview) and is not supported for entity types bound to semantic models.
 
-Public recordings and acceptance fixtures are sanitized projections. Their
-provenance hashes identify original private evidence, not the edited public
-display bytes. They must never be treated as reader grants or live source proof.
+Sanitized recordings in `recordings/` and local acceptance fixtures in `tests/fixtures/acceptance/` have environment identifiers removed. Their provenance hashes identify privately retained originals rather than the sanitized public files, and they never act as demo user grants or live demo tenant proof.
 
-## Evidence gaps / still thin
+## Limitations
 
-Managed Rule consideration, source-AI inheritance, internal native queries and
-managed usage are not exposed by these examples. No general performance,
-productivity, accuracy, causality, automatic-action or production certification
-is claimed. Establish current live readiness separately in your own environment.
+See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

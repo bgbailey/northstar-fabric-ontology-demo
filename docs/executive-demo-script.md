@@ -1,132 +1,61 @@
-# Executive stream: why ontology, without the giant model
+# Executive quickstart script: why ontology, without a giant model
 
-**Target:** a separate generation2native ontology over the existing
-Subscriptions and Finance semantic models: four entity types, three
-focus measures and two short context Rules. It sits beside the full
-Customer360 ontology; it does not replace or simplify that item.
+**Target:** a small Fabric IQ ontology (current experience, preview checked 16 November 2026) over the Subscriptions and Finance semantic models in Fabric: four entity types, three focus measures, and two short rules. It sits alongside the wider Northstar estate rather than replacing or trimming it.
 
-**Accepted October28evidence:** the separate native item, four-entity/three-relationship bootstrap,
-two linked Rules and actual native business answer are verified.
-The native generator retained14original source proxies on the selected
-measure homes. Preserve those bindings and present the three focus measures,
-rather than stripping useful source metrics just to match an agent's prose.
-The existing four-entity filtered Customer360 view is useful historical
-evidence, but is not this separate small ontology.
+**Recorded October 28 evidence:** the dedicated ontology item in Fabric, four-entity / three-relationship structure, two linked rules, and answer from the ontology agent in Fabric are captured in `recordings/northstar-demo-library-v2-2026-10-28.json`. Generation created 14 metrics linked to source measures on the selected tables; the presentation highlights three focus measures while retaining all 14 bindings.
 
 ## Two streams, different conversations
 
-| Stream | Audience and purpose | Native scope |
+| Stream | Audience and purpose | Scope in Fabric |
 |---|---|---|
-| Executive quickstart | Explain why ontology with a small business question | Separate small item; Customers/Subscriptions/Finance across two existing models |
-| Customer360 deep dive | Explore incident exposure, recovery and checkout questions | Existing eight-model item;59entities/105relationships/64source proxies/4Rules |
+| Executive quickstart | Explain why an ontology sits above semantic models using one compact question | Dedicated small item: Customers, Subscriptions, and Finance across two semantic models |
+| Service assurance and Customer360 deep dive | Show multi-hop service assurance (SLA credit exposure and account priority), incident recovery, and checkout questions | Four-model service assurance scenario ([architecture/hero-scenario.md](architecture/hero-scenario.md)) and eight-model Customer360 item (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) |
 
-Both preserve source calculation ownership and the same AI preparation.
-Neither relies on an intentionally uninformed traditional consumer.
+Both streams keep calculations inside the semantic models and give every evaluation arm (one side of a controlled comparison) the same AI preparation.
 
-## Native-first talk track
+## Talk track
 
-Use the existing small native item in Fabric as the live interaction,
-after its current-run rehearsal gate passes. The local application supports
-comparison and fallback; its executive selector is recorded-only.
-Read `docs\demo-streams.md` for current per-mode readiness.
+Lead with the ontology item in Fabric when presenting live after rehearsal, and use the recorded viewer (`http://localhost:8767/`) for supporting evidence or fallback. See [demo-streams.md](demo-streams.md) for startup commands.
 
 | Beat | Show | Say |
 |---|---|---|
-| Existing investment | Subscriptions and Finance source cards | "We already trust these models. We are not moving the calculations." |
-| A small shared vocabulary | The four native entities and customer bridge | "An account name is not an identity. A month-end snapshot is not a monthly flow. The ontology makes that shared meaning explicit." |
-| Three trusted measures | Active Lines EOM, Recognized Service Revenue, Contribution Margin | "Subscriptions owns the line measure. Finance owns revenue and margin. These are native links to the original measures, not replacement formulas." |
-| One connected question | The actual native business request and source-checked answer | "Which customers have no month-end lines, recognized revenue and negative margin? That question spans the two models." |
-| A review, not a diagnosis | Source values, source/home links and qualifications | "Now we have a specific customer to investigate. We still need credit, cost and timing evidence before claiming a billing error or taking action." |
-| Why ontology | The two short native Rules | "We kept trusted calculations where they belong and made their cross-domain meaning reusable by another agent or application." |
+| Existing investment | Subscriptions and Finance semantic models | "We already trust these semantic models. We are not moving the DAX calculations." |
+| Shared business vocabulary | Four ontology entity types and the customer bridge | "An account display name is not customer identity, and a month-end snapshot is not a monthly flow. The ontology makes that shared meaning explicit." |
+| Three trusted measures | `Active Lines EOM`, `Recognized Service Revenue`, `Contribution Margin` | "Subscriptions owns the line snapshot. Finance owns revenue and margin. These are metrics linked to source measures, not copied formulas." |
+| One connected question | Question and source-checked answer from the ontology agent in Fabric | "Which customers have zero month-end lines, positive recognized revenue, and negative margin? That question crosses both models." |
+| Review, not automatic action | Source values, home tables, and caveats | "Now we have a specific account to investigate. A person still reviews credits, cost timing, and contracts before taking action." |
+| Reusable rules | The two plain-language rules | "Calculations stay in the models while cross-domain identity and period meaning become reusable across agents." |
 
-The accepted historical question is preserved exactly in
-`fabric\ontology\executive-demo.json` and the recording's disclosure.
-Do not rewrite that question or imply a different prompt produced its answer.
+The historical prompt is preserved verbatim in `fabric/ontology/executive-demo.json` and in the recording disclosure. For a fresh live rehearsal in your demo tenant, ask:
 
-For the newly scoped native rehearsal, use this self-contained question:
+> For July 2026, which registered customer accounts have zero Active Lines EOM, positive Recognized Service Revenue, and negative Contribution Margin? Show account IDs, the three original measure values in their source units, and their source models and home tables.
 
-> For July 2026, which registered customer accounts have zero Active Lines EOM,
-> positive Recognized Service Revenue and negative Contribution Margin?
-> Show account IDs, the three original measure values in their source units,
-> and their source models and home tables.
+To show a live follow-up in a fresh conversation:
 
-Then use a self-contained variation against the same unchanged small item,
-preferably in a fresh conversation:
+> For August 2026, which registered customer accounts have zero Active Lines EOM, positive Recognized Service Revenue, and negative Contribution Margin? Show account IDs, the three original measure values in their source units, and their source models and home tables.
 
-> For August 2026, which registered customer accounts have zero Active Lines EOM,
-> positive Recognized Service Revenue and negative Contribution Margin?
-> Show account IDs, the three original measure values in their source units,
-> and their source models and home tables.
+Verify any live answer against independent source queries on Subscriptions and Finance, preserving empty sets, unknown values, and separate observation timestamps.
 
-These are proposed rehearsal questions, not additional accepted native answers.
-They provide a business criterion, not source values, account answers,
-join instructions, evaluator labels or a query DAG.
-Check actual returned values against independent source results, preserving
-empty results, nulls and separate observation times. Do not force the July
-candidate or its values into August.
+## Recorded answer in Fabric
 
-Two answers against one published ontology illustrate continuity of source
-ownership and shared meaning. They do not prove a Rule caused the answer,
-automatic source-AI inheritance or a quantified reduction in prompt effort.
-
-## Concrete native answer
-
-The actual native service returned one July review candidate on October28:
+On October 28, the ontology agent in Fabric returned one July review candidate:
 
 | Customer | Active Lines EOM | Recognized Service Revenue | Contribution Margin |
-|---|---|---|---|
-| Account1 / `showcase-v2:acct:000001` |0 |9,000cents |-1,400cents |
+|---|---:|---:|---:|
+| Account 1 / `showcase-v2:acct:000001` | 0 | 9,000 cents | -1,400 cents |
 
-It named the correct original homes: Subscriptions/Subscription Month for
-Active Lines EOM, Finance/Account Month for both financial measures.
-The result matches the independently reviewed complete24-account source
-reference. This is a genuine managed-native answer, not the deterministic
-review card used in the full application comparison.
+The response named the home tables (`Subscriptions` / `Subscription Month` for `Active Lines EOM`, and `Finance` / `Account Month` for both financial measures) and matched the independent 24-account source reference.
 
-Open the **Executive quickstart** stream at localhost8767. Its graph is the
-actual four-entity small item, with three focus measure cards and two real
-linked Rules. The **Customer360 deep dive** button switches to the preserved
-large ontology and its original application comparisons.
+## Fair comparison and hand-off to service assurance
 
-## Showing the individual-model comparison fairly
+An agent that queries the two semantic models directly can also join on `account_key`; two models share a single conformed key, so the quickstart shows measure reuse and shared vocabulary rather than a hard multi-hop path.
 
-Show what each semantic model owns, then the connected native question.
-An equally informed consumer can query and align the same models; this is
-not proof that joins were impossible before ontology. The benefit is
-inspectable, reusable customer identity, period and metric meaning rather
-than rebuilding those decisions for each consumer.
+Hand off to the deeper scenario:
 
-Keep the native-service answer separate from the controlled same-model
-application comparison used in the full Customer360 stream. Do not equate
-their model versions, traces or cost when the native service does not expose
-them. A deterministic application review card is not native-generated insight.
+> "Two models share one key. Where connected context really earns its keep is service assurance after a network outage, where an agent has to cross Network, Enterprise services, Finance, and Care across time-valid site assignments and separate contract-month and account-month grains."
 
-## Hand off to the deeper stream
+Switch to **Customer360 deep dive** -> **SLA exposure and account priority (Oct 28 live)** (or walk through [architecture/hero-scenario.md](architecture/hero-scenario.md)), keeping partial results (with excluded unmapped observations and null-key rows) and failed evaluation arms visible.
 
-"That is the small picture. The same source-ownership principle scales to
-the full environment, where time-valid service relationships, incident
-exposure, care, offers and checkout require richer context."
+## Limitations
 
-Then include the Customer360 SLA exposure/account-priority segment.
-Use its native live answer only if independently rehearsed; otherwise
-name the accepted application-context recording and its original date.
-Keep the executive graph small; do not
-expand59entities in the opening explanation. Preserve all partial results,
-unknown exclusions and failed comparison arms in the deeper stories.
-
-## Evidence gaps / still thin
-
-All fourteen native source proxies are retained, although the authoring agent
-reported three. The executive presentation focuses on three; it does not
-relabel the native count. Source-verification queries are independent originals,
-not the native service's unexposed internal trace. Native-answer and source
-observation times remain separate; matching values do not prove a shared
-live state window or managed Rule consideration.
-
-Playback is explicitly dated, not a new execution. No general accuracy,
-speed, productivity, exclusive-join, causal or automatic-action claim is
-established. The full stream retains historical partial results and failed
-arms rather than presenting them as fresh completed runs.
-Current playback and new native questions have separate readiness gates;
-the October28answer is not evidence that a new short prompt or August
-native variation has already succeeded.
+See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

@@ -8,7 +8,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: d3c3e0a4-ecc5-5bf5-8934-2d5f74352631
 		annotation MetricId = growth.eligible_population
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Eligible treatment units actually assigned an offer.
@@ -17,7 +16,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 8bb63784-e4bf-535b-83c6-d144e17f2f58
 		annotation MetricId = growth.assigned_population
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Assigned eligible offers accepted.
@@ -26,7 +24,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 8bc8547d-883d-59a8-87ac-d0815967c5ee
 		annotation MetricId = growth.accepted_offers
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Accepted divided by assigned offers, not campaign touches.
@@ -35,7 +32,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: cd901c98-1dd1-51c4-aac5-3d9a29947835
 		annotation MetricId = growth.acceptance_rate
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Observed accepted-offer cost.
@@ -44,7 +40,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 056be58a-8183-507f-bb86-d49812bf236a
 		annotation MetricId = growth.offer_cost
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Retained eligible randomized assignment units; observational campaign excluded.
@@ -53,7 +48,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 1fc05f84-b001-5adb-ba7f-f43eadf6d0f4
 		annotation MetricId = growth.treatment_retained
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Retained eligible randomized assignment units; observational campaign excluded.
@@ -62,7 +56,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 86d34bd2-c105-5b54-b368-e33d24be5226
 		annotation MetricId = growth.control_retained
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Eligible randomized intention-to-treat retention rate difference; null if either arm is absent. Not an observational causal claim.
@@ -71,7 +64,6 @@ table 'Offer Assignments'
 		displayFolder: Offers and Retention
 		lineageTag: 64468bc0-1d5b-54fa-bb22-ab458ebcc833
 		annotation MetricId = growth.retention_lift
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.
