@@ -1,0 +1,119 @@
+relationship 9c040d99-a63a-56db-bc26-d0377724f7cb
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Contracts'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 3caf8c3f-2f98-5c47-9e82-31bd1b5c04a1
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Contracts'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 5025cc5a-d46d-5016-9185-117112dc268a
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Site Map'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 1a587880-59c5-520b-a8b3-d8fe1e4f6c55
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Site Map'.'site_key'
+	toColumn: 'Sites'.'site_key'
+
+relationship c10b1326-0cdc-585c-bba1-3dcdf3f9ae83
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Site Map'.'service_key'
+	toColumn: 'Services'.'service_key'
+
+relationship 0a5683da-fd35-5806-9269-884399a0b7a6
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Month'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship a3b916a3-2a17-5e94-8ce3-2340f9379bb3
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Month'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 5de8250c-a793-5f90-8e65-5e2644557ec9
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Month'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship fde5f1d9-0369-5048-8296-bd1618fd5064
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Service Month'.'service_key'
+	toColumn: 'Services'.'service_key'
+
+relationship bb2a00f8-c250-52c1-8ccf-5a47a1b190ec
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'SLA Evaluation'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 1dfcd2d7-8288-582a-b430-689182ed46e3
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'SLA Evaluation'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship e7fa7aeb-c9d2-581c-87b3-093c7e8d00aa
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'SLA Evaluation'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship e1a9a01b-af9f-5102-811f-338429cf83ed
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Applied Credits'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship dbf9d7de-84df-5769-ba23-575103d9bf36
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Applied Credits'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 9bd5e6c0-65ff-59a6-9b1c-154c4bf82947
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Applied Credits'.'month'
+	toColumn: 'Calendar'.'date'

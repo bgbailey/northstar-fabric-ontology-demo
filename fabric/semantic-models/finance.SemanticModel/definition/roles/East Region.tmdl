@@ -1,0 +1,9 @@
+/// Synthetic East-region restriction; membership absent and source enforcement NOT_RUN.
+role 'East Region'
+	modelPermission: read
+
+	tablePermission 'Account Month' = 'Account Month'[market_id] = "M01"
+	tablePermission 'Charge Lines' = 'Charge Lines'[market_id] = "M01"
+	tablePermission 'Credits' = 'Credits'[market_id] = "M01"
+	tablePermission 'Accounts' = 'Accounts'[region] = "East"
+	tablePermission 'Markets' = 'Markets'[region] = "East"

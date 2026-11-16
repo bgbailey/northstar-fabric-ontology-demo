@@ -1,0 +1,95 @@
+/// Credits by posting month; late credits retain their original service month.
+table 'Credits'
+	lineageTag: 7735ed62-2856-5b07-80ad-87bd3d749f35
+
+	/// Credit amounts by posting month; service month remains a separate attribute.
+	measure 'Posted Credits' = SUM('Credits'[amount_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: 28b87061-7bf9-5503-b033-50f552354fcf
+		annotation MetricId = finance.posted_credits
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'credit_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: credit_key
+		lineageTag: 495fdbc2-027e-5d92-bf4b-d356dcc050c1
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: c855ecae-4df3-5d14-a29d-ad744837a110
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'billing_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: billing_key
+		lineageTag: 5c91e9ca-0ab6-5d7f-9d94-e98c6bb647a6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 374cf80a-68a2-52f5-9225-3c40811e12c6
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 76476bec-ef04-58a6-83b0-03ae3aae3508
+		formatString: yyyy-MM-dd
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'service_month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: service_month
+		lineageTag: b256929f-552c-5093-8ecd-efe5fa73d0cd
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'posted_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: posted_at
+		lineageTag: d35d6f3e-d1d7-5efe-8f48-850161511177
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'amount_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: amount_cents
+		lineageTag: 6fbbb818-b786-5873-a3a3-91505eea849e
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Credits' = entity
+		mode: directLake
+		source
+			entityName: credit
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

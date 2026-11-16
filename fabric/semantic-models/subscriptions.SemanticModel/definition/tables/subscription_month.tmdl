@@ -1,0 +1,159 @@
+/// One registered line per service month, including inactive states; disconnects require opening activity.
+table 'Subscription Month'
+	lineageTag: 6dbb28a8-e326-5562-bb07-5f652ceaaf82
+
+	/// Active subscriptions at month end. Requires one month per result; never sum snapshots over time.
+	measure 'Active Lines EOM' = IF(HASONEVALUE('Subscription Month'[month]), SUM('Subscription Month'[active_eom]))
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: 8ef7e038-8379-5e4c-af5c-056a81dd59ec
+		annotation MetricId = subscriptions.active_lines_eom
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed.
+	measure 'Active Accounts EOM' = IF(HASONEVALUE('Subscription Month'[month]), CALCULATE(DISTINCTCOUNT('Subscription Month'[account_key]), KEEPFILTERS('Subscription Month'[active_eom] = 1)))
+		formatString: #,##0.00
+		displayFolder: Customer and Subscriptions
+		lineageTag: 74a5ed7d-bd77-5434-9974-d7b618dae265
+		annotation MetricId = subscriptions.active_accounts_eom
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Transitions from inactive to active.
+	measure 'Gross Adds' = SUM('Subscription Month'[gross_add])
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: 0216cbcc-9fde-5030-9064-c07ece1fc7c2
+		annotation MetricId = subscriptions.gross_adds
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Disconnects from the opening-active cohort.
+	measure 'Disconnects' = SUM('Subscription Month'[disconnect])
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: edd0ba5a-b1a1-589a-9b02-89c344acc653
+		annotation MetricId = subscriptions.disconnects
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Gross additions less cohort-qualified disconnects.
+	measure 'Net Adds' = SUM('Subscription Month'[gross_add]) - SUM('Subscription Month'[disconnect])
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: 9230925e-944a-54b6-960e-5b509b921f12
+		annotation MetricId = subscriptions.net_adds
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Lines active at the start of the month. Requires one month per result; never sum snapshots over time.
+	measure 'Opening Active Lines' = IF(HASONEVALUE('Subscription Month'[month]), SUM('Subscription Month'[opening_active]))
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: 2f0f9108-fe41-5374-bd7f-6e8f678f844f
+		annotation MetricId = subscriptions.opening_active_lines
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Opening-cohort disconnects divided by opening-active lines; recompute from pooled components.
+	measure 'Churn Rate' = DIVIDE(SUM('Subscription Month'[disconnect]), SUM('Subscription Month'[opening_active]))
+		formatString: 0.00%
+		displayFolder: Customer and Subscriptions
+		lineageTag: 510b6915-1f62-54fd-8515-5838a778b204
+		annotation MetricId = subscriptions.churn_rate
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time.
+	measure 'Average Active Lines' = IF(HASONEVALUE('Subscription Month'[month]), DIVIDE(SUM('Subscription Month'[opening_active]) + SUM('Subscription Month'[active_eom]), 2))
+		formatString: #,##0
+		displayFolder: Customer and Subscriptions
+		lineageTag: dfcea01d-06c8-5ad6-99db-6b1e411b782f
+		annotation MetricId = subscriptions.average_active_lines
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'subscription_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: subscription_key
+		lineageTag: 07d10340-f177-56eb-b01d-c3736a717c06
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: e7843532-03df-5441-9130-0af886f9a018
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 8bea6724-b465-581c-9d67-4192553a3100
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 6660c29a-6a31-584a-8b36-7913e0f6cdc1
+		formatString: yyyy-MM-dd
+
+	/// Opening active at the declared Subscription Month grain.
+	column 'opening_active'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: opening_active
+		lineageTag: e4108d2a-e575-5bb4-9edc-46f1f60d4e7d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Active eom at the declared Subscription Month grain.
+	column 'active_eom'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: active_eom
+		lineageTag: 9b68c1aa-db08-5082-92c2-3df58a471008
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Gross add at the declared Subscription Month grain.
+	column 'gross_add'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: gross_add
+		lineageTag: ace4cd3c-bb8e-5fd1-8de6-b45d94520263
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Disconnect at the declared Subscription Month grain.
+	column 'disconnect'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: disconnect
+		lineageTag: 66d507af-56d4-5f08-8428-2965c2bf2a51
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Subscription Month' = entity
+		mode: directLake
+		source
+			entityName: subscription_month
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

@@ -1,0 +1,95 @@
+/// Operational contract-month SLA settlement; raw intervals remain available for independent reconciliation.
+table 'SLA Evaluation'
+	lineageTag: 801c9f6b-aea1-54e1-86a2-84b576e4a057
+
+	/// Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month.
+	measure 'Eligible Credits' = SUM('SLA Evaluation'[eligible_credit_cents])
+		formatString: #,##0" cents"
+		displayFolder: Enterprise Services
+		lineageTag: 839d3a6c-fc55-5339-b8dc-aafd64f9116b
+		annotation MetricId = enterprise.eligible_credits
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Eligible less already applied contract-month credits; not a repeated per-incident cap.
+	measure 'Credit Exposure' = SUM('SLA Evaluation'[eligible_credit_cents]) - SUM('SLA Evaluation'[applied_credit_cents])
+		formatString: #,##0" cents"
+		displayFolder: Enterprise Services
+		lineageTag: ea8d5aad-dbc5-5b2f-9597-685e48c539e7
+		annotation MetricId = enterprise.credit_exposure
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'contract_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contract_key
+		lineageTag: 92ff819f-1056-5f1e-9c80-540cb707c7ed
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 1d3b4dea-66bb-5b8a-b357-213a35ca8fae
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: b7bbfd90-7fd3-5031-b1a3-d9ff604db23c
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 5ac2e139-b4f7-5d3f-a51b-0b64ccc6a974
+		formatString: yyyy-MM-dd
+
+	/// Outage minutes at the declared SLA Evaluation grain.
+	column 'outage_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: outage_minutes
+		lineageTag: 87187103-8ce3-5f78-9f55-acccb9cb6f4d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'eligible_credit_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: eligible_credit_cents
+		lineageTag: 9d9ea0ea-c4de-5759-8ed9-656d19467eb1
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'applied_credit_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: applied_credit_cents
+		lineageTag: 07a61e69-fab8-5b4d-a34b-0ab4a566374c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'SLA Evaluation' = entity
+		mode: directLake
+		source
+			entityName: sla_evaluation
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

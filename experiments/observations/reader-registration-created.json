@@ -1,0 +1,21 @@
+{
+  "observationType": "ACTUAL_APPROVED_READER_REGISTRATION",
+  "date": "2026-09-30",
+  "approvedSourceRevision": "ad73d02",
+  "applicationRequestSha256": "120228279088aea91dec9397bbbd4b347a252871a1da39c9fdfec8753e2f47aa",
+  "application": "TelcoIQ-Demo-BFF-20260929",
+  "applicationAndEnterprisePrincipal": "CREATED_AND_READ_BACK",
+  "signInAudience": "AzureADMyOrg",
+  "owner": "Verified native DEV creator; exact private object IDs recorded externally",
+  "delegatedPowerBIScopes": ["Item.Read.All", "Item.Execute.All", "Dataset.Read.All"],
+  "implicitTokenIssuance": false,
+  "applicationPermissions": [],
+  "clientSecretCreated": false,
+  "certificateExpiryUtc": "2026-10-01T15:30:00Z",
+  "adminConsent": "NOT_REQUESTED",
+  "userConsent": "INTERACTIVE_SIGN_IN_PENDING",
+  "browserFlow": "Single confidential BFF authorization-code plus PKCE; not OBO",
+  "bffHealth": "DELEGATED_READER_SETUP, unauthenticated, live data execution not ready",
+  "actualMcpDiscovery": "NOT_RUN",
+  "privateIdentifiersOmitted": true
+}

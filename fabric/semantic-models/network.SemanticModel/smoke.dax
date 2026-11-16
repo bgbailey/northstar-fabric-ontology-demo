@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: network.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"network.eligible_site_minutes", [Eligible Site Minutes],
+	"network.unavailable_site_minutes", [Unavailable Site Minutes],
+	"network.availability_percent", [Availability Percent],
+	"network.major_incidents", [Major Incidents],
+	"network.exposed_lines", [Exposed Lines],
+	"network.exposure_minutes", [Exposure Minutes],
+	"network.failed_sessions", [Failed Sessions],
+	"network.service_degradation_percent", [Service Degradation Percent]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

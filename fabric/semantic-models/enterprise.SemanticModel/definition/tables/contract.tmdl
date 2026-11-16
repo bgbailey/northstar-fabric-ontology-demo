@@ -1,0 +1,99 @@
+/// Time-valid SLA terms; threshold per service-month, then one monetary cap per contract-month.
+table 'Contracts'
+	lineageTag: ceb10b29-cff8-591a-a9ce-1be16d5d25f4
+
+	/// Technical identity; join only through the declared mapping.
+	column 'contract_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contract_key
+		lineageTag: defb2706-d4d9-5621-8c8d-154bc839d00c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: ec7f398e-b7da-5940-97f7-fa648d66a4fd
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: a2fb8c72-b800-5669-a9fb-6417b27209df
+		isHidden
+		isAvailableInMdx: false
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'credit_cap_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: credit_cap_cents
+		lineageTag: 01c2ef44-3d74-5f73-bad7-19dfbe5d770b
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'credit_per_minute_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: credit_per_minute_cents
+		lineageTag: 7a1fd48f-7c7b-5d48-9da9-199e7f0fff60
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Threshold minutes at the declared Contracts grain.
+	column 'threshold_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: threshold_minutes
+		lineageTag: e83b4730-0771-5215-a2fe-1fdc956673fa
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_from'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_from
+		lineageTag: e133eb7b-961b-5b5b-8c4b-a390e11b166f
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_to'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_to
+		lineageTag: aba47399-e365-59eb-ae83-35ad901d62e0
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 33e99fc8-6cf6-5299-ac9b-f8c93e96e938
+		formatString: yyyy-MM-dd
+
+	partition 'Contracts' = entity
+		mode: directLake
+		source
+			entityName: contract
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

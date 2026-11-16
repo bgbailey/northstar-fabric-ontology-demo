@@ -1,0 +1,68 @@
+{
+  "version": "showcase-v2.3",
+  "status": "LOCAL_IMPLEMENTED_REVIEW_PENDING",
+  "scope": "Bounded synthetic Northstar population, offline source SQL and unbound model packets only.",
+  "profile": "showcase-v2",
+  "seed": 20260929,
+  "sourceModels": ["subscriptions", "finance", "digital", "care", "network", "commerce", "growth", "enterprise"],
+  "heroModels": ["enterprise", "finance", "network"],
+  "population": {
+    "accounts": 24,
+    "subscriptions": 72,
+    "sites": 8,
+    "contracts": 8,
+    "enterpriseServices": 11,
+    "serviceMonths": ["2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"],
+    "lineage": "Current manifest pins profile, seed, structural generator revision, generator implementation SHA-256, identity schema and complete shared-map/table logical and file hashes. TQ-003 Catalog.fixture_population validates actual files independently of clocks.",
+    "bindings": "Unresolved until actual approved created-ID receipts; no prior target or approval is adopted.",
+    "clocks": "Eight distinct source data watermarks; source model revision is separate; ontology/context clocks remain NOT_RUN."
+  },
+  "sourcePolicy": {
+    "rounding": "EXACT_WHOLE_MINUTES_INTEGER_CENTS_NO_ROUNDING",
+    "intervals": "Half-open UTC validity; reject subminute incident/contract/map boundaries before publishing a manifest.",
+    "creditIdentity": "One Finance posting per account/service-month; credit_key = YYYYMM(service_month) * 1000000 + account_key within this bounded revision.",
+    "settlement": "Threshold independently per service-month, then one contract-month cap. Source-owned signed eligible minus applied; no clamp. Negative Enterprise postings are invalid, distinct from signed Finance charge reversals.",
+    "absence": "Absent Applied Credits row is null in display, explicit zero row is zero; an existing null amount is unknown, not absence. Source SLA outage/eligible/applied values and service breach are null when effective-period mapping is incomplete. coverage_complete and service expected_minutes are diagnostic facts, not new measures. The provider checks actual filtered raw source rows before aggregation and marks any selected unknown PARTIAL. Known unselected gaps do not contaminate a covered selection; missing mapping and empty cohort are not measured zero impact.",
+    "attribution": "Incident selection chooses contracts only; Enterprise amounts are whole-month settlements, not incident-caused loss. Finance Posted Credits has no contract key and is not netted against Enterprise credits.",
+    "financeGrain": "Deduplicate account-period identities before Finance lookup; multi-contract/service membership cannot fan out account-month totals.",
+    "nonadditive": "Query ratios, distinct counts, medians and snapshots at final supported grain; no recombination of batches.",
+    "digitalCommerce": "Sessions, orders, fulfilled units and observed inventory snapshots are separate grains. Booked device revenue is not recognized service revenue. Anonymous sessions stay unresolved.",
+    "growth": "Seeded synthetic randomized campaign has eligible treatment and control evidence at aggregate campaign grain. Observed retention motifs do not prove causal uplift; no per-market or individual prediction is claimed."
+  },
+  "sourceCases": [
+    {"case": "July financial signs", "source": "account_month", "variation": "Positive, zero and negative contribution margins plus zero recognized service revenue."},
+    {"case": "Multiple contracts and services", "source": "contract/service/service_site_map", "variation": "Account 1 has contracts 1/2; contract 1 has services 1/2; contract 3 has services 4/5."},
+    {"case": "Settlement states", "source": "sla_evaluation/applied_credit", "variation": "Contract 1 capped/absent, 2 uncapped/explicit zero, 3 partial, 4 full, 5 below threshold; 6 cross-month partial."},
+    {"case": "Service move", "source": "service_site_map", "variation": "Service 1 moves site 1 to site 3 at July 16 12:00 UTC, during overlapping incidents."},
+    {"case": "Cross-month", "source": "incident", "variation": "Incident 6 spans June 30 23:00 through July 1 02:00 UTC. Period selection clips the interval and reads each selected period's settlement."},
+    {"case": "Missing effective mapping", "source": "incident/service_site_map", "variation": "Incident 7 overlaps the known service 10 mapping gap. Selecting it alone blocks downstream financial queries."},
+    {"case": "Genuinely unaffected", "source": "service_site_map/incident", "variation": "Service 11 has continuous site 7 mapping and no incident overlap; this is distinct from service 10's missing mapping."},
+    {"case": "Empty period", "source": "incident", "variation": "August has no incidents. Keep EMPTY_COHORT_BLOCKED_NO_FINANCIAL_QUERY, never complete zero."}
+  ],
+  "coverage": {
+    "sourceExecution": "Source formulas/home/grain/units are unchanged. Ordinary app catalog plus --data and generated catalog both apply manifest-bound diagnostics on actual filtered source rows. Receipts retain the diagnostic query/counts; partial known subsets cannot be complete answers.",
+    "liveSource": "Required raw-source coverage has no reviewed live MCP contract. Those queries fail closed before source dispatch; transport complete/count alone is not coverage proof. No fallback or invented MCP fields.",
+    "siteTelemetry": "Five-day observation window, days 14-18 of each service month. Incident intervals outside that window are separate source facts, not full-month telemetry proof.",
+    "care": "Four observed snapshot dates per case.",
+    "inventory": "Days 20-22 per month only; not full event-based stock accounting.",
+    "growth": "August assignments and August 29 observed synthetic outcomes only."
+  },
+  "localCli": [
+    ".\\.venv\\Scripts\\python.exe tools\\build_data.py --profile showcase-v2 --seed 20260929 --output <NEW_ROOT>\\data",
+    ".\\.venv\\Scripts\\python.exe tools\\build_models.py --output <NEW_ROOT>\\models --contracts <NEW_ROOT>\\contracts --fixture-manifest <NEW_ROOT>\\data\\manifest.json",
+    ".\\.venv\\Scripts\\python.exe tools\\build_hero_packet.py --showcase --source <NEW_ROOT>\\data --model-root <NEW_ROOT>\\models --catalog <NEW_ROOT>\\contracts\\catalog.json --output <NEW_ROOT>\\hero"
+  ],
+  "compatibility": {
+    "oldCli": "Default hero remains smoke-only; showcase requires explicit opt-in and matching model/catalog census.",
+    "historicalAssets": "Do not rebuild or overwrite miniature fixtures, gold, P0/native/archived packet contents or historical receipt hashes.",
+    "sourceFormat": {"compatibilityLevel": 1702, "definitionPbismVersion": "4.2", "formulaOrUnitChange": false},
+    "deployment": "Packet staging is not deployment. P0 deployment helpers still accept only subscriptions/finance; no network deployment flag is introduced.",
+    "counterfactual": "No counterfactual simulator or subminute settlement claimed."
+  },
+  "evidenceGaps": [
+    "Independent review and parent acceptance pending.",
+    "DAX engine/TMDL parser, Direct Lake load, model refresh, native generation, MCP reader, paid inference and current cloud state are NOT_RUN.",
+    "No live/native proof is inferred from fixture executions or these source cases.",
+    "Full eight-model live stories, causal effect, RLS/OLS and benchmark campaigns are outside this task."
+  ]
+}

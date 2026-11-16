@@ -1,0 +1,32 @@
+{
+  "observationType": "ACTUAL_APPROVED_LIFECYCLE_DEPLOYMENT",
+  "date": "2026-09-29",
+  "accountCreated": true,
+  "managedIdentityCreated": true,
+  "roleActionsReadBack": [
+    "Microsoft.Fabric/capacities/read",
+    "Microsoft.Fabric/capacities/suspend/action"
+  ],
+  "roleAssignmentScope": "Only exact privately recorded F8 resource",
+  "runtimeModule": {"name": "Az.Accounts", "version": "2.15.0", "state": "Succeeded"},
+  "runbookState": "Published",
+  "approvedSourceSha256": "20e8f61eee532bb210924f24df3e29abf27381033c97864d7a8e03c32f1c29cb",
+  "canonicalContentReadback": "MATCH",
+  "inspectJobStatus": "Completed",
+  "inspectJobOutput": {"mutations": 0, "status": "INSPECTED", "state": "Active"},
+  "schedule": {
+    "verified": true,
+    "enabled": true,
+    "bound": true,
+    "startTime": "2026-10-01T15:30:00Z",
+    "nextRun": "2026-10-01T15:30:00Z",
+    "frequency": "Hour",
+    "interval": 1,
+    "expiryTime": "2026-10-01T17:30:00Z"
+  },
+  "diagnosis": "Service normalized TenantId parameter casing. Fixed overly strict readback comparison and verified again without resubmitting mutations.",
+  "futureSuspensionExecution": "NOT_RUN",
+  "fabricDataDeployment": "NOT_RUN",
+  "sharedCapacityResumeResizeDeleteByThisSession": false,
+  "privateResourceIdsOmitted": true
+}

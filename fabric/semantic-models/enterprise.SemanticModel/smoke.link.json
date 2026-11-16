@@ -1,0 +1,16 @@
+{
+  "model": "enterprise",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "enterprise.contracted_services",
+    "enterprise.monitored_service_minutes",
+    "enterprise.breached_services",
+    "enterprise.sla_compliance",
+    "enterprise.contracted_recurring_revenue",
+    "enterprise.eligible_credits",
+    "enterprise.applied_credits",
+    "enterprise.credit_exposure"
+  ]
+}

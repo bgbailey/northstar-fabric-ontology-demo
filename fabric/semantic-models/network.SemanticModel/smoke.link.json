@@ -1,0 +1,16 @@
+{
+  "model": "network",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "network.eligible_site_minutes",
+    "network.unavailable_site_minutes",
+    "network.availability_percent",
+    "network.major_incidents",
+    "network.exposed_lines",
+    "network.exposure_minutes",
+    "network.failed_sessions",
+    "network.service_degradation_percent"
+  ]
+}

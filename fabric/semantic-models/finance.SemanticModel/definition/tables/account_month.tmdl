@@ -1,0 +1,141 @@
+/// Account service-month control totals; credits recognized in service month, not posting month.
+table 'Account Month'
+	lineageTag: 7c0b4bc2-ad41-58fc-8b12-cacc2e648009
+
+	/// Recognized service revenue before service-month credits, in integer cents.
+	measure 'Recognized Service Revenue' = SUM('Account Month'[revenue_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: 9ffe8697-fcb7-5669-b654-66347f2b3d2e
+		annotation MetricId = finance.recognized_service_revenue
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Recognized service revenue minus service-month credits.
+	measure 'Net Recognized Revenue' = SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: c48983d7-8170-5869-9e9c-623e636bc86a
+		annotation MetricId = finance.net_recognized_revenue
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Attributed monthly service cost, not device or offer cost.
+	measure 'Service Cost' = SUM('Account Month'[service_cost_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: 209be5fa-0deb-5a30-b038-bcbf49ddd273
+		annotation MetricId = finance.service_cost
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Net recognized service revenue minus attributed service cost.
+	measure 'Contribution Margin' = SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]) - SUM('Account Month'[service_cost_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: e9a20368-9115-581c-88eb-42cba611cfbc
+		annotation MetricId = finance.contribution_margin
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.
+	measure 'Margin Percent' = DIVIDE(SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]) - SUM('Account Month'[service_cost_cents]), SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]))
+		formatString: 0.00%
+		displayFolder: Billing and Finance
+		lineageTag: f036149c-443a-5f43-981d-a7225c153536
+		annotation MetricId = finance.margin_percent
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.
+	measure 'Revenue per Active Line' = DIVIDE(SUM('Account Month'[revenue_cents]), SUM('Account Month'[active_lines_eom]))
+		formatString: #,##0.00
+		displayFolder: Billing and Finance
+		lineageTag: dd5ecaf6-7843-5e2c-bce8-b17bba562a98
+		annotation MetricId = finance.revenue_per_active_line
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 0b80bd92-f486-5f0d-b782-b5fadd9a1f1a
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'billing_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: billing_key
+		lineageTag: 295d05da-6a34-5f4b-96c9-28fbbc2f20d6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: a3f4ff8d-6e94-57e3-b782-28b1e36fec44
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 06337a8b-58ef-5ffb-bce3-b6841dbbba9e
+		formatString: yyyy-MM-dd
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'revenue_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: revenue_cents
+		lineageTag: 9c0ef1f6-d5ec-5847-b0a2-9124808537a0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'credit_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: credit_cents
+		lineageTag: 980e8b76-75a6-52b1-b0fc-5fdd74f37aa6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'service_cost_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: service_cost_cents
+		lineageTag: 00f3a5d7-bbba-5f79-9229-9b127cd36929
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Active lines eom at the declared Account Month grain.
+	column 'active_lines_eom'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: active_lines_eom
+		lineageTag: 3d660cb2-2d7e-5c82-82c8-b8c237769cde
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Account Month' = entity
+		mode: directLake
+		source
+			entityName: account_month
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

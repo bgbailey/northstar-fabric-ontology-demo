@@ -1,0 +1,31 @@
+{
+  "observationType": "HOST_EXPOSED_INPUT_SCHEMAS",
+  "observedAt": "2026-09-29",
+  "experiment": "E06",
+  "experimentStatus": "NOT_RUN",
+  "featureOutcome": "NOT_EVALUATED",
+  "source": "CLI api_tool.list_resources FabricIQ schemas; no data tools invoked",
+  "tools": [
+    "DiscoverArtifacts",
+    "ResolveFabricItem",
+    "GetReportMetadata",
+    "GetSemanticModelSchema",
+    "ValueSearch",
+    "ExecuteQuery"
+  ],
+  "executeQueryObservedInputs": {
+    "artifactId": "required string GUID",
+    "daxQueries": "required string[]; documented min 1 max 4, one EVALUATE each",
+    "maxRows": "optional nullable integer; default 250; service-enforced limit"
+  },
+  "rawAppToolsList": null,
+  "outputSchema": null,
+  "devIdentityVerified": false,
+  "sourceQueryExecuted": false,
+  "limitations": [
+    "Host-exposed schemas are not a handshake from this application.",
+    "No live tool schema hash is fabricated from a summary.",
+    "Cached Azure CLI identity is not the approved DEV identity. No data calls were made.",
+    "Live E06 requires an isolated DEV login and approved synthetic fixture."
+  ]
+}

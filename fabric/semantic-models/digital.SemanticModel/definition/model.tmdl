@@ -1,0 +1,20 @@
+/// Digital Experience; undeployed template requiring approved OneLake binding.
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	annotation LiveDax = NOT_RUN
+	annotation DirectLake = NOT_RUN
+	annotation SourceRls = NOT_RUN
+	annotation SourceRevision = 1.0
+
+ref table 'Sessions'
+ref table 'Interaction Events'
+ref table 'Digital Identity Map'
+ref table 'Accounts'
+ref table 'Calendar'
+ref table 'Devices'
+ref table 'Markets'
+
+ref role 'East Region'

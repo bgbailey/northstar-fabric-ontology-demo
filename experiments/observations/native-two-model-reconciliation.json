@@ -1,0 +1,171 @@
+{
+  "lane": "LIVE_DEV_NATIVE_AGENT_UI_WITH_API_MCP_READBACK",
+  "status": "EXACT_MATCH",
+  "completedAt": "2026-09-30T21:22:21.420314+00:00",
+  "capturedResultHash": "b971e03d66c1bd90af1378e66b7bbb572ac4e5116123c9caa04dec5388e3b6c9",
+  "definitionHash": "c707e9019d303a820824dbddb556fa6eb6ef9508f8c8bb9b1c7f1e02df8b35d3",
+  "census": {
+    "parts": 33,
+    "compatibility_1000000": true,
+    "entity_parts": 13,
+    "metric_parts": 0,
+    "rule_parts": 0,
+    "entity_relationship_part": true,
+    "entity_relationships": 21,
+    "source_proxy_measures": 16,
+    "source_model_names": [
+      "TelcoIQ_Finance_P0",
+      "TelcoIQ_Subscriptions_P0"
+    ],
+    "guidance_annotations": 21,
+    "limitation": "Observed definition census. Top-level metric parts and source-proxy table measures are distinct; neither counts nor guidance annotations prove numeric execution or native Rule objects."
+  },
+  "sourceMetricLinks": [
+    [
+      "finance",
+      "Account Month",
+      "Contribution Margin"
+    ],
+    [
+      "finance",
+      "Account Month",
+      "Margin Percent"
+    ],
+    [
+      "finance",
+      "Account Month",
+      "Net Recognized Revenue"
+    ],
+    [
+      "finance",
+      "Account Month",
+      "Recognized Service Revenue"
+    ],
+    [
+      "finance",
+      "Account Month",
+      "Revenue per Active Line"
+    ],
+    [
+      "finance",
+      "Account Month",
+      "Service Cost"
+    ],
+    [
+      "finance",
+      "Charge Lines",
+      "Billed Charges"
+    ],
+    [
+      "finance",
+      "Credits",
+      "Posted Credits"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Active Accounts EOM"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Active Lines EOM"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Average Active Lines"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Churn Rate"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Disconnects"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Gross Adds"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Net Adds"
+    ],
+    [
+      "subscriptions",
+      "Subscription Month",
+      "Opening Active Lines"
+    ]
+  ],
+  "observed": [
+    {
+      "account_key": 1,
+      "subscriptions.active_lines_eom": 0,
+      "finance.recognized_service_revenue": 0
+    },
+    {
+      "account_key": 2,
+      "subscriptions.active_lines_eom": 0,
+      "finance.recognized_service_revenue": 0
+    },
+    {
+      "account_key": 3,
+      "subscriptions.active_lines_eom": 2,
+      "finance.recognized_service_revenue": 10238
+    },
+    {
+      "account_key": 4,
+      "subscriptions.active_lines_eom": 2,
+      "finance.recognized_service_revenue": 13460
+    },
+    {
+      "account_key": 5,
+      "subscriptions.active_lines_eom": 1,
+      "finance.recognized_service_revenue": 5411
+    },
+    {
+      "account_key": 6,
+      "subscriptions.active_lines_eom": 1,
+      "finance.recognized_service_revenue": 5443
+    },
+    {
+      "account_key": 7,
+      "subscriptions.active_lines_eom": 2,
+      "finance.recognized_service_revenue": 13928
+    },
+    {
+      "account_key": 8,
+      "subscriptions.active_lines_eom": 2,
+      "finance.recognized_service_revenue": 12814
+    },
+    {
+      "account_key": 9,
+      "subscriptions.active_lines_eom": 1,
+      "finance.recognized_service_revenue": 4928
+    },
+    {
+      "account_key": 10,
+      "subscriptions.active_lines_eom": 2,
+      "finance.recognized_service_revenue": 14114
+    }
+  ],
+  "sourceQueriesDisplayed": [
+    "EVALUATE SUMMARIZECOLUMNS(\n    'Subscription Month'[account_key],\n    'Subscription Month'[month],\n    FILTER(\n        'Subscription Month',\n        'Subscription Month'[month] >= DATE(2026,8,1)\n            && 'Subscription Month'[month] < DATE(2026,9,1)\n    ),\n    \"active_lines_eom\", [Active Lines EOM]\n)\n",
+    "EVALUATE SUMMARIZECOLUMNS(\n    'Account Month'[account_key],\n    'Account Month'[month],\n    FILTER(\n        'Account Month',\n        'Account Month'[month] >= DATE(2026,8,1)\n            && 'Account Month'[month] < DATE(2026,9,1)\n    ),\n    \"recognized_service_revenue_cents\", [Recognized Service Revenue]\n)\n"
+  ],
+  "accountRows": 10,
+  "activeLinesEom": 13,
+  "recognizedServiceRevenueCents": 80336,
+  "populationCheck": "Every account and value exactly matches the independent miniature source-fact oracle",
+  "limitations": [
+    "Built-in native-agent question, not the custom application or GA IQ comparison.",
+    "Source DAX is captured from the native response; no hidden native execution internals are inferred.",
+    "Business guidance is stored as annotations; native Rule object count is zero.",
+    "One two-model question does not demonstrate the three multihop customer stories or an accuracy advantage."
+  ]
+}

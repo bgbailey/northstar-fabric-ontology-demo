@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "task_id": "TQ-005",
+  "acceptance_status": "ACCEPTED_LOCAL_ONLY",
+  "provenance": "SANITIZED_ACCEPTANCE_FORMAT_FIXTURE",
+  "limits": "Tests the local dependency receipt format only; not live evidence, operator approval or authorization."
+}

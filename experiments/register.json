@@ -1,0 +1,634 @@
+{
+  "schemaVersion": "1.0",
+  "artifactVersion": 1,
+  "title": "Telco IQ build-time capability and evaluation register",
+  "researchDate": "2026-09-29",
+  "status": "BUILD_IN_PROGRESS",
+  "deploymentAuthorized": false,
+  "publicContentPolicy": "Original synthetic lab design and public product references only; no customer records, private source material, credentials or target environment identifiers.",
+  "companionPlan": "docs/demo-streams.md",
+  "customerDemo": {
+    "status": "HISTORICAL_EVIDENCE_ACCEPTED",
+    "deliveredOn": "2026-10-22",
+    "lastAcceptedLiveRehearsalOn": "2026-10-28",
+    "recordedPacket": ".copilot/docs/northstar-recorded-live-v6-2026-10-28.json",
+    "recordedLibrary": ".copilot/docs/northstar-demo-library-v2-2026-10-28.json",
+    "handoff": "docs/demo-streams.md",
+    "publicDistribution": "SANITIZED_HISTORICAL_DISPLAY_ONLY",
+    "privateRawEvidenceIncluded": false,
+    "readinessGuide": "docs/demo-streams.md",
+    "readinessPolicy": "Establish current playback and native live readiness separately per stream; historical acceptance is not a current reader grant.",
+    "demoStreams": {
+      "observedOn": "2026-10-28",
+      "recordedLibrary": ".copilot/docs/northstar-demo-library-v2-2026-10-28.json",
+      "executive": {
+        "separateNativeItem": true,
+        "semanticModelsReused": ["subscriptions", "finance"],
+        "nativeEntities": 4,
+        "nativeRelationships": 3,
+        "retainedOriginalSourceProxies": 14,
+        "presenterFocusMeasures": 3,
+        "formalNativeRules": 2,
+        "actualManagedNativeBusinessAnswer": true,
+        "sourceCheckedCandidateAccounts": 1,
+        "independentRegisteredSourcePopulation": 24,
+        "rawSourceValueReviewIncluded": false
+      },
+      "customer360": {
+        "preserved": true,
+        "semanticModels": 8,
+        "nativeEntities": 59,
+        "nativeRelationships": 105,
+        "sourceProxies": 64,
+        "formalNativeRules": 4,
+        "acceptedRecordedPairs": 10,
+        "recordedPacket": ".copilot/docs/northstar-recorded-live-v6-2026-10-28.json"
+      },
+      "latestLiveRehearsal": {
+        "executedOn": "2026-10-28",
+        "status": "ALL_THREE_BOTH_ARMS_EXECUTED_AND_SOURCE_REVIEWED",
+        "freshAdvancedPairs": 3,
+        "bothArms": "PARTIAL",
+        "comparability": "COMMON_SOURCE_STATE",
+        "originalSourceMetricCellsMatched": 335,
+        "actualPreAndPostflightVerified": true,
+        "rawSourceValueReviewIncluded": false,
+        "unknownInputsAndOriginalQualificationsPreserved": true
+      },
+      "runtimeIsExplicitRecordedPlayback": true,
+      "liveExperimentStatusesChanged": false,
+      "limitations": [
+        "The executive native answer is distinct from deterministic application review cards.",
+        "Independent source queries are not an exposed native internal trace; original times remain separate.",
+        "Historical advanced partial results and failed arms remain qualified.",
+        "The three fresh live pairs passed actual current-session source checks; an archive is not a reusable reader grant.",
+        "Earlier failed and interrupted attempts remain retained, not relabelled as successful."
+      ]
+    },
+    "starter": {
+      "businessDomains": ["Customers", "Subscriptions", "Finance"],
+      "semanticModels": ["subscriptions", "finance"],
+      "nativeView": "FOCUSED_EXISTING_NATIVE_SLICE_NOT_A_NEW_STANDALONE_ITEM",
+      "measuresRemainSourceOwned": true,
+      "capturedMonths": ["2026-07", "2026-08"],
+      "registeredAccountsPerMonthPerArm": 24,
+      "sourceQueriesPerMonthPerArm": 4
+    },
+    "advancedStories": ["SLA exposure", "Incident recovery", "June/July checkout"],
+    "limitations": [
+      "Advanced partial results and unknown exclusions remain partial.",
+      "The historical October22 recovery traditional arm failed and remains NOT_COMPARABLE; the final October28 pair executed in both arms with PARTIAL/common-source-state qualifications.",
+      "No general ontology accuracy or performance advantage is inferred.",
+      "Customer-demo delivery does not promote E01-E24 or override release-claim gates."
+    ]
+  },
+  "upstream": {
+    "repository": "https://github.com/microsoft/skills-for-fabric",
+    "commit": "6c11ad58c25992e5d1435ce7cd80d217d5598a31",
+    "warning": "Refreshed ontology authoring skill still describes the old JSON format; current new-experience Learn contracts take precedence."
+  },
+  "stateMachine": {
+    "initial": "NOT_RUN",
+    "allowed": ["NOT_RUN", "RUNNING", "PASS", "FAIL", "UNAVAILABLE", "INCONCLUSIVE"],
+    "dependencySemantics": "Prerequisite experiment outcomes must be evaluated; an unavailable feature blocks only dependent capability claims, not independent adapters or offline work.",
+    "featureOutcomeValues": ["NOT_EVALUATED", "SUPPORTED", "PARTIALLY_SUPPORTED", "UNSUPPORTED", "UNKNOWN"],
+    "requireEvidenceForTerminalState": true,
+    "unavailablePolicy": "Block only dependent capability claims; continue independent work. Never replace a missing native capability with an unlabeled mock.",
+    "experimentPassIsNotGlobalProductCertification": true
+  },
+  "requiredObservationFields": [
+    "experimentId",
+    "runId",
+    "startedAt",
+    "completedAt",
+    "codeCommit",
+    "seed",
+    "profile",
+    "tenantAlias",
+    "region",
+    "capacitySku",
+    "identityMode",
+    "readerPersona",
+    "sourceStorageMode",
+    "ontologyGeneration",
+    "ontologyRevision",
+    "modelRevisions",
+    "endpoint",
+    "protocolVersion",
+    "toolSchemaHash",
+    "requestIds",
+    "expected",
+    "observed",
+    "status",
+    "featureOutcome",
+    "evidencePaths",
+    "limitations",
+    "nextDecision"
+  ],
+  "evidenceSafety": {
+    "redact": ["accessTokens", "refreshTokens", "cookies", "authorizationHeaders", "clientSecrets", "privateKeys"],
+    "neverPublishLiveEnvironmentIdsByDefault": true,
+    "recordQueriesAndResponsesOnlyForSyntheticLabData": true,
+    "recordActionsNotPrivateModelReasoning": true
+  },
+  "minimalFixture": {
+    "accounts": 10,
+    "subscriptions": 20,
+    "financialRows": 60,
+    "cases": 8,
+    "semanticModels": 2,
+    "measuresPerModel": 2,
+    "namespaceCollisions": 1,
+    "businessRules": 1,
+    "deniedSources": 1,
+    "sourceMeasureChangeCases": 1
+  },
+  "experiments": [
+    {
+      "id": "E01",
+      "title": "New-experience availability and generation",
+      "phase": "P0",
+      "status": "INCONCLUSIVE",
+      "dependsOn": [],
+      "sources": ["S01", "S05"],
+      "hypothesis": "The approved DEV tenant can create and read a generation-2 Ontology item using the current public contract.",
+      "unknown": "Actual tenant/capacity/region enablement, rollout and role prerequisites.",
+      "procedure": [
+        "Record approved target, current identity, capacity and tenant settings without changing them.",
+        "After explicit mutation approval, create a disposable empty ontology through the documented create interface.",
+        "Read item properties and definition using author permissions; record generation and actual definition parts.",
+        "Exercise a missing-permission identity and retain its explicit failure."
+      ],
+      "pass": "New-experience item exists and readback matches the expected generation and TMDL structure; denied identity remains denied.",
+      "evidence": ["item-receipt.json", "sanitized-definition-census.json", "permission-results.json"],
+      "ifUnsupported": "Continue offline generator/models; record feature unavailable, do not silently create old ontology and call it equivalent."
+    },
+    {
+      "id": "E02",
+      "title": "Two-model grounding, reconciliation and cross-model query",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E01"],
+      "sources": ["S02", "S12", "S13"],
+      "hypothesis": "One native ontology can use both semantic models and correctly align approved shared entities.",
+      "unknown": "Actual source-binding versus semantic-grounding representation and overlap reconciliation behavior.",
+      "procedure": [
+        "Generate ontology from model A with the documented UI action.",
+        "In the built-in ontology agent, request model B in Plan mode, review, then approve Act mode.",
+        "Include one genuinely conformed key and one identically named but incompatible key.",
+        "Inspect resulting entities, namespaces, model lineage and relationships.",
+        "Ask a known cross-model aggregate and an invalid-key question."
+      ],
+      "pass": "Known cross-model answer equals oracle, source identities survive, and incompatible identities are not silently merged.",
+      "evidence": ["native-source-inventory.json", "reviewed-merge-diff.json", "native-query-receipts.json"],
+      "ifUnsupported": "Record exact failure/representation; retain separate models and run portal/native-snapshot diagnostic lanes without claiming full custom-app native consumption."
+    },
+    {
+      "id": "E03",
+      "title": "Source-owned metrics and home-table association",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02"],
+      "sources": ["S03"],
+      "hypothesis": "Generated ontology metrics retain correct source model, home table and source measure identity.",
+      "unknown": "Home-table association for cross-table DAX, same-name metrics and utility measure tables.",
+      "procedure": [
+        "Create two models each with a Revenue measure having a different business sense.",
+        "Place one multi-table DAX measure on a meaningful domain table and one test measure on a utility table.",
+        "Generate/refresh ontology and inspect native metric identity, description, source and table.",
+        "Ask a source-specific and an ambiguous metric question and compare source DAX results."
+      ],
+      "pass": "Each metric maps to its actual source/home table; ambiguous senses are not collapsed; numerical values match the intended source calculation.",
+      "evidence": ["metric-census.json", "metric-source-query-receipts.json"],
+      "ifUnsupported": "Preserve source-qualified measure selection and disclose missing native metadata; do not manufacture native metrics in app JSON."
+    },
+    {
+      "id": "E04",
+      "title": "Metric metadata versus DAX-expression permissions",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03"],
+      "sources": ["S03", "S06", "S19"],
+      "hypothesis": "A reader can use authorized metric context without receiving source DAX or ontology authoring permission.",
+      "unknown": "Minimum read/query permissions differ across GA IQ MCP, native ontology, ontology MCP and definition export.",
+      "procedure": [
+        "Test separate readers with Read, Read+Build and author Write access, without elevated workspace roles.",
+        "Inspect metric name/description/source, query the source measure and request Resolve underlying DAX.",
+        "Attempt getDefinition with reader identity and confirm the documented author-only boundary.",
+        "Ensure expression lookup failure does not trigger permission escalation or an invented formula."
+      ],
+      "pass": "Observed permission matrix is explicit; reader mode works with authorized metadata/results while forbidden expressions and definitions remain unavailable.",
+      "evidence": ["least-privilege-matrix.json", "redacted-auth-error-receipts.json"],
+      "ifUnsupported": "Reduce runtime features or require the documented reader permissions; never grant Write solely to simplify app context reads."
+    },
+    {
+      "id": "E05",
+      "title": "Ontology MCP tool discovery and context completeness",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02"],
+      "sources": ["S07", "S20", "S21", "S22"],
+      "hypothesis": "The direct ontology MCP endpoint exposes enough authorized native context for the custom app.",
+      "unknown": "Actual tool inventory, scopes, schemas, metric exposure, transport and differences among ask_ontology/search_ontology and gateway surfaces.",
+      "procedure": [
+        "Connect with documented delegated OAuth and negotiate the MCP protocol/transport.",
+        "Capture initialize and tools/list schemas, effects and pagination without storing credentials.",
+        "Look for the documented entity/rule/question tools; use actual returned names and schemas.",
+        "Retrieve the fixture's entities, relationships, rules, source model IDs and metric provenance.",
+        "Allowlist only read-only tools; deny any definition-management tool to the runtime agent."
+      ],
+      "pass": "A current native-context receipt identifies the required sources/metrics/rules, schemas are validated and no runtime mutation tool is callable.",
+      "evidence": ["ontology-tool-inventory.json", "ontology-schema-hashes.json", "native-context-receipt.json"],
+      "ifUnsupported": "Use a clearly labelled native-snapshot mode for development and portal reference lane; mark native external context claim incomplete."
+    },
+    {
+      "id": "E06",
+      "title": "GA IQ MCP analytic tool contracts",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": [],
+      "sources": ["S19"],
+      "hypothesis": "The app can use the six GA tools for discover/schema/values/per-model DAX with the pinned variant.",
+      "unknown": "Exact current input/output schemas, query-count bounds, maxRows and session requirements.",
+      "procedure": [
+        "Use the GA endpoint and X-Variants Fabric.Routing.FabricIQ.V1 on every request.",
+        "Capture schemas for DiscoverArtifacts, ResolveFabricItem, GetReportMetadata, GetSemanticModelSchema, ValueSearch and ExecuteQuery.",
+        "Discover both fixture models, retrieve schema, resolve one value and execute one governed measure per model.",
+        "Test the documented absent-Build permission case independently from ontology permissions.",
+        "Confirm the adapter never asks this endpoint to directly resolve an ontology."
+      ],
+      "pass": "Live source values equal oracle, tool arguments validate against current schemas, and each query receipt identifies exactly one model.",
+      "evidence": ["iq-tool-inventory.json", "iq-contract-tests.json", "iq-query-receipts.json"],
+      "ifUnsupported": "Surface auth/tool/version failure; direct REST is a separate labelled diagnostic, not an invisible replacement for IQ MCP."
+    },
+    {
+      "id": "E07",
+      "title": "Delegated app identity and RLS/OLS",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E05", "E06"],
+      "sources": ["S19", "S20", "S21", "S25"],
+      "hypothesis": "The custom browser/backend app preserves the signed-in user's entitlements through both context and query paths.",
+      "unknown": "Practical OAuth/OBO integration for the chosen direct MCP endpoints.",
+      "procedure": [
+        "Implement single-tenant DEV browser sign-in and backend token validation.",
+        "Exchange an API-addressed user token for the correct downstream resource using the verified delegated flow.",
+        "Run identical questions as all-regions, regional, care-only and enterprise-restricted readers.",
+        "Inspect source results and metadata visibility, not just final prose.",
+        "Switch users and revoke one model permission, then repeat warm-cache requests."
+      ],
+      "pass": "Authorized results match per-persona oracle; denied data and metadata never leak via context, caches, counts or explanations.",
+      "evidence": ["persona-oracle-results.json", "obo-flow-observations.json", "revocation-results.json"],
+      "ifUnsupported": "Keep isolated single-user local development with an explicit limitation; do not ship privileged multi-user impersonation."
+    },
+    {
+      "id": "E08",
+      "title": "Ontology-only formula edit versus source calculation",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03", "E05"],
+      "sources": ["S03", "S04", "S07"],
+      "hypothesis": "Ontology-local formula edits do not mutate source DAX, and consumer behavior can be characterized without assuming execution semantics.",
+      "unknown": "Whether each consumer treats a formula edit as contextual guidance, an alternate calculation, unsupported text or another behavior.",
+      "procedure": [
+        "Record original metric metadata and source DAX result on fixed data.",
+        "On a disposable ontology copy edit the local metric formula and description only.",
+        "Requery the source directly and ask the native portal, ontology MCP and custom app equivalent questions.",
+        "Compare query text, selected metric identities and returned values.",
+        "Restore the ontology and repeat."
+      ],
+      "pass": "Source calculation is unchanged; every observed consumer behavior is documented and the app never silently treats contextual text as a certified source measure.",
+      "evidence": ["formula-overlay-comparison.json", "source-before-after.json"],
+      "ifUnsupported": "Use description-only enrichment and source-owned measures; expose alternate formulas as unverified hypothetical context."
+    },
+    {
+      "id": "E09",
+      "title": "Four freshness clocks and source change propagation",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03", "E05", "E06"],
+      "sources": ["S03", "S11", "S12", "S13"],
+      "hypothesis": "Source values, model definitions, ontology metadata and app caches can be invalidated independently and correctly.",
+      "unknown": "What source changes require ontology refresh and how changes become visible to each consumer.",
+      "procedure": [
+        "Change only data, then only DAX, then only a measure description, and finally a relationship/schema.",
+        "Capture values and metadata before any refresh, after source refresh, after ontology refresh and after app cache invalidation.",
+        "Rename a model/measure and verify stable lineage, stale references and failure reporting.",
+        "Measure refresh and rename durations and check that metadata edits do not revert unexpectedly."
+      ],
+      "pass": "Freshness timestamps/revisions explain every observed difference; stale definitions are detected; stable references preserve identity or fail explicitly.",
+      "evidence": ["freshness-timeline.json", "schema-change-results.json"],
+      "ifUnsupported": "Require a documented explicit refresh procedure and visible stale-context status rather than claiming automatic synchronization."
+    },
+    {
+      "id": "E10",
+      "title": "DAX metric ALM round-trip fidelity",
+      "phase": "P0",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03"],
+      "sources": ["S04", "S05", "S06", "S28"],
+      "hypothesis": "The actual supported export/import path can be measured without destroying source-linked metrics.",
+      "unknown": "Current loss of backingMeasure/targetScopes and any supported public alternative to TMDL for source-linked metrics.",
+      "procedure": [
+        "Census native source-linked metrics and create a named backup or retain the original item.",
+        "Export via documented getDefinition using an authorized author.",
+        "Import ONLY into a disposable new ontology; never overwrite the original.",
+        "Compare metric identities, backing links, target scopes, rules, namespaces and query results.",
+        "Use an alternative JSON management route only if its public endpoint/contract is documented and approved."
+      ],
+      "pass": "Either an evidenced lossless supported route succeeds, or the experiment correctly identifies loss and prevents its use as the deployment path.",
+      "evidence": ["roundtrip-semantic-diff.json", "metric-loss-census.json", "deployment-capability-decision.json"],
+      "ifUnsupported": "Retain human-assisted native metric bootstrap, source-controlled intent/model artifacts and readback inventories; do not claim complete ontology CI/CD."
+    },
+    {
+      "id": "E11",
+      "title": "Native rules affect planning without prompt edits",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E05", "E06"],
+      "sources": ["S07"],
+      "hypothesis": "Changing an authorized native rule changes context-grounded planning while runtime source calculations remain governed.",
+      "unknown": "Rule retrieval scope and practical adherence by each consumer.",
+      "procedure": [
+        "Run a question with a rule requiring latest common complete month.",
+        "Create a reviewed rule revision with an explicit different allowed period policy.",
+        "Invalidate context and rerun without altering the application prompt or scenario code.",
+        "Inspect retrieved rule revision and selected period in the validated plan.",
+        "Attempt a rule that requests an unauthorized action and confirm runtime denies it."
+      ],
+      "pass": "Plan reflects the relevant permitted rule revision; rules remain data/grounding, never authority to execute arbitrary tools or bypass permissions.",
+      "evidence": ["rule-ablation-results.json", "rule-provenance-receipts.json"],
+      "ifUnsupported": "Record consumer adherence failure; validator enforces independently specified executable constraints with explicit provenance."
+    },
+    {
+      "id": "E12",
+      "title": "Namespace collision and invalid identity merge",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02", "E05"],
+      "sources": ["S02", "S08"],
+      "hypothesis": "Namespaced Customer and Revenue senses remain distinct until approved identity/metric contracts align them.",
+      "unknown": "Agent auto-merge heuristics and native context exposure of qualified identities.",
+      "procedure": [
+        "Create identical display names with different keys and business meanings across two domains.",
+        "Review automatic merge proposals and preserve namespace-qualified identities.",
+        "Query each sense and an ambiguous phrase.",
+        "Rename a namespace and inspect references and source links."
+      ],
+      "pass": "No accidental merge; valid references survive rename; ambiguous questions clarify or select the evidenced intended sense.",
+      "evidence": ["namespace-census.json", "identity-collision-cases.json"],
+      "ifUnsupported": "Use qualified display names plus explicit mappings and disclose namespace feature limitations."
+    },
+    {
+      "id": "E13",
+      "title": "Inheritance and shared-property rollout",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E01"],
+      "sources": ["S04", "S09", "S10"],
+      "hypothesis": "Enabled native inheritance/reuse preserves documented single-parent, direct-child and local-binding semantics.",
+      "unknown": "Tenant rollout, shared-property type representation, cross-ontology permissions and export fidelity.",
+      "procedure": [
+        "Create base Service, direct children and one grandchild in a disposable ontology.",
+        "Bind children separately, create a base relationship and test whether it propagates.",
+        "Query base and inspect direct-child/grandchild coverage.",
+        "Create shared metadata, local override, base edit and soft detach.",
+        "Compare conceptual types with actual TMDL and optional cross-ontology reader permissions."
+      ],
+      "pass": "Observed behavior matches documented limits or is recorded as a discrepancy; app does not assume recursive polymorphism, binding inheritance or model-measure inheritance.",
+      "evidence": ["inheritance-coverage.json", "shared-property-roundtrip.json"],
+      "ifUnsupported": "Keep the core multi-model proof working; mark native reuse feature unavailable rather than emulating it without a label."
+    },
+    {
+      "id": "E14",
+      "title": "Version restoration and metadata fidelity",
+      "phase": "P3",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03"],
+      "sources": ["S04", "S13", "S14", "S15", "S16"],
+      "hypothesis": "Named native versions preserve the required ontology state independently from source data.",
+      "unknown": "Conflict between current version UI docs and legacy FAQ, and actual scope of restored metrics/bindings/rules.",
+      "procedure": [
+        "Create a named version with entities, metrics, rules and source links.",
+        "Make a reviewed ontology change and a separate source-data change.",
+        "Restore the ontology version and compare its census and query context.",
+        "Test rule description/synonym export loss separately from native restoration.",
+        "Optionally test RDF/TTL roundtrip into a new empty item, preserving import loss reports."
+      ],
+      "pass": "Restoration coverage is explicit; source data is not incorrectly claimed restored; lossy metadata fields are detected.",
+      "evidence": ["version-restore-diff.json", "optional-rdf-import-report.json"],
+      "ifUnsupported": "Retain original working items and documented manual recovery; do not promise automatic rollback."
+    },
+    {
+      "id": "E15",
+      "title": "Data-agent ontology context over semantic models",
+      "phase": "P7",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02", "E03"],
+      "sources": ["S13", "S17", "S18", "S23", "S26"],
+      "hypothesis": "The September context-source preview can consume the intended multi-model ontology in the selected environment.",
+      "unknown": "Rollout and mismatch between announcement, older source restrictions and unresolved new documentation links.",
+      "procedure": [
+        "Re-read current official context-source guidance and record version/date.",
+        "After approval, create a separate data-agent experiment and add the ontology as context through the supported surface.",
+        "Compare direct model-source configuration with ontology-context configuration.",
+        "Run metric, rule and cross-model cases; inspect generated queries and provenance.",
+        "Publish/test external MCP only through its documented integration."
+      ],
+      "pass": "Actual results and traces prove the intended context was used and match independent known answers; no conclusion from merely accepting an item.",
+      "evidence": ["data-agent-context-capability.json", "data-agent-source-traces.json"],
+      "ifUnsupported": "Mark unavailable/inconclusive; retain custom ontology-plus-IQ-MCP architecture and portal reference lane."
+    },
+    {
+      "id": "E16",
+      "title": "Source fidelity: Delta, Iceberg, shortcuts and Direct Lake",
+      "phase": "P7",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02", "E03"],
+      "sources": ["S01", "S12", "S13"],
+      "hypothesis": "The same logical synthetic enterprise produces equivalent governed answers across supported source configurations.",
+      "unknown": "Exact binding/grounding support for managed Delta versus shortcut/Iceberg sources and each Direct Lake mode.",
+      "procedure": [
+        "Establish managed-Delta/Direct-Lake baseline.",
+        "After separate cost approval, build actual Snowflake/Iceberg and shortcut lane or clearly labelled non-Snowflake compatibility lane.",
+        "Test case/accent behavior, timestamp-without-zone, fixed decimals and schema changes.",
+        "Record Direct Lake on OneLake versus SQL endpoint and any query fallback.",
+        "Compare row counts, mapping coverage, measure results and metadata persistence."
+      ],
+      "pass": "Supported configurations preserve declared semantics; unsupported or changed behavior is captured without calling a shortcut simulation a production reproduction.",
+      "evidence": ["source-mode-matrix.json", "type-collation-results.json", "refresh-rename-timings.json"],
+      "ifUnsupported": "Use managed Delta for core demo; keep source-path fidelity gap visible."
+    },
+    {
+      "id": "E17",
+      "title": "Graph eligibility is optional and source-specific",
+      "phase": "P7",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02"],
+      "sources": ["S11"],
+      "hypothesis": "The lab can distinguish schema-path visualization from eligible physical graph materialization.",
+      "unknown": "Actual eligibility/status reporting and refresh behavior of the selected optional network subgraph.",
+      "procedure": [
+        "Inspect semantic-model-bound entity eligibility without materializing the whole ontology.",
+        "On a separate approved physical-Delta subset, select eligible entities and relationships.",
+        "If materialized, compare traversal answers and refresh lag with an independent edge oracle.",
+        "Record cost, data copied and projection limitations."
+      ],
+      "pass": "No GQL claim over unsupported semantic-model bindings; optional physical graph matches its own scoped oracle.",
+      "evidence": ["graph-eligibility.json", "optional-graph-query-results.json"],
+      "ifUnsupported": "Omit instance graph; show native schema/plan paths with an explicit nonmaterialized label."
+    },
+    {
+      "id": "E18",
+      "title": "Result bounds, CSV, nulls and partial errors",
+      "phase": "P4",
+      "status": "NOT_RUN",
+      "dependsOn": ["E06"],
+      "sources": ["S13", "S19", "S23", "S24"],
+      "hypothesis": "Every adapter detects incomplete results and preserves null/type semantics.",
+      "unknown": "Runtime row/value/byte bounds and result envelope differences across IQ, ontology-agent and optional data-agent/REST paths.",
+      "procedure": [
+        "Test 200/201, 250/251 and 1000/1001 result rows as applicable to each interface.",
+        "Exercise embedded CSV, quotes/newlines, nulls, empty results and large decimal values.",
+        "Inject or produce bounded partial failures and HTTP-200 error envelopes.",
+        "Compare partitioned retrieval with a full independently known cohort.",
+        "Verify final answers cannot state complete totals from incomplete artifacts."
+      ],
+      "pass": "Completeness is proven or explicitly PARTIAL; parsers preserve types/nulls and errors are not converted to zero.",
+      "evidence": ["adapter-boundary-cases.json", "completeness-invariants.json"],
+      "ifUnsupported": "Reduce query grain or use explicit qualified partial answer; never silently truncate."
+    },
+    {
+      "id": "E19",
+      "title": "Cross-model temporal joins and non-additive measures",
+      "phase": "P5",
+      "status": "NOT_RUN",
+      "dependsOn": ["E06", "E18"],
+      "sources": [],
+      "hypothesis": "The application-owned executor correctly combines governed per-model outputs without fan-out or temporal misattribution.",
+      "unknown": "Practical cohort propagation cost and decomposition feasibility for large distinct/ratio/median calculations.",
+      "procedure": [
+        "Test one-to-many, many-to-many, overlapping validity intervals, reused keys and unmapped rows.",
+        "Test snapshot sums, weighted rates, distinct counts across batches and median recombination traps.",
+        "Exercise valid disjoint key partitions and non-disjoint batches.",
+        "Compare results to the independent synthetic oracle at smoke and standard scale.",
+        "Reject declared cardinality violations and report cohort coverage."
+      ],
+      "pass": "Counts and currency reconcile; correct temporal population preserved; invalid decompositions are rejected or recomputed at source.",
+      "evidence": ["join-contract-tests.json", "oracle-comparisons.json", "partition-manifests.json"],
+      "ifUnsupported": "Constrain answer grain and clearly report a blocked/incomplete calculation rather than using LLM arithmetic."
+    },
+    {
+      "id": "E20",
+      "title": "Cold-cache concurrency, invalidation and load",
+      "phase": "P5",
+      "status": "NOT_RUN",
+      "dependsOn": ["E07", "E18"],
+      "sources": [],
+      "hypothesis": "Permission-aware session reuse and single-flight schema loads reduce avoidable fan-out without leaking cross-user context.",
+      "unknown": "Observed latency, throttling, schema fan-out and capacity requirements of this specific synthetic app.",
+      "procedure": [
+        "Stage 1, 5, 15 and 30 concurrent-user synthetic workloads with approved budgets.",
+        "Separate same-principal same-model misses from different-principal security scopes.",
+        "Record active users, request rate, session initialization, in-flight tools, source time and client time independently.",
+        "Trigger token expiry, permission revocation, schema revision and ontology revision.",
+        "Honor Retry-After, cancel selected requests, and verify no retry storms."
+      ],
+      "pass": "Same-scope simultaneous misses coalesce, cross-scope data remains isolated, latency boundaries reconcile and no unbounded fan-out occurs.",
+      "evidence": ["load-profile.json", "latency-waterfall.json", "cache-isolation-results.json"],
+      "ifUnsupported": "Report bottleneck and reduce concurrency; do not silently resize capacity or extrapolate production user capacity."
+    },
+    {
+      "id": "E21",
+      "title": "Fair context ablation and held-out generalization",
+      "phase": "P6",
+      "status": "NOT_RUN",
+      "dependsOn": ["E05", "E06", "E19"],
+      "sources": [],
+      "hypothesis": "Native ontology context adds measurable benefit over normal metadata and an equally informative flat catalogue.",
+      "unknown": "Effect size and whether observed gains come from content, retrieval, representation or a different agent.",
+      "procedure": [
+        "Run A normal metadata, B equal-information flat context, C native ontology plus same app, and D native portal reference separately.",
+        "Freeze data, LLM version, prompts, budgets and reader identity within each block.",
+        "Use held-out paraphrases/compositions and multiple seeds; randomize arm order.",
+        "Separate cold/warm runs and store prompt/context hashes.",
+        "Grade numeric/cohort correctness independently; measure calls/tokens/cost/latency and lifecycle effort."
+      ],
+      "pass": "Comparison is reproducible and unbiased; results include confidence/variance and failures even if ontology does not improve accuracy.",
+      "evidence": ["evaluation-design.json", "per-case-scorecard.json", "aggregate-results.json"],
+      "ifUnsupported": "Narrow the claim to the demonstrated benefit; never manufacture a headline win."
+    },
+    {
+      "id": "E22",
+      "title": "Cross-workspace source ownership",
+      "phase": "P7",
+      "status": "NOT_RUN",
+      "dependsOn": ["E02", "E07"],
+      "sources": ["S02", "S13", "S20"],
+      "hypothesis": "Selected distributed-domain models can be consumed through a supported cross-workspace configuration.",
+      "unknown": "Source discovery, model grounding, permissions and link behavior beyond the same-workspace documented bootstrap.",
+      "procedure": [
+        "Retain working same-workspace baseline.",
+        "Move or redeploy copies of two models into separately approved domain workspaces.",
+        "Try only documented cross-workspace integration paths and inspect actual lineage/access.",
+        "Repeat multi-model metric and RLS questions.",
+        "Do not assume a semantic model can be shortcut like a lakehouse table."
+      ],
+      "pass": "Distributed path retains correct source identities, permissions and answers, or its unsupported boundary is explicit.",
+      "evidence": ["workspace-fidelity-matrix.json", "cross-workspace-query-receipts.json"],
+      "ifUnsupported": "Keep same-workspace educational topology and disclose distributed-ownership fidelity gap."
+    },
+    {
+      "id": "E23",
+      "title": "Canonical metric reuse and downstream drift",
+      "phase": "P5",
+      "status": "NOT_RUN",
+      "dependsOn": ["E03", "E09"],
+      "sources": ["S03"],
+      "hypothesis": "Source-controlled metric promotion detects and reconciles intentionally copied downstream definitions without claiming native model inheritance.",
+      "unknown": "Required notebook/TMDL/CI sequencing and answer consistency after measure, relationship and security changes.",
+      "procedure": [
+        "Create two downstream models using reviewed shared metric templates.",
+        "Intentionally leave one at an older metric version.",
+        "Detect drift from identity/version/definition manifests, not display name alone.",
+        "Promote an approved change including dependency and RLS/OLS checks.",
+        "Refresh ontology context and repeat source and multi-model oracle questions."
+      ],
+      "pass": "Drift is visible before promotion; approved versions reconcile; broken dependencies/security do not pass as a successful sync.",
+      "evidence": ["metric-promotion-manifest.json", "downstream-drift-report.json"],
+      "ifUnsupported": "Keep explicit manually reviewed promotion with recorded gaps; do not claim automatic inheritance."
+    },
+    {
+      "id": "E24",
+      "title": "Optional data-agent Tasks recovery",
+      "phase": "P7",
+      "status": "NOT_RUN",
+      "dependsOn": ["E15"],
+      "sources": ["S23", "S27"],
+      "hypothesis": "The selected SDK/server pair supports the negotiated asynchronous task lifecycle.",
+      "unknown": "Protocol extension revision, pending/input states, reconnect, cancellation and final-result envelope.",
+      "procedure": [
+        "Discover task capabilities during initialization and pin extension revision.",
+        "Submit one approved synthetic long-running question and record the actual task ID.",
+        "Poll using supported methods and server hints, handle input-required if exposed.",
+        "Reconnect and cancel a second task without duplicate submission.",
+        "Verify final failure/expiry/cancel results are not presented as successful answers."
+      ],
+      "pass": "Observed task state machine is handled without invented methods, duplicate paid work or orphaned background execution.",
+      "evidence": ["task-protocol-observations.json", "task-recovery-results.json"],
+      "ifUnsupported": "Use bounded synchronous operation or disable optional data-agent lane."
+    }
+  ],
+  "releaseClaimGates": {
+    "nativeOntologyCustomApp": ["E01", "E02", "E03", "E05", "E06", "E07", "E18", "E19"],
+    "losslessOntologyDeployment": ["E10"],
+    "nativeInheritance": ["E13"],
+    "dataAgentOntologyContext": ["E15"],
+    "snowflakeSourceFidelity": ["E16"],
+    "materializedGraph": ["E17"],
+    "comparativeBenefit": ["E21"],
+    "distributedDomainTopology": ["E22"]
+  },
+  "releaseClaimPolicy": "PASS is necessary but not sufficient: a result that correctly detects an unsupported feature passes experiment hygiene, not the feature claim. Claim gates also require the recorded feature outcome to be SUPPORTED with evidence.",
+  "sourceIdResolution": "See the public source register in TelcoIQ_Coding_Plan_v1.txt."
+}

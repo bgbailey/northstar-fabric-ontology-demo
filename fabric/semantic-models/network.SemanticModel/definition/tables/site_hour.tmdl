@@ -1,0 +1,133 @@
+/// Hourly monitoring for a bounded five-day window per month; overlapping outages are normalized.
+table 'Site Hour'
+	lineageTag: 9123c173-979f-53bc-bc2a-001b47c0de59
+
+	/// Monitored site minutes in the bounded telemetry window.
+	measure 'Eligible Site Minutes' = SUM('Site Hour'[eligible_minutes])
+		formatString: #,##0
+		displayFolder: Network Operations
+		lineageTag: bc2bd04a-bff0-5f57-98b6-c5c37bab819a
+		annotation MetricId = network.eligible_site_minutes
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Per-site interval-unioned unavailability, without double-counting overlaps.
+	measure 'Unavailable Site Minutes' = SUM('Site Hour'[unavailable_minutes])
+		formatString: #,##0
+		displayFolder: Network Operations
+		lineageTag: 620e4d44-602a-52f7-939a-2b5a642d3769
+		annotation MetricId = network.unavailable_site_minutes
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Eligible-minute weighted availability; not the mean of site percentages.
+	measure 'Availability Percent' = DIVIDE(SUM('Site Hour'[eligible_minutes]) - SUM('Site Hour'[unavailable_minutes]), SUM('Site Hour'[eligible_minutes]))
+		formatString: 0.00%
+		displayFolder: Network Operations
+		lineageTag: 3c525956-6906-5afb-9581-97eb54e06063
+		annotation MetricId = network.availability_percent
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Observed failed network sessions, distinct from digital checkout sessions.
+	measure 'Failed Sessions' = SUM('Site Hour'[failed_sessions])
+		formatString: #,##0
+		displayFolder: Network Operations
+		lineageTag: 329dd045-2cd1-5053-9114-3ab6d464ec40
+		annotation MetricId = network.failed_sessions
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Failed divided by monitored network sessions.
+	measure 'Service Degradation Percent' = DIVIDE(SUM('Site Hour'[failed_sessions]), SUM('Site Hour'[total_sessions]))
+		formatString: 0.00%
+		displayFolder: Network Operations
+		lineageTag: 102acea1-3cf7-5649-b03d-2e895dc703f8
+		annotation MetricId = network.service_degradation_percent
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: site_key
+		lineageTag: f4410510-5957-58cd-9c6e-ba7bedd4fd3c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 89fa53f7-7117-5970-a7f9-891874306897
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: b2719f02-08a1-52f1-ab9c-200e8ddf8e83
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'hour_start'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: hour_start
+		lineageTag: 988ee37b-028b-5e1d-a7fb-5159f440afb9
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Eligible minutes at the declared Site Hour grain.
+	column 'eligible_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: eligible_minutes
+		lineageTag: 6ee395b1-5540-5921-bb18-ab3cbb76927f
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Unavailable minutes at the declared Site Hour grain.
+	column 'unavailable_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: unavailable_minutes
+		lineageTag: c05ac306-70f0-5d14-afb5-09e22b2f67ea
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Failed sessions at the declared Site Hour grain.
+	column 'failed_sessions'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: failed_sessions
+		lineageTag: ca4390c9-4c63-5914-a218-036d691f614b
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Total sessions at the declared Site Hour grain.
+	column 'total_sessions'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: total_sessions
+		lineageTag: b8912a85-2ff7-534f-900e-ca3f34da7f19
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Site Hour' = entity
+		mode: directLake
+		source
+			entityName: site_hour
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

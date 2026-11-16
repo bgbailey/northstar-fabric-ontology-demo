@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: enterprise.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"enterprise.contracted_services", [Contracted Services],
+	"enterprise.monitored_service_minutes", [Monitored Service Minutes],
+	"enterprise.breached_services", [Breached Services],
+	"enterprise.sla_compliance", [SLA Compliance],
+	"enterprise.contracted_recurring_revenue", [Contracted Recurring Revenue],
+	"enterprise.eligible_credits", [Eligible Credits],
+	"enterprise.applied_credits", [Applied Credits],
+	"enterprise.credit_exposure", [Credit Exposure]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

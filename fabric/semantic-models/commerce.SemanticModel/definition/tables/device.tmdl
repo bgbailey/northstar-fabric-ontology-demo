@@ -1,0 +1,35 @@
+/// Device cohorts for checkout and finite inventory analysis.
+table 'Devices'
+	lineageTag: 3e46bbd9-eab5-5e35-bf4c-5a58c7127e03
+
+	/// Technical identity; join only through the declared mapping.
+	column 'device_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: device_key
+		lineageTag: 1f58e4a3-f9c0-5000-b369-f8bf52203894
+		isHidden
+		isAvailableInMdx: false
+		isKey
+		formatString: #,##0
+
+	/// Device name at the declared Devices grain.
+	column 'device_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: device_name
+		lineageTag: 8f7a07c2-84fb-5f0f-8124-0c32d834a883
+
+	/// Operating system at the declared Devices grain.
+	column 'operating_system'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: operating_system
+		lineageTag: 034b5f60-13b9-5100-a644-372847b85dca
+
+	partition 'Devices' = entity
+		mode: directLake
+		source
+			entityName: device
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

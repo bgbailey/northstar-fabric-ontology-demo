@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0",
+  "status": "ACTUAL_SEPARATE_NATIVE_AND_BUSINESS_ANSWER_SOURCE_VERIFIED",
+  "stream": "executive",
+  "itemAlias": "northstar-executive",
+  "displayName": "Northstar_Executive_Metric_Reuse",
+  "ontologyGeneration": 2,
+  "separateNativeItemRequired": true,
+  "filteredCustomer360ViewIsNotEquivalent": true,
+  "preserveCustomer360": true,
+  "sourceModels": ["subscriptions", "finance"],
+  "businessDomains": ["Customers", "Subscriptions", "Finance"],
+  "entities": [
+    {"name": "subscriptions_Accounts", "model": "subscriptions", "table": "account"},
+    {"name": "subscriptions_SubscriptionMonth", "model": "subscriptions", "table": "subscription_month"},
+    {"name": "finance_Accounts", "model": "finance", "table": "account"},
+    {"name": "finance_AccountMonth", "model": "finance", "table": "account_month"}
+  ],
+  "sourceMetrics": [
+    "subscriptions.active_lines_eom",
+    "finance.recognized_service_revenue",
+    "finance.contribution_margin"
+  ],
+  "sourceMetricsArePresenterFocus": true,
+  "preserveAllGeneratedSourceProxies": true,
+  "observedNativeSourceProxyCount": 14,
+  "acceptedNativeAnswer": {
+    "capturedAt": "2026-10-28T17:06:34.501820Z",
+    "sourceCheckedMatchingAccounts": 1,
+    "independentRegisteredSourcePopulation": 24,
+    "nativeMetricCellsMatched": 3,
+    "recordedPacket": ".copilot/docs/northstar-executive-native-demo-2026-10-28.json",
+    "rawSourceValueReviewIncluded": false,
+    "publicProjection": "Recorded packet retains original review hashes; private raw source evidence is not distributed.",
+    "nativeInternalQueryTraceExposed": false,
+    "ruleConsiderationProven": false
+  },
+  "nativeGenerationObservation": "Independent service readback returned four distinct backing tables, four entity types, three entity relationships and fourteen original source proxies. All three focus measures are present. Preserve the generated proxies instead of stripping calculations to match the agent's inaccurate three-proxy prose.",
+  "relationships": [
+    {
+      "from": "subscriptions_SubscriptionMonth",
+      "to": "subscriptions_Accounts",
+      "meaning": "Subscription-month rows belong to their actual customer account."
+    },
+    {
+      "from": "subscriptions_Accounts",
+      "to": "finance_Accounts",
+      "meaning": "Reviewed shared customer identity; display names are not join keys."
+    },
+    {
+      "from": "finance_AccountMonth",
+      "to": "finance_Accounts",
+      "meaning": "Finance measures remain at their original account-month grain."
+    }
+  ],
+  "rules": [
+    {
+      "name": "CustomerAndPeriodMeaning",
+      "statement": "Align the same registered customer and the same completed service month across the two sources. Shared names are not identity. Subscription-month and account-month have different source grains; do not directly multiply fact rows or sum month-end snapshots over time."
+    },
+    {
+      "name": "TrustedMeasuresAndReviewLimits",
+      "statement": "Reuse Active Lines EOM from Subscriptions/Subscription Month and Recognized Service Revenue and Contribution Margin from Finance/Account Month. Finance values are integer cents; recognized service revenue is not billed charges or booked merchandise. Missing, unmapped or unauthorized is not zero. A cross-domain review candidate is not a billing defect, causal conclusion or action authorization."
+    }
+  ],
+  "businessQuestion": "For July 2026, which registered customer accounts have zero source-owned Active Lines EOM, positive Recognized Service Revenue and negative Contribution Margin? Return account IDs and the three original measure values, with their source models and home tables. Preserve customer identity, the common service month and missing-value meaning. Explain what to investigate without claiming a billing error, cause or automatic action.",
+  "nativeBootstrap": {
+    "route": "Published generation2 Create Ontology followed by documented semantic-model generation through the ontology agent.",
+    "planBeforeAct": true,
+    "reviewExactSmallDraftBeforeApply": true,
+    "sourceCalculationsCopiedOrEdited": false,
+    "legacyOntologyRecipesAllowed": false,
+    "largeOntologyDefinitionMayBeReplaced": false
+  },
+  "boundaries": [
+    "This file is a structural authoring contract and recorded generation observation, not an actual native definition, answer or reader grant.",
+    "Use the two existing AI-prepared showcase models, not new copies or the historical miniature P0 models.",
+    "Source-backed metrics require actual native generation and independent source/home readback.",
+    "Keep full composite source grains even where native scalar keys are absent.",
+    "The full eight-model Customer360 stream remains independently available.",
+    "Preserve all existing workspaces and item identities; no workspace deletion or capacity action.",
+    "Cost is not a completion gate. Authentication, exact operations, correctness and technical validity remain enforced."
+  ]
+}

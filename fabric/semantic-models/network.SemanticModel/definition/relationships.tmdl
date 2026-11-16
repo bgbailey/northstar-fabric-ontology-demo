@@ -1,0 +1,103 @@
+relationship 7dd9446c-fb2f-5acc-97bb-21a6c5c0a6c0
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Incidents'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 0e6081e9-cbff-5c8c-a9d0-6eb5a5474cbb
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Incidents'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 0a3fa4d1-1a7f-5d80-9f58-fd2eea058a0e
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Incidents'.'site_key'
+	toColumn: 'Sites'.'site_key'
+
+relationship 347d1a38-1514-5946-a318-bda78f3e6aa7
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Hour'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship b1f18f52-a872-5118-982d-dc28b0a984b2
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Hour'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship d747f8c3-6c16-591d-8ed8-84dded7c5fa7
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Hour'.'site_key'
+	toColumn: 'Sites'.'site_key'
+
+relationship 750f48f7-0149-5b2b-a8fb-5f9205cda65e
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Day'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 01730da2-e326-5102-96d0-682476062400
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Day'.'snapshot_date'
+	toColumn: 'Calendar'.'date'
+
+relationship 06ad0d0c-f998-5297-b1a3-67a9676f39fb
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Site Day'.'site_key'
+	toColumn: 'Sites'.'site_key'
+
+relationship 659ba55a-86d0-52a3-b2d1-3b26d363938a
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Site Exposure'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 43132ee6-8653-5a88-921f-b5b0d12507ff
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Site Exposure'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship b6986b61-6d43-5c33-8e56-79b83e7f43ee
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Site Exposure'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship b2aa75d6-9e84-570b-83a2-075cca13c917
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Site Exposure'.'site_key'
+	toColumn: 'Sites'.'site_key'

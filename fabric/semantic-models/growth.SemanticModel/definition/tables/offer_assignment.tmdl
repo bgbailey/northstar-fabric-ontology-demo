@@ -1,0 +1,196 @@
+/// Assignment-unit outcomes; randomized eligible treatment/control separate from observational targeting.
+table 'Offer Assignments'
+	lineageTag: fe438bc0-a9dd-572a-a240-0e6cb1bd4829
+
+	/// Eligible assignment units; separate campaign populations before interpretation.
+	measure 'Eligible Population' = SUM('Offer Assignments'[eligible])
+		formatString: #,##0
+		displayFolder: Offers and Retention
+		lineageTag: d3c3e0a4-ecc5-5bf5-8934-2d5f74352631
+		annotation MetricId = growth.eligible_population
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Eligible treatment units actually assigned an offer.
+	measure 'Assigned Population' = SUM('Offer Assignments'[assigned])
+		formatString: #,##0
+		displayFolder: Offers and Retention
+		lineageTag: 8bb63784-e4bf-535b-83c6-d144e17f2f58
+		annotation MetricId = growth.assigned_population
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Assigned eligible offers accepted.
+	measure 'Accepted Offers' = SUM('Offer Assignments'[accepted])
+		formatString: #,##0
+		displayFolder: Offers and Retention
+		lineageTag: 8bc8547d-883d-59a8-87ac-d0815967c5ee
+		annotation MetricId = growth.accepted_offers
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Accepted divided by assigned offers, not campaign touches.
+	measure 'Acceptance Rate' = DIVIDE(SUM('Offer Assignments'[accepted]), SUM('Offer Assignments'[assigned]))
+		formatString: 0.00%
+		displayFolder: Offers and Retention
+		lineageTag: cd901c98-1dd1-51c4-aac5-3d9a29947835
+		annotation MetricId = growth.acceptance_rate
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Observed accepted-offer cost.
+	measure 'Offer Cost' = SUM('Offer Assignments'[offer_cost_cents])
+		formatString: #,##0" cents"
+		displayFolder: Offers and Retention
+		lineageTag: 056be58a-8183-507f-bb86-d49812bf236a
+		annotation MetricId = growth.offer_cost
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Retained eligible randomized assignment units; observational campaign excluded.
+	measure 'Treatment Retained' = CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1))
+		formatString: #,##0
+		displayFolder: Offers and Retention
+		lineageTag: 1fc05f84-b001-5adb-ba7f-f43eadf6d0f4
+		annotation MetricId = growth.treatment_retained
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Retained eligible randomized assignment units; observational campaign excluded.
+	measure 'Control Retained' = CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0))
+		formatString: #,##0
+		displayFolder: Offers and Retention
+		lineageTag: 86d34bd2-c105-5b54-b368-e33d24be5226
+		annotation MetricId = growth.control_retained
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Eligible randomized intention-to-treat retention rate difference; null if either arm is absent. Not an observational causal claim.
+	measure 'Retention Lift' = VAR _t = DIVIDE(CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1)), CALCULATE(COUNTROWS('Offer Assignments'), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1))) VAR _c = DIVIDE(CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0)), CALCULATE(COUNTROWS('Offer Assignments'), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0))) RETURN IF(NOT ISBLANK(_t) && NOT ISBLANK(_c), _t - _c)
+		formatString: 0.00%
+		displayFolder: Offers and Retention
+		lineageTag: 64468bc0-1d5b-54fa-bb22-ab458ebcc833
+		annotation MetricId = growth.retention_lift
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'assignment_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: assignment_key
+		lineageTag: 6a7467eb-d89f-5c17-8aa2-ee5c32f46a44
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 766b10dd-02d3-5355-8527-6ffd74c88c07
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: b24961d7-238e-5e5c-a941-77f21ad4768b
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 2c54e978-e96a-5293-9a3a-38f639b206a8
+		formatString: yyyy-MM-dd
+
+	/// Technical identity; join only through the declared mapping.
+	column 'campaign_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: campaign_key
+		lineageTag: 2fa2c9e6-6c05-58d9-b16a-e57fe056285b
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Eligible at the declared Offer Assignments grain.
+	column 'eligible'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: eligible
+		lineageTag: 0e0bbd54-70e9-5b3b-b427-1cd62fde4cb8
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Assigned at the declared Offer Assignments grain.
+	column 'assigned'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: assigned
+		lineageTag: 77e45f3c-2bac-5567-8b85-29c0d07a5279
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Treatment at the declared Offer Assignments grain.
+	column 'treatment'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: treatment
+		lineageTag: b83524fe-2ef7-5220-85fe-614feb86caaa
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Randomized at the declared Offer Assignments grain.
+	column 'randomized'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: randomized
+		lineageTag: 350eb6e7-0781-59e3-87b8-aff83d150073
+
+	/// Accepted at the declared Offer Assignments grain.
+	column 'accepted'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: accepted
+		lineageTag: 92e27a77-fd00-5f96-b64d-6d39c6d429e6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'offer_cost_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: offer_cost_cents
+		lineageTag: bf05a3ef-ad2d-5c41-97cf-b6400e44af7a
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Retained at the declared Offer Assignments grain.
+	column 'retained'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: retained
+		lineageTag: 1269c1f5-eda0-58c2-90eb-d563f2307089
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Offer Assignments' = entity
+		mode: directLake
+		source
+			entityName: offer_assignment
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

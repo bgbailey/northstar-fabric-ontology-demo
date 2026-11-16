@@ -1,0 +1,79 @@
+relationship fc3a5e81-0bde-5773-9a50-59347b9fd858
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Account Month'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 27fc897f-0c31-59f9-89ff-6693e0133137
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Account Month'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 28485345-f778-5171-8303-237ff3c04850
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Account Month'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship f87d3066-3d47-573a-93d5-f0c8a9a17e6b
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Billing Account Map'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship dd551057-659a-5759-b1e2-f436c740c5bd
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Charge Lines'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship ec08bc3f-3b2f-5b19-8f8a-77410fe2fbb7
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Charge Lines'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 927e2471-cd9a-57d6-8070-812d3e0d3f2e
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Charge Lines'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship d4253dce-d5c3-5dd4-81f0-1cf810001d9e
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Credits'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship f3b446bb-be35-5f88-864f-a8c4b24d759a
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Credits'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship c14462cd-472e-5da6-86dc-d73acdfa5a90
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Credits'.'month'
+	toColumn: 'Calendar'.'date'

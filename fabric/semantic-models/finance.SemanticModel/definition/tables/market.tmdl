@@ -1,0 +1,34 @@
+/// Four synthetic home markets; home market is not network exposure.
+table 'Markets'
+	lineageTag: db4f5a6f-e7e5-5b44-9d4b-c56bd6da2a0c
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: bd789a08-04f0-5ae4-92ca-e8b2b21a3faf
+		isHidden
+		isAvailableInMdx: false
+		isKey
+
+	/// Market name at the declared Markets grain.
+	column 'market_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_name
+		lineageTag: 0500b425-8bc4-5875-a67c-c27f7a1b3357
+
+	/// Region at the declared Markets grain.
+	column 'region'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+		lineageTag: 468389ab-47d5-5797-93a3-b23538a91cd7
+
+	partition 'Markets' = entity
+		mode: directLake
+		source
+			entityName: market
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

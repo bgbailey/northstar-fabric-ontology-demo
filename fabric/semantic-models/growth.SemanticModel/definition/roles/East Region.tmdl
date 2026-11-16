@@ -1,0 +1,9 @@
+/// Synthetic East-region restriction; membership absent and source enforcement NOT_RUN.
+role 'East Region'
+	modelPermission: read
+
+	tablePermission 'Offer Assignments' = 'Offer Assignments'[market_id] = "M01"
+	tablePermission 'Offer Outcomes' = 'Offer Outcomes'[market_id] = "M01"
+	tablePermission 'Campaign Touches' = 'Campaign Touches'[market_id] = "M01"
+	tablePermission 'Accounts' = 'Accounts'[region] = "East"
+	tablePermission 'Markets' = 'Markets'[region] = "East"

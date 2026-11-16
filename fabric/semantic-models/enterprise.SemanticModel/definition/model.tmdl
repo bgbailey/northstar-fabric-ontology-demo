@@ -1,0 +1,23 @@
+/// Enterprise Services; undeployed template requiring approved OneLake binding.
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	annotation LiveDax = NOT_RUN
+	annotation DirectLake = NOT_RUN
+	annotation SourceRls = NOT_RUN
+	annotation SourceRevision = 1.0
+
+ref table 'Contracts'
+ref table 'Service Site Map'
+ref table 'Service Month'
+ref table 'SLA Evaluation'
+ref table 'Applied Credits'
+ref table 'Accounts'
+ref table 'Calendar'
+ref table 'Markets'
+ref table 'Services'
+ref table 'Sites'
+
+ref role 'East Region'

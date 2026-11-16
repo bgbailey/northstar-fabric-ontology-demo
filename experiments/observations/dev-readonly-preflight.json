@@ -1,0 +1,26 @@
+{
+  "observationType": "ACTUAL_READ_ONLY_DEV_PREFLIGHT",
+  "observedAt": "2026-09-29T11:30:00-04:00",
+  "identityBoundary": "Required DEV user, tenant and subscription verified",
+  "credentialLocation": "Isolated nonsynced OS-local Azure CLI cache; not repository or OneDrive",
+  "operations": [
+    "Verify isolated Azure CLI account metadata",
+    "GET /v1/capacities with skill-attribution header and pagination",
+    "GET /v1/workspaces with skill-attribution header and pagination"
+  ],
+  "observed": {
+    "visibleCapacities": 1,
+    "sku": "F8",
+    "region": "Central US",
+    "state": "Inactive",
+    "existingAssignedWorkspaces": 12,
+    "workspaceRecordsIncludingPersonal": 13
+  },
+  "privateIdentifiersOmitted": true,
+  "cloudMutations": 0,
+  "sourceDataQueries": 0,
+  "paidApplicationModelCalls": 0,
+  "liveExperimentStatuses": "E01-E24 remain NOT_RUN",
+  "blocker": "No active capacity; resuming the shared capacity or creating a dedicated one requires exact explicit approval",
+  "nextDecision": "Select proposed capacity strategy and user-set runtime/spending/TTL terms before priced mutation proposal"
+}

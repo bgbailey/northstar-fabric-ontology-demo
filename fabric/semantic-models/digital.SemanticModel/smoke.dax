@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: digital.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"digital.sessions", [Sessions],
+	"digital.authenticated_sessions", [Authenticated Sessions],
+	"digital.eligible_checkout_sessions", [Eligible Checkout Sessions],
+	"digital.successful_checkout_sessions", [Successful Checkout Sessions],
+	"digital.checkout_conversion", [Checkout Conversion],
+	"digital.failed_checkouts", [Failed Checkouts],
+	"digital.digital_active_accounts", [Digital Active Accounts],
+	"digital.median_journey_duration", [Median Journey Duration]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

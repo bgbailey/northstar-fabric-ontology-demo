@@ -1,0 +1,7 @@
+{
+  "task": "TQ-004",
+  "acceptanceStatus": "ACCEPTED_LOCAL_ONLY",
+  "accepted": true,
+  "provenance": "SANITIZED_ACCEPTANCE_FORMAT_FIXTURE",
+  "limits": "Tests the local dependency receipt format only; not live evidence, operator approval or authorization."
+}

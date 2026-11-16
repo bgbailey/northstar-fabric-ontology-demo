@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "approved": false,
+  "targetAlias": "APPROVED_LAB_ONLY",
+  "privateTargetConfiguration": "Must be supplied outside repository and OneDrive",
+  "artifactSha256": null,
+  "operations": [
+    "Create one dedicated lab workspace on an explicitly selected existing capacity, or use an approved isolated workspace",
+    "Create one lab-owned managed-Delta lakehouse and load synthetic miniature only",
+    "Create complete subscriptions and finance semantic models",
+    "Generate one native ontology and add second model through reviewed portal agent action",
+    "Read native and GA IQ tool inventories and run bounded synthetic source queries"
+  ],
+  "excluded": [
+    "Capacity creation, scaling, pause/resume or shared-capacity settings",
+    "Tenant setting changes or role/permission grants",
+    "App registrations, consent or reader creation without a separate exact approval",
+    "Paid application-model calls",
+    "Standard-scale data generation/upload",
+    "GitHub publication"
+  ],
+  "cost": {
+    "estimate": null,
+    "estimateBasis": "NOT_ESTIMATED: target SKU/region/ownership/utilization unknown",
+    "cap": null,
+    "currency": "USD"
+  },
+  "ttlHours": null,
+  "teardown": {
+    "owner": null,
+    "mechanism": null,
+    "policy": "Delete only manifest-owned items after preview/confirmation; never delete/pause shared capacity",
+    "verifyResiduals": true
+  }
+}

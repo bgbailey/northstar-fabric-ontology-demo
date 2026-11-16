@@ -1,0 +1,34 @@
+{
+  "observationType": "LIVE_PUBLIC_RETAIL_PRICE_LOOKUP",
+  "date": "2026-09-29",
+  "source": "https://prices.azure.com/api/retail/prices",
+  "apiVersion": "2023-01-01-preview",
+  "region": "centralus",
+  "currency": "USD",
+  "fabricMeterRowsRetrieved": 106,
+  "baseConsumptionMeters": 92,
+  "basePerCUHour": 0.18,
+  "sparkAutoscaleSeparateMeterPerCUHour": 0.18,
+  "sparkAutoscaleEnabledByThisLab": false,
+  "hotStoragePerGBMonth": 0.023,
+  "oneYearReservationTotalPerCU": 938.0,
+  "threeYearReservationTotalPerCU": 2814.0,
+  "reservationPurchaseProposed": false,
+  "selectedScenario": {
+    "sku": "F8",
+    "capacityUnits": 8,
+    "userSelectedMaximumActiveHours": 48,
+    "retailComputePerHour": 1.44,
+    "retailComputeWindowBaseline": 69.12,
+    "userSpendingCap": null,
+    "mutationApproved": false
+  },
+  "limitations": [
+    "Retail estimate, not an actual invoice or a hard Azure spending limit.",
+    "Taxes, credits, reservations and existing billing arrangements not inspected.",
+    "OneLake storage continues separately.",
+    "Pausing bills accumulated overages and smoothed operations; other shared workloads make total exposure unknown.",
+    "No paid application-model calls or autoscale enablement are proposed.",
+    "A durable pause/teardown mechanism must be verified before resume."
+  ]
+}

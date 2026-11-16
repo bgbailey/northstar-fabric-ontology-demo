@@ -1,0 +1,60 @@
+/// Contiguous daily calendar covering service and late posting dates.
+table 'Calendar'
+	lineageTag: aff4bf63-439c-5262-aa5f-6124c54ba8bc
+	dataCategory: Time
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'date'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: date
+		lineageTag: 4cbab3e1-cefd-5447-b200-a1c8fdbdbed3
+		isKey
+		formatString: yyyy-MM-dd
+
+	/// Year at the declared Calendar grain.
+	column 'year'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: year
+		lineageTag: baed4c1c-3109-5bb9-be10-f97e14445bf3
+		formatString: #,##0
+
+	/// Quarter at the declared Calendar grain.
+	column 'quarter'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: quarter
+		lineageTag: 74681d8b-c62d-56e5-b4f4-ea73719c739b
+		formatString: #,##0
+
+	/// Month number at the declared Calendar grain.
+	column 'month_number'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: month_number
+		lineageTag: 455b73ab-14a1-5e12-b8ba-9cc7c68df0ff
+		formatString: #,##0
+
+	/// Month name at the declared Calendar grain.
+	column 'month_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: month_name
+		lineageTag: f61bf0af-cf4e-5102-9615-eba37d1123ec
+		sortByColumn: 'month_number'
+
+	/// Day at the declared Calendar grain.
+	column 'day'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: day
+		lineageTag: 7f5a0ac5-ccee-5b53-9a66-59821d84cf37
+		formatString: #,##0
+
+	partition 'Calendar' = entity
+		mode: directLake
+		source
+			entityName: calendar_date
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

@@ -1,0 +1,65 @@
+{
+  "status": "DEPLOYED_VERIFIED_INFERENCE_NOT_RUN",
+  "selectedByUser": "Newer cost-performant GPT, for example GPT-6 Luna",
+  "model": "gpt-6-luna",
+  "version": "2026-09-22",
+  "resourceRegion": "centralus",
+  "proposedSku": "DataZoneStandard",
+  "proposedCapacity": 100,
+  "availability": {
+    "source": "Read-only DEV Azure Cognitive Services regional model and quota APIs",
+    "lifecycleStatus": "GenerallyAvailable",
+    "chatCompletion": true,
+    "responses": true,
+    "dataZoneQuotaLimitUnits": 333,
+    "dataZoneQuotaUsedUnits": 0,
+    "notAGuaranteeOfAllocation": true
+  },
+  "context": {
+    "total": 1050000,
+    "input": 922000,
+    "maxOutput": 128000,
+    "source": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure#gpt-6"
+  },
+  "pricesUSDPerMillionTokens": {
+    "dataZoneShortInput": 0.11,
+    "dataZoneShortOutput": 0.55,
+    "dataZoneLongInput": 0.22,
+    "dataZoneLongOutput": 0.825,
+    "globalShortInput": 0.10,
+    "globalShortOutput": 0.50,
+    "globalLongInput": 0.20,
+    "globalLongOutput": 0.75,
+    "source": "https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview",
+    "crossCheck": "https://azure.microsoft.com/en-us/pricing/details/azure-openai/",
+    "meterRegion": "centralus",
+    "effectiveDate": "2026-09-01",
+    "useConservativeLongContextRatesForReservations": true
+  },
+  "operationProposal": {
+    "create": "One new deployment within the existing verified DEV Azure OpenAI resource",
+    "modifyExistingDeployments": false,
+    "permissionChanges": false,
+    "fabricCapacityChanges": false,
+    "inferenceAuthorized": false,
+    "retentionHours": 24,
+    "teardown": "Delete only the new deployment after the approved review window; retain the pre-existing resource and GPT-5.4 deployment",
+    "cost": "Pay-per-token deployment, no inference calls in this creation-only proposal; usage needs separate explicit request/token/cost approval"
+  },
+  "deploymentObservation": {
+    "observedAt": "2026-10-02T13:32:25.128064+00:00",
+    "provisioningState": "Succeeded",
+    "createHttpStatus": 201,
+    "requestSha256": "1a039506a121e0e81a5c5dc58759680986369ee623513b0de7baaa160f4bcfd4",
+    "cleanupDueAt": "2026-10-03T13:32:25.128064+00:00",
+    "inferenceCalls": 0,
+    "existingResourceAndDeploymentModified": false,
+    "permissionOrFabricCapacityChanges": false
+  },
+  "limitations": [
+    "Existing private endpoint and resource identities are intentionally not committed.",
+    "No empirical reasoning/latency superiority is asserted.",
+    "JSON-mode behavior, expected response model string and token audience still need a bounded approved inference probe.",
+    "Region/model listing does not guarantee deployment allocation."
+  ]
+}

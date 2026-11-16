@@ -1,0 +1,12 @@
+/// Target workspace placeholder. No tenant identifiers or credentials are embedded.
+expression WorkspaceId = "<WORKSPACE_ID>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+/// Target lakehouse placeholder; replace only in an approved deployment artifact.
+expression LakehouseId = "<LAKEHOUSE_ID>" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+/// Shared OneLake navigation expression used by all entity partitions.
+expression 'OneLake Source' =
+	let
+		Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/" & WorkspaceId & "/" & LakehouseId, [HierarchicalNavigation=true])
+	in
+		Source

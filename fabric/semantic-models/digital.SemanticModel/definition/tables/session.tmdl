@@ -1,0 +1,203 @@
+/// Session grain; anonymous identity stays null. Eligible checkout is the conversion denominator.
+table 'Sessions'
+	lineageTag: 49057c41-d0d4-565f-b0eb-07abb559a1b3
+
+	/// Observed sessions including anonymous browsing.
+	measure 'Sessions' = COUNTROWS('Sessions')
+		formatString: #,##0
+		displayFolder: Digital Experience
+		lineageTag: b92bb326-2440-52ae-85c1-efeb637a0e91
+		annotation MetricId = digital.sessions
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Sessions with resolved authenticated identity.
+	measure 'Authenticated Sessions' = CALCULATE(COUNTROWS('Sessions'), KEEPFILTERS('Sessions'[authenticated] = TRUE()))
+		formatString: #,##0
+		displayFolder: Digital Experience
+		lineageTag: 5517b3f1-aad3-5f0f-b1fc-fe4416c61eba
+		annotation MetricId = digital.authenticated_sessions
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Sessions eligible to attempt checkout.
+	measure 'Eligible Checkout Sessions' = SUM('Sessions'[eligible_checkout])
+		formatString: #,##0
+		displayFolder: Digital Experience
+		lineageTag: 6c6eeb13-ffb6-5871-8943-0747ccf87790
+		annotation MetricId = digital.eligible_checkout_sessions
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Successful eligible checkouts; not necessarily placed orders.
+	measure 'Successful Checkout Sessions' = SUM('Sessions'[successful_checkout])
+		formatString: #,##0
+		displayFolder: Digital Experience
+		lineageTag: ec19249c-c7c2-5975-bf2d-535055cd7221
+		annotation MetricId = digital.successful_checkout_sessions
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Successful divided by eligible checkout sessions.
+	measure 'Checkout Conversion' = DIVIDE(SUM('Sessions'[successful_checkout]), SUM('Sessions'[eligible_checkout]))
+		formatString: 0.00%
+		displayFolder: Digital Experience
+		lineageTag: a4af351c-8aa2-580e-b147-163ff8b344e0
+		annotation MetricId = digital.checkout_conversion
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Observed eligible failures; abandonment is not a lost-order assertion.
+	measure 'Failed Checkouts' = SUM('Sessions'[failed_checkout])
+		formatString: #,##0
+		displayFolder: Digital Experience
+		lineageTag: 8cb7687c-0fee-57aa-b7d1-645e0ba12401
+		annotation MetricId = digital.failed_checkouts
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Distinct resolved accounts; anonymous/null identities are excluded.
+	measure 'Digital Active Accounts' = COUNTROWS(FILTER(VALUES('Sessions'[account_key]), NOT ISBLANK('Sessions'[account_key])))
+		formatString: #,##0.00
+		displayFolder: Digital Experience
+		lineageTag: 490356ce-113e-517e-a13b-fd38b396b116
+		annotation MetricId = digital.digital_active_accounts
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Median of session durations in the requested scope; never average medians.
+	measure 'Median Journey Duration' = MEDIAN('Sessions'[duration_seconds])
+		formatString: #,##0.00
+		displayFolder: Digital Experience
+		lineageTag: 4f119e9e-f497-5ce5-a477-c7d347a10beb
+		annotation MetricId = digital.median_journey_duration
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'session_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: session_key
+		lineageTag: 1aa412bb-beb0-5102-bdca-7153fce1b436
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 029e222e-9991-5b67-a89a-aa978805f20a
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: abef82f1-afc6-54c4-a06e-ebebb56001bc
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 9d25ff2c-46a7-5286-99d7-70a91e4febe3
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'started_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: started_at
+		lineageTag: e671ffbd-dbb9-5c96-945c-862fac07a481
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Technical identity; join only through the declared mapping.
+	column 'anonymous_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: anonymous_id
+		lineageTag: 1a1a167a-c7a9-58b1-8b80-c6a7f2f6d992
+		isHidden
+		isAvailableInMdx: false
+
+	/// Authenticated at the declared Sessions grain.
+	column 'authenticated'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: authenticated
+		lineageTag: fc77e2a8-ad13-5b2d-b231-1822e6cfe2b8
+
+	/// Eligible checkout at the declared Sessions grain.
+	column 'eligible_checkout'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: eligible_checkout
+		lineageTag: 4b6d3602-36da-5a2d-9bbd-5f4f23d25fd6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Successful checkout at the declared Sessions grain.
+	column 'successful_checkout'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: successful_checkout
+		lineageTag: 3c069f3e-b5ff-5e7f-b281-9712764a180e
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Failed checkout at the declared Sessions grain.
+	column 'failed_checkout'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: failed_checkout
+		lineageTag: 2eb67db4-8d0e-567f-b873-ba925ee35a71
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Duration seconds at the declared Sessions grain.
+	column 'duration_seconds'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: duration_seconds
+		lineageTag: 55a9f331-b2d7-515e-8905-6b342fe431f5
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'device_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: device_key
+		lineageTag: acc6e8c0-fb60-5d92-8f6f-88cfb1dd8327
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Release version at the declared Sessions grain.
+	column 'release_version'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: release_version
+		lineageTag: 6377a4fd-6fca-5006-94d4-be15b3394680
+
+	partition 'Sessions' = entity
+		mode: directLake
+		source
+			entityName: session
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

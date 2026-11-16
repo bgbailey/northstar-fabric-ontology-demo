@@ -1,0 +1,63 @@
+relationship 612ac562-ed68-5aa2-ae58-dd441482ba2d
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Sessions'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 63903c30-d604-54a1-886a-aab48975ad11
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Sessions'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship eb35fea3-286d-5740-bdd8-13d90ccf35a1
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Sessions'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 9293af97-314b-50fb-9a84-65b1152c2e07
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Sessions'.'device_key'
+	toColumn: 'Devices'.'device_key'
+
+relationship 595306c7-852b-5ad8-bd7e-70be2776c111
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Interaction Events'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship ef4aced7-272f-5ac8-8742-19ec9449e76b
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Interaction Events'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship b2205b80-e885-5b93-9d98-1b304d862480
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Interaction Events'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship f643f2bc-e517-5529-93ab-c61f7d26ff53
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Digital Identity Map'.'account_key'
+	toColumn: 'Accounts'.'account_key'

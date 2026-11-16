@@ -1,0 +1,1736 @@
+{
+  "version": "1.0",
+  "status": "DRAFT_NOT_APPLIED",
+  "scope": "All eight synthetic Northstar source models; local preparation, not deployed AI state.",
+  "sourceCatalogRevision": "4207c93cccc7fa887f24cbf7c13af07464c0bef34592da69ffb61e92334b6688",
+  "sourceSlaGuidanceSha256": "e6014f6a0ec35db09f6cd58d944e4c5853a945b709ebb9afc3c3a51b1440f1e0",
+  "generatorSha256": "67d174dee3a2fee7fd11965683a33268336adf1f807db0b1ae8e36f251a3f7e3",
+  "applicationRoute": "Review and apply through supported Prep data for AI tooling under exact authoring approval; preserve all existing user-authored Copilot parts. No deployed artifacts are written by this generator.",
+  "definitionContract": {
+    "reference": "https://learn.microsoft.com/en-us/rest/api/fabric/articles/item-management/definitions/semantic-model-definition",
+    "assessment": "Public REST documents Copilot packaging paths, not the complete content schemas reviewed here. No opaque schema/settings/version representation is invented or rewritten."
+  },
+  "aiSchemaReview": {
+    "automaticVisibilityChanges": false,
+    "guidance": "Review actual AI-visible objects and measure dependencies before proposing visibility changes. Local physical tables are not an exhaustive AI projection; never expose hidden fields or treat AI schema as authorization by default."
+  },
+  "comparisonArms": {
+    "flat": "Identical reviewed/applied model instructions, sourceMetricBindings and relevant scenarioGuidance. No draft is runtime authorization; characterize actual consumer propagation before claiming inheritance.",
+    "native": "Identical reviewed/applied model instructions, sourceMetricBindings and relevant scenarioGuidance. No draft is runtime authorization; characterize actual consumer propagation before claiming inheritance."
+  },
+  "modelInstructionReference": "https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-instructions",
+  "models": [
+    {
+      "id": "subscriptions",
+      "name": "Customer and Subscriptions",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Account and line populations, monthly subscription state and lifecycle movements.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Use 'Subscription Month'[Active Lines EOM] for closing subscriptions and 'Subscription Month'[Active Accounts EOM] for distinct closing accounts. They are different populations, not interchangeable customer counts.",
+        "'Subscription Month'[subscription_key] plus 'Subscription Month'[month] is line-month grain. 'Accounts'[account_key] identifies registered accounts; 'Accounts'[display_name] is not unique.",
+        "'Subscription Month'[Active Lines EOM], 'Subscription Month'[Opening Active Lines] and 'Subscription Month'[Average Active Lines] require one reporting month per result. Do not sum snapshots over time or sum monthly distinct account counts.",
+        "Use 'Subscription Month'[Churn Rate] for opening-cohort line churn and preserve its pooled denominator. It is not unique-customer cumulative churn or an average of monthly percentages.",
+        "'Subscription Month'[Gross Adds], 'Subscription Month'[Disconnects] and 'Subscription Month'[Net Adds] describe lifecycle movement. Ask whether quarter-active means active at quarter end, active at any point or a line-month population.",
+        "'Lifecycle Events'[event_at] is an event instant; 'Subscription Month'[month] is the source monthly state role. Do not relabel monthly snapshots as event-date flows."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "subscriptions.active_lines_eom",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Active Lines EOM",
+          "object": "'Subscription Month'[Active Lines EOM]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "semi_additive",
+          "description": "Active subscriptions at month end. Requires one month per result; never sum snapshots over time."
+        },
+        {
+          "metricId": "subscriptions.active_accounts_eom",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Active Accounts EOM",
+          "object": "'Subscription Month'[Active Accounts EOM]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "non_additive",
+          "description": "Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed."
+        },
+        {
+          "metricId": "subscriptions.gross_adds",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Gross Adds",
+          "object": "'Subscription Month'[Gross Adds]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Transitions from inactive to active."
+        },
+        {
+          "metricId": "subscriptions.disconnects",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Disconnects",
+          "object": "'Subscription Month'[Disconnects]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Disconnects from the opening-active cohort."
+        },
+        {
+          "metricId": "subscriptions.net_adds",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Net Adds",
+          "object": "'Subscription Month'[Net Adds]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Gross additions less cohort-qualified disconnects."
+        },
+        {
+          "metricId": "subscriptions.opening_active_lines",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Opening Active Lines",
+          "object": "'Subscription Month'[Opening Active Lines]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "semi_additive",
+          "description": "Lines active at the start of the month. Requires one month per result; never sum snapshots over time."
+        },
+        {
+          "metricId": "subscriptions.churn_rate",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Churn Rate",
+          "object": "'Subscription Month'[Churn Rate]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Opening-cohort disconnects divided by opening-active lines; recompute from pooled components."
+        },
+        {
+          "metricId": "subscriptions.average_active_lines",
+          "sourceModel": "subscriptions",
+          "homeTable": "Subscription Month",
+          "measureName": "Average Active Lines",
+          "object": "'Subscription Month'[Average Active Lines]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "lines",
+          "aggregation": "semi_additive",
+          "description": "Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "closing active lines",
+          "metricId": "subscriptions.active_lines_eom",
+          "object": "'Subscription Month'[Active Lines EOM]"
+        },
+        {
+          "term": "active customer accounts",
+          "metricId": "subscriptions.active_accounts_eom",
+          "object": "'Subscription Month'[Active Accounts EOM]"
+        },
+        {
+          "term": "line churn",
+          "metricId": "subscriptions.churn_rate",
+          "object": "'Subscription Month'[Churn Rate]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": []
+    },
+    {
+      "id": "finance",
+      "name": "Billing and Finance",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Recognized service revenue, billed and posted amounts, attributed cost and account-period margin.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Use 'Account Month'[Recognized Service Revenue] and 'Account Month'[Contribution Margin] on 'Account Month' for account-level priority. Both are cents; 'Account Month' is account_key plus service month grain.",
+        "'Account Month'[Recognized Service Revenue] is before service-month credits. 'Account Month'[Contribution Margin] is recognized revenue less service-month credits and attributed service cost; 'Account Month'[Margin Percent] is a pooled ratio, not an average of account ratios.",
+        "'Credits'[Posted Credits] on 'Credits' uses posting month. 'Credits'[service_month] is separate, and Credits has no contract_key; do not join credits to SLA contracts.",
+        "'Billing Account Map' uses half-open validity. billing_key is not account_key, even when integers match. Prefer the canonical account_key already present in Account Month.",
+        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one Finance row per selected account-month, regardless of the number of affected contracts."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "finance.recognized_service_revenue",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Recognized Service Revenue",
+          "object": "'Account Month'[Recognized Service Revenue]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Recognized service revenue before service-month credits, in integer cents."
+        },
+        {
+          "metricId": "finance.billed_charges",
+          "sourceModel": "finance",
+          "homeTable": "Charge Lines",
+          "measureName": "Billed Charges",
+          "object": "'Charge Lines'[Billed Charges]",
+          "sourceGrain": [
+            "charge_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Signed charges including reversals, grouped by service month; not cash receipts."
+        },
+        {
+          "metricId": "finance.posted_credits",
+          "sourceModel": "finance",
+          "homeTable": "Credits",
+          "measureName": "Posted Credits",
+          "object": "'Credits'[Posted Credits]",
+          "sourceGrain": [
+            "credit_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Credit amounts by posting month; service month remains a separate attribute."
+        },
+        {
+          "metricId": "finance.net_recognized_revenue",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Net Recognized Revenue",
+          "object": "'Account Month'[Net Recognized Revenue]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Recognized service revenue minus service-month credits."
+        },
+        {
+          "metricId": "finance.service_cost",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Service Cost",
+          "object": "'Account Month'[Service Cost]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Attributed monthly service cost, not device or offer cost."
+        },
+        {
+          "metricId": "finance.contribution_margin",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Contribution Margin",
+          "object": "'Account Month'[Contribution Margin]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Net recognized service revenue minus attributed service cost."
+        },
+        {
+          "metricId": "finance.margin_percent",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Margin Percent",
+          "object": "'Account Month'[Margin Percent]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages."
+        },
+        {
+          "metricId": "finance.revenue_per_active_line",
+          "sourceModel": "finance",
+          "homeTable": "Account Month",
+          "measureName": "Revenue per Active Line",
+          "object": "'Account Month'[Revenue per Active Line]",
+          "sourceGrain": [
+            "account_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents_per_line",
+          "aggregation": "non_additive",
+          "description": "Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "recognized service revenue",
+          "metricId": "finance.recognized_service_revenue",
+          "object": "'Account Month'[Recognized Service Revenue]"
+        },
+        {
+          "term": "account contribution margin",
+          "metricId": "finance.contribution_margin",
+          "object": "'Account Month'[Contribution Margin]"
+        },
+        {
+          "term": "posting-period credits",
+          "metricId": "finance.posted_credits",
+          "object": "'Credits'[Posted Credits]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": [
+        {
+          "object": "'Account Month'[Recognized Service Revenue]",
+          "description": "Recognized service revenue in integer cents before service-month credits. Query by account service month, not contract or posting date."
+        },
+        {
+          "object": "'Account Month'[Contribution Margin]",
+          "description": "Net recognized service revenue less attributed service cost, in cents by account-month. Not contract-attributed margin."
+        }
+      ]
+    },
+    {
+      "id": "digital",
+      "name": "Digital Experience",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Session journeys, eligible checkout conversion and time-valid digital identity.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Use 'Sessions'[Checkout Conversion] with its eligible checkout-session denominator, not all 'Sessions'[Sessions]. 'Sessions'[Successful Checkout Sessions] are not necessarily placed Commerce orders.",
+        "'Sessions'[session_key] is session grain. 'Sessions'[account_key] can be null; 'Sessions'[Digital Active Accounts] counts resolved accounts, not anonymous visitors.",
+        "'Digital Identity Map'[anonymous_id] resolves accounts only within 'Digital Identity Map'[valid_from] and 'Digital Identity Map'[valid_to]. Preserve half-open UTC validity and unresolved identities.",
+        "Use 'Sessions'[month] for the governed session measures. 'Sessions'[started_at] and 'Interaction Events'[event_at] are separate instants; event rows must not fan out session metrics.",
+        "'Sessions'[Median Journey Duration] is seconds in the requested source scope. Do not average medians or replace it with a mean of session durations.",
+        "'Sessions'[Failed Checkouts] is observed eligible failure, not an assertion of lost orders or lost revenue. Clarify failure, abandonment and conversion before choosing a measure.",
+        "A session-to-order association needs a reviewed attribution path and period. A shared account or a later order alone does not establish conversion attribution or root cause."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "digital.sessions",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Sessions",
+          "object": "'Sessions'[Sessions]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Observed sessions including anonymous browsing."
+        },
+        {
+          "metricId": "digital.authenticated_sessions",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Authenticated Sessions",
+          "object": "'Sessions'[Authenticated Sessions]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Sessions with resolved authenticated identity."
+        },
+        {
+          "metricId": "digital.eligible_checkout_sessions",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Eligible Checkout Sessions",
+          "object": "'Sessions'[Eligible Checkout Sessions]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Sessions eligible to attempt checkout."
+        },
+        {
+          "metricId": "digital.successful_checkout_sessions",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Successful Checkout Sessions",
+          "object": "'Sessions'[Successful Checkout Sessions]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Successful eligible checkouts; not necessarily placed orders."
+        },
+        {
+          "metricId": "digital.checkout_conversion",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Checkout Conversion",
+          "object": "'Sessions'[Checkout Conversion]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Successful divided by eligible checkout sessions."
+        },
+        {
+          "metricId": "digital.failed_checkouts",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Failed Checkouts",
+          "object": "'Sessions'[Failed Checkouts]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Observed eligible failures; abandonment is not a lost-order assertion."
+        },
+        {
+          "metricId": "digital.digital_active_accounts",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Digital Active Accounts",
+          "object": "'Sessions'[Digital Active Accounts]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "count",
+          "aggregation": "non_additive",
+          "description": "Distinct resolved accounts; anonymous/null identities are excluded."
+        },
+        {
+          "metricId": "digital.median_journey_duration",
+          "sourceModel": "digital",
+          "homeTable": "Sessions",
+          "measureName": "Median Journey Duration",
+          "object": "'Sessions'[Median Journey Duration]",
+          "sourceGrain": [
+            "session_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "device_key",
+            "release_version"
+          ],
+          "unit": "seconds",
+          "aggregation": "non_additive",
+          "description": "Median of session durations in the requested scope; never average medians."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "checkout conversion",
+          "metricId": "digital.checkout_conversion",
+          "object": "'Sessions'[Checkout Conversion]"
+        },
+        {
+          "term": "resolved digital accounts",
+          "metricId": "digital.digital_active_accounts",
+          "object": "'Sessions'[Digital Active Accounts]"
+        },
+        {
+          "term": "journey duration median",
+          "metricId": "digital.median_journey_duration",
+          "object": "'Sessions'[Median Journey Duration]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": []
+    },
+    {
+      "id": "care",
+      "name": "Customer Care",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Case contacts and resolution, source repeat-contact definitions and observed open-case snapshots.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "'Cases'[case_key] is case grain; 'Case Activities'[activity_key] is activity grain. Use 'Cases'[New Cases] for case volume, not activity counts.",
+        "'Cases'[month] is opening month. 'Cases'[Resolved Cases] counts source-resolved cases attributed to opening month, not a resolution-month flow; clarify a request for resolution-period throughput.",
+        "'Cases'[Repeat Contacts] uses the source seven-day, same-account, same-reason definition. 'Cases'[Contacted Accounts] is distinct accounts, not a sum of period-level distinct counts.",
+        "Use 'Cases'[First Contact Resolution] with its source resolved-case denominator. Unresolved cases do not become resolved failures or zero-duration observations.",
+        "'Cases'[Mean Resolution Hours] is hours among resolved cases; 'Cases'[resolved_at] and 'Cases'[opened_at] remain separate date roles and unresolved durations remain missing.",
+        "'Case Daily Snapshot'[Open Cases EOD] uses one observed 'Case Daily Snapshot'[snapshot_date]. Do not sum snapshots over dates or infer continuous observation between snapshots.",
+        "Keep one Finance account-period result when relating case cohorts to financial priority. Multiple cases or activities must not duplicate revenue; an association is not proof that care caused churn."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "care.open_cases_eod",
+          "sourceModel": "care",
+          "homeTable": "Case Daily Snapshot",
+          "measureName": "Open Cases EOD",
+          "object": "'Case Daily Snapshot'[Open Cases EOD]",
+          "sourceGrain": [
+            "case_key",
+            "snapshot_date"
+          ],
+          "dateRole": "snapshot_date",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "snapshot_date"
+          ],
+          "unit": "count",
+          "aggregation": "semi_additive",
+          "description": "Open cases at a specified observed day end. Requires one snapshot_date per result; never sum snapshots over time."
+        },
+        {
+          "metricId": "care.new_cases",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "New Cases",
+          "object": "'Cases'[New Cases]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Cases by opening month, independent of activity count."
+        },
+        {
+          "metricId": "care.resolved_cases",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "Resolved Cases",
+          "object": "'Cases'[Resolved Cases]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Cases resolved by source observation, attributed to opening month."
+        },
+        {
+          "metricId": "care.repeat_contacts",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "Repeat Contacts",
+          "object": "'Cases'[Repeat Contacts]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Subsequent same-reason contacts within seven days for the same account."
+        },
+        {
+          "metricId": "care.contacted_accounts",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "Contacted Accounts",
+          "object": "'Cases'[Contacted Accounts]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "count",
+          "aggregation": "non_additive",
+          "description": "Distinct contacted accounts, not the sum of period-level distinct counts."
+        },
+        {
+          "metricId": "care.escalated_cases",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "Escalated Cases",
+          "object": "'Cases'[Escalated Cases]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Cases escalated at least once."
+        },
+        {
+          "metricId": "care.first_contact_resolution",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "First Contact Resolution",
+          "object": "'Cases'[First Contact Resolution]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator."
+        },
+        {
+          "metricId": "care.mean_resolution_hours",
+          "sourceModel": "care",
+          "homeTable": "Cases",
+          "measureName": "Mean Resolution Hours",
+          "object": "'Cases'[Mean Resolution Hours]",
+          "sourceGrain": [
+            "case_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "reason"
+          ],
+          "unit": "hours",
+          "aggregation": "non_additive",
+          "description": "Mean observed duration among resolved cases; unresolved durations remain null."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "case volume",
+          "metricId": "care.new_cases",
+          "object": "'Cases'[New Cases]"
+        },
+        {
+          "term": "repeat contact",
+          "metricId": "care.repeat_contacts",
+          "object": "'Cases'[Repeat Contacts]"
+        },
+        {
+          "term": "open case snapshot",
+          "metricId": "care.open_cases_eod",
+          "object": "'Case Daily Snapshot'[Open Cases EOD]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": []
+    },
+    {
+      "id": "network",
+      "name": "Network Operations",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Monitored availability, physical-site incidents and valid serving-site line exposure.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "For incident identity and time use 'Incidents'[incident_key], [site_key], [start] and [end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
+        "For availability use 'Site Hour'[Availability Percent] on 'Site Hour'; 'Site Hour'[Eligible Site Minutes] and 'Site Hour'[Unavailable Site Minutes] are minute measures at site-hour grain. Do not sum overlapping raw incident durations.",
+        "'Incidents'[Major Incidents] counts major incident records by 'Incidents'[month]; incident start-month counts are not a cross-month exposure cohort.",
+        "Ask whether a request means incident count, site availability or affected enterprise services when 'impact' is unspecified. Use explicit UTC window overlap for affected-service analysis."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "network.eligible_site_minutes",
+          "sourceModel": "network",
+          "homeTable": "Site Hour",
+          "measureName": "Eligible Site Minutes",
+          "object": "'Site Hour'[Eligible Site Minutes]",
+          "sourceGrain": [
+            "site_key",
+            "hour_start"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "minutes",
+          "aggregation": "additive",
+          "description": "Monitored site minutes in the bounded telemetry window."
+        },
+        {
+          "metricId": "network.unavailable_site_minutes",
+          "sourceModel": "network",
+          "homeTable": "Site Hour",
+          "measureName": "Unavailable Site Minutes",
+          "object": "'Site Hour'[Unavailable Site Minutes]",
+          "sourceGrain": [
+            "site_key",
+            "hour_start"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "minutes",
+          "aggregation": "additive",
+          "description": "Per-site interval-unioned unavailability, without double-counting overlaps."
+        },
+        {
+          "metricId": "network.availability_percent",
+          "sourceModel": "network",
+          "homeTable": "Site Hour",
+          "measureName": "Availability Percent",
+          "object": "'Site Hour'[Availability Percent]",
+          "sourceGrain": [
+            "site_key",
+            "hour_start"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Eligible-minute weighted availability; not the mean of site percentages."
+        },
+        {
+          "metricId": "network.major_incidents",
+          "sourceModel": "network",
+          "homeTable": "Incidents",
+          "measureName": "Major Incidents",
+          "object": "'Incidents'[Major Incidents]",
+          "sourceGrain": [
+            "incident_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Raw major incident count; overlap is allowed."
+        },
+        {
+          "metricId": "network.exposed_lines",
+          "sourceModel": "network",
+          "homeTable": "Subscription Site Exposure",
+          "measureName": "Exposed Lines",
+          "object": "'Subscription Site Exposure'[Exposed Lines]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "non_additive",
+          "description": "Distinct active lines exposed to actual serving-site outages."
+        },
+        {
+          "metricId": "network.exposure_minutes",
+          "sourceModel": "network",
+          "homeTable": "Subscription Site Exposure",
+          "measureName": "Exposure Minutes",
+          "object": "'Subscription Site Exposure'[Exposure Minutes]",
+          "sourceGrain": [
+            "subscription_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "line_minutes",
+          "aggregation": "additive",
+          "description": "Interval-unioned unavailable minutes per exposed line, additive across lines."
+        },
+        {
+          "metricId": "network.failed_sessions",
+          "sourceModel": "network",
+          "homeTable": "Site Hour",
+          "measureName": "Failed Sessions",
+          "object": "'Site Hour'[Failed Sessions]",
+          "sourceGrain": [
+            "site_key",
+            "hour_start"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Observed failed network sessions, distinct from digital checkout sessions."
+        },
+        {
+          "metricId": "network.service_degradation_percent",
+          "sourceModel": "network",
+          "homeTable": "Site Hour",
+          "measureName": "Service Degradation Percent",
+          "object": "'Site Hour'[Service Degradation Percent]",
+          "sourceGrain": [
+            "site_key",
+            "hour_start"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "site_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Failed divided by monitored network sessions."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "monitored availability",
+          "metricId": "network.availability_percent",
+          "object": "'Site Hour'[Availability Percent]"
+        },
+        {
+          "term": "outage-exposed lines",
+          "metricId": "network.exposed_lines",
+          "object": "'Subscription Site Exposure'[Exposed Lines]"
+        },
+        {
+          "term": "line exposure minutes",
+          "metricId": "network.exposure_minutes",
+          "object": "'Subscription Site Exposure'[Exposure Minutes]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": [
+        {
+          "object": "'Incidents'",
+          "description": "One row per incident_key. UTC [start,end) intervals may overlap; union duration within the required scope. month is the incident start month."
+        },
+        {
+          "object": "'Sites'",
+          "description": "One physical site per site_key. Site identity is not account identity or customer home market."
+        }
+      ]
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce and Devices",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Orders, merchandise units and bookings, fulfillment, returns and observed device inventory.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "'Orders'[order_key] is order grain; 'Order Lines'[order_key] plus 'Order Lines'[line_number] is line grain. 'Orders'[Orders], 'Order Lines'[Booked Units] and 'Order Lines'[Fulfilled Units] are different measures.",
+        "'Order Lines'[Booked Revenue] is merchandise booking value in integer cents, not Finance recognized service revenue or Enterprise contracted recurring value. Clarify an unqualified request for revenue.",
+        "The governed order/line measures use source order month. 'Orders'[ordered_at], 'Orders'[fulfilled_at] and 'Orders'[returned_at] are different event roles; do not relabel an order-month result as a fulfillment- or return-period flow.",
+        "'Order Lines'[Device Return Rate] uses source returned units and fulfilled units attributed to order month. Do not replace its denominator with booked units or average rates.",
+        "'Store Device Day'[Inventory EOD] requires one observed 'Store Device Day'[snapshot_date]. Do not sum inventory over time or infer unobserved days as zero stock.",
+        "'Store Device Day'[Stockout Store Days] counts store-device-day observations, not distinct store days across devices. Finite observed stock is not a measured lost-sales estimate.",
+        "Checkout-session attribution requires the reviewed identity/time path. Orders and line rows must not fan out session conversion, and a stockout association does not prove the cause of a failed checkout."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "commerce.orders",
+          "sourceModel": "commerce",
+          "homeTable": "Orders",
+          "measureName": "Orders",
+          "object": "'Orders'[Orders]",
+          "sourceGrain": [
+            "order_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Placed orders, including subsequent cancellations."
+        },
+        {
+          "metricId": "commerce.units",
+          "sourceModel": "commerce",
+          "homeTable": "Order Lines",
+          "measureName": "Booked Units",
+          "object": "'Order Lines'[Booked Units]",
+          "sourceGrain": [
+            "order_key",
+            "line_number"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Booked merchandise units."
+        },
+        {
+          "metricId": "commerce.booked_revenue",
+          "sourceModel": "commerce",
+          "homeTable": "Order Lines",
+          "measureName": "Booked Revenue",
+          "object": "'Order Lines'[Booked Revenue]",
+          "sourceGrain": [
+            "order_key",
+            "line_number"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Booked device revenue, intentionally distinct from finance recognized service revenue."
+        },
+        {
+          "metricId": "commerce.cancellations",
+          "sourceModel": "commerce",
+          "homeTable": "Orders",
+          "measureName": "Cancellations",
+          "object": "'Orders'[Cancellations]",
+          "sourceGrain": [
+            "order_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Orders cancelled before fulfilment."
+        },
+        {
+          "metricId": "commerce.fulfilled_units",
+          "sourceModel": "commerce",
+          "homeTable": "Order Lines",
+          "measureName": "Fulfilled Units",
+          "object": "'Order Lines'[Fulfilled Units]",
+          "sourceGrain": [
+            "order_key",
+            "line_number"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Units actually fulfilled."
+        },
+        {
+          "metricId": "commerce.device_return_rate",
+          "sourceModel": "commerce",
+          "homeTable": "Order Lines",
+          "measureName": "Device Return Rate",
+          "object": "'Order Lines'[Device Return Rate]",
+          "sourceGrain": [
+            "order_key",
+            "line_number"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "store_key",
+            "device_key"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Returned units divided by fulfilled units, attributed to order month."
+        },
+        {
+          "metricId": "commerce.inventory_eod",
+          "sourceModel": "commerce",
+          "homeTable": "Store Device Day",
+          "measureName": "Inventory EOD",
+          "object": "'Store Device Day'[Inventory EOD]",
+          "sourceGrain": [
+            "store_key",
+            "device_key",
+            "snapshot_date"
+          ],
+          "dateRole": "snapshot_date",
+          "allowedDimensions": [
+            "store_key",
+            "device_key",
+            "market_id",
+            "month",
+            "snapshot_date"
+          ],
+          "unit": "units",
+          "aggregation": "semi_additive",
+          "description": "Physical units at one observed day end. Requires one snapshot_date per result; never sum snapshots over time."
+        },
+        {
+          "metricId": "commerce.stockout_store_days",
+          "sourceModel": "commerce",
+          "homeTable": "Store Device Day",
+          "measureName": "Stockout Store Days",
+          "object": "'Store Device Day'[Stockout Store Days]",
+          "sourceGrain": [
+            "store_key",
+            "device_key",
+            "snapshot_date"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "store_key",
+            "device_key",
+            "market_id",
+            "month",
+            "snapshot_date"
+          ],
+          "unit": "store_device_days",
+          "aggregation": "additive",
+          "description": "Store-device-day stockout observations; across devices this is not distinct store days."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "device booking value",
+          "metricId": "commerce.booked_revenue",
+          "object": "'Order Lines'[Booked Revenue]"
+        },
+        {
+          "term": "closing inventory",
+          "metricId": "commerce.inventory_eod",
+          "object": "'Store Device Day'[Inventory EOD]"
+        },
+        {
+          "term": "fulfilled device units",
+          "metricId": "commerce.fulfilled_units",
+          "object": "'Order Lines'[Fulfilled Units]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": []
+    },
+    {
+      "id": "growth",
+      "name": "Offers and Retention",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Eligible offer assignments, observed outcomes and qualified randomized retention comparisons.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "'Offer Assignments'[assignment_key] is an assignment unit. 'Offer Assignments'[Eligible Population] is eligible assignment units, not campaign touches or necessarily unique people across campaigns.",
+        "Use 'Offer Assignments'[Assigned Population], 'Offer Assignments'[Accepted Offers] and 'Offer Assignments'[Acceptance Rate] with their source eligible/assigned populations. A campaign touch is not an offer assignment or an acceptance.",
+        "'Offer Assignments'[Treatment Retained] and 'Offer Assignments'[Control Retained] use eligible randomized assignment units. 'Offer Assignments'[randomized] distinguishes randomized and observational populations.",
+        "'Offer Assignments'[Retention Lift] is the source randomized intention-to-treat retention-rate difference. Its raw fractional difference is displayed in percentage points, not relative percent uplift; either missing eligible arm makes it undefined.",
+        "Keep treatment/control denominators valid within the same campaign and assignment period. Do not sum rates, merge overlapping campaign populations as unique customers or turn missing outcomes into complete retention totals.",
+        "'Offer Assignments'[month] is the source assignment period; 'Offer Outcomes'[observed_at] is a separate observation instant. Later outcomes do not redefine assignment month.",
+        "Use source eligibility for the historical assignment scope. 'Accounts'[consent] alone does not reconstruct historical eligibility or grant permission to contact anyone. Recommendations never execute outreach or credits.",
+        "'Offer Assignments'[Offer Cost] is observed accepted-offer cost in cents, not Finance service cost or a measured causal return on investment. Observational associations do not justify uplift claims."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "growth.eligible_population",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Eligible Population",
+          "object": "'Offer Assignments'[Eligible Population]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Eligible assignment units; separate campaign populations before interpretation."
+        },
+        {
+          "metricId": "growth.assigned_population",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Assigned Population",
+          "object": "'Offer Assignments'[Assigned Population]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Eligible treatment units actually assigned an offer."
+        },
+        {
+          "metricId": "growth.accepted_offers",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Accepted Offers",
+          "object": "'Offer Assignments'[Accepted Offers]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Assigned eligible offers accepted."
+        },
+        {
+          "metricId": "growth.acceptance_rate",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Acceptance Rate",
+          "object": "'Offer Assignments'[Acceptance Rate]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Accepted divided by assigned offers, not campaign touches."
+        },
+        {
+          "metricId": "growth.offer_cost",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Offer Cost",
+          "object": "'Offer Assignments'[Offer Cost]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Observed accepted-offer cost."
+        },
+        {
+          "metricId": "growth.treatment_retained",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Treatment Retained",
+          "object": "'Offer Assignments'[Treatment Retained]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Retained eligible randomized assignment units; observational campaign excluded."
+        },
+        {
+          "metricId": "growth.control_retained",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Control Retained",
+          "object": "'Offer Assignments'[Control Retained]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Retained eligible randomized assignment units; observational campaign excluded."
+        },
+        {
+          "metricId": "growth.retention_lift",
+          "sourceModel": "growth",
+          "homeTable": "Offer Assignments",
+          "measureName": "Retention Lift",
+          "object": "'Offer Assignments'[Retention Lift]",
+          "sourceGrain": [
+            "assignment_key"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month",
+            "campaign_key",
+            "treatment",
+            "randomized"
+          ],
+          "unit": "percentage_points",
+          "aggregation": "non_additive",
+          "description": "Eligible randomized intention-to-treat retention rate difference; null if either arm is absent. Not an observational causal claim."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "randomized retention lift",
+          "metricId": "growth.retention_lift",
+          "object": "'Offer Assignments'[Retention Lift]"
+        },
+        {
+          "term": "eligible assignment units",
+          "metricId": "growth.eligible_population",
+          "object": "'Offer Assignments'[Eligible Population]"
+        },
+        {
+          "term": "accepted offer cost",
+          "metricId": "growth.offer_cost",
+          "object": "'Offer Assignments'[Offer Cost]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": []
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise Services",
+      "status": "DRAFT_NOT_APPLIED",
+      "purpose": "Effective service/contract identity, governed monthly SLA settlement and contracted value.",
+      "instructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Contracts and Service Site Map month is a start-month attribute, not service-month validity. The local template removes their Calendar start-month relationships. Use explicit half-open UTC overlap and project reviewed keys; a March-start mapping can remain valid in July. A separately requested start-month analysis must explicitly select that date role, not imply validity.",
+        "No Contracts-to-SLA Evaluation fact relationship is inferred. Filter contract_key explicitly on SLA Evaluation or Applied Credits, the exact home tables of the source measures, using the reviewed cohort. Only the home table's allowed dimensions are legal.",
+        "'Service Site Map' is service_key plus valid_from grain; [valid_from,valid_to) defines the serving site and contract. 'Contracts' is effective contract_key grain with its own validity interval.",
+        "Use 'SLA Evaluation'[Eligible Credits] and 'SLA Evaluation'[Credit Exposure] from 'SLA Evaluation', and 'Applied Credits'[Applied Credits] from 'Applied Credits'. All are cents by SLA service month and permit contract_key grouping.",
+        "'SLA Evaluation' is contract_key plus month grain. Credit Exposure is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp, apply another incident-level cap or subtract Finance Credits.",
+        "'Service Month'[Contracted Recurring Revenue] on 'Service Month' is contracted value, not Finance recognized revenue. Ask which definition is intended when 'revenue' is ambiguous.",
+        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed Credit Exposure for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
+        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every posting's source contract and service-month overlap, including contracts outside selected incidents; never add those contracts to the incident cohort or treat posted_at as service time."
+      ],
+      "sourceMetricBindings": [
+        {
+          "metricId": "enterprise.contracted_services",
+          "sourceModel": "enterprise",
+          "homeTable": "Service Month",
+          "measureName": "Contracted Services",
+          "object": "'Service Month'[Contracted Services]",
+          "sourceGrain": [
+            "service_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "semi_additive",
+          "description": "Valid contracted service population in one month. Requires one month per result; never sum snapshots over time."
+        },
+        {
+          "metricId": "enterprise.monitored_service_minutes",
+          "sourceModel": "enterprise",
+          "homeTable": "Service Month",
+          "measureName": "Monitored Service Minutes",
+          "object": "'Service Month'[Monitored Service Minutes]",
+          "sourceGrain": [
+            "service_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "minutes",
+          "aggregation": "additive",
+          "description": "Calendar minutes clipped to contract validity."
+        },
+        {
+          "metricId": "enterprise.breached_services",
+          "sourceModel": "enterprise",
+          "homeTable": "Service Month",
+          "measureName": "Breached Services",
+          "object": "'Service Month'[Breached Services]",
+          "sourceGrain": [
+            "service_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "count",
+          "aggregation": "additive",
+          "description": "Service-months exceeding their contract threshold."
+        },
+        {
+          "metricId": "enterprise.sla_compliance",
+          "sourceModel": "enterprise",
+          "homeTable": "Service Month",
+          "measureName": "SLA Compliance",
+          "object": "'Service Month'[SLA Compliance]",
+          "sourceGrain": [
+            "service_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "ratio",
+          "aggregation": "non_additive",
+          "description": "Compliant contracted service-months divided by contracted service-months."
+        },
+        {
+          "metricId": "enterprise.contracted_recurring_revenue",
+          "sourceModel": "enterprise",
+          "homeTable": "Service Month",
+          "measureName": "Contracted Recurring Revenue",
+          "object": "'Service Month'[Contracted Recurring Revenue]",
+          "sourceGrain": [
+            "service_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Contracted monthly recurring value, not finance recognized revenue."
+        },
+        {
+          "metricId": "enterprise.eligible_credits",
+          "sourceModel": "enterprise",
+          "homeTable": "SLA Evaluation",
+          "measureName": "Eligible Credits",
+          "object": "'SLA Evaluation'[Eligible Credits]",
+          "sourceGrain": [
+            "contract_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "contract_key",
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month."
+        },
+        {
+          "metricId": "enterprise.applied_credits",
+          "sourceModel": "enterprise",
+          "homeTable": "Applied Credits",
+          "measureName": "Applied Credits",
+          "object": "'Applied Credits'[Applied Credits]",
+          "sourceGrain": [
+            "contract_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "contract_key",
+            "month",
+            "market_id",
+            "account_key"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Applied credits attributed to SLA service month, with separate posting timestamp."
+        },
+        {
+          "metricId": "enterprise.credit_exposure",
+          "sourceModel": "enterprise",
+          "homeTable": "SLA Evaluation",
+          "measureName": "Credit Exposure",
+          "object": "'SLA Evaluation'[Credit Exposure]",
+          "sourceGrain": [
+            "contract_key",
+            "month"
+          ],
+          "dateRole": "month",
+          "allowedDimensions": [
+            "contract_key",
+            "account_key",
+            "market_id",
+            "month"
+          ],
+          "unit": "cents",
+          "aggregation": "additive",
+          "description": "Eligible less already applied contract-month credits; not a repeated per-incident cap."
+        }
+      ],
+      "proposedVocabulary": [
+        {
+          "term": "eligible SLA credits",
+          "metricId": "enterprise.eligible_credits",
+          "object": "'SLA Evaluation'[Eligible Credits]"
+        },
+        {
+          "term": "signed remaining SLA credits",
+          "metricId": "enterprise.credit_exposure",
+          "object": "'SLA Evaluation'[Credit Exposure]"
+        },
+        {
+          "term": "contracted recurring value",
+          "metricId": "enterprise.contracted_recurring_revenue",
+          "object": "'Service Month'[Contracted Recurring Revenue]"
+        }
+      ],
+      "verifiedAnswers": [],
+      "recommendedDescriptions": [
+        {
+          "object": "'SLA Evaluation'[Eligible Credits]",
+          "description": "Cents by contract service month: validity-clipped outage union, threshold per service, then one contract-month cap. Not incremental incident credit."
+        },
+        {
+          "object": "'Applied Credits'[Applied Credits]",
+          "description": "Applied SLA cents by contract service month. posted_at records the separate posting instant; missing result stays explicit."
+        },
+        {
+          "object": "'SLA Evaluation'[Credit Exposure]",
+          "description": "Signed eligible minus applied SLA cents per contract-month, no zero floor. Preserve negatives; flag overapplication as invalid settlement. Selected incidents limit contracts, not the month's calculation."
+        }
+      ]
+    }
+  ],
+  "scenarioGuidance": {
+    "sla": [
+      "Before any cross-source identity transfer, require compatible profile, seed, generator/identity revision, manifest, per-table and shared-map provenance tied to actual private source bindings. Reused integer keys, friendly aliases and equal refresh timestamps do not prove a shared population; missing evidence blocks transfer.",
+      "Keep data, source-model, ontology and context/cache clocks independent of population lineage and business-effective intervals. Compatible sources need not share refresh timestamps; fresh context cannot repair stale source metadata or mixed populations.",
+      "Incidents belong to physical Sites. Service Site Map resolves serving-site history; Contracts supplies effective SLA identity and terms. Equal numeric values do not equate site, service, contract, account and billing keys.",
+      "Use half-open UTC intervals [start,end). Preserve the actual incident/mapping intersection before testing contract validity. A mapping starting in an earlier month can still apply this month.",
+      "Selected incidents restrict the affected contract cohort. Eligible Credits, Applied Credits and Credit Exposure remain whole contract-service-month measures, not marginal credits caused by an individual incident.",
+      "Enterprise owns outage-union settlement, threshold per service-month, one monetary cap per contract-month, applied credits and remaining exposure. Do not reconstruct financial calculations in the cross-domain application.",
+      "Credit Exposure is signed Eligible Credits minus applied SLA cents from SLA Evaluation, not a nonnegative economic exposure measure. Preserve negative values and separately flag INVALID_SETTLEMENT / OVERAPPLIED_CREDITS at contract-month grain, even when account totals net to zero.",
+      "The local synthetic SLA settlement contract requires nonnegative applied SLA cents; a negative Applied Credits amount is independently INVALID_SETTLEMENT / NEGATIVE_APPLIED_CREDITS, even when Credit Exposure is positive. This is not the Finance Charge Lines signed-reversal policy. Preserve the signed subtraction in every case.",
+      "Validate Applied Credits against real source contract identity and overlap between its SLA service month and the half-open contract effective period, not incident-cohort membership or posted_at. True orphans and out-of-period postings are invalid; legitimate source contracts outside selected incidents stay outside the incident answer without being labelled orphans. Diagnostic labels are evaluator metadata, not new measures or native Rules.",
+      "Finance Credits has account_key, not contract_key. Never allocate its postings to SLA contracts without an additional reviewed attribution source.",
+      "Use the same selected service month across SLA and Finance measures. An applied credit's posted_at and a Finance credit's posting month do not redefine its service month.",
+      "Contract results are contract-month grain. Account priority combines source-governed account-month SLA aggregates with one Finance account-month revenue/margin result. Never repeat and sum Finance values across contracts.",
+      "Cents are integer currency subunits; convert to currency units only for display. Minutes measure duration. Ratio measures are not additive.",
+      "No incident cohort is distinct from missing source coverage, missing identity links or denied access. Preserve missing values and report excluded mappings; do not substitute zero.",
+      "The reviewed local fixture covers March-August 2026. July is the default incident period; August has no incident cohort. Outside that coverage, request clarification or block rather than infer no exposure."
+    ]
+  },
+  "evidenceGaps": [
+    "These are reviewed-contract-derived drafts, not applied or validated Copilot/model instructions.",
+    "No new source model, native Rule, metric proxy, permission or live query is created.",
+    "Actual consumer propagation and per-model instruction readback remain NOT_RUN; no native automatic inheritance is assumed.",
+    "Source metrics retain their formulas; this artifact contains structural bindings and meaning, not DAX/SQL or showcase answers.",
+    "The prescribed reference refresh is blocked by unrelated local checkout changes; cached Fabric commit bc42aaf734771bf752c1d7082dd91e5a6ca72b9f and its semantic-model-authoring AI-readiness/modeling references were consulted, not claimed fresh."
+  ]
+}

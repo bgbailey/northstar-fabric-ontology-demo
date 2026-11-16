@@ -1,0 +1,19 @@
+/// Customer and Subscriptions; undeployed template requiring approved OneLake binding.
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	annotation LiveDax = NOT_RUN
+	annotation DirectLake = NOT_RUN
+	annotation SourceRls = NOT_RUN
+	annotation SourceRevision = 1.0
+
+ref table 'Subscriptions'
+ref table 'Subscription Month'
+ref table 'Lifecycle Events'
+ref table 'Accounts'
+ref table 'Calendar'
+ref table 'Markets'
+
+ref role 'East Region'

@@ -1,0 +1,75 @@
+/// Case interactions; must not fan out case or financial counts.
+table 'Case Activities'
+	lineageTag: 9f542abe-b52f-5a12-93c6-b810b4fa7ab6
+
+	/// Technical identity; join only through the declared mapping.
+	column 'activity_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: activity_key
+		lineageTag: 1fd07d1c-4b40-5ff7-928b-614f83ae983c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'case_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: case_key
+		lineageTag: 78b3e19e-a756-5f9c-a0d4-a6554fd0f9f0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 2b0cc3e1-cf38-534f-af0a-772c5601f43c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 2ff36ab1-54c0-5f8e-a174-9ea4a821182a
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 6deb1c8e-4dc0-5f48-94d1-e31af0a6fb16
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'activity_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: activity_at
+		lineageTag: 74c64ede-56bf-5c82-aa14-697ee81e68ca
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Activity type at the declared Case Activities grain.
+	column 'activity_type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: activity_type
+		lineageTag: 6be8f058-3c9b-50ea-90d6-51aa0116f514
+
+	partition 'Case Activities' = entity
+		mode: directLake
+		source
+			entityName: case_activity
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

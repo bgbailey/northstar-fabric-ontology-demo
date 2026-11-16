@@ -1,0 +1,20 @@
+/// Billing and Finance; undeployed template requiring approved OneLake binding.
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	annotation LiveDax = NOT_RUN
+	annotation DirectLake = NOT_RUN
+	annotation SourceRls = NOT_RUN
+	annotation SourceRevision = 1.0
+
+ref table 'Account Month'
+ref table 'Billing Account Map'
+ref table 'Charge Lines'
+ref table 'Credits'
+ref table 'Accounts'
+ref table 'Calendar'
+ref table 'Markets'
+
+ref role 'East Region'

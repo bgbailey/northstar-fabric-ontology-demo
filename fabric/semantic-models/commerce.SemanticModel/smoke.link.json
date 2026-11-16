@@ -1,0 +1,16 @@
+{
+  "model": "commerce",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "commerce.orders",
+    "commerce.units",
+    "commerce.booked_revenue",
+    "commerce.cancellations",
+    "commerce.fulfilled_units",
+    "commerce.device_return_rate",
+    "commerce.inventory_eod",
+    "commerce.stockout_store_days"
+  ]
+}

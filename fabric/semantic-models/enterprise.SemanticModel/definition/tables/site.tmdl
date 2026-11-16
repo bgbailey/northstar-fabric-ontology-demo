@@ -1,0 +1,46 @@
+/// Physical network sites, distinct from service and account identities.
+table 'Sites'
+	lineageTag: 51a34559-c1a9-5f84-abf2-7e10805a0619
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: site_key
+		lineageTag: 9af7520e-505b-53e0-8047-09a7bb8cc8a7
+		isHidden
+		isAvailableInMdx: false
+		isKey
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: site_id
+		lineageTag: 8c16cf68-3447-50c8-bfc3-95b24813f9c9
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: a06aa732-9f3c-5037-ada9-557b8d105253
+		isHidden
+		isAvailableInMdx: false
+
+	/// Region at the declared Sites grain.
+	column 'region'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+		lineageTag: 7c5ed5d6-e9e3-5547-b981-086035047fdb
+
+	partition 'Sites' = entity
+		mode: directLake
+		source
+			entityName: site
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

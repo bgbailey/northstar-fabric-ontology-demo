@@ -1,0 +1,323 @@
+{
+  "schema_version": "1.0",
+  "mode": "RECORDED_EXECUTIVE_NATIVE",
+  "captured_at": "2026-10-28T17:06:34.501820Z",
+  "question": "For July 2026, which registered customer accounts have zero source-owned Active Lines EOM, positive Recognized Service Revenue and negative Contribution Margin? Return account IDs and the three original measure values, with their source models and home tables. Preserve customer identity, the common service month and missing-value meaning. Explain what to investigate without claiming a billing error, cause or automatic action.",
+  "ontology": {
+    "captured_at": "2026-10-28T16:39:46.606864Z",
+    "native_snapshot_hash": "9359727118512afaa37bc3428bbf55579f16e7e35a41362a14993091e21f6c6e",
+    "provenance": "ACTUAL_NATIVE_DEFINITION_AND_METADATA_CAPTURE",
+    "sources": [
+      "finance",
+      "subscriptions"
+    ],
+    "entities": [
+      {
+        "id": "finance_AccountMonth",
+        "model": "finance",
+        "table": "account_month",
+        "name": "Account Month",
+        "description": "Finance monthly fact table; account service-month control totals recognized in service month, with integer-cent values.",
+        "keys": []
+      },
+      {
+        "id": "finance_Accounts",
+        "model": "finance",
+        "table": "account",
+        "name": "Accounts",
+        "description": "Finance account dimension; registered accounts are the grain, and names are deliberately nonunique.",
+        "keys": [
+          "account_key"
+        ]
+      },
+      {
+        "id": "subscriptions_Accounts",
+        "model": "subscriptions",
+        "table": "account",
+        "name": "Accounts",
+        "description": "Subscriptions account dimension; registered accounts are the grain, and names are deliberately nonunique.",
+        "keys": [
+          "account_key"
+        ]
+      },
+      {
+        "id": "subscriptions_SubscriptionMonth",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "name": "Subscription Month",
+        "description": "Subscriptions monthly fact table; one registered line per service month with month-end active-line metrics.",
+        "keys": []
+      }
+    ],
+    "relationships": [
+      {
+        "id": "subscriptions_Accounts_to_Subscriptions_SubscriptionMonth_account_key",
+        "source": "subscriptions_SubscriptionMonth",
+        "target": "subscriptions_Accounts",
+        "description": ""
+      },
+      {
+        "id": "finance_Accounts_to_Finance_AccountMonth_account_key",
+        "source": "finance_AccountMonth",
+        "target": "finance_Accounts",
+        "description": ""
+      },
+      {
+        "id": "conformed_customer_identity_bridge_account_key",
+        "source": "subscriptions_Accounts",
+        "target": "finance_Accounts",
+        "description": ""
+      }
+    ],
+    "metrics": [
+      {
+        "id": "subscriptions.active_lines_eom",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Active Lines EOM",
+        "description": "Active subscriptions at month end. Requires one month per result; never sum snapshots over time.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.active_accounts_eom",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Active Accounts EOM",
+        "description": "Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.gross_adds",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Gross Adds",
+        "description": "Transitions from inactive to active.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.disconnects",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Disconnects",
+        "description": "Disconnects from the opening-active cohort.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.net_adds",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Net Adds",
+        "description": "Gross additions less cohort-qualified disconnects.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.opening_active_lines",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Opening Active Lines",
+        "description": "Lines active at the start of the month. Requires one month per result; never sum snapshots over time.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.churn_rate",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Churn Rate",
+        "description": "Opening-cohort disconnects divided by opening-active lines; recompute from pooled components.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "subscriptions.average_active_lines",
+        "model": "subscriptions",
+        "table": "subscription_month",
+        "entity": "subscriptions_SubscriptionMonth",
+        "name": "Average Active Lines",
+        "description": "Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.recognized_service_revenue",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Recognized Service Revenue",
+        "description": "Recognized service revenue before service-month credits, in integer cents.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.net_recognized_revenue",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Net Recognized Revenue",
+        "description": "Recognized service revenue minus service-month credits.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.service_cost",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Service Cost",
+        "description": "Attributed monthly service cost, not device or offer cost.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.contribution_margin",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Contribution Margin",
+        "description": "Net recognized service revenue minus attributed service cost.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.margin_percent",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Margin Percent",
+        "description": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.",
+        "representation": "EXTERNALMEASURE"
+      },
+      {
+        "id": "finance.revenue_per_active_line",
+        "model": "finance",
+        "table": "account_month",
+        "entity": "finance_AccountMonth",
+        "name": "Revenue per Active Line",
+        "description": "Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.",
+        "representation": "EXTERNALMEASURE"
+      }
+    ],
+    "rules": [
+      {
+        "id": "CustomerAndPeriodMeaning",
+        "statement": "Align the same registered customer and the same completed service month across the two sources. Shared names are not identity. Subscription-month and account-month have different source grains; do not directly multiply fact rows or sum month-end snapshots over time.",
+        "referenced_entities": [
+          "finance_AccountMonth",
+          "finance_Accounts",
+          "subscriptions_Accounts",
+          "subscriptions_SubscriptionMonth"
+        ],
+        "property_scope": "None"
+      },
+      {
+        "id": "TrustedMeasuresAndReviewLimits",
+        "statement": "Reuse Active Lines EOM from Subscriptions/Subscription Month and Recognized Service Revenue and Contribution Margin from Finance/Account Month. Finance values are integer cents; recognized service revenue is not billed charges or booked merchandise. Missing, unmapped or unauthorized is not zero. A cross-domain review candidate is not a billing defect, causal conclusion or action authorization.",
+        "referenced_entities": [
+          "finance_AccountMonth",
+          "finance_Accounts",
+          "subscriptions_Accounts",
+          "subscriptions_SubscriptionMonth"
+        ],
+        "property_scope": "None"
+      }
+    ],
+    "execution_relationships": {},
+    "limitations": [
+      "Separate actual small native definition, not a filtered Customer360 snapshot or an instance graph.",
+      "All generated original source proxies are retained; the executive presentation focuses on three measures.",
+      "Captured linked Rules do not prove managed consideration or deterministic enforcement.",
+      "No application execution traversal, current reader grant or business answer is created by this projection.",
+      "Public sanitized display projection: source-environment display names and internal references are generalized. Retained provenance hashes identify privately retained originals, not this display file. Synthetic business values and source-measure ownership are unchanged; no live reader grant or current execution is conveyed."
+    ]
+  },
+  "focus_metric_ids": [
+    "finance.contribution_margin",
+    "finance.recognized_service_revenue",
+    "subscriptions.active_lines_eom"
+  ],
+  "separate_native_item_verified": true,
+  "native_answer_origin": "MANAGED_NATIVE_SERVICE",
+  "native_answer_text": "Using the shared `account_key` bridge and the July 2026 service month, I found **1 registered customer account** that matches all three conditions.\n\n| Account ID | Account Key | Common service month | Active Lines EOM | Recognized Service Revenue | Contribution Margin |\n|---|---:|---|---:|---:|---:|\n| `showcase-v2:acct:000001` | 1 | 2026-07-01 | 0 | 9000 | -1400 |\n\n### Source model / home table for each measure\n- **Active Lines EOM** — source model: `Northstar_Subscriptions`; home table: `Subscription Month`\n- **Recognized Service Revenue** — source model: `Northstar_Finance`; home table: `Account Month`\n- **Contribution Margin** — source model: `Northstar_Finance`; home table: `Account Month`\n\n### What to investigate\n- Check whether the **same registered customer** had **subscription activity and finance recognition recorded differently for July 2026**.\n- Review the **account-to-account_key mapping** and month alignment across the two source models.\n- Treat a zero as an **observed zero**, not a missing value; absence of a row in one model is **not** the same as zero.\n- This is a **review candidate**, not evidence of a billing error, cause, or automatic action.",
+  "native_response_sha256": "c8fde5152eab4a3fc3fc1cc2690202da4e2905444230250c5d21cf450949ea35",
+  "source_measure_review_sha256": "b27996e7d8a0668de3c3a9ff596c75d522074d01ad06ddb49ee76e76b0eb9cb3",
+  "native_answer_matches_source_values": true,
+  "rows": [
+    {
+      "account_id": "showcase-v2:acct:000001",
+      "account_key": 1,
+      "active_lines_eom": 0,
+      "recognized_service_revenue_cents": 9000,
+      "contribution_margin_cents": -1400
+    }
+  ],
+  "source_queries": [
+    {
+      "model": "subscriptions",
+      "dax": "DEFINE\nVAR __Result = SUMMARIZECOLUMNS('Subscription Month'[account_key], TREATAS({DATE(2026, 7, 1)}, 'Subscription Month'[month]), \"subscriptions.active_lines_eom\", [Active Lines EOM] * 1)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"subscriptions.active_lines_eom\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(TOPN(999, __Result, 'Subscription Month'[account_key], ASC), \"__kind\", \"data\", \"account_key\", 'Subscription Month'[account_key], \"subscriptions.active_lines_eom\", [subscriptions.active_lines_eom], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]",
+      "dax_sha256": "42b5ad99b5cfa8d9ffb1e3440e7096aaae91d97ca4f1077e7c5955934c143b9a",
+      "response_sha256": "8b80900c84d3896c07e20266ed0d535338491aff07a537a41ae9846082e77e03",
+      "observed_at": "2026-10-28T17:05:21.531732Z"
+    },
+    {
+      "model": "finance",
+      "dax": "DEFINE\nVAR __Result = SELECTCOLUMNS('Accounts', \"account_key\", 'Accounts'[account_key] * 1, \"account_id\", 'Accounts'[account_id])\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"account_id\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(TOPN(999, __Result, [account_key], ASC), \"__kind\", \"data\", \"account_key\", [account_key], \"account_id\", [account_id], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]",
+      "dax_sha256": "0469a909077e20aa8fb3ca173ba16faaa31c82de908699e3c28071ecc83ae653",
+      "response_sha256": "8b0a745feb14408ffc8e17009ccf5275f7eac67c700d64ca52966f56e12cf6d9",
+      "observed_at": "2026-10-28T17:05:29.402261Z"
+    },
+    {
+      "model": "subscriptions",
+      "dax": "DEFINE\nVAR __Result = SELECTCOLUMNS('Accounts', \"account_key\", 'Accounts'[account_key] * 1, \"account_id\", 'Accounts'[account_id], \"display_name\", 'Accounts'[display_name], \"market_id\", 'Accounts'[market_id], \"region\", 'Accounts'[region], \"enterprise\", 'Accounts'[enterprise])\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"account_id\", BLANK(), \"display_name\", BLANK(), \"market_id\", BLANK(), \"region\", BLANK(), \"enterprise\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(TOPN(999, __Result, [account_key], ASC), \"__kind\", \"data\", \"account_key\", [account_key], \"account_id\", [account_id], \"display_name\", [display_name], \"market_id\", [market_id], \"region\", [region], \"enterprise\", IF(ISBLANK([enterprise]), BLANK(), IF([enterprise], \"true\", \"false\")), \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]",
+      "dax_sha256": "d627034e642ff7559b60bc67a01b440f579d8a720048278c224f1cadb9e37398",
+      "response_sha256": "0a7d5b409e2d74a9af5ec5155193ab88fe6733cffa45abb343ddd48c897a2a8b",
+      "observed_at": "2026-10-28T17:05:35.507440Z"
+    },
+    {
+      "model": "finance",
+      "dax": "DEFINE\nVAR __Result = SUMMARIZECOLUMNS('Account Month'[account_key], TREATAS({DATE(2026, 7, 1)}, 'Account Month'[month]), \"finance.recognized_service_revenue\", [Recognized Service Revenue] * 1, \"finance.contribution_margin\", [Contribution Margin] * 1)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"finance.recognized_service_revenue\", BLANK(), \"finance.contribution_margin\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(TOPN(999, __Result, 'Account Month'[account_key], ASC), \"__kind\", \"data\", \"account_key\", 'Account Month'[account_key], \"finance.recognized_service_revenue\", [finance.recognized_service_revenue], \"finance.contribution_margin\", [finance.contribution_margin], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]",
+      "dax_sha256": "4ca7080a2add9aff4c0cfee9fbfd37fdf475a81c37bd9fd757d69f5b5981298f",
+      "response_sha256": "99f7e38d4d570c8a0cedf18fbe5af7986794b96b754e304d5cf9a1f137b8c897",
+      "observed_at": "2026-10-28T17:05:42.702818Z"
+    }
+  ],
+  "source_clocks": [
+    {
+      "model": "subscriptions",
+      "table": "account",
+      "data": "DERIVED_DELTA_VECTOR:93f9623ac3d0834c55d2ae4f804dc7fe94bcf8d722999a19397afe3a16e70488",
+      "model_revision": "DERIVED_TMDL_FRAME:0a6b3fc9c79385e016b00d232a1e6d903ecaf10186318d9aa16ab64716b962ab",
+      "table_data": "REVIEWED_TABLE_CONTENT:44fc4bc44c80f370221a95a80d24f8746670145921ec0f53d53ad439403ea279"
+    },
+    {
+      "model": "finance",
+      "table": "account",
+      "data": "DERIVED_DELTA_VECTOR:0e2485a148e47e2ba6142f1b6044bc6e0bef2d994cf49d7686e8d4abd778201e",
+      "model_revision": "DERIVED_TMDL_FRAME:ee5ec2b7ee33761e6fc9a46743ff58baa9f85ec7f622f4f4f02c85a2385ad2f1",
+      "table_data": "REVIEWED_TABLE_CONTENT:44fc4bc44c80f370221a95a80d24f8746670145921ec0f53d53ad439403ea279"
+    },
+    {
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "data": "DERIVED_DELTA_VECTOR:93f9623ac3d0834c55d2ae4f804dc7fe94bcf8d722999a19397afe3a16e70488",
+      "model_revision": "DERIVED_TMDL_FRAME:0a6b3fc9c79385e016b00d232a1e6d903ecaf10186318d9aa16ab64716b962ab",
+      "table_data": "REVIEWED_TABLE_CONTENT:afb25de1e119fe8ca3fed03c3873a37774db3908f6e530b9b447f8ee7c3dd410"
+    },
+    {
+      "model": "finance",
+      "table": "account_month",
+      "data": "DERIVED_DELTA_VECTOR:0e2485a148e47e2ba6142f1b6044bc6e0bef2d994cf49d7686e8d4abd778201e",
+      "model_revision": "DERIVED_TMDL_FRAME:ee5ec2b7ee33761e6fc9a46743ff58baa9f85ec7f622f4f4f02c85a2385ad2f1",
+      "table_data": "REVIEWED_TABLE_CONTENT:60d5181eac8006aa0d32c030a4aabb8c778790bfc46c0b2f19fe247aa658ae66"
+    }
+  ],
+  "limitations": [
+    "Actual separate small native ontology and managed-native business answer, not the filtered large ontology.",
+    "Source queries shown are independent verification originals from the accepted same-day complete account population; the native service did not expose its internal DAX or execution trace.",
+    "Native and independent source observations have separate original times; matching values do not prove a shared live source-state window.",
+    "The complete source reference contains 24 registered accounts; only the one matching review candidate is displayed.",
+    "All 14 generated source proxies are retained; three focus measures keep the executive story small.",
+    "Review candidate, not a causal billing diagnosis, financial action or managed Rule-enforcement proof.",
+    "Managed native model identity, usage/cost and automatic source-AI inheritance are not exposed by this answer.",
+    "Public sanitized display projection: source-environment display names and internal references are generalized. Retained provenance hashes identify privately retained originals, not this display file. Synthetic business values and source-measure ownership are unchanged; no live reader grant or current execution is conveyed."
+  ]
+}

@@ -1,0 +1,67 @@
+/// Registered accounts, not active accounts; names are deliberately nonunique.
+table 'Accounts'
+	lineageTag: bf696af3-6ed8-5285-a60b-7c1089430f37
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 4bddcb5d-f758-56ba-9f08-5eb6585a6ccd
+		isHidden
+		isAvailableInMdx: false
+		isKey
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: account_id
+		lineageTag: 9e4dd71e-5ea9-5a62-b792-1eb8de75825a
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: e8b43a6f-921e-509a-8403-bd1387bd0005
+		isHidden
+		isAvailableInMdx: false
+
+	/// Region at the declared Accounts grain.
+	column 'region'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+		lineageTag: 955f61b2-c724-5054-be50-c215e3223bc9
+
+	/// Consent at the declared Accounts grain.
+	column 'consent'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: consent
+		lineageTag: 3d97b55f-8907-5683-94fc-9f24a3134192
+
+	/// Enterprise at the declared Accounts grain.
+	column 'enterprise'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: enterprise
+		lineageTag: a6c38f4b-445f-580b-9ddb-a47c235c43c8
+
+	/// Display name at the declared Accounts grain.
+	column 'display_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: display_name
+		lineageTag: ee9aef1c-ec72-57da-8606-b448fc824bc5
+
+	partition 'Accounts' = entity
+		mode: directLake
+		source
+			entityName: account
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

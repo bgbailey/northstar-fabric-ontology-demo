@@ -1,0 +1,189 @@
+/// One care case; repeat contact means same account and reason within seven days.
+table 'Cases'
+	lineageTag: fde961c1-96cc-5dc6-87f2-6878344d8f9f
+
+	/// Cases by opening month, independent of activity count.
+	measure 'New Cases' = COUNTROWS('Cases')
+		formatString: #,##0
+		displayFolder: Customer Care
+		lineageTag: a32411de-b57b-52bb-be02-5c3bf7b91787
+		annotation MetricId = care.new_cases
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Cases resolved by source observation, attributed to opening month.
+	measure 'Resolved Cases' = SUM('Cases'[resolved])
+		formatString: #,##0
+		displayFolder: Customer Care
+		lineageTag: b450b86b-91bf-5a5f-8fe6-f1f0e702f4d6
+		annotation MetricId = care.resolved_cases
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Subsequent same-reason contacts within seven days for the same account.
+	measure 'Repeat Contacts' = SUM('Cases'[repeat_contact])
+		formatString: #,##0
+		displayFolder: Customer Care
+		lineageTag: 89756569-56bd-5667-8ccd-a4f92c5b378f
+		annotation MetricId = care.repeat_contacts
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Distinct contacted accounts, not the sum of period-level distinct counts.
+	measure 'Contacted Accounts' = DISTINCTCOUNT('Cases'[account_key])
+		formatString: #,##0.00
+		displayFolder: Customer Care
+		lineageTag: c16cdd51-14aa-578e-8bea-ab14aaaeb552
+		annotation MetricId = care.contacted_accounts
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Cases escalated at least once.
+	measure 'Escalated Cases' = SUM('Cases'[escalated])
+		formatString: #,##0
+		displayFolder: Customer Care
+		lineageTag: 24cf0d44-d558-59f6-966a-dca149e975fa
+		annotation MetricId = care.escalated_cases
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator.
+	measure 'First Contact Resolution' = DIVIDE(SUM('Cases'[first_contact_resolved]), SUM('Cases'[resolved]))
+		formatString: 0.00%
+		displayFolder: Customer Care
+		lineageTag: 9616d7bb-8b02-59d4-b524-ec50350568e9
+		annotation MetricId = care.first_contact_resolution
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Mean observed duration among resolved cases; unresolved durations remain null.
+	measure 'Mean Resolution Hours' = DIVIDE(AVERAGE('Cases'[resolution_minutes]), 60)
+		formatString: #,##0.00
+		displayFolder: Customer Care
+		lineageTag: a50e092a-c974-5f92-a5f7-e57fbe135240
+		annotation MetricId = care.mean_resolution_hours
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'case_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: case_key
+		lineageTag: 5776b65b-0d14-5cb9-b86a-9ae97d500521
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: f4930398-e46b-5805-a875-8fae9437e80b
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: d40a084f-643a-54a8-90ce-a2b758076d7c
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: bce7a624-57b1-50db-8f1d-30882a4bbf04
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'opened_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: opened_at
+		lineageTag: 1c4d171c-0a7a-57f8-af9d-3a6a54e3871a
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'resolved_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: resolved_at
+		lineageTag: 0616129d-69ad-5a43-bbb1-c7f515df4300
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Resolved at the declared Cases grain.
+	column 'resolved'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: resolved
+		lineageTag: 6804d88a-4e49-5f39-acc0-372a60e2d12c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Repeat contact at the declared Cases grain.
+	column 'repeat_contact'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: repeat_contact
+		lineageTag: ce14db92-007b-5a5d-b245-b21d76510ee0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Escalated at the declared Cases grain.
+	column 'escalated'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: escalated
+		lineageTag: 2f2078f6-33c3-52d1-9f37-3404b3f109e2
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// First contact resolved at the declared Cases grain.
+	column 'first_contact_resolved'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: first_contact_resolved
+		lineageTag: 0f660bd6-247e-5b11-9591-ebe6a4056a22
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Resolution minutes at the declared Cases grain.
+	column 'resolution_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: resolution_minutes
+		lineageTag: 7a42282a-369e-52d2-a91b-421a499293d5
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Reason at the declared Cases grain.
+	column 'reason'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: reason
+		lineageTag: 8879afcd-3cf9-514b-972d-4ae2e121840f
+
+	partition 'Cases' = entity
+		mode: directLake
+		source
+			entityName: case
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

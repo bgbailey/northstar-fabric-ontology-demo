@@ -1,0 +1,16 @@
+{
+  "model": "care",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "care.open_cases_eod",
+    "care.new_cases",
+    "care.resolved_cases",
+    "care.repeat_contacts",
+    "care.contacted_accounts",
+    "care.escalated_cases",
+    "care.first_contact_resolution",
+    "care.mean_resolution_hours"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "lane": "LIVE_DEV_DISPOSABLE_REST_ROUNDTRIP",
+  "status": "NOT_RUN",
+  "reason": "APPROVAL_WINDOW_EXPIRED_BEFORE_MUTATION",
+  "observedAt": "2026-10-01T15:38:40.058609+00:00",
+  "deadlineUtc": "2026-10-01T15:30:00Z",
+  "payloadMatchesApproval": true,
+  "requestSha256": "21e6be2278291dc6655202541eb4d934426efb8eabf1399ae69c41c41733d15e",
+  "resumeRequestSent": false,
+  "cloneCreateRequestSent": false,
+  "cloneCleanupRequired": false,
+  "capacityStateAfterExpiry": "Paused",
+  "capacityStateVerifiedAt": "2026-10-01T15:44:04.968959+00:00",
+  "localProbeImplemented": true,
+  "limitations": [
+    "Expiry is not evidence that the API representation is unsupported.",
+    "The implemented local probe and cleanup tests do not establish a live round-trip.",
+    "The working native ontology was not modified by this test.",
+    "Further live work requires a newly approved expiry-bound window; no automatic extension."
+  ]
+}

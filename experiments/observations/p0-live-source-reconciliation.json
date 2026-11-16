@@ -1,0 +1,57 @@
+{
+  "observationType": "ACTUAL_TWO_MODEL_SOURCE_DAX_RECONCILIATION",
+  "observedAt": "2026-09-29T17:36:09.322328+00:00",
+  "lane": "POWER_BI_REST_DIAGNOSTIC_NOT_MCP",
+  "identityMode": "CLI_DELEGATED_AUTHOR_NOT_BROWSER_OBO",
+  "contextMode": "SUPPLEMENTAL_APP_MAPPING_NOT_NATIVE_ONTOLOGY",
+  "profile": "miniature",
+  "period": "2026-08",
+  "status": "PASS",
+  "independentSourceOracle": "EXACT_MATCH",
+  "resultRows": 10,
+  "activeLinesEOM": 13,
+  "recognizedServiceRevenueCents": 80336,
+  "coverage": {"left_rows": 10, "matched": 10, "unmapped": 0},
+  "queries": [
+    {
+      "modelAlias": "subscriptions",
+      "query": "EVALUATE\nSUMMARIZECOLUMNS('Subscription Month'[account_key], TREATAS({DATE(2026, 8, 1)}, 'Subscription Month'[month]), \"subscriptions.active_lines_eom\", [Active Lines EOM])\nORDER BY 'Subscription Month'[account_key]",
+      "sourceControlRows": 10,
+      "returnedRows": 10,
+      "elapsedMsIncludingControlAndStateCheck": 1252.7811999971163
+    },
+    {
+      "modelAlias": "finance",
+      "query": "EVALUATE\nSUMMARIZECOLUMNS('Account Month'[account_key], TREATAS({DATE(2026, 8, 1)}, 'Account Month'[month]), \"finance.recognized_service_revenue\", [Recognized Service Revenue])\nORDER BY 'Account Month'[account_key]",
+      "sourceControlRows": 10,
+      "returnedRows": 10,
+      "elapsedMsIncludingControlAndStateCheck": 1116.790399999445
+    }
+  ],
+  "completeness": "Each source result matched a separate COUNTROWS control over the identical DAX table expression; refresh history was unchanged during retrieval.",
+  "deterministicCombination": "Used the application's reviewed one-to-one account join, then independently compared source-fact oracle output.",
+  "successfulNotebook": {
+    "status": "Completed",
+    "startTimeUtc": "2026-09-29T17:03:11.9631562Z",
+    "endTimeUtc": "2026-09-29T17:05:00.5060042Z",
+    "exactSourceToDeltaAssertions": "PASSED"
+  },
+  "modelDefinitions": {
+    "separateModelsCreated": 2,
+    "sourceMeasuresDeclared": 16,
+    "coreMeasuresNumericallyChecked": 2,
+    "definitionReadback": "Expected tables, measures, expressions and roles present",
+    "initialRefreshes": "Both Completed"
+  },
+  "diagnosis": [
+    "Initial DAX requests could not find tables before initial model refresh, despite complete definition readback.",
+    "After refresh, the unchanged source queries succeeded.",
+    "Finance history included a distinct automatic DirectLakeFraming entry; identified the explicit ViaApi refresh without resubmitting it."
+  ],
+  "limitations": [
+    "Not GA IQ MCP execution, native ontology grounding, browser delegation or reader RLS/OLS proof.",
+    "Only two core measures and one author/period case numerically checked; not all 64 measures.",
+    "Single uncontrolled-cache timing sample; no latency percentile or capacity-sizing claim.",
+    "Detailed identities, request IDs and evaluator expected rows remain in private receipts outside the repository."
+  ]
+}

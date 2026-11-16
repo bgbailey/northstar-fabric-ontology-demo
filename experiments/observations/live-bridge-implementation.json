@@ -1,0 +1,34 @@
+{
+  "lane": "LOCAL_IMPLEMENTATION_AND_SYNTHETIC_TESTS",
+  "status": "PASS",
+  "observedDate": "2026-10-02",
+  "pythonTests": 666,
+  "webTests": 10,
+  "buildAndRuff": "PASS",
+  "integrationReview": {
+    "highFindings": 3,
+    "resolvedByIndependentRecheck": 3,
+    "findings": [
+      "Per-invocation reader guard prevents paid dispatch after logout during token acquisition",
+      "Reader/transport invalidation clears paired answers and traces",
+      "Source-state freshness uses the actual preflight interval, not a five-second business-as-of assumption"
+    ]
+  },
+  "implemented": [
+    "Azure OpenAI v1 JSON planner adapter with persistent approval-wide reservations",
+    "Native metric binding enforcement and selected-binding evidence",
+    "Separate current-reader native context acquisition with exact snapshot/source/ontology/session identity",
+    "Reviewed MCP schema/query profiles, CSV/structured codecs and source revision probes",
+    "Concrete private live gateway, paired controller, SSE and comparison UI",
+    "Scoped renewal and isolated 18-table 44802-row hero package"
+  ],
+  "liveModelCalls": 0,
+  "livePairedRuns": 0,
+  "liveReadiness": "BLOCKED_CAPABILITY",
+  "limitations": [
+    "Synthetic collaborator tests do not establish actual service output/schema or reader authorization.",
+    "GPT-6 Luna creation is a separate approved cloud observation, not inference proof.",
+    "Fabric/reader renewal, hero/native deployment, actual reviewed profiles and inference budget remain outstanding.",
+    "No legacy ontology CLI skill was invoked or relied upon."
+  ]
+}

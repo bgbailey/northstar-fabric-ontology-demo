@@ -1,0 +1,364 @@
+{
+  "$defs": {
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "rows": {
+          "items": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object"
+          },
+          "title": "Rows",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "clocks": {
+          "$ref": "#/$defs/Clocks"
+        },
+        "source_models": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Models",
+          "type": "array"
+        },
+        "source_tables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Tables",
+          "type": "array"
+        },
+        "grain": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Grain",
+          "type": "array"
+        },
+        "aggregation": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Aggregation",
+          "type": "object"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "coverage": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Coverage",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "rows",
+        "status",
+        "scope",
+        "clocks",
+        "source_models",
+        "source_tables",
+        "grain",
+        "aggregation",
+        "evidence_ids"
+      ],
+      "title": "Artifact",
+      "type": "object"
+    },
+    "Clocks": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "title": "Data",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "ontology": {
+          "title": "Ontology",
+          "type": "string"
+        },
+        "context": {
+          "title": "Context",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data",
+        "model",
+        "ontology",
+        "context"
+      ],
+      "title": "Clocks",
+      "type": "object"
+    },
+    "Receipt": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "lane": {
+          "title": "Lane",
+          "type": "string"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "query": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query"
+        },
+        "query_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Hash"
+        },
+        "schema_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schema Hash"
+        },
+        "elapsed_ms": {
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "returned_rows": {
+          "title": "Returned Rows",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/Status"
+        },
+        "completeness_evidence": {
+          "title": "Completeness Evidence",
+          "type": "string"
+        },
+        "clocks": {
+          "$ref": "#/$defs/Clocks"
+        },
+        "source_watermark": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Watermark"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "node_id",
+        "lane",
+        "tool",
+        "elapsed_ms",
+        "returned_rows",
+        "status",
+        "completeness_evidence",
+        "clocks"
+      ],
+      "title": "Receipt",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "tenant": {
+          "title": "Tenant",
+          "type": "string"
+        },
+        "principal": {
+          "title": "Principal",
+          "type": "string"
+        },
+        "authorization_revision": {
+          "title": "Authorization Revision",
+          "type": "string"
+        },
+        "models": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "mode": {
+          "enum": [
+            "OFFLINE_SYNTHETIC",
+            "LIVE_DELEGATED"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenant",
+        "principal",
+        "authorization_revision",
+        "models",
+        "mode"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "Status": {
+      "enum": [
+        "COMPLETE",
+        "PARTIAL",
+        "BLOCKED_AUTH",
+        "BLOCKED_CAPABILITY",
+        "AMBIGUOUS",
+        "TIMED_OUT",
+        "FAILED"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/Status"
+    },
+    "mode": {
+      "title": "Mode",
+      "type": "string"
+    },
+    "answer": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Artifact"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "receipts": {
+      "items": {
+        "$ref": "#/$defs/Receipt"
+      },
+      "title": "Receipts",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "elapsed_ms": {
+      "title": "Elapsed Ms",
+      "type": "number"
+    }
+  },
+  "required": [
+    "request_id",
+    "status",
+    "mode",
+    "elapsed_ms"
+  ],
+  "title": "ExecutionResult",
+  "type": "object"
+}

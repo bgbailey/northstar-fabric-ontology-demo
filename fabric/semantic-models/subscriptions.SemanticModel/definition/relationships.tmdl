@@ -1,0 +1,63 @@
+relationship 6b4fa403-fb26-5fb4-af86-31167fb3d279
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscriptions'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship b4113b4d-1f77-5eaf-923f-2f14aaaef559
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscriptions'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 45032365-4a79-5c19-9d04-0152fc8813ed
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Month'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship c212844b-853d-589a-9f12-75834c2c2313
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Month'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship af599903-5fb7-5a79-af00-2955f2e50117
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Subscription Month'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 2a7301cd-ddff-5443-bb58-ebf3200641f9
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Lifecycle Events'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship e77f26b8-4f54-5051-8c94-bd2d3effaf10
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Lifecycle Events'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship ae3bd62c-5494-5fa3-88e3-fc64f221bca3
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Lifecycle Events'.'month'
+	toColumn: 'Calendar'.'date'

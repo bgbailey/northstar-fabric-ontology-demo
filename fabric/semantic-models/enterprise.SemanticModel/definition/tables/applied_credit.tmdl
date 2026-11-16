@@ -1,0 +1,77 @@
+/// Actually applied SLA credits, which can be less than eligible credit.
+table 'Applied Credits'
+	lineageTag: 5b6c7008-0344-57b5-b047-9c9ed172de20
+
+	/// Applied credits attributed to SLA service month, with separate posting timestamp.
+	measure 'Applied Credits' = SUM('Applied Credits'[amount_cents])
+		formatString: #,##0" cents"
+		displayFolder: Enterprise Services
+		lineageTag: d1443339-7d10-5323-ae83-36c6dee57c9d
+		annotation MetricId = enterprise.applied_credits
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'contract_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contract_key
+		lineageTag: 0b248986-1d90-56ba-a448-fe65b0ea7e39
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'amount_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: amount_cents
+		lineageTag: 134984d2-b47d-518a-a93b-c060053602ab
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 2b23a08b-b2fa-5caa-b265-33a543961017
+		formatString: yyyy-MM-dd
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: d7b913b3-9876-56ee-86b4-efe01c747bc7
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 665fd9fb-455c-56e8-8460-bae56031adfe
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'posted_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: posted_at
+		lineageTag: fc82715e-777c-51cd-9078-95d24b9719ce
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	partition 'Applied Credits' = entity
+		mode: directLake
+		source
+			entityName: applied_credit
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

@@ -1,0 +1,153 @@
+/// Booked merchandise revenue is distinct from recognized service revenue.
+table 'Order Lines'
+	lineageTag: 93e8e716-5cd2-5f1a-8296-043c5c06dc17
+
+	/// Booked merchandise units.
+	measure 'Booked Units' = SUM('Order Lines'[units])
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: e9d0b341-4891-5f4a-9836-02f55fe66698
+		annotation MetricId = commerce.units
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Booked device revenue, intentionally distinct from finance recognized service revenue.
+	measure 'Booked Revenue' = SUM('Order Lines'[booked_revenue_cents])
+		formatString: #,##0" cents"
+		displayFolder: Commerce and Devices
+		lineageTag: d4fed25a-b016-5420-bd39-3850686b2da9
+		annotation MetricId = commerce.booked_revenue
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Units actually fulfilled.
+	measure 'Fulfilled Units' = SUM('Order Lines'[fulfilled_units])
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: 90ad0319-32d0-59a6-92e7-bc8ebcdfc292
+		annotation MetricId = commerce.fulfilled_units
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Returned units divided by fulfilled units, attributed to order month.
+	measure 'Device Return Rate' = DIVIDE(SUM('Order Lines'[returned_units]), SUM('Order Lines'[fulfilled_units]))
+		formatString: 0.00%
+		displayFolder: Commerce and Devices
+		lineageTag: cfdf3be7-2846-5d86-a9ff-6d449aca7eff
+		annotation MetricId = commerce.device_return_rate
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'order_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: order_key
+		lineageTag: 24ab8de1-b924-5b51-8ace-19e96ebda55d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Line number at the declared Order Lines grain.
+	column 'line_number'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: line_number
+		lineageTag: 0e031171-bd5b-5256-a1fd-82bececa1673
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 4c974181-08dd-5c5d-b187-fbce52cb4533
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: c648ad57-4acb-5240-b5c1-1c071bd0a41a
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: ebfb8975-6693-5ef3-b27b-787dfcfd8491
+		formatString: yyyy-MM-dd
+
+	/// Technical identity; join only through the declared mapping.
+	column 'store_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: store_key
+		lineageTag: cc5f4ff9-fa62-5adb-8121-a858547874b6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'device_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: device_key
+		lineageTag: 2907b3ba-9d4e-52e0-8c54-022a93ede833
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Units at the declared Order Lines grain.
+	column 'units'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: units
+		lineageTag: fa38b3d5-d955-5761-8dd6-ca8f31799fcb
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'booked_revenue_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: booked_revenue_cents
+		lineageTag: d010a470-958a-5749-ae96-5d67e8859e5d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Fulfilled units at the declared Order Lines grain.
+	column 'fulfilled_units'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: fulfilled_units
+		lineageTag: f841e7d2-305e-515e-b79b-adb247a7d6bb
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Returned units at the declared Order Lines grain.
+	column 'returned_units'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: returned_units
+		lineageTag: 6c7b29e7-071a-5129-847a-76f08a0ba9b0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Order Lines' = entity
+		mode: directLake
+		source
+			entityName: order_line
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

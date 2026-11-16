@@ -1,0 +1,227 @@
+{
+  "captured_at": "2026-10-28T16:39:46.606864Z",
+  "native_snapshot_hash": "9359727118512afaa37bc3428bbf55579f16e7e35a41362a14993091e21f6c6e",
+  "provenance": "ACTUAL_NATIVE_DEFINITION_AND_METADATA_CAPTURE",
+  "sources": [
+    "finance",
+    "subscriptions"
+  ],
+  "entities": [
+    {
+      "id": "finance_AccountMonth",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Account Month",
+      "description": "Finance monthly fact table; account service-month control totals recognized in service month, with integer-cent values.",
+      "keys": []
+    },
+    {
+      "id": "finance_Accounts",
+      "model": "finance",
+      "table": "account",
+      "name": "Accounts",
+      "description": "Finance account dimension; registered accounts are the grain, and names are deliberately nonunique.",
+      "keys": [
+        "account_key"
+      ]
+    },
+    {
+      "id": "subscriptions_Accounts",
+      "model": "subscriptions",
+      "table": "account",
+      "name": "Accounts",
+      "description": "Subscriptions account dimension; registered accounts are the grain, and names are deliberately nonunique.",
+      "keys": [
+        "account_key"
+      ]
+    },
+    {
+      "id": "subscriptions_SubscriptionMonth",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Subscription Month",
+      "description": "Subscriptions monthly fact table; one registered line per service month with month-end active-line metrics.",
+      "keys": []
+    }
+  ],
+  "relationships": [
+    {
+      "id": "subscriptions_Accounts_to_Subscriptions_SubscriptionMonth_account_key",
+      "source": "subscriptions_SubscriptionMonth",
+      "target": "subscriptions_Accounts",
+      "description": ""
+    },
+    {
+      "id": "finance_Accounts_to_Finance_AccountMonth_account_key",
+      "source": "finance_AccountMonth",
+      "target": "finance_Accounts",
+      "description": ""
+    },
+    {
+      "id": "conformed_customer_identity_bridge_account_key",
+      "source": "subscriptions_Accounts",
+      "target": "finance_Accounts",
+      "description": ""
+    }
+  ],
+  "metrics": [
+    {
+      "id": "subscriptions.active_lines_eom",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Active Lines EOM",
+      "description": "Active subscriptions at month end. Requires one month per result; never sum snapshots over time.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.active_accounts_eom",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Active Accounts EOM",
+      "description": "Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.gross_adds",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Gross Adds",
+      "description": "Transitions from inactive to active.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.disconnects",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Disconnects",
+      "description": "Disconnects from the opening-active cohort.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.net_adds",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Net Adds",
+      "description": "Gross additions less cohort-qualified disconnects.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.opening_active_lines",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Opening Active Lines",
+      "description": "Lines active at the start of the month. Requires one month per result; never sum snapshots over time.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.churn_rate",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Churn Rate",
+      "description": "Opening-cohort disconnects divided by opening-active lines; recompute from pooled components.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "subscriptions.average_active_lines",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "entity": "subscriptions_SubscriptionMonth",
+      "name": "Average Active Lines",
+      "description": "Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.recognized_service_revenue",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Recognized Service Revenue",
+      "description": "Recognized service revenue before service-month credits, in integer cents.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.net_recognized_revenue",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Net Recognized Revenue",
+      "description": "Recognized service revenue minus service-month credits.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.service_cost",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Service Cost",
+      "description": "Attributed monthly service cost, not device or offer cost.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.contribution_margin",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Contribution Margin",
+      "description": "Net recognized service revenue minus attributed service cost.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.margin_percent",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Margin Percent",
+      "description": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.",
+      "representation": "EXTERNALMEASURE"
+    },
+    {
+      "id": "finance.revenue_per_active_line",
+      "model": "finance",
+      "table": "account_month",
+      "entity": "finance_AccountMonth",
+      "name": "Revenue per Active Line",
+      "description": "Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.",
+      "representation": "EXTERNALMEASURE"
+    }
+  ],
+  "rules": [
+    {
+      "id": "CustomerAndPeriodMeaning",
+      "statement": "Align the same registered customer and the same completed service month across the two sources. Shared names are not identity. Subscription-month and account-month have different source grains; do not directly multiply fact rows or sum month-end snapshots over time.",
+      "referenced_entities": [
+        "finance_AccountMonth",
+        "finance_Accounts",
+        "subscriptions_Accounts",
+        "subscriptions_SubscriptionMonth"
+      ],
+      "property_scope": "None"
+    },
+    {
+      "id": "TrustedMeasuresAndReviewLimits",
+      "statement": "Reuse Active Lines EOM from Subscriptions/Subscription Month and Recognized Service Revenue and Contribution Margin from Finance/Account Month. Finance values are integer cents; recognized service revenue is not billed charges or booked merchandise. Missing, unmapped or unauthorized is not zero. A cross-domain review candidate is not a billing defect, causal conclusion or action authorization.",
+      "referenced_entities": [
+        "finance_AccountMonth",
+        "finance_Accounts",
+        "subscriptions_Accounts",
+        "subscriptions_SubscriptionMonth"
+      ],
+      "property_scope": "None"
+    }
+  ],
+  "execution_relationships": {},
+  "limitations": [
+    "Separate actual small native definition, not a filtered Customer360 snapshot or an instance graph.",
+    "All generated original source proxies are retained; the executive presentation focuses on three measures.",
+    "Captured linked Rules do not prove managed consideration or deterministic enforcement.",
+    "No application execution traversal, current reader grant or business answer is created by this projection.",
+    "Public sanitized display projection: source-environment display names and internal references are generalized. Retained provenance hashes identify privately retained originals, not this display file. Synthetic business values and source-measure ownership are unchanged; no live reader grant or current execution is conveyed."
+  ]
+}

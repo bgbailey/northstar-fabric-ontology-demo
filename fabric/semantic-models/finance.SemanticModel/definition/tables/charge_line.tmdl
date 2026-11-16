@@ -1,0 +1,105 @@
+/// Signed service charges and reversals; month is service month, posting time is separate.
+table 'Charge Lines'
+	lineageTag: 1c24c380-0ce2-5aca-9a91-a561c5700be6
+
+	/// Signed charges including reversals, grouped by service month; not cash receipts.
+	measure 'Billed Charges' = SUM('Charge Lines'[amount_cents])
+		formatString: #,##0" cents"
+		displayFolder: Billing and Finance
+		lineageTag: 9ea22949-2e52-53d8-829c-fb7dd4849d5b
+		annotation MetricId = finance.billed_charges
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'charge_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: charge_key
+		lineageTag: 4127c8e7-ec24-5257-81e1-b47abba41f76
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 497a0b12-0885-59e7-a9d4-8b2aa4486761
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'billing_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: billing_key
+		lineageTag: b770ad81-ac6c-572c-af27-c90335fc99a6
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 24d62ee7-6daf-5cdf-88b9-88923cdc6257
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 37e9aa34-5626-5069-8ea4-dd52b762f682
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'service_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: service_at
+		lineageTag: fa5c04e4-d073-5290-826e-b2c5535afa86
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'posted_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: posted_at
+		lineageTag: a0705c27-bd2d-56b9-a92f-a8ee6a475324
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'amount_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: amount_cents
+		lineageTag: 03c7e097-b8c9-5166-9a98-2c7aa1db41d5
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Charge type at the declared Charge Lines grain.
+	column 'charge_type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: charge_type
+		lineageTag: 80737f83-7031-5774-840b-87588ef1f13f
+
+	partition 'Charge Lines' = entity
+		mode: directLake
+		source
+			entityName: charge_line
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

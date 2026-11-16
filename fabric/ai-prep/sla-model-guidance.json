@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "status": "DRAFT_NOT_APPLIED",
+  "scope": "Synthetic Northstar local SLA story; not model authoring or a native ontology capture.",
+  "applicationRoute": "User review and supported Power BI Prep data for AI UI; no persisted AI artifacts have been written.",
+  "reference": {
+    "cachedCommit": "bc42aaf734771bf752c1d7082dd91e5a6ca72b9f",
+    "refreshStatus": "REFERENCE_FRESHNESS_NOT_ESTABLISHED",
+    "paths": [
+      "skills/semantic-model-authoring/SKILL.md",
+      "skills/semantic-model-authoring/references/modeling-guidelines.md",
+      "skills/semantic-model-authoring/references/dax-guidelines.md",
+      "skills/semantic-model-authoring/references/tmdl-guidelines.md",
+      "skills/semantic-model-authoring/references/semantic-model-ai-readiness.md"
+    ],
+    "statusCaveat": "Aggregate prescribed refresh remains blocked by unrelated local checkout changes. The clean skills-for-fabric HEAD was confirmed against public main by the parent on 2026-10-14 at 22:44 ET; this local follow-up independently read the same clean commit. Guidance is not current tenant capability evidence. No ontology-v1 recipes or cloud operations are used."
+  },
+  "comparisonArms": {
+    "flat": "All model instructions and every sharedCrossDomainFacts entry below.",
+    "native": "Exactly the same model instructions and sharedCrossDomainFacts; linked native context is separately sourced, never fabricated from this draft."
+  },
+  "sharedCrossDomainFacts": [
+    "Before any cross-source identity transfer, require compatible profile, seed, generator/identity revision, manifest, per-table and shared-map provenance tied to actual private source bindings. Reused integer keys, friendly aliases and equal refresh timestamps do not prove a shared population; missing evidence blocks transfer.",
+    "Keep data, source-model, ontology and context/cache clocks independent of population lineage and business-effective intervals. Compatible sources need not share refresh timestamps; fresh context cannot repair stale source metadata or mixed populations.",
+    "Incidents belong to physical Sites. Service Site Map resolves serving-site history; Contracts supplies effective SLA identity and terms. Equal numeric values do not equate site, service, contract, account and billing keys.",
+    "Use half-open UTC intervals [start,end). Preserve the actual incident/mapping intersection before testing contract validity. A mapping starting in an earlier month can still apply this month.",
+    "Selected incidents restrict the affected contract cohort. Eligible Credits, Applied Credits and Credit Exposure remain whole contract-service-month measures, not marginal credits caused by an individual incident.",
+    "Enterprise owns outage-union settlement, threshold per service-month, one monetary cap per contract-month, applied credits and remaining exposure. Do not reconstruct financial calculations in the cross-domain application.",
+    "Credit Exposure is signed Eligible Credits minus applied SLA cents from SLA Evaluation, not a nonnegative economic exposure measure. Preserve negative values and separately flag INVALID_SETTLEMENT / OVERAPPLIED_CREDITS at contract-month grain, even when account totals net to zero.",
+    "The local synthetic SLA settlement contract requires nonnegative applied SLA cents; a negative Applied Credits amount is independently INVALID_SETTLEMENT / NEGATIVE_APPLIED_CREDITS, even when Credit Exposure is positive. This is not the Finance Charge Lines signed-reversal policy. Preserve the signed subtraction in every case.",
+    "Validate Applied Credits against real source contract identity and overlap between its SLA service month and the half-open contract effective period, not incident-cohort membership or posted_at. True orphans and out-of-period postings are invalid; legitimate source contracts outside selected incidents stay outside the incident answer without being labelled orphans. Diagnostic labels are evaluator metadata, not new measures or native Rules.",
+    "Finance Credits has account_key, not contract_key. Never allocate its postings to SLA contracts without an additional reviewed attribution source.",
+    "Use the same selected service month across SLA and Finance measures. An applied credit's posted_at and a Finance credit's posting month do not redefine its service month.",
+    "Contract results are contract-month grain. Account priority combines source-governed account-month SLA aggregates with one Finance account-month revenue/margin result. Never repeat and sum Finance values across contracts.",
+    "Cents are integer currency subunits; convert to currency units only for display. Minutes measure duration. Ratio measures are not additive.",
+    "No incident cohort is distinct from missing source coverage, missing identity links or denied access. Preserve missing values and report excluded mappings; do not substitute zero.",
+    "The reviewed local fixture covers March-August 2026. July is the default incident period; August has no incident cohort. Outside that coverage, request clarification or block rather than infer no exposure."
+  ],
+  "models": [
+    {
+      "id": "network",
+      "name": "Network Operations",
+      "instructions": [
+        "For incident identity and time use 'Incidents'[incident_key], [site_key], [start] and [end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
+        "For availability use [Availability Percent] on 'Site Hour'; [Eligible Site Minutes] and [Unavailable Site Minutes] are minute measures at site-hour grain. Do not sum overlapping raw incident durations.",
+        "[Major Incidents] counts major incident records by 'Incidents'[month]; incident start-month counts are not a cross-month exposure cohort.",
+        "Ask whether a request means incident count, site availability or affected enterprise services when 'impact' is unspecified. Use explicit UTC window overlap for affected-service analysis."
+      ],
+      "recommendedDescriptions": [
+        {
+          "object": "'Incidents'",
+          "description": "One row per incident_key. UTC [start,end) intervals may overlap; union duration within the required scope. month is the incident start month."
+        },
+        {
+          "object": "'Sites'",
+          "description": "One physical site per site_key. Site identity is not account identity or customer home market."
+        }
+      ],
+      "verifiedAnswers": []
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise Services",
+      "instructions": [
+        "Contracts and Service Site Map month is a start-month attribute, not service-month validity. The local template removes their Calendar start-month relationships. Use explicit half-open UTC overlap and project reviewed keys; a March-start mapping can remain valid in July. A separately requested start-month analysis must explicitly select that date role, not imply validity.",
+        "No Contracts-to-SLA Evaluation fact relationship is inferred. Filter contract_key explicitly on SLA Evaluation or Applied Credits, the exact home tables of the source measures, using the reviewed cohort. Only the home table's allowed dimensions are legal.",
+        "'Service Site Map' is service_key plus valid_from grain; [valid_from,valid_to) defines the serving site and contract. 'Contracts' is effective contract_key grain with its own validity interval.",
+        "Use [Eligible Credits] and [Credit Exposure] from 'SLA Evaluation', and [Applied Credits] from 'Applied Credits'. All are cents by SLA service month and permit contract_key grouping.",
+        "'SLA Evaluation' is contract_key plus month grain. Credit Exposure is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp, apply another incident-level cap or subtract Finance Credits.",
+        "[Contracted Recurring Revenue] on 'Service Month' is contracted value, not Finance recognized revenue. Ask which definition is intended when 'revenue' is ambiguous.",
+        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed Credit Exposure for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
+        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every posting's source contract and service-month overlap, including contracts outside selected incidents; never add those contracts to the incident cohort or treat posted_at as service time."
+      ],
+      "recommendedDescriptions": [
+        {
+          "object": "[Eligible Credits]",
+          "description": "Cents by contract service month: validity-clipped outage union, threshold per service, then one contract-month cap. Not incremental incident credit."
+        },
+        {
+          "object": "[Applied Credits]",
+          "description": "Applied SLA cents by contract service month. posted_at records the separate posting instant; missing result stays explicit."
+        },
+        {
+          "object": "[Credit Exposure]",
+          "description": "Signed eligible minus applied SLA cents per contract-month, no zero floor. Preserve negatives; flag overapplication as invalid settlement. Selected incidents limit contracts, not the month's calculation."
+        }
+      ],
+      "verifiedAnswers": []
+    },
+    {
+      "id": "finance",
+      "name": "Billing and Finance",
+      "instructions": [
+        "Use [Recognized Service Revenue] and [Contribution Margin] on 'Account Month' for account-level priority. Both are cents; 'Account Month' is account_key plus service month grain.",
+        "[Recognized Service Revenue] is before service-month credits. [Contribution Margin] is recognized revenue less service-month credits and attributed service cost; [Margin Percent] is a pooled ratio, not an average of account ratios.",
+        "[Posted Credits] on 'Credits' uses posting month. 'Credits'[service_month] is separate, and Credits has no contract_key; do not join credits to SLA contracts.",
+        "'Billing Account Map' uses half-open validity. billing_key is not account_key, even when integers match. Prefer the canonical account_key already present in Account Month.",
+        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one Finance row per selected account-month, regardless of the number of affected contracts."
+      ],
+      "recommendedDescriptions": [
+        {
+          "object": "[Recognized Service Revenue]",
+          "description": "Recognized service revenue in integer cents before service-month credits. Query by account service month, not contract or posting date."
+        },
+        {
+          "object": "[Contribution Margin]",
+          "description": "Net recognized service revenue less attributed service cost, in cents by account-month. Not contract-attributed margin."
+        }
+      ],
+      "verifiedAnswers": []
+    }
+  ],
+  "evidenceGaps": [
+    "TQ-003 population/date checks are local implementation only. Historical fixture manifests expose a structural generator format, not a generator-code revision. Actual live population capture and private binding-to-adapter wiring remain blocked pending approved evidence; no synthetic defaults apply to live sources.",
+    "Draft wording has not been applied or exercised with Copilot, a Data Agent, or either live comparison arm.",
+    "This packet does not add formal native Rules, source proxy measures or deployed model relationships.",
+    "The source has no reviewed Finance posting-to-contract allocation. Account priority is not incident-attributed profit impact.",
+    "Local independent-oracle regressions cover absent, zero, partial, full, overapplied, negative and unknown credit amounts, true orphan/out-of-period postings and legitimate outside-incident source contracts. These are synthetic arithmetic/diagnostic checks, not live DAX engine or native consumer certification."
+  ]
+}

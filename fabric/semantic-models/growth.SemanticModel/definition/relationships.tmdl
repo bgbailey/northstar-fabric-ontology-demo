@@ -1,0 +1,87 @@
+relationship dec825ce-66c0-5161-a908-6a9a89fd79e9
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Assignments'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 3db19cdc-e352-5ea4-9737-1cd9e8544a45
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Assignments'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 2a983f1b-aa4a-53a4-a295-cd7197cf8e19
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Assignments'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 1b169513-ebf2-52f6-9f54-0a9f6d15d33c
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Assignments'.'campaign_key'
+	toColumn: 'Campaigns'.'campaign_key'
+
+relationship c3cfdfeb-ac42-5d1e-94d7-da26efc49ff6
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Outcomes'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship e5d66019-75e7-52ff-8853-9c0bc96a3631
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Outcomes'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 6626fe6f-c5cf-5e3c-b415-38c532bf3615
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Offer Outcomes'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship b59dcd35-94e7-555c-bfc6-7a8918affc2b
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Campaign Touches'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 5ef2a5f6-15d8-5242-a1a2-10ca891ddb37
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Campaign Touches'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 5b993f4f-5b9d-5f3c-8c7c-9d8ab7679dbb
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Campaign Touches'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 2407ec06-84c8-5ca4-a632-8cd8023b8e3a
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Campaign Touches'.'campaign_key'
+	toColumn: 'Campaigns'.'campaign_key'

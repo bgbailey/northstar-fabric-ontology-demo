@@ -1,0 +1,71 @@
+relationship 6bfb402d-9b2a-54f8-ad01-cf34d283f1e2
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Cases'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 1e4c8620-e679-5e30-b03f-073f06623ee1
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Cases'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 7d685a93-3fb2-52ff-9086-9f88ab0d4657
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Cases'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 68114940-4cb4-5f19-bd94-b80f072bbbc0
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Activities'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 179c7829-03a2-5cca-bf87-29870ee1331f
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Activities'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship b61c482d-c088-552b-a8cd-10456bc6070a
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Activities'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship a72a22c0-dbcc-5154-983e-180057e97e41
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Daily Snapshot'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship c55181bc-ed35-5134-8950-2554fd8c4709
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Daily Snapshot'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 6f2f4277-f75c-5b51-bbf4-5432c700eded
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Case Daily Snapshot'.'snapshot_date'
+	toColumn: 'Calendar'.'date'

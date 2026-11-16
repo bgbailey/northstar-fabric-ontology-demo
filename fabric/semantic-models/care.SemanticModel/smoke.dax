@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: care.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"care.open_cases_eod", [Open Cases EOD],
+	"care.new_cases", [New Cases],
+	"care.resolved_cases", [Resolved Cases],
+	"care.repeat_contacts", [Repeat Contacts],
+	"care.contacted_accounts", [Contacted Accounts],
+	"care.escalated_cases", [Escalated Cases],
+	"care.first_contact_resolution", [First Contact Resolution],
+	"care.mean_resolution_hours", [Mean Resolution Hours]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

@@ -1,0 +1,46 @@
+{
+  "status": "UNAPPROVED",
+  "designChoice": "Single confidential same-origin BFF, authorization-code plus PKCE",
+  "userDirection": "Choose whatever is simpler to run and manage as a demo",
+  "notDemonstrated": "SPA to API to OBO topology is deliberately not claimed",
+  "applicationName": "TelcoIQ-Demo-BFF-20260929",
+  "signInAudience": "AzureADMyOrg",
+  "redirectUri": "http://localhost:8765/auth/callback",
+  "applicationRequestSha256": "120228279088aea91dec9397bbbd4b347a252871a1da39c9fdfec8753e2f47aa",
+  "certificateThumbprint": "4d42a7bda5792b8e71c7a02293cd7508a0e506c3",
+  "certificateExpiryUtc": "2026-10-01T15:30:00Z",
+  "privateKeyStorage": "Current-user Windows DPAPI outside repository and OneDrive",
+  "tokenStorage": "Per-user server memory only; never browser localStorage or shared CLI credentials",
+  "requestedPowerBIDelegatedScopes": ["Item.Read.All", "Item.Execute.All", "Dataset.Read.All"],
+  "standardSignInScopes": ["openid", "profile", "offline_access"],
+  "applicationPermissions": [],
+  "operationsRequiringApproval": [
+    "Create only the named new single-tenant app registration using the staged request hash",
+    "Create its associated enterprise service principal if not automatically present",
+    "Ensure the separately verified native DEV creator owns only these new objects",
+    "Upload only the staged public certificate; no client secret",
+    "Declare only the three discovered delegated Power BI permissions",
+    "Allow interactive consent by the signing-in DEV user only",
+    "At approved cleanup, remove only the created registration/service principal and its user-consent grants"
+  ],
+  "notAuthorizedByThisProposal": [
+    "Tenant-wide admin consent",
+    "Tenant policy changes or user role elevation",
+    "Application-only semantic-model queries",
+    "New reader users or model RLS/OLS memberships",
+    "Corporate or guest identities",
+    "Paid application-model calls or additional capacity",
+    "Native ontology scopes inferred from GA IQ without discovery"
+  ],
+  "demoSafety": [
+    "Loopback-only server; canonical localhost origin",
+    "Opaque HttpOnly cookies with CSRF, state/nonce/PKCE binding and session rotation",
+    "Immutable approved tenant/object-ID allowlist, not email-suffix authorization",
+    "Callback query strings omitted from access logs",
+    "Protected result/context caching disabled until revocation behavior is measured",
+    "Live query output parsing remains blocked until actual MCP contracts are captured and reviewed"
+  ],
+  "existingOperationalCapUSD": 200,
+  "noDeadlineExtension": true,
+  "sourceRegistrationAndRealSignIn": "NOT_RUN"
+}

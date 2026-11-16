@@ -1,0 +1,359 @@
+{
+  "version": "1.0",
+  "profile": "miniature",
+  "seed": 20260929,
+  "as_of": "2026-09-29T00:00:00+00:00",
+  "service_months": [
+    "2026-03-01",
+    "2026-04-01",
+    "2026-05-01",
+    "2026-06-01",
+    "2026-07-01",
+    "2026-08-01"
+  ],
+  "tables": [
+    {
+      "id": "account",
+      "file": "account.parquet",
+      "rows": 10,
+      "bytes": 2240,
+      "file_sha256": "5380126ede7dd22b42ea05fe56ddba72f7cbdf0245c078eb3a9322ee8ac8d168",
+      "content_sha256": "d38728804f5a1b656655e8824f0677d4929f2031b858008f5abe0246cfdce3fc"
+    },
+    {
+      "id": "market",
+      "file": "market.parquet",
+      "rows": 4,
+      "bytes": 1095,
+      "file_sha256": "4b0e92cfba67ca35d94f7e6ae1621d7e13fb10211c418218d389b018d244a390",
+      "content_sha256": "947633013886ffbb4620667270f214c962196be2030ebc629c21e68732410e09"
+    },
+    {
+      "id": "calendar_date",
+      "file": "calendar_date.parquet",
+      "rows": 212,
+      "bytes": 2968,
+      "file_sha256": "654a791ff95cd21a08bd176d3a12c778dc5540a420522293d689fa09ed0a977c",
+      "content_sha256": "e98b1110bac6d05f472a5f3b7a56d0578a9e499baab9236a883aae38be4bb67c"
+    },
+    {
+      "id": "site",
+      "file": "site.parquet",
+      "rows": 4,
+      "bytes": 1383,
+      "file_sha256": "567e15dd4716c7b490fcf1742bfd64ffc280527f968f5d3518b35f00e0c5ae8a",
+      "content_sha256": "c1ecc544dee2125ce27445ec46f2f29489f85ef9b2f9e0415b489d642e616f93"
+    },
+    {
+      "id": "device",
+      "file": "device.parquet",
+      "rows": 2,
+      "bytes": 1134,
+      "file_sha256": "db2b466a4189c9dcb8e7584593c0e80bad6495dd3fb714eee817de7fdaadc283",
+      "content_sha256": "a7b54d403d5f44c95d65f5ee47ba13e05f01012116ca940b21ad4454aa7f9417"
+    },
+    {
+      "id": "store",
+      "file": "store.parquet",
+      "rows": 4,
+      "bytes": 1115,
+      "file_sha256": "f2dfbe6cbdc641cf0bac069a47b63eedf79a8614d1d884390e70debfee45685a",
+      "content_sha256": "95aee38865a06f0099d948983a1544cd0aa1404630c924325e59e5fccc7874e1"
+    },
+    {
+      "id": "campaign",
+      "file": "campaign.parquet",
+      "rows": 2,
+      "bytes": 1276,
+      "file_sha256": "d83643a5b0d701903096bd8bc25be3cc611b36019e96ec16e11e9137b4986dfe",
+      "content_sha256": "e817c0b77ecc7e77ec02e7005ba0c456ceb76124e58996316f3ec937a5d1f4c8"
+    },
+    {
+      "id": "service",
+      "file": "service.parquet",
+      "rows": 2,
+      "bytes": 1192,
+      "file_sha256": "e7b5397a40826edc5b92039a52ac93bdbe34caf4623de3a3668e20767b45df61",
+      "content_sha256": "c46720b982b0e555e6853f3cc065a38ad4cc2e805a939dfa9578ec1777ec5b2d"
+    },
+    {
+      "id": "subscription",
+      "file": "subscription.parquet",
+      "rows": 20,
+      "bytes": 1940,
+      "file_sha256": "89023dfd37a205d35a7f8c9cf03fa45b82671ef9a9b6a24adeb313e2fc68c065",
+      "content_sha256": "7ff83def262a8d57657cb960393811ae2590bd3cc438d30ceeed652268db776a"
+    },
+    {
+      "id": "subscription_month",
+      "file": "subscription_month.parquet",
+      "rows": 120,
+      "bytes": 3052,
+      "file_sha256": "ef0f4345e00ac897ded4942ec7bf413a17b6177db5e8d965c8afec77b55a79ce",
+      "content_sha256": "a1efa1dc3b141558a4fc96d27a6c5d2a933fd146e51799541cf3a55982aa8467"
+    },
+    {
+      "id": "lifecycle_event",
+      "file": "lifecycle_event.parquet",
+      "rows": 11,
+      "bytes": 2511,
+      "file_sha256": "a50efdccb7af6e2dca439dc93515f33c215c5d42d203fb3df7d19f32828e2af5",
+      "content_sha256": "88e2d49c0cad615ad3fcb9f51d0efb71d451e12dd6453843da74e85f6468ec65"
+    },
+    {
+      "id": "account_month",
+      "file": "account_month.parquet",
+      "rows": 60,
+      "bytes": 3058,
+      "file_sha256": "12c8ebbcdc93786cb43bd79b6822ad36472bc0b6e0801a4b9b3b3d7ef156fa37",
+      "content_sha256": "37daaebb79b0dd6c33438c05564cec83a413adeeae054c1e32dca44f645ab104"
+    },
+    {
+      "id": "billing_account_map",
+      "file": "billing_account_map.parquet",
+      "rows": 12,
+      "bytes": 1634,
+      "file_sha256": "916f708dfe8362110905ba0f81ab13c419473f60c5bbc0878aed0b6dd26c54fe",
+      "content_sha256": "8ffa6291b11cc28e053167794de24011f1187cf458d307a49295e6e750fbce4f"
+    },
+    {
+      "id": "charge_line",
+      "file": "charge_line.parquet",
+      "rows": 62,
+      "bytes": 3688,
+      "file_sha256": "e3c61276b9b3c675415d15ee30321ba4ba57798ce09a3d61072a5e44aade8488",
+      "content_sha256": "122137a164ceaf975589d3aa17bb95510778987da49dbdaf49831915a34e16f4"
+    },
+    {
+      "id": "credit",
+      "file": "credit.parquet",
+      "rows": 2,
+      "bytes": 2708,
+      "file_sha256": "f2dbef76fc50557b1e1a94cd014c627d6ad1a50442e655abd39acd80e1bd9350",
+      "content_sha256": "c99ceca64e793737a5743f95262dc83da89d8dc02ae2a9457593f115b8badd95"
+    },
+    {
+      "id": "session",
+      "file": "session.parquet",
+      "rows": 120,
+      "bytes": 5254,
+      "file_sha256": "1e1c14b03c4e36b8391867960df7a89406428179c338095f669cb67ca6239c52",
+      "content_sha256": "be568d793f563744f82cd7f2256672e68ddb4cf73852eafafb4969f977e2bcde"
+    },
+    {
+      "id": "interaction_event",
+      "file": "interaction_event.parquet",
+      "rows": 240,
+      "bytes": 3638,
+      "file_sha256": "8507428c615771ca06447d809c205ffc5f7d88ad1974c3bdb6a66bd2037f00a2",
+      "content_sha256": "032e1c89c81e31d57612ce2c55077eb9d1b1d4ee8bad89587fb0158f33351f5e"
+    },
+    {
+      "id": "identity_map",
+      "file": "identity_map.parquet",
+      "rows": 11,
+      "bytes": 1618,
+      "file_sha256": "40b574ec17e59c530316e6fdd450ea8356f0e42731485f54bda57967a8f172e3",
+      "content_sha256": "2e8cb24348a4022109a51b6c5efa43e189317021a0f5bf872b567f84c2f4de0e"
+    },
+    {
+      "id": "case",
+      "file": "case.parquet",
+      "rows": 8,
+      "bytes": 4189,
+      "file_sha256": "7c990d7cfa11ba02df7f8e20e603038efea2d2ef9d6af00f46636bb124f3f8fe",
+      "content_sha256": "101e109ce06df39b453a6fcadab59ebe90b981a635cfe6308737c0784b86a9d5"
+    },
+    {
+      "id": "case_activity",
+      "file": "case_activity.parquet",
+      "rows": 16,
+      "bytes": 2540,
+      "file_sha256": "b021831b3c82421e3de314dc635260f06252ae478e9225b85e5506e71aafd5f3",
+      "content_sha256": "3089f944082548e5eba4dbc399c0f7492927a906a07b8418ff997a803cec5119"
+    },
+    {
+      "id": "case_daily_snapshot",
+      "file": "case_daily_snapshot.parquet",
+      "rows": 32,
+      "bytes": 2110,
+      "file_sha256": "111a8fbe2243b076daf3e3559a9dfa4c08bcd1a048060ba0e10eb9e731bc3825",
+      "content_sha256": "dd62d3231597e5387698327de6e8f9063d9c64d333b21c9a4e9b84f1d87ae86c"
+    },
+    {
+      "id": "incident",
+      "file": "incident.parquet",
+      "rows": 4,
+      "bytes": 2384,
+      "file_sha256": "11c2dbd29cfc5aecc7d4124ce799e5022229814d1562087b17685e14e5bcc95e",
+      "content_sha256": "aa779876e856618d61f3ac100d46c5b3b8af56546aaa2da7813dd3a6869f25e2"
+    },
+    {
+      "id": "site_hour",
+      "file": "site_hour.parquet",
+      "rows": 2880,
+      "bytes": 18190,
+      "file_sha256": "558eb6cd211d5c2cea6a9d79716008510deda36bbb4f1199e70af4e56f4d4551",
+      "content_sha256": "cfd3b8a131d5b7d7a4d7eddd32d4f72636aeedd900f5ed4cad6dbe92c5f048d4"
+    },
+    {
+      "id": "site_day",
+      "file": "site_day.parquet",
+      "rows": 120,
+      "bytes": 2328,
+      "file_sha256": "658f016f5e376af4ab519f31f4425d3dc35325bc82d0db540269d220fe62102a",
+      "content_sha256": "aac6987914829df9e79f225a39b8e9c3a086e0106df1953c426e06bfcc63a8e5"
+    },
+    {
+      "id": "subscription_site_exposure",
+      "file": "subscription_site_exposure.parquet",
+      "rows": 120,
+      "bytes": 3179,
+      "file_sha256": "50307bdf38fd66dff0d935858ec44f397b0ac0650372e5c9c238a1fc50896b99",
+      "content_sha256": "c96d01cf37e8f4c7ddf2ee8dedac874385ac8cdee7de47f0af83ac73c5aba1e7"
+    },
+    {
+      "id": "order",
+      "file": "order.parquet",
+      "rows": 34,
+      "bytes": 4240,
+      "file_sha256": "8bc1b3da38d687a5420fa8fcdc3b77f3bcedbd04f1f39e1325989bb1da2574c7",
+      "content_sha256": "36145263778504919767376d8b54f189084d869093bf748238ebcf29d68c3d25"
+    },
+    {
+      "id": "order_line",
+      "file": "order_line.parquet",
+      "rows": 34,
+      "bytes": 3883,
+      "file_sha256": "db179cbe56512c1132e606507d78b845c7a28424d47cba3b5e190776b96f97ad",
+      "content_sha256": "b5d9e80ba66711cbe83dab903d79780df45da333f5dd7a9df4da4317a947a3d1"
+    },
+    {
+      "id": "store_device_day",
+      "file": "store_device_day.parquet",
+      "rows": 144,
+      "bytes": 2614,
+      "file_sha256": "135af8eed429fcd443b108c92447581f775b510f548655c952e2a889d44902f5",
+      "content_sha256": "3e73da92096aee2ba47e700909baee8612563ed560caa3ada0e77b2f69d5f95f"
+    },
+    {
+      "id": "offer_assignment",
+      "file": "offer_assignment.parquet",
+      "rows": 20,
+      "bytes": 4007,
+      "file_sha256": "bbd2c0f0582d0d29898f4a2ba21c2146974d9e8e64048a8a8cdb410402adbd4f",
+      "content_sha256": "1748d1dec8408105bf8dc13c82feeb74ec9fb830e60b6cfad68a6068436632c1"
+    },
+    {
+      "id": "offer_outcome",
+      "file": "offer_outcome.parquet",
+      "rows": 20,
+      "bytes": 2200,
+      "file_sha256": "be7dc952ff6cd7382ce77755d8acc09575cba76307de78e94f33746de1d592b7",
+      "content_sha256": "3ca5a51aa5cc0819901f9c97b8124dba2d3ccf531fd2398b39c0ed66e32d0691"
+    },
+    {
+      "id": "campaign_touch",
+      "file": "campaign_touch.parquet",
+      "rows": 7,
+      "bytes": 2722,
+      "file_sha256": "2899a04f38dcdbd1e45896f62063fd0e3cdac4cf8e531d578f2f54b887a9c074",
+      "content_sha256": "96308699cb57fc61d69ee10506ff08e2d3ec56591b3cf698ac205ba6ace2335d"
+    },
+    {
+      "id": "contract",
+      "file": "contract.parquet",
+      "rows": 2,
+      "bytes": 3174,
+      "file_sha256": "3c1b8bc673b264cba8eeec202860a0e8e83d35e5c302f603f7f77545c286ac80",
+      "content_sha256": "201e11bdcf9e4f8cbccac723d88c885ef7ba5304d50634aa59e4282ec7a769ff"
+    },
+    {
+      "id": "service_site_map",
+      "file": "service_site_map.parquet",
+      "rows": 3,
+      "bytes": 2451,
+      "file_sha256": "c53fd9a5516c1e245351ce0fcbae35552b44df22afab92e3eec1cb55fabcee0d",
+      "content_sha256": "1f1e10744028a65ffe83c663b56bd190dc67bc2a6571450581f6d928da3f5e2a"
+    },
+    {
+      "id": "service_month",
+      "file": "service_month.parquet",
+      "rows": 12,
+      "bytes": 3122,
+      "file_sha256": "09e5931d4c292bd009b4ee1d830932a1e8bbfb77eaf6f5612b048f117d5baad1",
+      "content_sha256": "b5d3079b6dcec1df7d68df290340d4022f5d2b7c555b35d55ece0da2371df18b"
+    },
+    {
+      "id": "sla_evaluation",
+      "file": "sla_evaluation.parquet",
+      "rows": 12,
+      "bytes": 2518,
+      "file_sha256": "cc4b620119b2466feeda40e32f90a83b493b0f311f4e86d54d5897e7a9f2ab7d",
+      "content_sha256": "ae6b7eb5b057df37f1d36eb8092e07a24f6ca53fc4aedd76f970ee3345185fe1"
+    },
+    {
+      "id": "applied_credit",
+      "file": "applied_credit.parquet",
+      "rows": 2,
+      "bytes": 2094,
+      "file_sha256": "a3b4035dfa26c6d12f31fb936fc8dbc0ea0c23275954b86abef6546c738b8fa8",
+      "content_sha256": "9ee913093bc1b9c8234490bf5432779374daa9f9f29e0226d21a76105b7f9870"
+    },
+    {
+      "id": "quarantine",
+      "file": "quarantine.parquet",
+      "rows": 4,
+      "bytes": 2220,
+      "file_sha256": "b6b7e5e39a2b58ba2184c63506285ede390148d7f753fdecbc7cbbd3752d12a1",
+      "content_sha256": "cc2f94bd88f4bc484b22a46983e5edd6418961a3059dc969ee08d5569800910b"
+    }
+  ],
+  "rows": 4372,
+  "generated_bytes": 111669,
+  "generation_seconds": 0.869366,
+  "batch_size": 1024,
+  "content_sha256": "d90203f642d91af26ee6232af7260a6a83b78575fcc19c43bcdc62bbd7de21b8",
+  "watermarks": {
+    "subscriptions": "2026-09-28T22:00:00+00:00",
+    "finance": "2026-09-27T22:00:00+00:00",
+    "digital": "2026-09-26T22:00:00+00:00",
+    "care": "2026-09-25T22:00:00+00:00",
+    "network": "2026-09-24T22:00:00+00:00",
+    "commerce": "2026-09-23T22:00:00+00:00",
+    "growth": "2026-09-22T22:00:00+00:00",
+    "enterprise": "2026-09-21T22:00:00+00:00"
+  },
+  "clocks": {
+    "data": {
+      "as_of": "2026-09-29T00:00:00+00:00",
+      "watermarks": {
+        "subscriptions": "2026-09-28T22:00:00+00:00",
+        "finance": "2026-09-27T22:00:00+00:00",
+        "digital": "2026-09-26T22:00:00+00:00",
+        "care": "2026-09-25T22:00:00+00:00",
+        "network": "2026-09-24T22:00:00+00:00",
+        "commerce": "2026-09-23T22:00:00+00:00",
+        "growth": "2026-09-22T22:00:00+00:00",
+        "enterprise": "2026-09-21T22:00:00+00:00"
+      }
+    },
+    "source_model": {
+      "revision": "1.0",
+      "status": "UNDEPLOYED_TEMPLATE"
+    },
+    "ontology": {
+      "revision": null,
+      "status": "NOT_RUN"
+    },
+    "context_cache": {
+      "revision": null,
+      "status": "NOT_RUN"
+    }
+  },
+  "validation": {
+    "live_dax": "NOT_RUN",
+    "direct_lake": "NOT_RUN",
+    "source_rls": "NOT_RUN"
+  }
+}

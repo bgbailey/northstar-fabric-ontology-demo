@@ -1,0 +1,21 @@
+/// Commerce and Devices; undeployed template requiring approved OneLake binding.
+model Model
+	culture: en-US
+	sourceQueryCulture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	annotation LiveDax = NOT_RUN
+	annotation DirectLake = NOT_RUN
+	annotation SourceRls = NOT_RUN
+	annotation SourceRevision = 1.0
+
+ref table 'Orders'
+ref table 'Order Lines'
+ref table 'Store Device Day'
+ref table 'Accounts'
+ref table 'Calendar'
+ref table 'Devices'
+ref table 'Markets'
+ref table 'Stores'
+
+ref role 'East Region'

@@ -1,0 +1,65 @@
+/// Daily rollup of the same bounded hourly monitoring window, not full-month telemetry.
+table 'Site Day'
+	lineageTag: e1311284-1ee7-515c-949a-6f219a91e4af
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: site_key
+		lineageTag: 5e9a15e1-bc63-5820-b8d2-243a3f9f8e6f
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 1e702702-1144-58d9-9755-e071307c6874
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 28de688d-ee12-55e2-bffa-28d0de435b09
+		formatString: yyyy-MM-dd
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'snapshot_date'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: snapshot_date
+		lineageTag: 2bcee9de-fea7-5ee8-a318-812a4b56f3dd
+		formatString: yyyy-MM-dd
+
+	/// Eligible minutes at the declared Site Day grain.
+	column 'eligible_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: eligible_minutes
+		lineageTag: 31af146e-873e-5695-9a8f-7f7f0845c9a4
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Unavailable minutes at the declared Site Day grain.
+	column 'unavailable_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: unavailable_minutes
+		lineageTag: 37744760-cb2c-57ba-9a63-4d3634446e79
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Site Day' = entity
+		mode: directLake
+		source
+			entityName: site_day
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

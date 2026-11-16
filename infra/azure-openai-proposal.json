@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0",
+  "proposalDate": "2026-10-01",
+  "status": "STAGED",
+  "configurationStatus": "UNCONFIGURED",
+  "liveStatus": "NOT_RUN",
+  "deploymentAuthorized": false,
+  "inferenceAuthorized": false,
+  "purpose": "New isolated DEV Azure OpenAI deployment for synthetic Northstar Wireless typed-plan proposals across two equal-information arms.",
+  "selection": {
+    "resource": "NOT_SELECTED",
+    "deployment": "NOT_SELECTED",
+    "model": "NOT_SELECTED",
+    "modelVersion": "NOT_SELECTED",
+    "expectedResponseModel": "NOT_SELECTED",
+    "region": "NOT_SELECTED",
+    "sku": "NOT_SELECTED",
+    "availability": "NOT_VERIFIED",
+    "quota": "NOT_VERIFIED",
+    "pricing": "NOT_VERIFIED"
+  },
+  "api": {
+    "operation": "POST /openai/v1/chat/completions",
+    "permittedOriginTemplates": [
+      "https://<resource>.openai.azure.com",
+      "https://<resource>.services.ai.azure.com"
+    ],
+    "outputMode": "json_object",
+    "schemaEnforcement": "Full supplied Plan JSON Schema and Pydantic validation locally; JSON mode is NOT strict structured output. Preserve dictionary and discriminated-union constraints.",
+    "rationale": "Learn recommends Responses for Azure OpenAI. Documented v1 Chat Completions supports this narrow single-response JSON-plan adapter without unsupported schema transformations.",
+    "requestPolicy": "Exactly one nonstreamed text completion, n=1, store=false, max_completion_tokens includes reasoning tokens. No tools, arbitrary URL forwarding, redirects, automatic retries or paid repair loops.",
+    "modelSelectionGate": "Verify selected version supports system messages, JSON mode, store=false, and max_completion_tokens; capture documented service-enforced context/token limits and exact response model string before configuring."
+  },
+  "identity": {
+    "runtimeRole": "Cognitive Services OpenAI User",
+    "roleScope": "Exact approved Azure OpenAI resource only; separately approve any new role assignment.",
+    "tokenScope": "https://ai.azure.com/.default",
+    "tokenProvider": "Explicit injected async callable only; no DefaultAzureCredential, ambient login, secrets lookup or token audience fallback.",
+    "deploymentRoles": "Resource creation and model deployment require separately approved provisioning identity/permissions; the inference User role does not grant creation. No role assignment is staged for execution.",
+    "documentationDifference": "Current v1 lifecycle and structured-output guides use https://ai.azure.com/.default. The REST Chat reference still lists cognitiveservices.azure.com. Follow the v1 guide's configured scope, verify actual approved access later, and never silently switch audience."
+  },
+  "budget": {
+    "currency": "USER_MUST_SELECT",
+    "inputPricePerMillion": null,
+    "outputPricePerMillion": null,
+    "priceEvidenceDate": null,
+    "maxRequestsAcrossBothArms": null,
+    "maxInputTokens": null,
+    "maxOutputTokens": null,
+    "maxRequestBytes": null,
+    "maxResponseBytes": null,
+    "maxOutputBytes": null,
+    "timeoutSeconds": null,
+    "operationalCap": null,
+    "provisioningAndOtherCostCap": null,
+    "costFormula": "maximum inference cost = max_requests * (max_input_tokens * input_price_per_million + max_output_tokens * output_price_per_million) / 1000000; total authorized cost must also cover separately estimated provisioning, provisioned-throughput commitments, networking, storage and diagnostics if selected.",
+    "inputBound": "Reserve the selected model's complete documented service-enforced context window as max_input_tokens for EVERY request. This deliberately conservative bound includes message framing; byte limits are transport limits, never claimed to be a tokenizer. No dispatch without reviewed model/version capability evidence and a cap large enough for one maximum reservation.",
+    "pricingPolicy": "User must choose positive verified upper-bound uncached input and all-completion-token prices in one currency for the actual model/version/region/SKU. No invented prices, discounts, cache savings or provisioned-throughput assumptions.",
+    "ledger": "One private approval-wide SQLite ledger shared by both arms/processes. BEGIN IMMEDIATE check/reserve before send; UUID per attempt; durable accounting survives restart. Bind ledger location, all limits/pricing and artifact context into approval digest. Never delete/reset/copy the ledger during an approval.",
+    "unknownOutcomes": "Timeout, cancellation, HTTP failure, malformed envelopes and missing/untrusted usage retain the maximum reservation. Invalid plans remain paid. Only validated counts from the pinned model may reconcile cost; call count is never refunded."
+  },
+  "approvalRequirements": [
+    "Exact DEV resource/deployment and expected response model version; real target identifiers stay in private local configuration outside repository and OneDrive.",
+    "Exact artifact/configuration/context revision digests, including shared ledger location and all token/request/byte/time/pricing limits.",
+    "Separate explicit operations for resource/deployment creation, any role assignments, paid-plan-proposal and teardown; staging grants none.",
+    "Verified availability/quota and dated model capability/pricing evidence; user-chosen request cap and total operational cost cap in a selected currency.",
+    "Explicit absolute expiry, TTL, teardown owner, exact owned-resource inventory and teardown mechanism. No inference past expiry.",
+    "Separate approval for later read-only cloud discovery/login if required; no discovery was performed while preparing this proposal."
+  ],
+  "teardown": {
+    "status": "NOT_CONFIGURED",
+    "owner": "NOT_SELECTED",
+    "expiry": null,
+    "ttlHours": null,
+    "mechanism": "After exact approval, remove only resources/deployments/roles created and owned by this proposal. Do not alter shared capacity, existing resources or unrelated roles. Preserve sanitized receipts and ledger until final cost reconciliation."
+  },
+  "implementation": {
+    "module": "telco_iq.model_provider",
+    "configType": "AzureOpenAIConfig",
+    "adapter": "AzureOpenAICompletion(config, approval, *, token_provider, transport=None)",
+    "completion": "async complete(system, payload, schema) -> str",
+    "identity": "provider='azure-openai-v1-chat'; model_version is the configured expected response model string",
+    "evidence": "Task-local last_receipt; request_receipt(request_id); approval-wide budget_snapshot(). Receipts contain hashes, safe outcome codes, counts and cost only, never prompts, output text, tokens or private thoughts.",
+    "tests": "Synthetic httpx.MockTransport UNIT tests only; no actual inference, cloud discovery, provisioning, login, role changes or secrets lookup."
+  },
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle",
+      "checkedDate": "2026-10-01",
+      "supports": "v1 endpoints, Chat support, Responses recommendation, runtime role and ai.azure.com token scope"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/chat?view=rest-microsoft-foundry-v1",
+      "checkedDate": "2026-10-01",
+      "supports": "REST Chat request fields, max_completion_tokens including reasoning, n=1, output and usage contract"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/json-mode",
+      "checkedDate": "2026-10-01",
+      "supports": "json_object, explicit JSON instruction, finish_reason checks and no schema guarantee"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs",
+      "checkedDate": "2026-10-01",
+      "supports": "Strict output distinction and local typed validation; current Plan is not silently transformed"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/openai/how-to/role-based-access-control",
+      "checkedDate": "2026-10-01",
+      "supports": "Inference User role versus separate resource/deployment creation permissions"
+    }
+  ],
+  "evidenceGapsStillThin": [
+    "No model/version/region/SKU/resource is selected and no availability, quota or actual price has been verified.",
+    "No selected-model context ceiling, exact returned model string or paid inference has been observed.",
+    "No private configured target, currently valid paid approval, deployed resource, assigned role or teardown guard exists for this proposal.",
+    "Application-side ledger is not an Azure billing control and cannot account for calls made outside this approved adapter. Dedicated owned scope and external operational controls require separate review."
+  ]
+}

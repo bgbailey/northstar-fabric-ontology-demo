@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: growth.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"growth.eligible_population", [Eligible Population],
+	"growth.assigned_population", [Assigned Population],
+	"growth.accepted_offers", [Accepted Offers],
+	"growth.acceptance_rate", [Acceptance Rate],
+	"growth.offer_cost", [Offer Cost],
+	"growth.treatment_retained", [Treatment Retained],
+	"growth.control_retained", [Control Retained],
+	"growth.retention_lift", [Retention Lift]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

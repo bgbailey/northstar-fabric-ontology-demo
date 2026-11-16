@@ -1,0 +1,52 @@
+{
+  "status": "UNAPPROVED",
+  "purpose": "Cloud-owned capacity deadline; never rely on a CLI process or browser remaining open",
+  "accountName": "telcoiq-lifecycle-20260929",
+  "accountLocation": "centralus",
+  "accountApiVersion": "2024-10-23",
+  "accountProperties": {
+    "sku": {"name": "Basic"},
+    "disableLocalAuth": true,
+    "publicNetworkAccess": false
+  },
+  "identity": {"type": "SystemAssigned"},
+  "runbookName": "TelcoIQ-Pause-ApprovedCapacity",
+  "runbookSource": "infra/pause-capacity.ps1",
+  "requiredModule": "Az.Accounts; verify installed supported version before publishing/running",
+  "customRoleActions": [
+    "Microsoft.Fabric/capacities/read",
+    "Microsoft.Fabric/capacities/suspend/action"
+  ],
+  "customRoleAssignmentScope": "Only exact approved capacity ARM resource ID, supplied privately",
+  "forbiddenRoleActions": ["Microsoft.Fabric/capacities/delete", "Microsoft.Fabric/capacities/resume/action", "*"],
+  "roleValidation": "If documented action-specific role is insufficient, stop for fresh permission approval; do not grant Contributor",
+  "schedule": {
+    "frequency": "Hour",
+    "interval": 1,
+    "startTime": "Exact approved UTC deadline, not configured yet",
+    "expiryTime": "Two hours after approved deadline: bounded retry window",
+    "timeZone": "UTC",
+    "jobMode": "SuspendWhenDue"
+  },
+  "preflightJobMode": "Inspect",
+  "userSelectedMaximumActiveHours": 48,
+  "userSpendingCapUSD": 200,
+  "capacityAlreadyActive": true,
+  "capacityResumeByThisSession": false,
+  "deadlineRequiresConfirmation": true,
+  "spendingLimit": "User-approved operational cap, not a guaranteed Azure billing stop. Shared overages and delayed billing are not yet measured.",
+  "teardown": {
+    "neverDeleteCapacity": true,
+    "removeOwnedSchedulerAfterVerifiedPause": true,
+    "removeOnlyNewRoleAssignmentAndRoleDefinition": true,
+    "fabricItems": "Separate owned-item manifest and explicit cleanup approval",
+    "owner": "Lab owner with this session recording action/readback receipts"
+  },
+  "evidenceGaps": [
+    "No existing Azure Automation account found; creating one is a new mutation requiring approval.",
+    "Managed identity, custom role, runbook and schedule are not provisioned.",
+    "Dry-run checks target/read identity, not permission to execute suspend.",
+    "No actual scheduled suspension has been demonstrated.",
+    "Runtime module availability and delegated deployment permissions require approved live validation."
+  ]
+}

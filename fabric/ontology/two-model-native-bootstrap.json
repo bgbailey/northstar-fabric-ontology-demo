@@ -1,0 +1,72 @@
+{
+  "revision": 1,
+  "status": "STAGED_NOT_APPLIED",
+  "purpose": "Populate the existing generation-2 ontology with real semantic-model sources, source-owned metrics and cross-domain account context.",
+  "authoringRoute": "Fabric ontology agent in the existing ontology; Plan, inspect the native draft, then explicitly approve Act. No legacy EntityTypes JSON or updateDefinition round-trip.",
+  "targetAlias": "owned-p0-ontology",
+  "sources": [
+    {
+      "model": "subscriptions",
+      "displayName": "TelcoIQ_Subscriptions_P0",
+      "tables": ["Accounts", "Subscriptions", "Subscription Month", "Lifecycle Events", "Calendar", "Markets"],
+      "focusMetric": {
+        "name": "Active Lines EOM",
+        "homeTable": "Subscription Month",
+        "unit": "count"
+      }
+    },
+    {
+      "model": "finance",
+      "displayName": "TelcoIQ_Finance_P0",
+      "tables": ["Accounts", "Account Month", "Billing Account Map", "Charge Lines", "Credits", "Calendar", "Markets"],
+      "focusMetric": {
+        "name": "Recognized Service Revenue",
+        "homeTable": "Account Month",
+        "unit": "cents"
+      }
+    }
+  ],
+  "planPrompt": [
+    "Work only in this existing generation-2 ontology and only with TelcoIQ_Subscriptions_P0 and TelcoIQ_Finance_P0 in the same workspace. Both contain synthetic Northstar Wireless data. Stay in Plan mode until the draft is reviewed.",
+    "Use the semantic models themselves as sources. Preserve native source-backed metric identity, original source model, measure name and home table. Do not replace semantic-model grounding with direct lakehouse bindings or copied DAX calculations.",
+    "Bring in the source tables, columns, relationships and all source measures. In particular preserve Active Lines EOM on Subscription Month and Recognized Service Revenue on Account Month.",
+    "Reconcile shared Accounts using account_key only after verifying the same conformed key and source lineage in both models. Calendar and Markets may be shared only after checking matching keys and meanings. If source identity or metric home-table binding would be lost, keep the source-qualified entities separate and connect them explicitly instead.",
+    "Connect the subscription population to finance through the conformed account. Preserve the source relationships from Subscription Month to Accounts and Account Month to Accounts. Subscription Month is at subscription_key plus month, while Account Month is at account_key plus month. Never declare a one-to-one relationship between the raw fact rows.",
+    "For a cross-model monthly comparison, ask each source measure for results at account_key and the same month, then align those account-month aggregates. Retain unmatched accounts and disclose missing values; do not substitute zero.",
+    "Keep billing_key distinct from account_key even when their numeric values match. Billing Account Map uses half-open UTC intervals valid_from <= event time < valid_to; a missing or ambiguous mapping is not a valid account link.",
+    "Add linked native natural-language rules for: same complete service month across sources; account versus subscription versus billing identity; snapshots and distinct counts not summed over time; financial cents and revenue meaning; missing mappings and incomplete results not treated as zero. These rules are guidance, not executable policies.",
+    "Do not modify semantic-model measures, data, roles, permissions, tenant settings, capacity or any other item. Do not create a GraphModel. Do not remove existing objects or overwrite metric backing links using an exported definition.",
+    "Show the proposed entities, retained source bindings, metric home tables, cross-domain relationships and linked rules. List unresolved mappings or unsupported operations explicitly. Do not apply until approved."
+  ],
+  "queryPrompt": "For August 2026, show active lines at month end and recognized service revenue by account across the two source models. Use their source measures, return revenue in integer cents, explain the conformed account and common-period relationship, show the actual source queries and state whether the returned account population is complete. Do not infer missing accounts as zero.",
+  "limits": {
+    "maximumAgentRequests": 3,
+    "maximumElapsedMinutes": 30,
+    "maximumDefinitionApplications": 1,
+    "maximumNativeQueryRequests": 1,
+    "capacityChangeAllowed": false,
+    "sourceMutationAllowed": false,
+    "permissionChangeAllowed": false,
+    "externalApplicationModelCallsAllowed": false,
+    "approvalRequired": true,
+    "expiry": "Use the existing privately recorded lab deadline; no extension.",
+    "teardown": "Retain the already-owned P0 items for the next approved phase; explicit owned-item cleanup at handoff. Existing capacity shutdown remains unchanged."
+  },
+  "evidenceToCapture": [
+    "Actual native draft preview before Act and applied state afterwards.",
+    "Source-model and home-table links for both focus metrics.",
+    "Actual cross-domain account relationship and linked rules.",
+    "Native query, returned rows, completeness and source provenance.",
+    "Read-only definition snapshot, without importing it back over the working ontology."
+  ],
+  "evidenceGaps": [
+    "This is an authoring request, not a native ontology definition or demonstrated capability.",
+    "Exact service-generated objects and backing links must be inspected in the native draft.",
+    "Native agent availability, metered consumption and the custom-app context output shape remain unverified."
+  ],
+  "references": [
+    "https://learn.microsoft.com/en-us/fabric/iq/ontology/how-to-generate-from-semantic-models",
+    "https://learn.microsoft.com/en-us/fabric/iq/ontology/how-to-use-metrics",
+    "https://learn.microsoft.com/en-us/fabric/iq/ontology/how-to-use-ontology-agent"
+  ]
+}

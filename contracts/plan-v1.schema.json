@@ -1,0 +1,717 @@
+{
+  "$defs": {
+    "AggregateNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "const": "AggregateResult",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "group_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Group By",
+          "type": "array"
+        },
+        "sums": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Sums",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source",
+        "group_by",
+        "sums"
+      ],
+      "title": "AggregateNode",
+      "type": "object"
+    },
+    "AnswerNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "const": "SynthesizeAnswer",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source"
+      ],
+      "title": "AnswerNode",
+      "type": "object"
+    },
+    "Budgets": {
+      "additionalProperties": false,
+      "properties": {
+        "max_rows": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Rows",
+          "type": "integer"
+        },
+        "max_bytes": {
+          "default": 8000000,
+          "maximum": 64000000,
+          "minimum": 1,
+          "title": "Max Bytes",
+          "type": "integer"
+        },
+        "max_queries": {
+          "default": 16,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Queries",
+          "type": "integer"
+        },
+        "timeout_seconds": {
+          "default": 45,
+          "exclusiveMinimum": 0,
+          "maximum": 300,
+          "title": "Timeout Seconds",
+          "type": "number"
+        }
+      },
+      "title": "Budgets",
+      "type": "object"
+    },
+    "ContextNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "ResolveConcept",
+            "SelectMetric",
+            "ReadModelSchema"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "References",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "references"
+      ],
+      "title": "ContextNode",
+      "type": "object"
+    },
+    "Filter": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "title": "Column",
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "eq",
+            "in",
+            "gte",
+            "lt"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxItems": 250,
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "column",
+        "op",
+        "values"
+      ],
+      "title": "Filter",
+      "type": "object"
+    },
+    "JoinNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "JoinResults",
+            "ResolveIdentity",
+            "SemiJoinCohort"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "left": {
+          "title": "Left",
+          "type": "string"
+        },
+        "right": {
+          "title": "Right",
+          "type": "string"
+        },
+        "relationship": {
+          "title": "Relationship",
+          "type": "string"
+        },
+        "left_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Left Keys",
+          "type": "array"
+        },
+        "right_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Right Keys",
+          "type": "array"
+        },
+        "cardinality": {
+          "enum": [
+            "one_to_one",
+            "many_to_one",
+            "one_to_many"
+          ],
+          "title": "Cardinality",
+          "type": "string"
+        },
+        "unmatched": {
+          "enum": [
+            "error",
+            "exclude",
+            "preserve"
+          ],
+          "title": "Unmatched",
+          "type": "string"
+        },
+        "temporal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TemporalPredicate"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "max_fanout": {
+          "default": 1,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Fanout",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "left",
+        "right",
+        "relationship",
+        "left_keys",
+        "right_keys",
+        "cardinality",
+        "unmatched"
+      ],
+      "title": "JoinNode",
+      "type": "object"
+    },
+    "QueryNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "const": "QuerySemanticModel",
+          "title": "Kind",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "table": {
+          "title": "Table",
+          "type": "string"
+        },
+        "metrics": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Metrics",
+          "type": "array"
+        },
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "group_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Group By",
+          "type": "array"
+        },
+        "filters": {
+          "items": {
+            "$ref": "#/$defs/Filter"
+          },
+          "title": "Filters",
+          "type": "array"
+        },
+        "date_role": {
+          "title": "Date Role",
+          "type": "string"
+        },
+        "expected_grain": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expected Grain",
+          "type": "array"
+        },
+        "max_rows": {
+          "default": 10000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Rows",
+          "type": "integer"
+        },
+        "completeness": {
+          "default": "full",
+          "enum": [
+            "full",
+            "qualified_partial"
+          ],
+          "title": "Completeness",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "model",
+        "table",
+        "date_role",
+        "expected_grain"
+      ],
+      "title": "QueryNode",
+      "type": "object"
+    },
+    "RankNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "const": "RankCandidates",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "column": {
+          "title": "Column",
+          "type": "string"
+        },
+        "descending": {
+          "default": true,
+          "title": "Descending",
+          "type": "boolean"
+        },
+        "limit": {
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source",
+        "column",
+        "limit"
+      ],
+      "title": "RankNode",
+      "type": "object"
+    },
+    "RuleNode": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "ApplyDeterministicRule",
+            "ComparePeriods"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "ratio",
+            "difference",
+            "capped_difference",
+            "union_minutes"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "output": {
+          "title": "Output",
+          "type": "string"
+        },
+        "arguments": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Arguments",
+          "type": "array"
+        },
+        "group_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Group By",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source",
+        "operation",
+        "output",
+        "arguments"
+      ],
+      "title": "RuleNode",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "tenant": {
+          "title": "Tenant",
+          "type": "string"
+        },
+        "principal": {
+          "title": "Principal",
+          "type": "string"
+        },
+        "authorization_revision": {
+          "title": "Authorization Revision",
+          "type": "string"
+        },
+        "models": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "mode": {
+          "enum": [
+            "OFFLINE_SYNTHETIC",
+            "LIVE_DELEGATED"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenant",
+        "principal",
+        "authorization_revision",
+        "models",
+        "mode"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "TemporalPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "left_start": {
+          "title": "Left Start",
+          "type": "string"
+        },
+        "left_end": {
+          "title": "Left End",
+          "type": "string"
+        },
+        "right_start": {
+          "title": "Right Start",
+          "type": "string"
+        },
+        "right_end": {
+          "title": "Right End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "left_start",
+        "left_end",
+        "right_start",
+        "right_end"
+      ],
+      "title": "TemporalPredicate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "question": {
+      "title": "Question",
+      "type": "string"
+    },
+    "principal_scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "ontology_revision": {
+      "title": "Ontology Revision",
+      "type": "string"
+    },
+    "hypotheses": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "metric_selections": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Metric Selections",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "AggregateResult": "#/$defs/AggregateNode",
+            "ApplyDeterministicRule": "#/$defs/RuleNode",
+            "ComparePeriods": "#/$defs/RuleNode",
+            "JoinResults": "#/$defs/JoinNode",
+            "QuerySemanticModel": "#/$defs/QueryNode",
+            "RankCandidates": "#/$defs/RankNode",
+            "ReadModelSchema": "#/$defs/ContextNode",
+            "ResolveConcept": "#/$defs/ContextNode",
+            "ResolveIdentity": "#/$defs/JoinNode",
+            "SelectMetric": "#/$defs/ContextNode",
+            "SemiJoinCohort": "#/$defs/JoinNode",
+            "SynthesizeAnswer": "#/$defs/AnswerNode"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/QueryNode"
+          },
+          {
+            "$ref": "#/$defs/JoinNode"
+          },
+          {
+            "$ref": "#/$defs/AggregateNode"
+          },
+          {
+            "$ref": "#/$defs/RuleNode"
+          },
+          {
+            "$ref": "#/$defs/RankNode"
+          },
+          {
+            "$ref": "#/$defs/ContextNode"
+          },
+          {
+            "$ref": "#/$defs/AnswerNode"
+          }
+        ]
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "result_node": {
+      "title": "Result Node",
+      "type": "string"
+    },
+    "budgets": {
+      "$ref": "#/$defs/Budgets"
+    },
+    "clarification_state": {
+      "default": "resolved",
+      "enum": [
+        "resolved",
+        "required"
+      ],
+      "title": "Clarification State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "question",
+    "principal_scope",
+    "as_of",
+    "ontology_revision",
+    "metric_selections",
+    "nodes",
+    "result_node"
+  ],
+  "title": "Plan",
+  "type": "object"
+}

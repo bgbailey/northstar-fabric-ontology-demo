@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: finance.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"finance.recognized_service_revenue", [Recognized Service Revenue],
+	"finance.billed_charges", [Billed Charges],
+	"finance.posted_credits", [Posted Credits],
+	"finance.net_recognized_revenue", [Net Recognized Revenue],
+	"finance.service_cost", [Service Cost],
+	"finance.contribution_margin", [Contribution Margin],
+	"finance.margin_percent", [Margin Percent],
+	"finance.revenue_per_active_line", [Revenue per Active Line]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

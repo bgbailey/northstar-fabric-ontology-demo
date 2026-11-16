@@ -1,0 +1,16 @@
+{
+  "model": "finance",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "finance.recognized_service_revenue",
+    "finance.billed_charges",
+    "finance.posted_credits",
+    "finance.net_recognized_revenue",
+    "finance.service_cost",
+    "finance.contribution_margin",
+    "finance.margin_percent",
+    "finance.revenue_per_active_line"
+  ]
+}

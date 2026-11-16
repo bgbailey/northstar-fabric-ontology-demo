@@ -1,0 +1,1573 @@
+{
+  "version": "1.0",
+  "status": "UNDEPLOYED_TEMPLATE",
+  "upstream_commit": "6c11ad58c25992e5d1435ce7cd80d217d5598a31",
+  "guidance_paths": [
+    "skills/semantic-model-authoring/SKILL.md",
+    "skills/semantic-model-authoring/references/modeling-guidelines.md",
+    "skills/semantic-model-authoring/references/direct-lake-guidelines.md",
+    "skills/semantic-model-authoring/references/tmdl-guidelines.md",
+    "skills/semantic-model-authoring/references/dax-guidelines.md",
+    "skills/semantic-model-authoring/references/pbip.md"
+  ],
+  "validation": {
+    "sql_reference": "SEE_TARGETED_TESTS",
+    "tmdl_engine_parse": "NOT_RUN",
+    "live_dax": "NOT_RUN",
+    "direct_lake": "NOT_RUN",
+    "source_rls": "NOT_RUN"
+  },
+  "models": [
+    {
+      "id": "subscriptions",
+      "source_lineage": "098a2e33-80ae-5509-9d81-c76f91634791",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "subscription",
+          "rows": 20,
+          "columns": 5
+        },
+        {
+          "id": "subscription_month",
+          "rows": 120,
+          "columns": 8
+        },
+        {
+          "id": "lifecycle_event",
+          "rows": 11,
+          "columns": 7
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "subscription",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "subscription",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "subscription_month",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "subscription_month",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "subscription_month",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "lifecycle_event",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "lifecycle_event",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "lifecycle_event",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        }
+      ],
+      "measures": [
+        {
+          "id": "subscriptions.active_lines_eom",
+          "name": "Active Lines EOM",
+          "home_table": "subscription_month",
+          "lineage": "8ef7e038-8379-5e4c-af5c-056a81dd59ec"
+        },
+        {
+          "id": "subscriptions.active_accounts_eom",
+          "name": "Active Accounts EOM",
+          "home_table": "subscription_month",
+          "lineage": "74a5ed7d-bd77-5434-9974-d7b618dae265"
+        },
+        {
+          "id": "subscriptions.gross_adds",
+          "name": "Gross Adds",
+          "home_table": "subscription_month",
+          "lineage": "0216cbcc-9fde-5030-9064-c07ece1fc7c2"
+        },
+        {
+          "id": "subscriptions.disconnects",
+          "name": "Disconnects",
+          "home_table": "subscription_month",
+          "lineage": "edd0ba5a-b1a1-589a-9b02-89c344acc653"
+        },
+        {
+          "id": "subscriptions.net_adds",
+          "name": "Net Adds",
+          "home_table": "subscription_month",
+          "lineage": "9230925e-944a-54b6-960e-5b509b921f12"
+        },
+        {
+          "id": "subscriptions.opening_active_lines",
+          "name": "Opening Active Lines",
+          "home_table": "subscription_month",
+          "lineage": "2f0f9108-fe41-5374-bd7f-6e8f678f844f"
+        },
+        {
+          "id": "subscriptions.churn_rate",
+          "name": "Churn Rate",
+          "home_table": "subscription_month",
+          "lineage": "510b6915-1f62-54fd-8515-5838a778b204"
+        },
+        {
+          "id": "subscriptions.average_active_lines",
+          "name": "Average Active Lines",
+          "home_table": "subscription_month",
+          "lineage": "dfcea01d-06c8-5ad6-99db-6b1e411b782f"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "subscription",
+              "expression": "'Subscriptions'[market_id] = \"M01\""
+            },
+            {
+              "table": "subscription_month",
+              "expression": "'Subscription Month'[market_id] = \"M01\""
+            },
+            {
+              "table": "lifecycle_event",
+              "expression": "'Lifecycle Events'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "source_lineage": "f3238e31-9439-59e5-bd22-fbbf4703aa39",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "account_month",
+          "rows": 60,
+          "columns": 8
+        },
+        {
+          "id": "billing_account_map",
+          "rows": 12,
+          "columns": 4
+        },
+        {
+          "id": "charge_line",
+          "rows": 62,
+          "columns": 9
+        },
+        {
+          "id": "credit",
+          "rows": 2,
+          "columns": 8
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "account_month",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "account_month",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "account_month",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "billing_account_map",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "charge_line",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "charge_line",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "charge_line",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "credit",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "credit",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "credit",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        }
+      ],
+      "measures": [
+        {
+          "id": "finance.recognized_service_revenue",
+          "name": "Recognized Service Revenue",
+          "home_table": "account_month",
+          "lineage": "9ffe8697-fcb7-5669-b654-66347f2b3d2e"
+        },
+        {
+          "id": "finance.billed_charges",
+          "name": "Billed Charges",
+          "home_table": "charge_line",
+          "lineage": "9ea22949-2e52-53d8-829c-fb7dd4849d5b"
+        },
+        {
+          "id": "finance.posted_credits",
+          "name": "Posted Credits",
+          "home_table": "credit",
+          "lineage": "28b87061-7bf9-5503-b033-50f552354fcf"
+        },
+        {
+          "id": "finance.net_recognized_revenue",
+          "name": "Net Recognized Revenue",
+          "home_table": "account_month",
+          "lineage": "c48983d7-8170-5869-9e9c-623e636bc86a"
+        },
+        {
+          "id": "finance.service_cost",
+          "name": "Service Cost",
+          "home_table": "account_month",
+          "lineage": "209be5fa-0deb-5a30-b038-bcbf49ddd273"
+        },
+        {
+          "id": "finance.contribution_margin",
+          "name": "Contribution Margin",
+          "home_table": "account_month",
+          "lineage": "e9a20368-9115-581c-88eb-42cba611cfbc"
+        },
+        {
+          "id": "finance.margin_percent",
+          "name": "Margin Percent",
+          "home_table": "account_month",
+          "lineage": "f036149c-443a-5f43-981d-a7225c153536"
+        },
+        {
+          "id": "finance.revenue_per_active_line",
+          "name": "Revenue per Active Line",
+          "home_table": "account_month",
+          "lineage": "dd5ecaf6-7843-5e2c-bce8-b17bba562a98"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "account_month",
+              "expression": "'Account Month'[market_id] = \"M01\""
+            },
+            {
+              "table": "charge_line",
+              "expression": "'Charge Lines'[market_id] = \"M01\""
+            },
+            {
+              "table": "credit",
+              "expression": "'Credits'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "digital",
+      "source_lineage": "48e205cf-4f0f-57fd-8924-e0c5008542fe",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "session",
+          "rows": 120,
+          "columns": 13
+        },
+        {
+          "id": "interaction_event",
+          "rows": 240,
+          "columns": 7
+        },
+        {
+          "id": "identity_map",
+          "rows": 11,
+          "columns": 4
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "device",
+          "rows": 2,
+          "columns": 3
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "session",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "session",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "session",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "session",
+          "fromColumn": "device_key",
+          "toTable": "device",
+          "toColumn": "device_key"
+        },
+        {
+          "fromTable": "interaction_event",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "interaction_event",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "interaction_event",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "identity_map",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        }
+      ],
+      "measures": [
+        {
+          "id": "digital.sessions",
+          "name": "Sessions",
+          "home_table": "session",
+          "lineage": "b92bb326-2440-52ae-85c1-efeb637a0e91"
+        },
+        {
+          "id": "digital.authenticated_sessions",
+          "name": "Authenticated Sessions",
+          "home_table": "session",
+          "lineage": "5517b3f1-aad3-5f0f-b1fc-fe4416c61eba"
+        },
+        {
+          "id": "digital.eligible_checkout_sessions",
+          "name": "Eligible Checkout Sessions",
+          "home_table": "session",
+          "lineage": "6c6eeb13-ffb6-5871-8943-0747ccf87790"
+        },
+        {
+          "id": "digital.successful_checkout_sessions",
+          "name": "Successful Checkout Sessions",
+          "home_table": "session",
+          "lineage": "ec19249c-c7c2-5975-bf2d-535055cd7221"
+        },
+        {
+          "id": "digital.checkout_conversion",
+          "name": "Checkout Conversion",
+          "home_table": "session",
+          "lineage": "a4af351c-8aa2-580e-b147-163ff8b344e0"
+        },
+        {
+          "id": "digital.failed_checkouts",
+          "name": "Failed Checkouts",
+          "home_table": "session",
+          "lineage": "8cb7687c-0fee-57aa-b7d1-645e0ba12401"
+        },
+        {
+          "id": "digital.digital_active_accounts",
+          "name": "Digital Active Accounts",
+          "home_table": "session",
+          "lineage": "490356ce-113e-517e-a13b-fd38b396b116"
+        },
+        {
+          "id": "digital.median_journey_duration",
+          "name": "Median Journey Duration",
+          "home_table": "session",
+          "lineage": "4f119e9e-f497-5ce5-a477-c7d347a10beb"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "session",
+              "expression": "'Sessions'[market_id] = \"M01\""
+            },
+            {
+              "table": "interaction_event",
+              "expression": "'Interaction Events'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "care",
+      "source_lineage": "b933bad6-71cb-51e4-9717-f89f9c7e42b8",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "case",
+          "rows": 8,
+          "columns": 12
+        },
+        {
+          "id": "case_activity",
+          "rows": 16,
+          "columns": 7
+        },
+        {
+          "id": "case_daily_snapshot",
+          "rows": 32,
+          "columns": 6
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "case",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "case",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "case",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "case_activity",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "case_activity",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "case_activity",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "case_daily_snapshot",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "case_daily_snapshot",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "case_daily_snapshot",
+          "fromColumn": "snapshot_date",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        }
+      ],
+      "measures": [
+        {
+          "id": "care.open_cases_eod",
+          "name": "Open Cases EOD",
+          "home_table": "case_daily_snapshot",
+          "lineage": "7ecfe372-da18-5ca8-9098-04f25660c291"
+        },
+        {
+          "id": "care.new_cases",
+          "name": "New Cases",
+          "home_table": "case",
+          "lineage": "a32411de-b57b-52bb-be02-5c3bf7b91787"
+        },
+        {
+          "id": "care.resolved_cases",
+          "name": "Resolved Cases",
+          "home_table": "case",
+          "lineage": "b450b86b-91bf-5a5f-8fe6-f1f0e702f4d6"
+        },
+        {
+          "id": "care.repeat_contacts",
+          "name": "Repeat Contacts",
+          "home_table": "case",
+          "lineage": "89756569-56bd-5667-8ccd-a4f92c5b378f"
+        },
+        {
+          "id": "care.contacted_accounts",
+          "name": "Contacted Accounts",
+          "home_table": "case",
+          "lineage": "c16cdd51-14aa-578e-8bea-ab14aaaeb552"
+        },
+        {
+          "id": "care.escalated_cases",
+          "name": "Escalated Cases",
+          "home_table": "case",
+          "lineage": "24cf0d44-d558-59f6-966a-dca149e975fa"
+        },
+        {
+          "id": "care.first_contact_resolution",
+          "name": "First Contact Resolution",
+          "home_table": "case",
+          "lineage": "9616d7bb-8b02-59d4-b524-ec50350568e9"
+        },
+        {
+          "id": "care.mean_resolution_hours",
+          "name": "Mean Resolution Hours",
+          "home_table": "case",
+          "lineage": "a50e092a-c974-5f92-a5f7-e57fbe135240"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "case",
+              "expression": "'Cases'[market_id] = \"M01\""
+            },
+            {
+              "table": "case_activity",
+              "expression": "'Case Activities'[market_id] = \"M01\""
+            },
+            {
+              "table": "case_daily_snapshot",
+              "expression": "'Case Daily Snapshot'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "source_lineage": "1dbe37c5-3724-51ed-b6c6-f71880bfaf35",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "incident",
+          "rows": 4,
+          "columns": 7
+        },
+        {
+          "id": "site_hour",
+          "rows": 2880,
+          "columns": 8
+        },
+        {
+          "id": "site_day",
+          "rows": 120,
+          "columns": 6
+        },
+        {
+          "id": "subscription_site_exposure",
+          "rows": 120,
+          "columns": 8
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        },
+        {
+          "id": "site",
+          "rows": 4,
+          "columns": 4
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "incident",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "incident",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "incident",
+          "fromColumn": "site_key",
+          "toTable": "site",
+          "toColumn": "site_key"
+        },
+        {
+          "fromTable": "site_hour",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "site_hour",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "site_hour",
+          "fromColumn": "site_key",
+          "toTable": "site",
+          "toColumn": "site_key"
+        },
+        {
+          "fromTable": "site_day",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "site_day",
+          "fromColumn": "snapshot_date",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "site_day",
+          "fromColumn": "site_key",
+          "toTable": "site",
+          "toColumn": "site_key"
+        },
+        {
+          "fromTable": "subscription_site_exposure",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "subscription_site_exposure",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "subscription_site_exposure",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "subscription_site_exposure",
+          "fromColumn": "site_key",
+          "toTable": "site",
+          "toColumn": "site_key"
+        }
+      ],
+      "measures": [
+        {
+          "id": "network.eligible_site_minutes",
+          "name": "Eligible Site Minutes",
+          "home_table": "site_hour",
+          "lineage": "bc2bd04a-bff0-5f57-98b6-c5c37bab819a"
+        },
+        {
+          "id": "network.unavailable_site_minutes",
+          "name": "Unavailable Site Minutes",
+          "home_table": "site_hour",
+          "lineage": "620e4d44-602a-52f7-939a-2b5a642d3769"
+        },
+        {
+          "id": "network.availability_percent",
+          "name": "Availability Percent",
+          "home_table": "site_hour",
+          "lineage": "3c525956-6906-5afb-9581-97eb54e06063"
+        },
+        {
+          "id": "network.major_incidents",
+          "name": "Major Incidents",
+          "home_table": "incident",
+          "lineage": "f4101605-5124-5991-a9c8-2ff851939170"
+        },
+        {
+          "id": "network.exposed_lines",
+          "name": "Exposed Lines",
+          "home_table": "subscription_site_exposure",
+          "lineage": "41884c7c-7590-5589-8f0b-9c9eef22e722"
+        },
+        {
+          "id": "network.exposure_minutes",
+          "name": "Exposure Minutes",
+          "home_table": "subscription_site_exposure",
+          "lineage": "cec9223d-c96f-5f61-a937-65750c8ae8ce"
+        },
+        {
+          "id": "network.failed_sessions",
+          "name": "Failed Sessions",
+          "home_table": "site_hour",
+          "lineage": "329dd045-2cd1-5053-9114-3ab6d464ec40"
+        },
+        {
+          "id": "network.service_degradation_percent",
+          "name": "Service Degradation Percent",
+          "home_table": "site_hour",
+          "lineage": "102acea1-3cf7-5649-b03d-2e895dc703f8"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "incident",
+              "expression": "'Incidents'[market_id] = \"M01\""
+            },
+            {
+              "table": "site_hour",
+              "expression": "'Site Hour'[market_id] = \"M01\""
+            },
+            {
+              "table": "site_day",
+              "expression": "'Site Day'[market_id] = \"M01\""
+            },
+            {
+              "table": "subscription_site_exposure",
+              "expression": "'Subscription Site Exposure'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            },
+            {
+              "table": "site",
+              "expression": "'Sites'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "commerce",
+      "source_lineage": "b7431de8-6066-5426-a4e7-de1566f9c7ad",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "order",
+          "rows": 34,
+          "columns": 11
+        },
+        {
+          "id": "order_line",
+          "rows": 34,
+          "columns": 11
+        },
+        {
+          "id": "store_device_day",
+          "rows": 144,
+          "columns": 7
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "device",
+          "rows": 2,
+          "columns": 3
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        },
+        {
+          "id": "store",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "order",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "order",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "order",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "order",
+          "fromColumn": "device_key",
+          "toTable": "device",
+          "toColumn": "device_key"
+        },
+        {
+          "fromTable": "order",
+          "fromColumn": "store_key",
+          "toTable": "store",
+          "toColumn": "store_key"
+        },
+        {
+          "fromTable": "order_line",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "order_line",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "order_line",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "order_line",
+          "fromColumn": "device_key",
+          "toTable": "device",
+          "toColumn": "device_key"
+        },
+        {
+          "fromTable": "order_line",
+          "fromColumn": "store_key",
+          "toTable": "store",
+          "toColumn": "store_key"
+        },
+        {
+          "fromTable": "store_device_day",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "store_device_day",
+          "fromColumn": "snapshot_date",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "store_device_day",
+          "fromColumn": "device_key",
+          "toTable": "device",
+          "toColumn": "device_key"
+        },
+        {
+          "fromTable": "store_device_day",
+          "fromColumn": "store_key",
+          "toTable": "store",
+          "toColumn": "store_key"
+        }
+      ],
+      "measures": [
+        {
+          "id": "commerce.orders",
+          "name": "Orders",
+          "home_table": "order",
+          "lineage": "c82fc1a5-1afe-5dda-b8dd-1972f41e5731"
+        },
+        {
+          "id": "commerce.units",
+          "name": "Booked Units",
+          "home_table": "order_line",
+          "lineage": "e9d0b341-4891-5f4a-9836-02f55fe66698"
+        },
+        {
+          "id": "commerce.booked_revenue",
+          "name": "Booked Revenue",
+          "home_table": "order_line",
+          "lineage": "d4fed25a-b016-5420-bd39-3850686b2da9"
+        },
+        {
+          "id": "commerce.cancellations",
+          "name": "Cancellations",
+          "home_table": "order",
+          "lineage": "7f8d8181-223c-5c9d-a31f-6fe9cf2aebba"
+        },
+        {
+          "id": "commerce.fulfilled_units",
+          "name": "Fulfilled Units",
+          "home_table": "order_line",
+          "lineage": "90ad0319-32d0-59a6-92e7-bc8ebcdfc292"
+        },
+        {
+          "id": "commerce.device_return_rate",
+          "name": "Device Return Rate",
+          "home_table": "order_line",
+          "lineage": "cfdf3be7-2846-5d86-a9ff-6d449aca7eff"
+        },
+        {
+          "id": "commerce.inventory_eod",
+          "name": "Inventory EOD",
+          "home_table": "store_device_day",
+          "lineage": "482becd0-1f53-5115-a50b-d5168ffca44d"
+        },
+        {
+          "id": "commerce.stockout_store_days",
+          "name": "Stockout Store Days",
+          "home_table": "store_device_day",
+          "lineage": "984b23dc-7031-531b-9eae-4f74de45ab5e"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "order",
+              "expression": "'Orders'[market_id] = \"M01\""
+            },
+            {
+              "table": "order_line",
+              "expression": "'Order Lines'[market_id] = \"M01\""
+            },
+            {
+              "table": "store_device_day",
+              "expression": "'Store Device Day'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            },
+            {
+              "table": "store",
+              "expression": "'Stores'[market_id] = \"M01\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "growth",
+      "source_lineage": "07d6b111-a601-5421-8eb5-013b110cffb1",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "offer_assignment",
+          "rows": 20,
+          "columns": 12
+        },
+        {
+          "id": "offer_outcome",
+          "rows": 20,
+          "columns": 6
+        },
+        {
+          "id": "campaign_touch",
+          "rows": 7,
+          "columns": 8
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "campaign",
+          "rows": 2,
+          "columns": 3
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "offer_assignment",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "offer_assignment",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "offer_assignment",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "offer_assignment",
+          "fromColumn": "campaign_key",
+          "toTable": "campaign",
+          "toColumn": "campaign_key"
+        },
+        {
+          "fromTable": "offer_outcome",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "offer_outcome",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "offer_outcome",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "campaign_touch",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "campaign_touch",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "campaign_touch",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "campaign_touch",
+          "fromColumn": "campaign_key",
+          "toTable": "campaign",
+          "toColumn": "campaign_key"
+        }
+      ],
+      "measures": [
+        {
+          "id": "growth.eligible_population",
+          "name": "Eligible Population",
+          "home_table": "offer_assignment",
+          "lineage": "d3c3e0a4-ecc5-5bf5-8934-2d5f74352631"
+        },
+        {
+          "id": "growth.assigned_population",
+          "name": "Assigned Population",
+          "home_table": "offer_assignment",
+          "lineage": "8bb63784-e4bf-535b-83c6-d144e17f2f58"
+        },
+        {
+          "id": "growth.accepted_offers",
+          "name": "Accepted Offers",
+          "home_table": "offer_assignment",
+          "lineage": "8bc8547d-883d-59a8-87ac-d0815967c5ee"
+        },
+        {
+          "id": "growth.acceptance_rate",
+          "name": "Acceptance Rate",
+          "home_table": "offer_assignment",
+          "lineage": "cd901c98-1dd1-51c4-aac5-3d9a29947835"
+        },
+        {
+          "id": "growth.offer_cost",
+          "name": "Offer Cost",
+          "home_table": "offer_assignment",
+          "lineage": "056be58a-8183-507f-bb86-d49812bf236a"
+        },
+        {
+          "id": "growth.treatment_retained",
+          "name": "Treatment Retained",
+          "home_table": "offer_assignment",
+          "lineage": "1fc05f84-b001-5adb-ba7f-f43eadf6d0f4"
+        },
+        {
+          "id": "growth.control_retained",
+          "name": "Control Retained",
+          "home_table": "offer_assignment",
+          "lineage": "86d34bd2-c105-5b54-b368-e33d24be5226"
+        },
+        {
+          "id": "growth.retention_lift",
+          "name": "Retention Lift",
+          "home_table": "offer_assignment",
+          "lineage": "64468bc0-1d5b-54fa-bb22-ab458ebcc833"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "offer_assignment",
+              "expression": "'Offer Assignments'[market_id] = \"M01\""
+            },
+            {
+              "table": "offer_outcome",
+              "expression": "'Offer Outcomes'[market_id] = \"M01\""
+            },
+            {
+              "table": "campaign_touch",
+              "expression": "'Campaign Touches'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    },
+    {
+      "id": "enterprise",
+      "source_lineage": "aac517f4-fe76-5cf5-8d98-e02b83589bbc",
+      "storage_mode": "directLake",
+      "tables": [
+        {
+          "id": "contract",
+          "rows": 2,
+          "columns": 9
+        },
+        {
+          "id": "service_site_map",
+          "rows": 3,
+          "columns": 7
+        },
+        {
+          "id": "service_month",
+          "rows": 12,
+          "columns": 9
+        },
+        {
+          "id": "sla_evaluation",
+          "rows": 12,
+          "columns": 7
+        },
+        {
+          "id": "applied_credit",
+          "rows": 2,
+          "columns": 6
+        },
+        {
+          "id": "account",
+          "rows": 10,
+          "columns": 7
+        },
+        {
+          "id": "calendar_date",
+          "rows": 212,
+          "columns": 6
+        },
+        {
+          "id": "market",
+          "rows": 4,
+          "columns": 3
+        },
+        {
+          "id": "service",
+          "rows": 2,
+          "columns": 3
+        },
+        {
+          "id": "site",
+          "rows": 4,
+          "columns": 4
+        }
+      ],
+      "relationships": [
+        {
+          "fromTable": "contract",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "contract",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "contract",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "service_site_map",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "service_site_map",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "service_site_map",
+          "fromColumn": "site_key",
+          "toTable": "site",
+          "toColumn": "site_key"
+        },
+        {
+          "fromTable": "service_site_map",
+          "fromColumn": "service_key",
+          "toTable": "service",
+          "toColumn": "service_key"
+        },
+        {
+          "fromTable": "service_month",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "service_month",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "service_month",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "service_month",
+          "fromColumn": "service_key",
+          "toTable": "service",
+          "toColumn": "service_key"
+        },
+        {
+          "fromTable": "sla_evaluation",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "sla_evaluation",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "sla_evaluation",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        },
+        {
+          "fromTable": "applied_credit",
+          "fromColumn": "account_key",
+          "toTable": "account",
+          "toColumn": "account_key"
+        },
+        {
+          "fromTable": "applied_credit",
+          "fromColumn": "market_id",
+          "toTable": "market",
+          "toColumn": "market_id"
+        },
+        {
+          "fromTable": "applied_credit",
+          "fromColumn": "month",
+          "toTable": "calendar_date",
+          "toColumn": "date"
+        }
+      ],
+      "measures": [
+        {
+          "id": "enterprise.contracted_services",
+          "name": "Contracted Services",
+          "home_table": "service_month",
+          "lineage": "c4481540-4757-51f3-b2f0-c7edef0282a9"
+        },
+        {
+          "id": "enterprise.monitored_service_minutes",
+          "name": "Monitored Service Minutes",
+          "home_table": "service_month",
+          "lineage": "a037f1a9-c861-5a6f-913d-2f61aa77ba27"
+        },
+        {
+          "id": "enterprise.breached_services",
+          "name": "Breached Services",
+          "home_table": "service_month",
+          "lineage": "447f106b-5325-5a9f-8a39-883e94d4da21"
+        },
+        {
+          "id": "enterprise.sla_compliance",
+          "name": "SLA Compliance",
+          "home_table": "service_month",
+          "lineage": "06aee6f9-0886-5844-b0bf-c7569731ee2e"
+        },
+        {
+          "id": "enterprise.contracted_recurring_revenue",
+          "name": "Contracted Recurring Revenue",
+          "home_table": "service_month",
+          "lineage": "67465d30-dc4f-5f7e-8767-fc871e5c065c"
+        },
+        {
+          "id": "enterprise.eligible_credits",
+          "name": "Eligible Credits",
+          "home_table": "sla_evaluation",
+          "lineage": "839d3a6c-fc55-5339-b8dc-aafd64f9116b"
+        },
+        {
+          "id": "enterprise.applied_credits",
+          "name": "Applied Credits",
+          "home_table": "applied_credit",
+          "lineage": "d1443339-7d10-5323-ae83-36c6dee57c9d"
+        },
+        {
+          "id": "enterprise.credit_exposure",
+          "name": "Credit Exposure",
+          "home_table": "sla_evaluation",
+          "lineage": "ea8d5aad-dbc5-5b2f-9597-685e48c539e7"
+        }
+      ],
+      "roles": [
+        {
+          "name": "East Region",
+          "predicates": [
+            {
+              "table": "contract",
+              "expression": "'Contracts'[market_id] = \"M01\""
+            },
+            {
+              "table": "service_site_map",
+              "expression": "'Service Site Map'[market_id] = \"M01\""
+            },
+            {
+              "table": "service_month",
+              "expression": "'Service Month'[market_id] = \"M01\""
+            },
+            {
+              "table": "sla_evaluation",
+              "expression": "'SLA Evaluation'[market_id] = \"M01\""
+            },
+            {
+              "table": "applied_credit",
+              "expression": "'Applied Credits'[market_id] = \"M01\""
+            },
+            {
+              "table": "account",
+              "expression": "'Accounts'[region] = \"East\""
+            },
+            {
+              "table": "market",
+              "expression": "'Markets'[region] = \"East\""
+            },
+            {
+              "table": "site",
+              "expression": "'Sites'[region] = \"East\""
+            }
+          ],
+          "membership": "NOT_MANAGED"
+        }
+      ]
+    }
+  ]
+}

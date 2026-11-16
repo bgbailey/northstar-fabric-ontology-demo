@@ -1,0 +1,35 @@
+/// Randomized experiment and observational operational campaign are separate.
+table 'Campaigns'
+	lineageTag: ba2c5bf5-46b3-52b6-b5bf-b94279ff65b6
+
+	/// Technical identity; join only through the declared mapping.
+	column 'campaign_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: campaign_key
+		lineageTag: 20ae1fbb-036b-5f15-b53a-4cb59fa02d81
+		isHidden
+		isAvailableInMdx: false
+		isKey
+		formatString: #,##0
+
+	/// Campaign name at the declared Campaigns grain.
+	column 'campaign_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: campaign_name
+		lineageTag: b79cac1b-2c0f-5a7f-921d-be0f5c54c157
+
+	/// Assignment method at the declared Campaigns grain.
+	column 'assignment_method'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: assignment_method
+		lineageTag: 97e170ba-b1c6-5d3a-bab4-d07f53c91897
+
+	partition 'Campaigns' = entity
+		mode: directLake
+		source
+			entityName: campaign
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

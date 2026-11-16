@@ -1,0 +1,74 @@
+/// End-of-day case state; additive across cases but never across dates.
+table 'Case Daily Snapshot'
+	lineageTag: a17302a9-7b9f-54c4-a522-4b19eed64e2e
+
+	/// Open cases at a specified observed day end. Requires one snapshot_date per result; never sum snapshots over time.
+	measure 'Open Cases EOD' = IF(HASONEVALUE('Case Daily Snapshot'[snapshot_date]), SUM('Case Daily Snapshot'[open_eod]))
+		formatString: #,##0
+		displayFolder: Customer Care
+		lineageTag: 7ecfe372-da18-5ca8-9098-04f25660c291
+		annotation MetricId = care.open_cases_eod
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'case_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: case_key
+		lineageTag: 23aaacc3-903e-5569-9736-fe0f1ae9bd46
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 827e3d54-f6d1-5b8c-8888-7137def6d591
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 52e39aca-710c-5cb3-9570-dbd410df872f
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 842a13c2-a445-5cb3-ae4a-dabdd9e86f4d
+		formatString: yyyy-MM-dd
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'snapshot_date'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: snapshot_date
+		lineageTag: e868f011-d221-5f61-a602-99b9e573ff95
+		formatString: yyyy-MM-dd
+
+	/// Open eod at the declared Case Daily Snapshot grain.
+	column 'open_eod'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: open_eod
+		lineageTag: 184d0b74-b348-5397-a170-d8ba9440205d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Case Daily Snapshot' = entity
+		mode: directLake
+		source
+			entityName: case_daily_snapshot
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

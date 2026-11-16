@@ -1,0 +1,16 @@
+{
+  "model": "digital",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "digital.sessions",
+    "digital.authenticated_sessions",
+    "digital.eligible_checkout_sessions",
+    "digital.successful_checkout_sessions",
+    "digital.checkout_conversion",
+    "digital.failed_checkouts",
+    "digital.digital_active_accounts",
+    "digital.median_journey_duration"
+  ]
+}

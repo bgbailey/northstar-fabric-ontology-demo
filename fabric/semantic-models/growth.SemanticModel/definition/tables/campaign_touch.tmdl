@@ -1,0 +1,85 @@
+/// Observed campaign contacts; touch counts are not assignment counts.
+table 'Campaign Touches'
+	lineageTag: c24b5274-d538-5ab9-8c61-0069e7f097b7
+
+	/// Technical identity; join only through the declared mapping.
+	column 'touch_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: touch_key
+		lineageTag: 4bd36d30-8d23-5ad4-86e3-4699695aede0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'assignment_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: assignment_key
+		lineageTag: b4d66c37-9915-5693-87ab-3e54eea7056f
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: a512a600-3205-5899-8c06-b44ae4aa50e2
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: b7d4aadb-6214-54e5-a1ad-1d66cc4d13bb
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: a70f5a29-7f24-55c8-a07f-860a5078b15e
+		formatString: yyyy-MM-dd
+
+	/// Technical identity; join only through the declared mapping.
+	column 'campaign_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: campaign_key
+		lineageTag: dbb8127e-7b86-56bc-b5aa-b2f35cd302e8
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'touched_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: touched_at
+		lineageTag: 5240d4e1-2350-5822-ba34-f6fcbc4876d7
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Channel at the declared Campaign Touches grain.
+	column 'channel'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: channel
+		lineageTag: 0dc95d01-f9aa-56b5-b749-25f3cfa7493b
+
+	partition 'Campaign Touches' = entity
+		mode: directLake
+		source
+			entityName: campaign_touch
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

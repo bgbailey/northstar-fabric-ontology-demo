@@ -1,0 +1,111 @@
+relationship 926e7ba5-20fb-50fb-922e-026b39e5dffc
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Orders'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 6b6a996b-38fc-5233-87de-d8b00ec6d082
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Orders'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 4b2a041c-0567-5ba1-a374-ca1df24d490c
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Orders'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship fd972e90-0129-5c79-85c0-c0d6e9e97e36
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Orders'.'device_key'
+	toColumn: 'Devices'.'device_key'
+
+relationship 1acfe6d8-b914-5d30-973a-fd80bd62d53d
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Orders'.'store_key'
+	toColumn: 'Stores'.'store_key'
+
+relationship 6f1bd8a4-d064-5e23-8b76-6a4630cb10fa
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Order Lines'.'account_key'
+	toColumn: 'Accounts'.'account_key'
+
+relationship 5ea0e080-9829-5dd9-8000-9d99e44de0bb
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Order Lines'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship 181e4961-cec3-5d7d-944d-79b09080d65e
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Order Lines'.'month'
+	toColumn: 'Calendar'.'date'
+
+relationship 6b34c727-2f64-54ec-8627-84c3d108bec0
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Order Lines'.'device_key'
+	toColumn: 'Devices'.'device_key'
+
+relationship 4446820a-1fbe-5067-b8ba-1f523522ba05
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Order Lines'.'store_key'
+	toColumn: 'Stores'.'store_key'
+
+relationship de27539d-4579-589c-9976-a0485b9d64c9
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Store Device Day'.'market_id'
+	toColumn: 'Markets'.'market_id'
+
+relationship d6a4fd22-bf9f-5feb-afc1-ab2be55a0265
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Store Device Day'.'snapshot_date'
+	toColumn: 'Calendar'.'date'
+
+relationship 9f6a4e47-a0ae-5b6d-9d7a-cb60be3ac1ed
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Store Device Day'.'device_key'
+	toColumn: 'Devices'.'device_key'
+
+relationship 0fca9b88-1a4a-5f28-b63c-42ad2c724c47
+	isActive: true
+	fromCardinality: many
+	toCardinality: one
+	crossFilteringBehavior: oneDirection
+	fromColumn: 'Store Device Day'.'store_key'
+	toColumn: 'Stores'.'store_key'

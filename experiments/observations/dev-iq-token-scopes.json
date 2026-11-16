@@ -1,0 +1,14 @@
+{
+  "observationType": "EXISTING_DEV_DELEGATED_TOKEN_SCOPE_CHECK",
+  "date": "2026-09-29",
+  "identityMode": "CLI_DELEGATED_AUTHOR_NOT_BROWSER_OBO",
+  "tenantVerified": true,
+  "audience": "https://analysis.windows.net/powerbi/api",
+  "observedScopes": ["user_impersonation"],
+  "missingDocumentedGAIQScopes": ["Dataset.Read.All", "Item.Execute.All", "Item.Read.All"],
+  "newConsentRequested": false,
+  "directGAIQHandshakeExecuted": false,
+  "sourceDataQueryExecuted": false,
+  "experimentStatus": "NOT_RUN",
+  "decision": "Do not claim an app MCP auth proof or silently use the corporate host connection. An approved DEV OAuth client/scope path is still required."
+}

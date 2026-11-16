@@ -1,0 +1,52 @@
+/// Half-open UTC identity intervals. Billing key 2 is reused; numeric key equality is invalid.
+table 'Billing Account Map'
+	lineageTag: 99c58050-8e7b-53b8-b73e-21141cb72b16
+
+	/// Technical identity; join only through the declared mapping.
+	column 'billing_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: billing_key
+		lineageTag: c32fbf6e-e083-54d6-aa8c-9617669abfcb
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 674375c0-9891-578f-b790-6a5e6eb08ccf
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_from'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_from
+		lineageTag: 3d80e02f-5f5d-51ba-9d01-581dde18c32a
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_to'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_to
+		lineageTag: b5aaa072-0eb6-5ad7-a55b-c06f386c7dd3
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	partition 'Billing Account Map' = entity
+		mode: directLake
+		source
+			entityName: billing_account_map
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

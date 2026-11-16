@@ -1,0 +1,68 @@
+/// Observed 28-day retention outcomes, not latent counterfactual labels.
+table 'Offer Outcomes'
+	lineageTag: 9291b023-8ec5-5491-83a3-6edc7ce5543f
+
+	/// Technical identity; join only through the declared mapping.
+	column 'assignment_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: assignment_key
+		lineageTag: 9f605310-85ac-5d61-adcb-1a8f041e9bba
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 1c627d5a-84d7-51e0-9643-73dab44fad8f
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 5c225c32-daac-57af-9e2a-6eaff366b0ab
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: c02522f2-03a6-5309-b967-b5178ab25aeb
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'observed_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: observed_at
+		lineageTag: 15bf001b-362e-5359-96e4-2bc8be0fe655
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Retained at the declared Offer Outcomes grain.
+	column 'retained'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: retained
+		lineageTag: 8467712f-4396-5b2c-b901-2f07b8f30c71
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Offer Outcomes' = entity
+		mode: directLake
+		source
+			entityName: offer_outcome
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

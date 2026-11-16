@@ -1,0 +1,138 @@
+/// Placed orders, not checkout attempts; order, fulfilment and return clocks differ.
+table 'Orders'
+	lineageTag: 02d66c45-6f63-56d4-a100-0a67b39fb2d2
+
+	/// Placed orders, including subsequent cancellations.
+	measure 'Orders' = COUNTROWS('Orders')
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: c82fc1a5-1afe-5dda-b8dd-1972f41e5731
+		annotation MetricId = commerce.orders
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Orders cancelled before fulfilment.
+	measure 'Cancellations' = SUM('Orders'[cancelled])
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: 7f8d8181-223c-5c9d-a31f-6fe9cf2aebba
+		annotation MetricId = commerce.cancellations
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'order_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: order_key
+		lineageTag: 29f713b5-4a90-5851-8094-e1deccf7d982
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: fd62951c-2183-5369-b051-64459ee2f7fe
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: d597bec0-6814-5fa8-b057-0b345492e6da
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 8bdd2b22-2c42-5e7f-8bb3-ef9e059f7438
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'ordered_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: ordered_at
+		lineageTag: 2dd74511-8c42-5fa5-8910-0121da814f9a
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'fulfilled_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: fulfilled_at
+		lineageTag: bf502eef-444b-5281-bf9a-8f9f1560140d
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'returned_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: returned_at
+		lineageTag: 29908886-d60d-5b87-b08a-4490ffe5a0a1
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Technical identity; join only through the declared mapping.
+	column 'store_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: store_key
+		lineageTag: 15c8aa2a-758f-5f3d-8b8d-787e26f2fbb2
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'device_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: device_key
+		lineageTag: 57e793c6-4e2f-5067-bcec-f4b017075c41
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'session_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: session_key
+		lineageTag: 6a9a9b5d-2d37-551b-bfff-ba6943ea214d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Cancelled at the declared Orders grain.
+	column 'cancelled'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: cancelled
+		lineageTag: c00f6821-5d19-5424-b93d-523849f6d047
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Orders' = entity
+		mode: directLake
+		source
+			entityName: order
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

@@ -1,0 +1,55 @@
+/// Registered subscription identities; lifecycle state lives in monthly facts.
+table 'Subscriptions'
+	lineageTag: 3b637d6c-7a75-51dc-a790-a182c60c053b
+
+	/// Technical identity; join only through the declared mapping.
+	column 'subscription_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: subscription_key
+		lineageTag: 3e88398c-517c-5ed3-a3a6-a6cb65ec501e
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 1c6cf734-114d-57c5-aa1a-6895f04da698
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: df665fb6-b4b5-54d8-8752-552c6c13718d
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'subscription_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: subscription_id
+		lineageTag: 5eb4a290-e882-5b4c-9830-0620fc55226b
+		isHidden
+		isAvailableInMdx: false
+
+	/// Plan name at the declared Subscriptions grain.
+	column 'plan_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: plan_name
+		lineageTag: 203201f0-950c-520f-91cc-da36fa555a61
+
+	partition 'Subscriptions' = entity
+		mode: directLake
+		source
+			entityName: subscription
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

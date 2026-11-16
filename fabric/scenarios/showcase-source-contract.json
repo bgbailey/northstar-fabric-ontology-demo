@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "status": "LOCAL_IMPLEMENTED_REVIEW_PENDING",
+  "scope": "Synthetic Northstar source-contract checks only; not deployed model, engine or live authority.",
+  "population": {
+    "record": "telco_iq.contracts.SourcePopulation",
+    "fields": [
+      "model", "evidence_kind", "binding_hash", "profile", "seed",
+      "generator_revision", "identity_revision", "manifest_hash",
+      "table_hashes", "shared_map_hashes"
+    ],
+    "compatibility": "Require known complete provenance before joins or cohort transfers, including cached and empty artifacts. Compare profile, seed, generator revision, identity contract and the complete shared-map commitment independently of source clocks. Reused keys, aliases and equal timestamps are not evidence.",
+    "binding": "Live binding_hash is SHA-256 of the existing canonical digest of {workspace_id,dataset_id}, resolved and reviewed privately against NativeSnapshot.sources. Never store actual identifiers here. Local bindings hash the actual fixture folder and source alias; they cannot authorize live execution.",
+    "localExtraction": "Catalog.fixture_population validates actual files against the current fixture manifest, retains its canonical digest and per-table logical hashes, and hashes the known structural identity schema. Shared commitments include core dimensions except quarantine, subscriptions, contracts and explicit *_map tables. No evaluator or generator implementation is read.",
+    "localGeneratorRevision": "Existing fixture manifest version identifies the declared structural generator format only. It is NOT a generator-code commit or deployed source inventory revision. Implementation-revision evidence is absent from historical fixture manifests and remains a live-capture blocker.",
+    "migration": "Artifact.source_populations defaults to [] only for legacy construction and isolated single-source reads. UNKNOWN cannot join or transfer. Executor accepts reviewed source_populations explicitly, or the same optional provider attribute for local test adapters; non-fixture adapters must also attach that provenance to returned artifacts, including cache hits. Preflight metadata cannot relabel unknown cached output. Only an actual OfflineProvider in OFFLINE_SYNTHETIC derives fixture provenance.",
+    "liveGate": "No live population capture or adapter/configuration wiring is asserted. Live metadata must be captured and reviewed, validated against the exact private native source bindings, then supplied to Executor. Missing metadata blocks cross-source execution; no synthetic fallback."
+  },
+  "metrics": [
+    {"model": "enterprise", "homeTable": "SLA Evaluation", "measure": "Eligible Credits", "id": "enterprise.eligible_credits", "unit": "cents", "aggregation": "additive", "dateRole": "month"},
+    {"model": "enterprise", "homeTable": "SLA Evaluation", "measure": "Credit Exposure", "id": "enterprise.credit_exposure", "unit": "cents", "aggregation": "additive", "dateRole": "month"},
+    {"model": "enterprise", "homeTable": "Applied Credits", "measure": "Applied Credits", "id": "enterprise.applied_credits", "unit": "cents", "aggregation": "additive", "dateRole": "month"},
+    {"model": "finance", "homeTable": "Account Month", "measure": "Recognized Service Revenue", "id": "finance.recognized_service_revenue", "unit": "cents", "aggregation": "additive", "dateRole": "month"},
+    {"model": "finance", "homeTable": "Account Month", "measure": "Contribution Margin", "id": "finance.contribution_margin", "unit": "cents", "aggregation": "additive", "dateRole": "month"}
+  ],
+  "metricAuthority": "Existing native proxy/source-model/home-table/measure and query-use checks remain authoritative before execution. Names, aliases or this scenario inventory do not grant native authority. Source formulas, units, aggregation, date roles and allowed home-table dimensions are unchanged.",
+  "dateDecisions": [
+    "Business effective intervals use half-open UTC [start,end) overlap and clipped intersections; they are separate from all four freshness clocks.",
+    "Remove Calendar start-month relationships from Contracts and Service Site Map in the local template and generator. No unused inactive relationship or replacement contract fact relationship is inferred.",
+    "An explicitly requested start-month analysis may select date_role month; it is not an effective-period cohort. Interval-role queries reject accidental month predicates.",
+    "Project reviewed contract/account/site identities explicitly; filter contract_key directly on each metric's actual home table using existing TREATAS compilation. Do not rely on a missing Contracts-to-SLA Evaluation source relationship.",
+    "Serving-site market selects network membership, not Finance home market. Service month, incident start month, contract/map start month and posting time are distinct roles."
+  ],
+  "grainAndCompleteness": [
+    "Deduplicate the selected contract cohort before source contract-month settlement, then account identities before source Finance account-month queries.",
+    "Incident selection changes membership only; no incident-attributed credit or Finance credit allocation arithmetic.",
+    "Source-owned nonadditive values must be queried at final context; cohort overflow blocks instead of summing or averaging batches.",
+    "Missing, unknown, denied and partial output never becomes zero or a complete total. Empty known cohorts skip the destination and do not observe a destination clock or total."
+  ],
+  "clocks": {
+    "data": "Per-source data state and applicable table evidence.",
+    "model": "Per-source model revision, independently validated.",
+    "ontology": "Native metadata revision; not the source-model compatibility level.",
+    "context": "Acquired context/cache revision and current authorization.",
+    "comparison": "Keep existing separate validation. Compatible unrelated sources may have unequal valid refresh timestamps. Equal clocks cannot repair mixed populations."
+  },
+  "modelFormat": {"compatibilityLevel": 1702, "definitionPbism": "4.2", "ontologyCompatibilityIsSeparate": true},
+  "evidenceGaps": [
+    "No live source population metadata, actual private binding capture, source inventory/generator implementation revision or live adapter wiring was approved.",
+    "TMDL parser/engine acceptance, DAX execution, reader authorization, tenant queries and deployed relationship validation are NOT_RUN.",
+    "Independent task review and parent acceptance are pending; this local scenario contract is not an accepted live certificate."
+  ]
+}

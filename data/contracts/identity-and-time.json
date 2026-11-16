@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "validity": {
+    "timezone": "UTC",
+    "interval": "[valid_from, valid_to)",
+    "billingJoin": "billing_key and service timestamp >= valid_from and service timestamp < valid_to",
+    "serviceSiteJoin": "service_key and interval overlap, clipped to mapping and contract validity",
+    "unknownIdentity": "Null account_key remains unresolved; do not coalesce to a real account.",
+    "numericKeyEquality": "Forbidden across namespaces; billing key 2 is deliberately reused."
+  },
+  "aggregation": {
+    "sql": "Trusted offline home-table arithmetic, not DAX execution. Recompute non-additive measures from rows.",
+    "semi_additive": "Filter/group by one dateColumn value per result; never sum different snapshot dates.",
+    "active_accounts_eom": "One month per result and a distinct account count; never sum across account-overlapping groups.",
+    "money": "Integer cents. Do not label cents as dollars.",
+    "snapshot": "Only observed snapshot dates exist. Do not infer unobserved end-of-month balances."
+  },
+  "quarantine": {
+    "ORPHAN_ACCOUNT": "Exclude corrupt record; preserve valid null digital identities.",
+    "INVALID_INTERVAL": "Exclude reversed outage interval.",
+    "DUPLICATE_NATURAL_ID": "Exclude duplicate account ID; duplicate display names remain valid.",
+    "OVERLAPPING_IDENTITY_INTERVAL": "Exclude ambiguous billing interval; valid reuse is disjoint."
+  },
+  "live_validation": {
+    "dax": "NOT_RUN",
+    "direct_lake": "NOT_RUN",
+    "source_rls": "NOT_RUN"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "observationType": "ACTUAL_READER_REGISTRATION_PREFLIGHT_AUTH_CHALLENGE",
+  "observedAt": "2026-09-30T13:21:50Z",
+  "registrationApproved": true,
+  "approvalCorrection": "User corrected the prior false response to yes",
+  "httpStatus": 401,
+  "errorCode": "InvalidAuthenticationToken",
+  "specificReason": "Continuous access evaluation: InteractionRequired / TokenCreatedWithOutdatedPolicies",
+  "tokenWasExpired": false,
+  "claimsChallengePresent": true,
+  "readerIdentityMutationsExecuted": 0,
+  "applicationCreateAttempted": false,
+  "action": "Refresh only the isolated DEV interactive login; no policy, consent or permission bypass",
+  "corporateCredentialCacheChanged": false,
+  "existingDeadlineUtc": "2026-10-01T15:30:00Z",
+  "deadlineExtended": false
+}

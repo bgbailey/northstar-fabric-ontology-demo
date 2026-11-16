@@ -1,0 +1,63 @@
+{
+  "observationType": "EXECUTED_OFFLINE_CHECKPOINT",
+  "date": "2026-09-29",
+  "lane": "OFFLINE_SYNTHETIC",
+  "status": "PASS",
+  "changesLiveExperimentStatus": false,
+  "tests": {
+    "pythonPassed": 129,
+    "pythonFailed": 0,
+    "pythonWarnings": 2,
+    "warnings": "Dependency test-client deprecations; no runtime/test failure",
+    "vitestPassed": 2,
+    "typescriptBuild": "PASS",
+    "ruff": "PASS",
+    "browser": "PASS"
+  },
+  "data": {
+    "tables": 37,
+    "miniatureRows": 4372,
+    "miniatureParquetBytes": 111669,
+    "miniatureContentSha256": "d90203f642d91af26ee6232af7260a6a83b78575fcc19c43bcdc62bbd7de21b8",
+    "smokeRows": 117992,
+    "smokeParquetBytes": 719865,
+    "smokeContentSha256": "d725e8b83d10723ccc73f59a00e3a590fa93689b71468f9efcc29fe7db73e90a"
+  },
+  "twoModelSlice": {
+    "execution": "Actual FastAPI -> typed validator -> DuckDB source queries -> deterministic join",
+    "models": ["subscriptions", "finance"],
+    "answerRows": 10,
+    "queryReceipts": 2,
+    "independentSourceOracle": "EXACT_MATCH",
+    "localEvaluatorRunElapsedMs": 238.71409999992466,
+    "performanceLimitation": "One local sample; not a latency percentile or cloud-capacity result"
+  },
+  "modelArtifacts": {
+    "separateTemplates": 8,
+    "measureDefinitions": 64,
+    "liveDaxValidation": "NOT_RUN",
+    "liveDirectLake": "NOT_RUN",
+    "security": "East-region RLS templates; no membership; live RLS/OLS NOT_RUN; OLS definitions not implemented"
+  },
+  "mcp": {
+    "sdk": "Official Python MCP SDK 1.30.0",
+    "transportIntegration": "Actual initialize/tools-list/tools-call against explicitly synthetic loopback HTTP server",
+    "fabricEndpointExecution": "NOT_RUN",
+    "nativeOntologyEndpointExecution": "NOT_RUN"
+  },
+  "evidencePaths": [
+    ".local/pytest-results.xml",
+    ".local/browser/receipt.json",
+    ".local/browser/two-model-execution.png",
+    ".local/evaluation/offline-oracle-receipt.json",
+    "data/fixtures/miniature/manifest.json",
+    "data/generated/smoke/manifest.json"
+  ],
+  "remainingGate": "Isolated approved-lab authentication, exact target preflight and explicit operation approval",
+  "releaseClaims": {
+    "nativeOntologyCustomApp": false,
+    "losslessOntologyDeployment": false,
+    "comparativeBenefit": false,
+    "fullStandardScale": false
+  }
+}

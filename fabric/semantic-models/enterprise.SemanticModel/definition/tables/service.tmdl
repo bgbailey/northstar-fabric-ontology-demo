@@ -1,0 +1,40 @@
+/// Enterprise service registry; serving sites are resolved with time-valid mappings.
+table 'Services'
+	lineageTag: a9be45e1-d78f-5aec-ad48-99baa39b58a2
+
+	/// Technical identity; join only through the declared mapping.
+	column 'service_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: service_key
+		lineageTag: 465810fe-a77f-5f61-b542-d6c2a8d2f5a7
+		isHidden
+		isAvailableInMdx: false
+		isKey
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'service_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: service_id
+		lineageTag: a2fe0d59-0a6d-578a-908d-f9305e9640b0
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 0fa112ae-f8f2-5ab5-9695-b330e2f4e278
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Services' = entity
+		mode: directLake
+		source
+			entityName: service
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

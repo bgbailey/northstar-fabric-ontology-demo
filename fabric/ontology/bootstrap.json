@@ -1,0 +1,21 @@
+{
+  "status": "NOT_RUN",
+  "nativeItemCreated": false,
+  "generation": 2,
+  "namespaces": ["core", "subscriber", "finance", "digital", "care", "network", "commerce", "growth", "enterprise"],
+  "firstModel": "subscriptions",
+  "secondModel": "finance",
+  "procedure": [
+    "Approve exact DEV workspace/capacity, artifact digest, operations, cost cap, expiry and teardown.",
+    "Deploy and reconcile the two miniature semantic models.",
+    "Use Generate ontology on the first semantic model; inspect home-table metric provenance.",
+    "Request the second model through the documented built-in agent in Plan mode; review identity merge before approving Act.",
+    "Preserve incompatible Billing Account keys; approve time-valid mapping explicitly.",
+    "Capture native source, metric, rule and relationship inventory with per-consumer permission receipts.",
+    "Discover the direct ontology endpoint tools separately from the GA IQ endpoint.",
+    "Test getDefinition/import on a disposable copy only; do not overwrite the working ontology."
+  ],
+  "serializationDecision": "No fabricated DAX proxy metric serializer. Current TMDL cannot round-trip backingMeasure/targetScopes.",
+  "authorPermissions": "Documented Contributor and Item.ReadWrite.All; never granted to runtime merely for context retrieval.",
+  "runtimeClaim": "BLOCKED until E01/E02/E03/E05/E06/E07/E18/E19 have supported live evidence"
+}

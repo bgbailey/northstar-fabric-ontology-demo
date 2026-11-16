@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "accountName": {"type": "string", "defaultValue": "telcoiq-lifecycle-20260929"},
+    "location": {"type": "string", "defaultValue": "centralus"},
+    "deadline": {"type": "string", "defaultValue": "2026-10-01T15:30:00Z"}
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2024-10-23",
+      "name": "[parameters('accountName')]",
+      "location": "[parameters('location')]",
+      "identity": {"type": "SystemAssigned"},
+      "properties": {
+        "sku": {"name": "Basic"},
+        "disableLocalAuth": true,
+        "publicNetworkAccess": false
+      },
+      "tags": {
+        "project": "telco-iq-ontology-lab",
+        "ownership": "created-by-this-lab",
+        "shutdownDeadline": "[parameters('deadline')]",
+        "approvedArtifact": "8d4f3b6"
+      }
+    }
+  ],
+  "outputs": {
+    "accountId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Automation/automationAccounts', parameters('accountName'))]"
+    },
+    "principalId": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Automation/automationAccounts', parameters('accountName')), '2024-10-23', 'Full').identity.principalId]"
+    }
+  }
+}

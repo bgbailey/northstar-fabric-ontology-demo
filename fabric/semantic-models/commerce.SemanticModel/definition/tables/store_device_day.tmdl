@@ -1,0 +1,93 @@
+/// Finite end-of-day inventory; repeated daily balances are not additive over time.
+table 'Store Device Day'
+	lineageTag: bdbc620b-a70b-5cff-a230-18302defa468
+
+	/// Physical units at one observed day end. Requires one snapshot_date per result; never sum snapshots over time.
+	measure 'Inventory EOD' = IF(HASONEVALUE('Store Device Day'[snapshot_date]), SUM('Store Device Day'[inventory_eod]))
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: 482becd0-1f53-5115-a50b-d5168ffca44d
+		annotation MetricId = commerce.inventory_eod
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Store-device-day stockout observations; across devices this is not distinct store days.
+	measure 'Stockout Store Days' = SUM('Store Device Day'[stockout])
+		formatString: #,##0
+		displayFolder: Commerce and Devices
+		lineageTag: 984b23dc-7031-531b-9eae-4f74de45ab5e
+		annotation MetricId = commerce.stockout_store_days
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'store_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: store_key
+		lineageTag: 7632c3ea-4283-5dfd-b5a7-966a1bf924bf
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'device_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: device_key
+		lineageTag: 6d909abc-803c-59bc-b2be-3405c68ef482
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 8893ca7c-3e26-5c09-b231-3c5ca1beceac
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 6763a329-2d12-539f-b3b7-442d6c73e064
+		formatString: yyyy-MM-dd
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'snapshot_date'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: snapshot_date
+		lineageTag: a7ba3f74-3f76-5046-a983-adc4aa18239e
+		formatString: yyyy-MM-dd
+
+	/// Inventory eod at the declared Store Device Day grain.
+	column 'inventory_eod'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: inventory_eod
+		lineageTag: fb0f3641-b15a-5f61-b8c0-a7214a3cbdbb
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Stockout at the declared Store Device Day grain.
+	column 'stockout'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: stockout
+		lineageTag: 8e4bac13-7537-5f95-b494-6623c85c987e
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Store Device Day' = entity
+		mode: directLake
+		source
+			entityName: store_device_day
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

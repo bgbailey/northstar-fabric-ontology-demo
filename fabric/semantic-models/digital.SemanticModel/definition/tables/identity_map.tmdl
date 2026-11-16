@@ -1,0 +1,51 @@
+/// Time-valid synthetic digital identities, including an explicitly unresolved identity.
+table 'Digital Identity Map'
+	lineageTag: 63a75d29-46b6-57f7-a44e-09d2409c616c
+
+	/// Technical identity; join only through the declared mapping.
+	column 'anonymous_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: anonymous_id
+		lineageTag: 9cbc52f9-4cb2-5cbb-8347-e7cf954eacfa
+		isHidden
+		isAvailableInMdx: false
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: a257eac7-25ea-5027-bc29-e15bb7c3b2b5
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_from'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_from
+		lineageTag: 1dc9344a-8544-5493-a6a7-3d972d15eac6
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_to'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_to
+		lineageTag: 0d78c132-2bf3-53f1-ae2e-109d993dd6f9
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	partition 'Digital Identity Map' = entity
+		mode: directLake
+		source
+			entityName: identity_map
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

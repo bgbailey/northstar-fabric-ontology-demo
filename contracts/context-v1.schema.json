@@ -1,0 +1,241 @@
+{
+  "$defs": {
+    "Relationship": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "left_model": {
+          "title": "Left Model",
+          "type": "string"
+        },
+        "right_model": {
+          "title": "Right Model",
+          "type": "string"
+        },
+        "left_table": {
+          "title": "Left Table",
+          "type": "string"
+        },
+        "right_table": {
+          "title": "Right Table",
+          "type": "string"
+        },
+        "left_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Left Keys",
+          "type": "array"
+        },
+        "right_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Right Keys",
+          "type": "array"
+        },
+        "cardinality": {
+          "enum": [
+            "one_to_one",
+            "many_to_one",
+            "one_to_many"
+          ],
+          "title": "Cardinality",
+          "type": "string"
+        },
+        "temporal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TemporalPredicate"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "purposes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Purposes",
+          "type": "array"
+        },
+        "aligned_filters": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aligned Filters",
+          "type": "array"
+        },
+        "null_behavior": {
+          "const": "unmatched",
+          "default": "unmatched",
+          "title": "Null Behavior",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "left_model",
+        "right_model",
+        "left_table",
+        "right_table",
+        "left_keys",
+        "right_keys",
+        "cardinality",
+        "version",
+        "purposes"
+      ],
+      "title": "Relationship",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "properties": {
+        "tenant": {
+          "title": "Tenant",
+          "type": "string"
+        },
+        "principal": {
+          "title": "Principal",
+          "type": "string"
+        },
+        "authorization_revision": {
+          "title": "Authorization Revision",
+          "type": "string"
+        },
+        "models": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "mode": {
+          "enum": [
+            "OFFLINE_SYNTHETIC",
+            "LIVE_DELEGATED"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenant",
+        "principal",
+        "authorization_revision",
+        "models",
+        "mode"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "TemporalPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "left_start": {
+          "title": "Left Start",
+          "type": "string"
+        },
+        "left_end": {
+          "title": "Left End",
+          "type": "string"
+        },
+        "right_start": {
+          "title": "Right Start",
+          "type": "string"
+        },
+        "right_end": {
+          "title": "Right End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "left_start",
+        "left_end",
+        "right_start",
+        "right_end"
+      ],
+      "title": "TemporalPredicate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "mode": {
+      "enum": [
+        "OFFLINE_SYNTHETIC",
+        "NATIVE_SNAPSHOT",
+        "NATIVE_LIVE"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "string"
+    },
+    "source": {
+      "title": "Source",
+      "type": "string"
+    },
+    "schema_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Schema Hash"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "relationships": {
+      "items": {
+        "$ref": "#/$defs/Relationship"
+      },
+      "title": "Relationships",
+      "type": "array"
+    },
+    "rules": {
+      "items": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "provenance": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Provenance",
+      "type": "array"
+    }
+  },
+  "required": [
+    "mode",
+    "revision",
+    "source",
+    "scope",
+    "relationships",
+    "rules",
+    "provenance"
+  ],
+  "title": "Context",
+  "type": "object"
+}

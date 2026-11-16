@@ -1,0 +1,107 @@
+/// Actual serving-site exposure window; home and serving markets can differ.
+table 'Subscription Site Exposure'
+	lineageTag: 6b209a19-a8b4-5dec-aa31-9262b0029bb1
+
+	/// Distinct active lines exposed to actual serving-site outages.
+	measure 'Exposed Lines' = CALCULATE(DISTINCTCOUNT('Subscription Site Exposure'[subscription_key]), KEEPFILTERS('Subscription Site Exposure'[exposure_minutes] > 0))
+		formatString: #,##0.00
+		displayFolder: Network Operations
+		lineageTag: 41884c7c-7590-5589-8f0b-9c9eef22e722
+		annotation MetricId = network.exposed_lines
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Interval-unioned unavailable minutes per exposed line, additive across lines.
+	measure 'Exposure Minutes' = SUM('Subscription Site Exposure'[exposure_minutes])
+		formatString: #,##0
+		displayFolder: Network Operations
+		lineageTag: cec9223d-c96f-5f61-a937-65750c8ae8ce
+		annotation MetricId = network.exposure_minutes
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'subscription_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: subscription_key
+		lineageTag: c814cacd-1879-572a-8f23-5ffe01d8f4bd
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: af7572b7-c12f-50e5-9d5b-502d7ccb42ea
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: site_key
+		lineageTag: d4a631d0-e43a-51d2-9e94-1450bc0fcd6a
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 3a16954f-6504-5f14-a390-922be8adea18
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 80b1271c-56c1-5880-8305-d144bc30148f
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_from'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_from
+		lineageTag: 9c0e69a6-3c7f-5e49-8e5b-8fe46a2df3e4
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'valid_to'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: valid_to
+		lineageTag: fb750817-770c-5761-9961-57871e6fd49d
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Exposure minutes at the declared Subscription Site Exposure grain.
+	column 'exposure_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: exposure_minutes
+		lineageTag: 6915ada9-4c71-52fd-bbb7-938654cd9885
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Subscription Site Exposure' = entity
+		mode: directLake
+		source
+			entityName: subscription_site_exposure
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

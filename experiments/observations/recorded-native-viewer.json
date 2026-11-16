@@ -1,0 +1,39 @@
+{
+  "lane": "LOCAL_RECORDED_NATIVE_VIEWER_NOT_LIVE_EXECUTION",
+  "status": "PASS",
+  "completedAt": "2026-10-01T17:58:43.442404+00:00",
+  "mode": "RECORDED_NATIVE_DEMO",
+  "packetRevision": "7b6073ec98c5c23ab3066e8a1827fb81c9a7cc9d5b52145ad82b62ca97294651",
+  "observed": {
+    "nativeEntities": 13,
+    "nativeRelationships": 21,
+    "sourceBackedMetrics": 16,
+    "focusedNodes": 4,
+    "focusedLinks": 3,
+    "selectedEntityMetricCounts": [8, 6],
+    "displayedAccountRows": 10,
+    "displayedSourceDaxQueries": 2,
+    "themes": ["light", "dark"],
+    "browserErrors": 0,
+    "nonLocalBrowserRequests": 0
+  },
+  "checks": {
+    "targetedPythonTests": 36,
+    "webTests": 4,
+    "typescriptAndProductionBuild": "PASS",
+    "runtimeEvaluatorIsolation": "PASS",
+    "recordedQueryExecution": "BLOCKED_BY_DESIGN"
+  },
+  "evidencePaths": [
+    ".local/browser/recorded-native/receipt.json",
+    ".local/browser/recorded-native/light.png",
+    ".local/browser/recorded-native/dark.png"
+  ],
+  "limitations": [
+    "Uses actual September 30 native captures, not a new live query.",
+    "Definition-path overlay is not a hidden service execution trace or instance graph.",
+    "The GA IQ comparison remains NOT_RECORDED.",
+    "Formal native rules, six more cloud models and multihop scenarios remain incomplete.",
+    "No cloud approval or credential expiry was extended."
+  ]
+}

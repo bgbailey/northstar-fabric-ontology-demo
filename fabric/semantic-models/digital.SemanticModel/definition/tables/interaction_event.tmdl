@@ -1,0 +1,75 @@
+/// Two observed interactions per session; not another session or order count.
+table 'Interaction Events'
+	lineageTag: f9a24dd9-e639-54f8-95a6-e439f8fffbda
+
+	/// Technical identity; join only through the declared mapping.
+	column 'event_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: event_key
+		lineageTag: 4da48965-9764-55c4-b472-a8296da284ff
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'session_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: session_key
+		lineageTag: 6a12bf68-4bba-5399-8264-1e956cc5f0a9
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 79fbe324-eeed-5ac9-b0bd-44bf864526b5
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 352839e2-9451-52fe-be21-f002f93f87e8
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 9dfaeb9b-3e80-505e-8a4a-f0161edebbf7
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'event_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: event_at
+		lineageTag: dab13b25-e9d6-5792-95dd-5184456c3107
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Event type at the declared Interaction Events grain.
+	column 'event_type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: event_type
+		lineageTag: 5cd2a991-a454-54fc-b02f-739056eb1482
+
+	partition 'Interaction Events' = entity
+		mode: directLake
+		source
+			entityName: interaction_event
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

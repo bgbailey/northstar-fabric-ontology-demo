@@ -1,0 +1,2078 @@
+{
+  "version": "1.0",
+  "models": [
+    {
+      "id": "subscriptions",
+      "name": "Customer and Subscriptions",
+      "tables": [
+        "subscription",
+        "subscription_month",
+        "lifecycle_event",
+        "account",
+        "calendar_date",
+        "market"
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Billing and Finance",
+      "tables": [
+        "account_month",
+        "billing_account_map",
+        "charge_line",
+        "credit",
+        "account",
+        "calendar_date",
+        "market"
+      ]
+    },
+    {
+      "id": "digital",
+      "name": "Digital Experience",
+      "tables": [
+        "session",
+        "interaction_event",
+        "identity_map",
+        "account",
+        "calendar_date",
+        "device",
+        "market"
+      ]
+    },
+    {
+      "id": "care",
+      "name": "Customer Care",
+      "tables": [
+        "case",
+        "case_activity",
+        "case_daily_snapshot",
+        "account",
+        "calendar_date",
+        "market"
+      ]
+    },
+    {
+      "id": "network",
+      "name": "Network Operations",
+      "tables": [
+        "incident",
+        "site_hour",
+        "site_day",
+        "subscription_site_exposure",
+        "account",
+        "calendar_date",
+        "market",
+        "site"
+      ]
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce and Devices",
+      "tables": [
+        "order",
+        "order_line",
+        "store_device_day",
+        "account",
+        "calendar_date",
+        "device",
+        "market",
+        "store"
+      ]
+    },
+    {
+      "id": "growth",
+      "name": "Offers and Retention",
+      "tables": [
+        "offer_assignment",
+        "offer_outcome",
+        "campaign_touch",
+        "account",
+        "calendar_date",
+        "campaign",
+        "market"
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise Services",
+      "tables": [
+        "contract",
+        "service_site_map",
+        "service_month",
+        "sla_evaluation",
+        "applied_credit",
+        "account",
+        "calendar_date",
+        "market",
+        "service",
+        "site"
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "id": "account",
+      "model": "core",
+      "displayName": "Accounts",
+      "grain": [
+        "account_key"
+      ],
+      "primaryKey": [
+        "account_key"
+      ],
+      "columns": {
+        "account_key": "int64",
+        "account_id": "string",
+        "market_id": "string",
+        "region": "string",
+        "consent": "bool",
+        "enterprise": "bool",
+        "display_name": "string"
+      },
+      "description": "Registered accounts, not active accounts; names are deliberately nonunique."
+    },
+    {
+      "id": "market",
+      "model": "core",
+      "displayName": "Markets",
+      "grain": [
+        "market_id"
+      ],
+      "primaryKey": [
+        "market_id"
+      ],
+      "columns": {
+        "market_id": "string",
+        "market_name": "string",
+        "region": "string"
+      },
+      "description": "Four synthetic home markets; home market is not network exposure."
+    },
+    {
+      "id": "calendar_date",
+      "model": "core",
+      "displayName": "Calendar",
+      "grain": [
+        "date"
+      ],
+      "primaryKey": [
+        "date"
+      ],
+      "columns": {
+        "date": "date",
+        "year": "int64",
+        "quarter": "int64",
+        "month_number": "int64",
+        "month_name": "string",
+        "day": "int64"
+      },
+      "description": "Contiguous daily calendar covering service and late posting dates."
+    },
+    {
+      "id": "site",
+      "model": "core",
+      "displayName": "Sites",
+      "grain": [
+        "site_key"
+      ],
+      "primaryKey": [
+        "site_key"
+      ],
+      "columns": {
+        "site_key": "int64",
+        "site_id": "string",
+        "market_id": "string",
+        "region": "string"
+      },
+      "description": "Physical network sites, distinct from service and account identities."
+    },
+    {
+      "id": "device",
+      "model": "core",
+      "displayName": "Devices",
+      "grain": [
+        "device_key"
+      ],
+      "primaryKey": [
+        "device_key"
+      ],
+      "columns": {
+        "device_key": "int64",
+        "device_name": "string",
+        "operating_system": "string"
+      },
+      "description": "Device cohorts for checkout and finite inventory analysis."
+    },
+    {
+      "id": "store",
+      "model": "core",
+      "displayName": "Stores",
+      "grain": [
+        "store_key"
+      ],
+      "primaryKey": [
+        "store_key"
+      ],
+      "columns": {
+        "store_key": "int64",
+        "store_name": "string",
+        "market_id": "string"
+      },
+      "description": "Synthetic fulfilment locations."
+    },
+    {
+      "id": "campaign",
+      "model": "core",
+      "displayName": "Campaigns",
+      "grain": [
+        "campaign_key"
+      ],
+      "primaryKey": [
+        "campaign_key"
+      ],
+      "columns": {
+        "campaign_key": "int64",
+        "campaign_name": "string",
+        "assignment_method": "string"
+      },
+      "description": "Randomized experiment and observational operational campaign are separate."
+    },
+    {
+      "id": "service",
+      "model": "core",
+      "displayName": "Services",
+      "grain": [
+        "service_key"
+      ],
+      "primaryKey": [
+        "service_key"
+      ],
+      "columns": {
+        "service_key": "int64",
+        "service_id": "string",
+        "account_key": "int64"
+      },
+      "description": "Enterprise service registry; serving sites are resolved with time-valid mappings."
+    },
+    {
+      "id": "subscription",
+      "model": "subscriptions",
+      "displayName": "Subscriptions",
+      "grain": [
+        "subscription_key"
+      ],
+      "primaryKey": [
+        "subscription_key"
+      ],
+      "columns": {
+        "subscription_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "subscription_id": "string",
+        "plan_name": "string"
+      },
+      "description": "Registered subscription identities; lifecycle state lives in monthly facts."
+    },
+    {
+      "id": "subscription_month",
+      "model": "subscriptions",
+      "displayName": "Subscription Month",
+      "grain": [
+        "subscription_key",
+        "month"
+      ],
+      "primaryKey": [
+        "subscription_key",
+        "month"
+      ],
+      "columns": {
+        "subscription_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "opening_active": "int64",
+        "active_eom": "int64",
+        "gross_add": "int64",
+        "disconnect": "int64"
+      },
+      "description": "One registered line per service month, including inactive states; disconnects require opening activity."
+    },
+    {
+      "id": "lifecycle_event",
+      "model": "subscriptions",
+      "displayName": "Lifecycle Events",
+      "grain": [
+        "event_key"
+      ],
+      "primaryKey": [
+        "event_key"
+      ],
+      "columns": {
+        "event_key": "int64",
+        "subscription_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "event_at": "timestamp",
+        "event_type": "string"
+      },
+      "description": "Observed monthly activation or disconnection transitions."
+    },
+    {
+      "id": "account_month",
+      "model": "finance",
+      "displayName": "Account Month",
+      "grain": [
+        "account_key",
+        "month"
+      ],
+      "primaryKey": [
+        "account_key",
+        "month"
+      ],
+      "columns": {
+        "account_key": "int64",
+        "billing_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "revenue_cents": "int64",
+        "credit_cents": "int64",
+        "service_cost_cents": "int64",
+        "active_lines_eom": "int64"
+      },
+      "description": "Account service-month control totals; credits recognized in service month, not posting month."
+    },
+    {
+      "id": "billing_account_map",
+      "model": "finance",
+      "displayName": "Billing Account Map",
+      "grain": [
+        "billing_key",
+        "valid_from"
+      ],
+      "primaryKey": [
+        "billing_key",
+        "valid_from"
+      ],
+      "columns": {
+        "billing_key": "int64",
+        "account_key": "int64",
+        "valid_from": "timestamp",
+        "valid_to": "timestamp"
+      },
+      "description": "Half-open UTC identity intervals. Billing key 2 is reused; numeric key equality is invalid."
+    },
+    {
+      "id": "charge_line",
+      "model": "finance",
+      "displayName": "Charge Lines",
+      "grain": [
+        "charge_key"
+      ],
+      "primaryKey": [
+        "charge_key"
+      ],
+      "columns": {
+        "charge_key": "int64",
+        "account_key": "int64",
+        "billing_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "service_at": "timestamp",
+        "posted_at": "timestamp",
+        "amount_cents": "int64",
+        "charge_type": "string"
+      },
+      "description": "Signed service charges and reversals; month is service month, posting time is separate."
+    },
+    {
+      "id": "credit",
+      "model": "finance",
+      "displayName": "Credits",
+      "grain": [
+        "credit_key"
+      ],
+      "primaryKey": [
+        "credit_key"
+      ],
+      "columns": {
+        "credit_key": "int64",
+        "account_key": "int64",
+        "billing_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "service_month": "date",
+        "posted_at": "timestamp",
+        "amount_cents": "int64"
+      },
+      "description": "Credits by posting month; late credits retain their original service month."
+    },
+    {
+      "id": "session",
+      "model": "digital",
+      "displayName": "Sessions",
+      "grain": [
+        "session_key"
+      ],
+      "primaryKey": [
+        "session_key"
+      ],
+      "columns": {
+        "session_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "started_at": "timestamp",
+        "anonymous_id": "string",
+        "authenticated": "bool",
+        "eligible_checkout": "int64",
+        "successful_checkout": "int64",
+        "failed_checkout": "int64",
+        "duration_seconds": "int64",
+        "device_key": "int64",
+        "release_version": "string"
+      },
+      "description": "Session grain; anonymous identity stays null. Eligible checkout is the conversion denominator."
+    },
+    {
+      "id": "interaction_event",
+      "model": "digital",
+      "displayName": "Interaction Events",
+      "grain": [
+        "event_key"
+      ],
+      "primaryKey": [
+        "event_key"
+      ],
+      "columns": {
+        "event_key": "int64",
+        "session_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "event_at": "timestamp",
+        "event_type": "string"
+      },
+      "description": "Two observed interactions per session; not another session or order count."
+    },
+    {
+      "id": "identity_map",
+      "model": "digital",
+      "displayName": "Digital Identity Map",
+      "grain": [
+        "anonymous_id",
+        "valid_from"
+      ],
+      "primaryKey": [
+        "anonymous_id",
+        "valid_from"
+      ],
+      "columns": {
+        "anonymous_id": "string",
+        "account_key": "int64",
+        "valid_from": "timestamp",
+        "valid_to": "timestamp"
+      },
+      "description": "Time-valid synthetic digital identities, including an explicitly unresolved identity."
+    },
+    {
+      "id": "case",
+      "model": "care",
+      "displayName": "Cases",
+      "grain": [
+        "case_key"
+      ],
+      "primaryKey": [
+        "case_key"
+      ],
+      "columns": {
+        "case_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "opened_at": "timestamp",
+        "resolved_at": "timestamp",
+        "resolved": "int64",
+        "repeat_contact": "int64",
+        "escalated": "int64",
+        "first_contact_resolved": "int64",
+        "resolution_minutes": "int64",
+        "reason": "string"
+      },
+      "description": "One care case; repeat contact means same account and reason within seven days."
+    },
+    {
+      "id": "case_activity",
+      "model": "care",
+      "displayName": "Case Activities",
+      "grain": [
+        "activity_key"
+      ],
+      "primaryKey": [
+        "activity_key"
+      ],
+      "columns": {
+        "activity_key": "int64",
+        "case_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "activity_at": "timestamp",
+        "activity_type": "string"
+      },
+      "description": "Case interactions; must not fan out case or financial counts."
+    },
+    {
+      "id": "case_daily_snapshot",
+      "model": "care",
+      "displayName": "Case Daily Snapshot",
+      "grain": [
+        "case_key",
+        "snapshot_date"
+      ],
+      "primaryKey": [
+        "case_key",
+        "snapshot_date"
+      ],
+      "columns": {
+        "case_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "snapshot_date": "date",
+        "open_eod": "int64"
+      },
+      "description": "End-of-day case state; additive across cases but never across dates."
+    },
+    {
+      "id": "incident",
+      "model": "network",
+      "displayName": "Incidents",
+      "grain": [
+        "incident_key"
+      ],
+      "primaryKey": [
+        "incident_key"
+      ],
+      "columns": {
+        "incident_key": "int64",
+        "site_key": "int64",
+        "start": "timestamp",
+        "end": "timestamp",
+        "market_id": "string",
+        "month": "date",
+        "severity": "string"
+      },
+      "description": "Raw outage intervals may overlap; union intervals before measuring unavailable minutes."
+    },
+    {
+      "id": "site_hour",
+      "model": "network",
+      "displayName": "Site Hour",
+      "grain": [
+        "site_key",
+        "hour_start"
+      ],
+      "primaryKey": [
+        "site_key",
+        "hour_start"
+      ],
+      "columns": {
+        "site_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "hour_start": "timestamp",
+        "eligible_minutes": "int64",
+        "unavailable_minutes": "int64",
+        "failed_sessions": "int64",
+        "total_sessions": "int64"
+      },
+      "description": "Hourly monitoring for a bounded five-day window per month; overlapping outages are normalized."
+    },
+    {
+      "id": "site_day",
+      "model": "network",
+      "displayName": "Site Day",
+      "grain": [
+        "site_key",
+        "snapshot_date"
+      ],
+      "primaryKey": [
+        "site_key",
+        "snapshot_date"
+      ],
+      "columns": {
+        "site_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "snapshot_date": "date",
+        "eligible_minutes": "int64",
+        "unavailable_minutes": "int64"
+      },
+      "description": "Daily rollup of the same bounded hourly monitoring window, not full-month telemetry."
+    },
+    {
+      "id": "subscription_site_exposure",
+      "model": "network",
+      "displayName": "Subscription Site Exposure",
+      "grain": [
+        "subscription_key",
+        "month"
+      ],
+      "primaryKey": [
+        "subscription_key",
+        "month"
+      ],
+      "columns": {
+        "subscription_key": "int64",
+        "account_key": "int64",
+        "site_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "valid_from": "timestamp",
+        "valid_to": "timestamp",
+        "exposure_minutes": "int64"
+      },
+      "description": "Actual serving-site exposure window; home and serving markets can differ."
+    },
+    {
+      "id": "order",
+      "model": "commerce",
+      "displayName": "Orders",
+      "grain": [
+        "order_key"
+      ],
+      "primaryKey": [
+        "order_key"
+      ],
+      "columns": {
+        "order_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "ordered_at": "timestamp",
+        "fulfilled_at": "timestamp",
+        "returned_at": "timestamp",
+        "store_key": "int64",
+        "device_key": "int64",
+        "session_key": "int64",
+        "cancelled": "int64"
+      },
+      "description": "Placed orders, not checkout attempts; order, fulfilment and return clocks differ."
+    },
+    {
+      "id": "order_line",
+      "model": "commerce",
+      "displayName": "Order Lines",
+      "grain": [
+        "order_key",
+        "line_number"
+      ],
+      "primaryKey": [
+        "order_key",
+        "line_number"
+      ],
+      "columns": {
+        "order_key": "int64",
+        "line_number": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "store_key": "int64",
+        "device_key": "int64",
+        "units": "int64",
+        "booked_revenue_cents": "int64",
+        "fulfilled_units": "int64",
+        "returned_units": "int64"
+      },
+      "description": "Booked merchandise revenue is distinct from recognized service revenue."
+    },
+    {
+      "id": "store_device_day",
+      "model": "commerce",
+      "displayName": "Store Device Day",
+      "grain": [
+        "store_key",
+        "device_key",
+        "snapshot_date"
+      ],
+      "primaryKey": [
+        "store_key",
+        "device_key",
+        "snapshot_date"
+      ],
+      "columns": {
+        "store_key": "int64",
+        "device_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "snapshot_date": "date",
+        "inventory_eod": "int64",
+        "stockout": "int64"
+      },
+      "description": "Finite end-of-day inventory; repeated daily balances are not additive over time."
+    },
+    {
+      "id": "offer_assignment",
+      "model": "growth",
+      "displayName": "Offer Assignments",
+      "grain": [
+        "assignment_key"
+      ],
+      "primaryKey": [
+        "assignment_key"
+      ],
+      "columns": {
+        "assignment_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "campaign_key": "int64",
+        "eligible": "int64",
+        "assigned": "int64",
+        "treatment": "int64",
+        "randomized": "bool",
+        "accepted": "int64",
+        "offer_cost_cents": "int64",
+        "retained": "int64"
+      },
+      "description": "Assignment-unit outcomes; randomized eligible treatment/control separate from observational targeting."
+    },
+    {
+      "id": "offer_outcome",
+      "model": "growth",
+      "displayName": "Offer Outcomes",
+      "grain": [
+        "assignment_key"
+      ],
+      "primaryKey": [
+        "assignment_key"
+      ],
+      "columns": {
+        "assignment_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "observed_at": "timestamp",
+        "retained": "int64"
+      },
+      "description": "Observed 28-day retention outcomes, not latent counterfactual labels."
+    },
+    {
+      "id": "campaign_touch",
+      "model": "growth",
+      "displayName": "Campaign Touches",
+      "grain": [
+        "touch_key"
+      ],
+      "primaryKey": [
+        "touch_key"
+      ],
+      "columns": {
+        "touch_key": "int64",
+        "assignment_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "campaign_key": "int64",
+        "touched_at": "timestamp",
+        "channel": "string"
+      },
+      "description": "Observed campaign contacts; touch counts are not assignment counts."
+    },
+    {
+      "id": "contract",
+      "model": "enterprise",
+      "displayName": "Contracts",
+      "grain": [
+        "contract_key"
+      ],
+      "primaryKey": [
+        "contract_key"
+      ],
+      "columns": {
+        "contract_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "credit_cap_cents": "int64",
+        "credit_per_minute_cents": "int64",
+        "threshold_minutes": "int64",
+        "valid_from": "timestamp",
+        "valid_to": "timestamp",
+        "month": "date"
+      },
+      "description": "Time-valid SLA terms; threshold per service-month, then one monetary cap per contract-month."
+    },
+    {
+      "id": "service_site_map",
+      "model": "enterprise",
+      "displayName": "Service Site Map",
+      "grain": [
+        "service_key",
+        "valid_from"
+      ],
+      "primaryKey": [
+        "service_key",
+        "valid_from"
+      ],
+      "columns": {
+        "service_key": "int64",
+        "site_key": "int64",
+        "contract_key": "int64",
+        "valid_from": "timestamp",
+        "valid_to": "timestamp",
+        "market_id": "string",
+        "month": "date"
+      },
+      "description": "Half-open serving-site history; service 1 moves mid-incident without overlapping mappings."
+    },
+    {
+      "id": "service_month",
+      "model": "enterprise",
+      "displayName": "Service Month",
+      "grain": [
+        "service_key",
+        "month"
+      ],
+      "primaryKey": [
+        "service_key",
+        "month"
+      ],
+      "columns": {
+        "service_key": "int64",
+        "contract_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "contracted": "int64",
+        "monitored_minutes": "int64",
+        "breached": "int64",
+        "recurring_revenue_cents": "int64"
+      },
+      "description": "Service-month operations with validity-clipped monitored minutes."
+    },
+    {
+      "id": "sla_evaluation",
+      "model": "enterprise",
+      "displayName": "SLA Evaluation",
+      "grain": [
+        "contract_key",
+        "month"
+      ],
+      "primaryKey": [
+        "contract_key",
+        "month"
+      ],
+      "columns": {
+        "contract_key": "int64",
+        "account_key": "int64",
+        "market_id": "string",
+        "month": "date",
+        "outage_minutes": "int64",
+        "eligible_credit_cents": "int64",
+        "applied_credit_cents": "int64"
+      },
+      "description": "Operational contract-month SLA settlement; raw intervals remain available for independent reconciliation."
+    },
+    {
+      "id": "applied_credit",
+      "model": "enterprise",
+      "displayName": "Applied Credits",
+      "grain": [
+        "contract_key",
+        "month"
+      ],
+      "primaryKey": [
+        "contract_key",
+        "month"
+      ],
+      "columns": {
+        "contract_key": "int64",
+        "amount_cents": "int64",
+        "month": "date",
+        "market_id": "string",
+        "account_key": "int64",
+        "posted_at": "timestamp"
+      },
+      "description": "Actually applied SLA credits, which can be less than eligible credit."
+    },
+    {
+      "id": "quarantine",
+      "model": "core",
+      "displayName": "Quarantine",
+      "grain": [
+        "record_key"
+      ],
+      "primaryKey": [
+        "record_key"
+      ],
+      "columns": {
+        "record_key": "int64",
+        "source_table": "string",
+        "reason_code": "string",
+        "raw_record": "string",
+        "quarantined_at": "timestamp"
+      },
+      "description": "Intentional corrupt inputs, isolated from all analytical facts and semantic models."
+    }
+  ],
+  "metrics": [
+    {
+      "id": "subscriptions.active_lines_eom",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Active Lines EOM",
+      "dax": "IF(HASONEVALUE('Subscription Month'[month]), SUM('Subscription Month'[active_eom]))",
+      "sql": "SUM(active_eom)",
+      "aggregation": "semi_additive",
+      "unit": "count",
+      "description": "Active subscriptions at month end. Requires one month per result; never sum snapshots over time.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.active_accounts_eom",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Active Accounts EOM",
+      "dax": "IF(HASONEVALUE('Subscription Month'[month]), CALCULATE(DISTINCTCOUNT('Subscription Month'[account_key]), KEEPFILTERS('Subscription Month'[active_eom] = 1)))",
+      "sql": "COUNT(DISTINCT CASE WHEN active_eom = 1 THEN account_key END)",
+      "aggregation": "non_additive",
+      "unit": "count",
+      "description": "Distinct accounts with active lines in one month; neither account counts nor snapshots can be summed.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.gross_adds",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Gross Adds",
+      "dax": "SUM('Subscription Month'[gross_add])",
+      "sql": "SUM(gross_add)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Transitions from inactive to active.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.disconnects",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Disconnects",
+      "dax": "SUM('Subscription Month'[disconnect])",
+      "sql": "SUM(disconnect)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Disconnects from the opening-active cohort.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.net_adds",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Net Adds",
+      "dax": "SUM('Subscription Month'[gross_add]) - SUM('Subscription Month'[disconnect])",
+      "sql": "SUM(gross_add) - SUM(disconnect)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Gross additions less cohort-qualified disconnects.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.opening_active_lines",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Opening Active Lines",
+      "dax": "IF(HASONEVALUE('Subscription Month'[month]), SUM('Subscription Month'[opening_active]))",
+      "sql": "SUM(opening_active)",
+      "aggregation": "semi_additive",
+      "unit": "count",
+      "description": "Lines active at the start of the month. Requires one month per result; never sum snapshots over time.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.churn_rate",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Churn Rate",
+      "dax": "DIVIDE(SUM('Subscription Month'[disconnect]), SUM('Subscription Month'[opening_active]))",
+      "sql": "SUM(disconnect) * 1.0 / NULLIF(SUM(opening_active), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Opening-cohort disconnects divided by opening-active lines; recompute from pooled components.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "subscriptions.average_active_lines",
+      "model": "subscriptions",
+      "table": "subscription_month",
+      "name": "Average Active Lines",
+      "dax": "IF(HASONEVALUE('Subscription Month'[month]), DIVIDE(SUM('Subscription Month'[opening_active]) + SUM('Subscription Month'[active_eom]), 2))",
+      "sql": "(SUM(opening_active) + SUM(active_eom)) / 2.0",
+      "aggregation": "semi_additive",
+      "unit": "lines",
+      "description": "Midpoint of opening and closing line population for a single month. Requires one month per result; never sum snapshots over time.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.recognized_service_revenue",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Recognized Service Revenue",
+      "dax": "SUM('Account Month'[revenue_cents])",
+      "sql": "SUM(revenue_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Recognized service revenue before service-month credits, in integer cents.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.billed_charges",
+      "model": "finance",
+      "table": "charge_line",
+      "name": "Billed Charges",
+      "dax": "SUM('Charge Lines'[amount_cents])",
+      "sql": "SUM(amount_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Signed charges including reversals, grouped by service month; not cash receipts.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.posted_credits",
+      "model": "finance",
+      "table": "credit",
+      "name": "Posted Credits",
+      "dax": "SUM('Credits'[amount_cents])",
+      "sql": "SUM(amount_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Credit amounts by posting month; service month remains a separate attribute.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.net_recognized_revenue",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Net Recognized Revenue",
+      "dax": "SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents])",
+      "sql": "SUM(revenue_cents) - SUM(credit_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Recognized service revenue minus service-month credits.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.service_cost",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Service Cost",
+      "dax": "SUM('Account Month'[service_cost_cents])",
+      "sql": "SUM(service_cost_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Attributed monthly service cost, not device or offer cost.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.contribution_margin",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Contribution Margin",
+      "dax": "SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]) - SUM('Account Month'[service_cost_cents])",
+      "sql": "SUM(revenue_cents) - SUM(credit_cents) - SUM(service_cost_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Net recognized service revenue minus attributed service cost.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.margin_percent",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Margin Percent",
+      "dax": "DIVIDE(SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]) - SUM('Account Month'[service_cost_cents]), SUM('Account Month'[revenue_cents]) - SUM('Account Month'[credit_cents]))",
+      "sql": "(SUM(revenue_cents) - SUM(credit_cents) - SUM(service_cost_cents)) * 1.0 / NULLIF(SUM(revenue_cents) - SUM(credit_cents), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "finance.revenue_per_active_line",
+      "model": "finance",
+      "table": "account_month",
+      "name": "Revenue per Active Line",
+      "dax": "DIVIDE(SUM('Account Month'[revenue_cents]), SUM('Account Month'[active_lines_eom]))",
+      "sql": "SUM(revenue_cents) * 1.0 / NULLIF(SUM(active_lines_eom), 0)",
+      "aggregation": "non_additive",
+      "unit": "cents_per_line",
+      "description": "Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "digital.sessions",
+      "model": "digital",
+      "table": "session",
+      "name": "Sessions",
+      "dax": "COUNTROWS('Sessions')",
+      "sql": "COUNT(*)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Observed sessions including anonymous browsing.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.authenticated_sessions",
+      "model": "digital",
+      "table": "session",
+      "name": "Authenticated Sessions",
+      "dax": "CALCULATE(COUNTROWS('Sessions'), KEEPFILTERS('Sessions'[authenticated] = TRUE()))",
+      "sql": "SUM(CASE WHEN authenticated THEN 1 ELSE 0 END)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Sessions with resolved authenticated identity.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.eligible_checkout_sessions",
+      "model": "digital",
+      "table": "session",
+      "name": "Eligible Checkout Sessions",
+      "dax": "SUM('Sessions'[eligible_checkout])",
+      "sql": "SUM(eligible_checkout)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Sessions eligible to attempt checkout.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.successful_checkout_sessions",
+      "model": "digital",
+      "table": "session",
+      "name": "Successful Checkout Sessions",
+      "dax": "SUM('Sessions'[successful_checkout])",
+      "sql": "SUM(successful_checkout)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Successful eligible checkouts; not necessarily placed orders.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.checkout_conversion",
+      "model": "digital",
+      "table": "session",
+      "name": "Checkout Conversion",
+      "dax": "DIVIDE(SUM('Sessions'[successful_checkout]), SUM('Sessions'[eligible_checkout]))",
+      "sql": "SUM(successful_checkout) * 1.0 / NULLIF(SUM(eligible_checkout), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Successful divided by eligible checkout sessions.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.failed_checkouts",
+      "model": "digital",
+      "table": "session",
+      "name": "Failed Checkouts",
+      "dax": "SUM('Sessions'[failed_checkout])",
+      "sql": "SUM(failed_checkout)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Observed eligible failures; abandonment is not a lost-order assertion.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.digital_active_accounts",
+      "model": "digital",
+      "table": "session",
+      "name": "Digital Active Accounts",
+      "dax": "COUNTROWS(FILTER(VALUES('Sessions'[account_key]), NOT ISBLANK('Sessions'[account_key])))",
+      "sql": "COUNT(DISTINCT account_key)",
+      "aggregation": "non_additive",
+      "unit": "count",
+      "description": "Distinct resolved accounts; anonymous/null identities are excluded.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "digital.median_journey_duration",
+      "model": "digital",
+      "table": "session",
+      "name": "Median Journey Duration",
+      "dax": "MEDIAN('Sessions'[duration_seconds])",
+      "sql": "MEDIAN(duration_seconds)",
+      "aggregation": "non_additive",
+      "unit": "seconds",
+      "description": "Median of session durations in the requested scope; never average medians.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "device_key",
+        "release_version"
+      ]
+    },
+    {
+      "id": "care.open_cases_eod",
+      "model": "care",
+      "table": "case_daily_snapshot",
+      "name": "Open Cases EOD",
+      "dax": "IF(HASONEVALUE('Case Daily Snapshot'[snapshot_date]), SUM('Case Daily Snapshot'[open_eod]))",
+      "sql": "SUM(open_eod)",
+      "aggregation": "semi_additive",
+      "unit": "count",
+      "description": "Open cases at a specified observed day end. Requires one snapshot_date per result; never sum snapshots over time.",
+      "dateColumn": "snapshot_date",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "snapshot_date"
+      ]
+    },
+    {
+      "id": "care.new_cases",
+      "model": "care",
+      "table": "case",
+      "name": "New Cases",
+      "dax": "COUNTROWS('Cases')",
+      "sql": "COUNT(*)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Cases by opening month, independent of activity count.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.resolved_cases",
+      "model": "care",
+      "table": "case",
+      "name": "Resolved Cases",
+      "dax": "SUM('Cases'[resolved])",
+      "sql": "SUM(resolved)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Cases resolved by source observation, attributed to opening month.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.repeat_contacts",
+      "model": "care",
+      "table": "case",
+      "name": "Repeat Contacts",
+      "dax": "SUM('Cases'[repeat_contact])",
+      "sql": "SUM(repeat_contact)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Subsequent same-reason contacts within seven days for the same account.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.contacted_accounts",
+      "model": "care",
+      "table": "case",
+      "name": "Contacted Accounts",
+      "dax": "DISTINCTCOUNT('Cases'[account_key])",
+      "sql": "COUNT(DISTINCT account_key)",
+      "aggregation": "non_additive",
+      "unit": "count",
+      "description": "Distinct contacted accounts, not the sum of period-level distinct counts.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.escalated_cases",
+      "model": "care",
+      "table": "case",
+      "name": "Escalated Cases",
+      "dax": "SUM('Cases'[escalated])",
+      "sql": "SUM(escalated)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Cases escalated at least once.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.first_contact_resolution",
+      "model": "care",
+      "table": "case",
+      "name": "First Contact Resolution",
+      "dax": "DIVIDE(SUM('Cases'[first_contact_resolved]), SUM('Cases'[resolved]))",
+      "sql": "SUM(first_contact_resolved) * 1.0 / NULLIF(SUM(resolved), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "care.mean_resolution_hours",
+      "model": "care",
+      "table": "case",
+      "name": "Mean Resolution Hours",
+      "dax": "DIVIDE(AVERAGE('Cases'[resolution_minutes]), 60)",
+      "sql": "AVG(resolution_minutes) / 60.0",
+      "aggregation": "non_additive",
+      "unit": "hours",
+      "description": "Mean observed duration among resolved cases; unresolved durations remain null.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "reason"
+      ]
+    },
+    {
+      "id": "network.eligible_site_minutes",
+      "model": "network",
+      "table": "site_hour",
+      "name": "Eligible Site Minutes",
+      "dax": "SUM('Site Hour'[eligible_minutes])",
+      "sql": "SUM(eligible_minutes)",
+      "aggregation": "additive",
+      "unit": "minutes",
+      "description": "Monitored site minutes in the bounded telemetry window.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.unavailable_site_minutes",
+      "model": "network",
+      "table": "site_hour",
+      "name": "Unavailable Site Minutes",
+      "dax": "SUM('Site Hour'[unavailable_minutes])",
+      "sql": "SUM(unavailable_minutes)",
+      "aggregation": "additive",
+      "unit": "minutes",
+      "description": "Per-site interval-unioned unavailability, without double-counting overlaps.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.availability_percent",
+      "model": "network",
+      "table": "site_hour",
+      "name": "Availability Percent",
+      "dax": "DIVIDE(SUM('Site Hour'[eligible_minutes]) - SUM('Site Hour'[unavailable_minutes]), SUM('Site Hour'[eligible_minutes]))",
+      "sql": "(SUM(eligible_minutes) - SUM(unavailable_minutes)) * 1.0 / NULLIF(SUM(eligible_minutes), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Eligible-minute weighted availability; not the mean of site percentages.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.major_incidents",
+      "model": "network",
+      "table": "incident",
+      "name": "Major Incidents",
+      "dax": "CALCULATE(COUNTROWS('Incidents'), KEEPFILTERS('Incidents'[severity] = \"major\"))",
+      "sql": "SUM(CASE WHEN severity = 'major' THEN 1 ELSE 0 END)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Raw major incident count; overlap is allowed.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.exposed_lines",
+      "model": "network",
+      "table": "subscription_site_exposure",
+      "name": "Exposed Lines",
+      "dax": "CALCULATE(DISTINCTCOUNT('Subscription Site Exposure'[subscription_key]), KEEPFILTERS('Subscription Site Exposure'[exposure_minutes] > 0))",
+      "sql": "COUNT(DISTINCT CASE WHEN exposure_minutes > 0 THEN subscription_key END)",
+      "aggregation": "non_additive",
+      "unit": "count",
+      "description": "Distinct active lines exposed to actual serving-site outages.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.exposure_minutes",
+      "model": "network",
+      "table": "subscription_site_exposure",
+      "name": "Exposure Minutes",
+      "dax": "SUM('Subscription Site Exposure'[exposure_minutes])",
+      "sql": "SUM(exposure_minutes)",
+      "aggregation": "additive",
+      "unit": "line_minutes",
+      "description": "Interval-unioned unavailable minutes per exposed line, additive across lines.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.failed_sessions",
+      "model": "network",
+      "table": "site_hour",
+      "name": "Failed Sessions",
+      "dax": "SUM('Site Hour'[failed_sessions])",
+      "sql": "SUM(failed_sessions)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Observed failed network sessions, distinct from digital checkout sessions.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "network.service_degradation_percent",
+      "model": "network",
+      "table": "site_hour",
+      "name": "Service Degradation Percent",
+      "dax": "DIVIDE(SUM('Site Hour'[failed_sessions]), SUM('Site Hour'[total_sessions]))",
+      "sql": "SUM(failed_sessions) * 1.0 / NULLIF(SUM(total_sessions), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Failed divided by monitored network sessions.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "site_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "commerce.orders",
+      "model": "commerce",
+      "table": "order",
+      "name": "Orders",
+      "dax": "COUNTROWS('Orders')",
+      "sql": "COUNT(*)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Placed orders, including subsequent cancellations.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.units",
+      "model": "commerce",
+      "table": "order_line",
+      "name": "Booked Units",
+      "dax": "SUM('Order Lines'[units])",
+      "sql": "SUM(units)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Booked merchandise units.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.booked_revenue",
+      "model": "commerce",
+      "table": "order_line",
+      "name": "Booked Revenue",
+      "dax": "SUM('Order Lines'[booked_revenue_cents])",
+      "sql": "SUM(booked_revenue_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Booked device revenue, intentionally distinct from finance recognized service revenue.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.cancellations",
+      "model": "commerce",
+      "table": "order",
+      "name": "Cancellations",
+      "dax": "SUM('Orders'[cancelled])",
+      "sql": "SUM(cancelled)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Orders cancelled before fulfilment.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.fulfilled_units",
+      "model": "commerce",
+      "table": "order_line",
+      "name": "Fulfilled Units",
+      "dax": "SUM('Order Lines'[fulfilled_units])",
+      "sql": "SUM(fulfilled_units)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Units actually fulfilled.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.device_return_rate",
+      "model": "commerce",
+      "table": "order_line",
+      "name": "Device Return Rate",
+      "dax": "DIVIDE(SUM('Order Lines'[returned_units]), SUM('Order Lines'[fulfilled_units]))",
+      "sql": "SUM(returned_units) * 1.0 / NULLIF(SUM(fulfilled_units), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Returned units divided by fulfilled units, attributed to order month.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "store_key",
+        "device_key"
+      ]
+    },
+    {
+      "id": "commerce.inventory_eod",
+      "model": "commerce",
+      "table": "store_device_day",
+      "name": "Inventory EOD",
+      "dax": "IF(HASONEVALUE('Store Device Day'[snapshot_date]), SUM('Store Device Day'[inventory_eod]))",
+      "sql": "SUM(inventory_eod)",
+      "aggregation": "semi_additive",
+      "unit": "units",
+      "description": "Physical units at one observed day end. Requires one snapshot_date per result; never sum snapshots over time.",
+      "dateColumn": "snapshot_date",
+      "allowedDimensions": [
+        "store_key",
+        "device_key",
+        "market_id",
+        "month",
+        "snapshot_date"
+      ]
+    },
+    {
+      "id": "commerce.stockout_store_days",
+      "model": "commerce",
+      "table": "store_device_day",
+      "name": "Stockout Store Days",
+      "dax": "SUM('Store Device Day'[stockout])",
+      "sql": "SUM(stockout)",
+      "aggregation": "additive",
+      "unit": "store_device_days",
+      "description": "Store-device-day stockout observations; across devices this is not distinct store days.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "store_key",
+        "device_key",
+        "market_id",
+        "month",
+        "snapshot_date"
+      ]
+    },
+    {
+      "id": "growth.eligible_population",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Eligible Population",
+      "dax": "SUM('Offer Assignments'[eligible])",
+      "sql": "SUM(eligible)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Eligible assignment units; separate campaign populations before interpretation.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.assigned_population",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Assigned Population",
+      "dax": "SUM('Offer Assignments'[assigned])",
+      "sql": "SUM(assigned)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Eligible treatment units actually assigned an offer.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.accepted_offers",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Accepted Offers",
+      "dax": "SUM('Offer Assignments'[accepted])",
+      "sql": "SUM(accepted)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Assigned eligible offers accepted.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.acceptance_rate",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Acceptance Rate",
+      "dax": "DIVIDE(SUM('Offer Assignments'[accepted]), SUM('Offer Assignments'[assigned]))",
+      "sql": "SUM(accepted) * 1.0 / NULLIF(SUM(assigned), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Accepted divided by assigned offers, not campaign touches.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.offer_cost",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Offer Cost",
+      "dax": "SUM('Offer Assignments'[offer_cost_cents])",
+      "sql": "SUM(offer_cost_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Observed accepted-offer cost.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.treatment_retained",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Treatment Retained",
+      "dax": "CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1))",
+      "sql": "SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 1 THEN retained ELSE 0 END)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Retained eligible randomized assignment units; observational campaign excluded.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.control_retained",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Control Retained",
+      "dax": "CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0))",
+      "sql": "SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 0 THEN retained ELSE 0 END)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Retained eligible randomized assignment units; observational campaign excluded.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "growth.retention_lift",
+      "model": "growth",
+      "table": "offer_assignment",
+      "name": "Retention Lift",
+      "dax": "VAR _t = DIVIDE(CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1)), CALCULATE(COUNTROWS('Offer Assignments'), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1))) VAR _c = DIVIDE(CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0)), CALCULATE(COUNTROWS('Offer Assignments'), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0))) RETURN IF(NOT ISBLANK(_t) && NOT ISBLANK(_c), _t - _c)",
+      "sql": "(SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 1 THEN retained ELSE 0 END) * 1.0 / NULLIF(SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 1 THEN 1 ELSE 0 END), 0)) - (SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 0 THEN retained ELSE 0 END) * 1.0 / NULLIF(SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 0 THEN 1 ELSE 0 END), 0))",
+      "aggregation": "non_additive",
+      "unit": "percentage_points",
+      "description": "Eligible randomized intention-to-treat retention rate difference; null if either arm is absent. Not an observational causal claim.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month",
+        "campaign_key",
+        "treatment",
+        "randomized"
+      ]
+    },
+    {
+      "id": "enterprise.contracted_services",
+      "model": "enterprise",
+      "table": "service_month",
+      "name": "Contracted Services",
+      "dax": "IF(HASONEVALUE('Service Month'[month]), SUM('Service Month'[contracted]))",
+      "sql": "SUM(contracted)",
+      "aggregation": "semi_additive",
+      "unit": "count",
+      "description": "Valid contracted service population in one month. Requires one month per result; never sum snapshots over time.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.monitored_service_minutes",
+      "model": "enterprise",
+      "table": "service_month",
+      "name": "Monitored Service Minutes",
+      "dax": "SUM('Service Month'[monitored_minutes])",
+      "sql": "SUM(monitored_minutes)",
+      "aggregation": "additive",
+      "unit": "minutes",
+      "description": "Calendar minutes clipped to contract validity.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.breached_services",
+      "model": "enterprise",
+      "table": "service_month",
+      "name": "Breached Services",
+      "dax": "SUM('Service Month'[breached])",
+      "sql": "SUM(breached)",
+      "aggregation": "additive",
+      "unit": "count",
+      "description": "Service-months exceeding their contract threshold.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.sla_compliance",
+      "model": "enterprise",
+      "table": "service_month",
+      "name": "SLA Compliance",
+      "dax": "DIVIDE(SUM('Service Month'[contracted]) - SUM('Service Month'[breached]), SUM('Service Month'[contracted]))",
+      "sql": "(SUM(contracted) - SUM(breached)) * 1.0 / NULLIF(SUM(contracted), 0)",
+      "aggregation": "non_additive",
+      "unit": "ratio",
+      "description": "Compliant contracted service-months divided by contracted service-months.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.contracted_recurring_revenue",
+      "model": "enterprise",
+      "table": "service_month",
+      "name": "Contracted Recurring Revenue",
+      "dax": "SUM('Service Month'[recurring_revenue_cents])",
+      "sql": "SUM(recurring_revenue_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Contracted monthly recurring value, not finance recognized revenue.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.eligible_credits",
+      "model": "enterprise",
+      "table": "sla_evaluation",
+      "name": "Eligible Credits",
+      "dax": "SUM('SLA Evaluation'[eligible_credit_cents])",
+      "sql": "SUM(eligible_credit_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "contract_key",
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    },
+    {
+      "id": "enterprise.applied_credits",
+      "model": "enterprise",
+      "table": "applied_credit",
+      "name": "Applied Credits",
+      "dax": "SUM('Applied Credits'[amount_cents])",
+      "sql": "SUM(amount_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Applied credits attributed to SLA service month, with separate posting timestamp.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "contract_key",
+        "month",
+        "market_id",
+        "account_key"
+      ]
+    },
+    {
+      "id": "enterprise.credit_exposure",
+      "model": "enterprise",
+      "table": "sla_evaluation",
+      "name": "Credit Exposure",
+      "dax": "SUM('SLA Evaluation'[eligible_credit_cents]) - SUM('SLA Evaluation'[applied_credit_cents])",
+      "sql": "SUM(eligible_credit_cents) - SUM(applied_credit_cents)",
+      "aggregation": "additive",
+      "unit": "cents",
+      "description": "Eligible less already applied contract-month credits; not a repeated per-incident cap.",
+      "dateColumn": "month",
+      "allowedDimensions": [
+        "contract_key",
+        "account_key",
+        "market_id",
+        "month"
+      ]
+    }
+  ]
+}

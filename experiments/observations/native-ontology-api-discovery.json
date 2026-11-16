@@ -1,0 +1,33 @@
+{
+  "lane": "LIVE_DEV_AUTHOR_DIAGNOSTIC",
+  "status": "PASS",
+  "completedAt": "2026-09-30T20:29:12.688141+00:00",
+  "claim": "Actual generation-2 definition readback and direct ontology MCP discovery only",
+  "cloudMutations": 0,
+  "protocolVersion": "2025-06-18",
+  "definition": {
+    "parts": 4,
+    "compatibilityLevel": 1000000,
+    "entityParts": 0,
+    "metricParts": 0,
+    "ruleParts": 0
+  },
+  "tools": [
+    {
+      "name": "list_ontology_entities",
+      "schemaHash": "f685259f0852058d31981e1e1b48522b82f34cee7246374347fcbac478c84782"
+    },
+    {
+      "name": "list_ontology_rules",
+      "schemaHash": "d3e6c9dac0122cbd4d08896c0255bc6a1d7370147e8cd1e68df521c04384fad7"
+    }
+  ],
+  "privateReceiptHash": "3f087c5c4b25117ada1d02ab9541a65802e2d7f880fd7fceec9661e00f789858",
+  "limitations": [
+    "Author diagnostic; not application-reader authentication or output normalization.",
+    "No tools/call was executed by this discovery run.",
+    "No authoring or query tool was advertised by this native endpoint.",
+    "The ontology was empty at this observation; no source-backed metric proof.",
+    "The first read attempt returned CapacityNotActive. A separately approved single ARM resume was verified before this read-only rerun."
+  ]
+}

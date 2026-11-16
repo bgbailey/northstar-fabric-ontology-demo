@@ -1,0 +1,50 @@
+{
+  "lane": "OFFLINE_SYNTHETIC_SUBMITTED_PLAN_FIXTURE",
+  "status": "PASS",
+  "observedAt": "2026-10-01T23:16:48.451662+00:00",
+  "implementationPlan": ".copilot/docs/telco-iq-implementation-plan-2026-10-01.md",
+  "july": {
+    "period": "2026-07",
+    "contractRows": 2,
+    "accountRows": 2,
+    "eligibleCreditCents": 16790,
+    "appliedCreditCents": 8395,
+    "creditExposureCents": 8395,
+    "accountViewModels": ["network", "enterprise", "finance"],
+    "accountViewExecutionEvents": 40,
+    "result": "COMPLETE_RECONCILED"
+  },
+  "august": {
+    "period": "2026-08",
+    "result": "BLOCKED_CAPABILITY",
+    "answerPresent": false,
+    "financeQueried": false,
+    "reason": "Empty cohort: no target clock or financial total invented"
+  },
+  "checks": {
+    "pythonTests": 286,
+    "webTests": 9,
+    "buildAndRuff": "PASS",
+    "actualBrowserWorkflows": "PASS",
+    "nonLocalBrowserRequests": 0,
+    "integrationReviewHighFindings": 1,
+    "integrationReviewHighFindingsResolved": 1
+  },
+  "nativePlanningNormalization": {
+    "entities": 13,
+    "relationships": 21,
+    "sourceLinkedMetrics": 16,
+    "annotationGuidanceStatements": 42,
+    "formalNativeRules": 0,
+    "suppliedReviewedExecutableRelationships": 0,
+    "liveReaderAuthorized": false
+  },
+  "limitations": [
+    "No cloud changes or paid application-model calls ran in this wave.",
+    "The local fixture is not a native or agentic SLA demonstration.",
+    "Selected miniature accounts have zero revenue and negative margins; data richness is limited.",
+    "Source AI guidance drafts remain unapplied.",
+    "Native relationship execution still needs reviewed contracts, not guessed elided cardinalities.",
+    "The live API round-trip, live application provider and paired comparison remain unrun."
+  ]
+}

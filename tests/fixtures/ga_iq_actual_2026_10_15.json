@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "provenance": "SANITIZED_ACTUAL_SELECTED_USER_GA_IQ_CALIBRATION",
+  "captured_date": "2026-10-15",
+  "tool_schema_hash": "093addc3e3ef56eccbebbf9b25aa6064d02650fc7682e2cb6d96ce721df9e615",
+  "protocol": "2025-11-25",
+  "approval_proposal_sha256": "f98cff25727f0d76975d7358f9b895ce8859431af6368337a9e18a8028e73a94",
+  "originals_retained_privately": true,
+  "substitutions": "Only known workspace/model target UUIDs replaced with deterministic synthetic test UUIDs. Source query expressions, column types/order, row values, BLANK and wide int64 cells retained.",
+  "limits": "Calibration, not business answer/native agent/reader enrollment/population/current-clock proof. No production profile or approval minted.",
+  "cases": [
+    {
+      "id": "subscriptions-august-witness",
+      "source_alias": "subscriptions",
+      "probe": "august-witness",
+      "original_capture_sha256": "158a02cedef7740541fb7938081721aea0db079d219c74062965fedc40cdb3bb",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000101",
+        "daxQueries": [
+          "DEFINE\nVAR __Result = SUMMARIZECOLUMNS(\n    'Accounts'[account_key],\n    TREATAS({DATE(2026, 8, 1)}, 'Calendar'[date]),\n    \"__value\", [Active Lines EOM] * 1\n)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"value\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(__Result, \"__kind\", \"data\", \"account_key\", 'Accounts'[account_key], \"value\", [__value], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"__kind\",\"type\":\"String\"},{\"name\":\"account_key\",\"type\":\"Int64\"},{\"name\":\"value\",\"type\":\"Int64\"},{\"name\":\"__total_rows\",\"type\":\"Int64\"}],\"rows\":[[\"count\",null,null,10],[\"data\",\"1\",0,10],[\"data\",\"2\",0,10],[\"data\",\"3\",2,10],[\"data\",\"4\",2,10],[\"data\",\"5\",1,10],[\"data\",\"6\",1,10],[\"data\",\"7\",2,10],[\"data\",\"8\",2,10],[\"data\",\"9\",1,10],[\"data\",\"10\",2,10]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000101\",\"Name\":\"TelcoIQ_Subscriptions_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000101",
+            "Name": "TelcoIQ_Subscriptions_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    },
+    {
+      "id": "subscriptions-empty-witness",
+      "source_alias": "subscriptions",
+      "probe": "empty-witness",
+      "original_capture_sha256": "7358c4a38eaed7872c13b49c7794d35e36fe47f3bffddaf251f6704bb71c16c7",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000101",
+        "daxQueries": [
+          "DEFINE\nVAR __Result = SUMMARIZECOLUMNS(\n    'Accounts'[account_key],\n    TREATAS({DATE(2099, 1, 1)}, 'Calendar'[date]),\n    \"__value\", [Active Lines EOM] * 1\n)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"value\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(__Result, \"__kind\", \"data\", \"account_key\", 'Accounts'[account_key], \"value\", [__value], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"__kind\",\"type\":\"String\"},{\"name\":\"account_key\",\"type\":\"Int64\"},{\"name\":\"value\",\"type\":\"Int64\"},{\"name\":\"__total_rows\",\"type\":\"Int64\"}],\"rows\":[[\"count\",null,null,0]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000101\",\"Name\":\"TelcoIQ_Subscriptions_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000101",
+            "Name": "TelcoIQ_Subscriptions_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    },
+    {
+      "id": "subscriptions-blank-int64-serialization-calibration-not-business-answer",
+      "source_alias": "subscriptions",
+      "probe": "blank-int64-serialization-calibration-not-business-answer",
+      "original_capture_sha256": "1467b0877a7133dc6cb400e935350202dd8ca191f75190fc8e3baa348c1adf01",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000101",
+        "daxQueries": [
+          "EVALUATE\nROW(\n    \"blank_value\", BLANK(),\n    \"wide_int64\", CONVERT(\"9007199254740993\", INTEGER),\n    \"negative_int64\", CONVERT(\"-9007199254740993\", INTEGER),\n    \"source_measure\", [Active Lines EOM],\n    \"source_measure_identity_projection\", [Active Lines EOM] * 1\n)"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"blank_value\",\"type\":\"Int64\"},{\"name\":\"wide_int64\",\"type\":\"Int64\"},{\"name\":\"negative_int64\",\"type\":\"Int64\"},{\"name\":\"source_measure\",\"type\":\"Int64\"},{\"name\":\"source_measure_identity_projection\",\"type\":\"Int64\"}],\"rows\":[[null,9007199254740993,-9007199254740993,null,null]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000101\",\"Name\":\"TelcoIQ_Subscriptions_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000101",
+            "Name": "TelcoIQ_Subscriptions_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000101/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    },
+    {
+      "id": "finance-august-witness",
+      "source_alias": "finance",
+      "probe": "august-witness",
+      "original_capture_sha256": "ee2759dd6abeac07a73877efc75db634675b2b625c723cf0608795a24b6c82dc",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000102",
+        "daxQueries": [
+          "DEFINE\nVAR __Result = SUMMARIZECOLUMNS(\n    'Accounts'[account_key],\n    TREATAS({DATE(2026, 8, 1)}, 'Calendar'[date]),\n    \"__value\", [Recognized Service Revenue] * 1\n)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"value\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(__Result, \"__kind\", \"data\", \"account_key\", 'Accounts'[account_key], \"value\", [__value], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"__kind\",\"type\":\"String\"},{\"name\":\"account_key\",\"type\":\"Int64\"},{\"name\":\"value\",\"type\":\"Int64\"},{\"name\":\"__total_rows\",\"type\":\"Int64\"}],\"rows\":[[\"count\",null,null,10],[\"data\",\"1\",0,10],[\"data\",\"2\",0,10],[\"data\",\"3\",10238,10],[\"data\",\"4\",13460,10],[\"data\",\"5\",5411,10],[\"data\",\"6\",5443,10],[\"data\",\"7\",13928,10],[\"data\",\"8\",12814,10],[\"data\",\"9\",4928,10],[\"data\",\"10\",14114,10]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000102\",\"Name\":\"TelcoIQ_Finance_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000102",
+            "Name": "TelcoIQ_Finance_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    },
+    {
+      "id": "finance-empty-witness",
+      "source_alias": "finance",
+      "probe": "empty-witness",
+      "original_capture_sha256": "2b94c795223a7c6d5b4195ea25b8cee05b66f363662284a86d14b3b2db97cd79",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000102",
+        "daxQueries": [
+          "DEFINE\nVAR __Result = SUMMARIZECOLUMNS(\n    'Accounts'[account_key],\n    TREATAS({DATE(2099, 1, 1)}, 'Calendar'[date]),\n    \"__value\", [Recognized Service Revenue] * 1\n)\nVAR __Count = IF(ISEMPTY(__Result), 0, COUNTROWS(__Result))\nEVALUATE\nUNION(\n    ROW(\"__kind\", \"count\", \"account_key\", BLANK(), \"value\", BLANK(), \"__total_rows\", __Count),\n    SELECTCOLUMNS(__Result, \"__kind\", \"data\", \"account_key\", 'Accounts'[account_key], \"value\", [__value], \"__total_rows\", __Count)\n)\nORDER BY [__kind], [account_key]"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"__kind\",\"type\":\"String\"},{\"name\":\"account_key\",\"type\":\"Int64\"},{\"name\":\"value\",\"type\":\"Int64\"},{\"name\":\"__total_rows\",\"type\":\"Int64\"}],\"rows\":[[\"count\",null,null,0]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000102\",\"Name\":\"TelcoIQ_Finance_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000102",
+            "Name": "TelcoIQ_Finance_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    },
+    {
+      "id": "finance-blank-int64-serialization-calibration-not-business-answer",
+      "source_alias": "finance",
+      "probe": "blank-int64-serialization-calibration-not-business-answer",
+      "original_capture_sha256": "5460aa344d7c7c77654e257d97a3160d6487b6f8e03fdff24e81435f15caab9a",
+      "request": {
+        "artifactId": "00000000-0000-0000-0000-000000000102",
+        "daxQueries": [
+          "EVALUATE\nROW(\n    \"blank_value\", BLANK(),\n    \"wide_int64\", CONVERT(\"9007199254740993\", INTEGER),\n    \"negative_int64\", CONVERT(\"-9007199254740993\", INTEGER),\n    \"source_measure\", [Recognized Service Revenue],\n    \"source_measure_identity_projection\", [Recognized Service Revenue] * 1\n)"
+        ],
+        "maxRows": 25
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executionResult\":{\"tables\":[{\"columns\":[{\"name\":\"blank_value\",\"type\":\"Int64\"},{\"name\":\"wide_int64\",\"type\":\"Int64\"},{\"name\":\"negative_int64\",\"type\":\"Int64\"},{\"name\":\"source_measure\",\"type\":\"Int64\"},{\"name\":\"source_measure_identity_projection\",\"type\":\"Int64\"}],\"rows\":[[null,9007199254740993,-9007199254740993,\"585,656 cents\",585656]]}]},\"semanticModel\":{\"ArtifactId\":\"00000000-0000-0000-0000-000000000102\",\"Name\":\"TelcoIQ_Finance_P0\",\"Description\":\"Semantic Model in ws-telco-iq-p0-20260929\",\"Url\":\"https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView\",\"IconUrl\":\"https://content.powerapps.com/resource/powerbiwfe/images/artifactIcons/Report.360773b078c2a4ed169c.png\"}}"
+          }
+        ],
+        "structuredContent": {
+          "artifact_citation": {
+            "ArtifactId": "00000000-0000-0000-0000-000000000102",
+            "Name": "TelcoIQ_Finance_P0",
+            "Description": "Semantic Model in ws-telco-iq-p0-20260929",
+            "Url": "https://app.powerbi.com/groups/00000000-0000-0000-0000-000000000100/modeling/00000000-0000-0000-0000-000000000102/modelView",
+            "IconUrl": "https://res.cdn.office.net/files/fabric-cdn-prod_20260623.001/assets/item-types/16/pbisemmodel.svg"
+          }
+        }
+      }
+    }
+  ]
+}

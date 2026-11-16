@@ -1,0 +1,16 @@
+// Model-linked query artifact; execute only after target binding.
+// model: commerce.SemanticModel; live execution NOT_RUN
+EVALUATE
+SUMMARIZECOLUMNS(
+	'Calendar'[date],
+	'Markets'[market_id],
+	"commerce.orders", [Orders],
+	"commerce.units", [Booked Units],
+	"commerce.booked_revenue", [Booked Revenue],
+	"commerce.cancellations", [Cancellations],
+	"commerce.fulfilled_units", [Fulfilled Units],
+	"commerce.device_return_rate", [Device Return Rate],
+	"commerce.inventory_eod", [Inventory EOD],
+	"commerce.stockout_store_days", [Stockout Store Days]
+)
+ORDER BY 'Calendar'[date], 'Markets'[market_id]

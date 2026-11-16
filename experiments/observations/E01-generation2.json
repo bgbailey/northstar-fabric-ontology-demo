@@ -1,0 +1,45 @@
+{
+  "experimentId": "E01",
+  "runId": "E01-synthetic-lab-observation",
+  "startedAt": "2026-09-29",
+  "completedAt": "2026-09-29",
+  "codeCommit": "f106811 (approved payload); working-tree author client recorded in next checkpoint",
+  "seed": 20260929,
+  "profile": "miniature",
+  "tenantAlias": "APPROVED_LAB",
+  "region": "REDACTED_DEMO_REGION",
+  "capacitySku": "REDACTED_DEMO_CAPACITY",
+  "identityMode": "CLI_DELEGATED_AUTHOR",
+  "readerPersona": "Author; negative reader test NOT_RUN",
+  "sourceStorageMode": "Delta load not yet successful; no semantic models deployed",
+  "ontologyGeneration": 2,
+  "ontologyRevision": "ad87204dcdec03fba401f0c69c62f95fce1915bc6028c3ed7e73c517767adcfe",
+  "modelRevisions": {},
+  "endpoint": "https://api.fabric.microsoft.com/v1/workspaces/{ownedWorkspace}/ontologies",
+  "protocolVersion": "Fabric REST v1",
+  "toolSchemaHash": null,
+  "requestIds": [],
+  "expected": "Generation-2 create/readback plus explicit denial for an unprivileged reader",
+  "observed": {
+    "create": "DEMONSTRATED",
+    "generation": 2,
+    "definitionReadback": "DEMONSTRATED",
+    "compatibilityLevel": 1000000,
+    "parts": ["namespaces/default.tmdl", "model.tmdl", "database.tmdl", ".platform"],
+    "deniedReader": "NOT_RUN",
+    "sourceMetrics": "NOT_GENERATED"
+  },
+  "status": "INCONCLUSIVE",
+  "featureOutcome": "PARTIALLY_SUPPORTED",
+  "evidencePaths": [
+    "Private receipt: p0-ontology-generation.json",
+    "Private receipt: p0-ontology-definition.json",
+    "Private HTTP receipts with actual operation/request IDs"
+  ],
+  "limitations": [
+    "Author-only availability/readback demonstrated; required negative-reader check not executed.",
+    "An empty native ontology is not source-metric projection or custom-app native context proof.",
+    "Private tenant/item/request identifiers deliberately omitted from public source."
+  ],
+  "nextDecision": "Approve the diagnosed loader repair, then continue model and least-privilege experiments"
+}

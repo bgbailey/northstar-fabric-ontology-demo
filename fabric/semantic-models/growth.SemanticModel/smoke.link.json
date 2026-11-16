@@ -1,0 +1,16 @@
+{
+  "model": "growth",
+  "definition": "definition.pbism",
+  "query": "smoke.dax",
+  "status": "NOT_RUN",
+  "metricIds": [
+    "growth.eligible_population",
+    "growth.assigned_population",
+    "growth.accepted_offers",
+    "growth.acceptance_rate",
+    "growth.offer_cost",
+    "growth.treatment_retained",
+    "growth.control_retained",
+    "growth.retention_lift"
+  ]
+}

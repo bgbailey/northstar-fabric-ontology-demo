@@ -1,0 +1,142 @@
+/// Service-month operations with validity-clipped monitored minutes.
+table 'Service Month'
+	lineageTag: b48412b2-a950-5f7f-8cbb-dfd4803ab316
+
+	/// Valid contracted service population in one month. Requires one month per result; never sum snapshots over time.
+	measure 'Contracted Services' = IF(HASONEVALUE('Service Month'[month]), SUM('Service Month'[contracted]))
+		formatString: #,##0
+		displayFolder: Enterprise Services
+		lineageTag: c4481540-4757-51f3-b2f0-c7edef0282a9
+		annotation MetricId = enterprise.contracted_services
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = semi_additive
+
+	/// Calendar minutes clipped to contract validity.
+	measure 'Monitored Service Minutes' = SUM('Service Month'[monitored_minutes])
+		formatString: #,##0
+		displayFolder: Enterprise Services
+		lineageTag: a037f1a9-c861-5a6f-913d-2f61aa77ba27
+		annotation MetricId = enterprise.monitored_service_minutes
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Service-months exceeding their contract threshold.
+	measure 'Breached Services' = SUM('Service Month'[breached])
+		formatString: #,##0
+		displayFolder: Enterprise Services
+		lineageTag: 447f106b-5325-5a9f-8a39-883e94d4da21
+		annotation MetricId = enterprise.breached_services
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Compliant contracted service-months divided by contracted service-months.
+	measure 'SLA Compliance' = DIVIDE(SUM('Service Month'[contracted]) - SUM('Service Month'[breached]), SUM('Service Month'[contracted]))
+		formatString: 0.00%
+		displayFolder: Enterprise Services
+		lineageTag: 06aee6f9-0886-5844-b0bf-c7569731ee2e
+		annotation MetricId = enterprise.sla_compliance
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = non_additive
+
+	/// Contracted monthly recurring value, not finance recognized revenue.
+	measure 'Contracted Recurring Revenue' = SUM('Service Month'[recurring_revenue_cents])
+		formatString: #,##0" cents"
+		displayFolder: Enterprise Services
+		lineageTag: 67465d30-dc4f-5f7e-8767-fc871e5c065c
+		annotation MetricId = enterprise.contracted_recurring_revenue
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'service_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: service_key
+		lineageTag: 17236b83-56ea-5871-867a-efe27e474f7c
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'contract_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contract_key
+		lineageTag: 1affd5e4-ba20-5027-9a52-7388de09cc58
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 233aa2dc-f384-5db7-9f40-6883d706f971
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: efabd537-37c1-534e-b59e-033f22b92a54
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: fe6e08f4-8fd1-5c1c-8370-99674aa90290
+		formatString: yyyy-MM-dd
+
+	/// Contracted at the declared Service Month grain.
+	column 'contracted'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contracted
+		lineageTag: ce1fc196-fbdb-550c-b28c-d3e8d4d34ad0
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Monitored minutes at the declared Service Month grain.
+	column 'monitored_minutes'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: monitored_minutes
+		lineageTag: 8ae26374-c8ae-5ffe-9776-db55f41b27a2
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Breached at the declared Service Month grain.
+	column 'breached'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: breached
+		lineageTag: f08d9667-3096-5d1b-ac9c-ef9bda3faa14
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	column 'recurring_revenue_cents'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: recurring_revenue_cents
+		lineageTag: 1895e88e-54f8-5dae-bd1d-8b490ee74601
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	partition 'Service Month' = entity
+		mode: directLake
+		source
+			entityName: service_month
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

@@ -1,0 +1,85 @@
+/// Raw outage intervals may overlap; union intervals before measuring unavailable minutes.
+table 'Incidents'
+	lineageTag: 1cdb6438-8a06-520a-85ff-5fc7ca9c6485
+
+	/// Raw major incident count; overlap is allowed.
+	measure 'Major Incidents' = CALCULATE(COUNTROWS('Incidents'), KEEPFILTERS('Incidents'[severity] = "major"))
+		formatString: #,##0
+		displayFolder: Network Operations
+		lineageTag: f4101605-5124-5991-a9c8-2ff851939170
+		annotation MetricId = network.major_incidents
+		annotation LiveDax = NOT_RUN
+		annotation Aggregation = additive
+
+	/// Technical identity; join only through the declared mapping.
+	column 'incident_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: incident_key
+		lineageTag: ec345134-a8b1-5370-ad7b-8dbab58bcf6b
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'site_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: site_key
+		lineageTag: d055ab12-975d-53c3-8467-e8417603778d
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'start'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: start
+		lineageTag: a71348f3-ec20-5c27-ab65-22d8d55b4b15
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'end'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: end
+		lineageTag: d6b5456f-7de6-526d-88b7-e1ac7c535a22
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: 6f1088cf-0458-5d96-9cf2-fbbf4681796b
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 4d961285-ce93-53c5-8983-9b406ecd1878
+		formatString: yyyy-MM-dd
+
+	/// Severity at the declared Incidents grain.
+	column 'severity'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: severity
+		lineageTag: 9333cfbb-2b8f-5890-8106-a090c5ba4dc2
+
+	partition 'Incidents' = entity
+		mode: directLake
+		source
+			entityName: incident
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

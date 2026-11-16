@@ -1,0 +1,31 @@
+{
+  "observationType": "LIFECYCLE_CODE_STAGED_NOT_DEPLOYED",
+  "date": "2026-09-29",
+  "runbookPath": "infra/pause-capacity.ps1",
+  "runbookWorkingFileSha256": "20e8f61eee532bb210924f24df3e29abf27381033c97864d7a8e03c32f1c29cb",
+  "localMockedAzTestsPassed": 7,
+  "powershellParser": "PASS",
+  "cloudRunbookExecution": "NOT_RUN",
+  "observedAutomationAccounts": 0,
+  "capacityStateRecheckAt": "2026-09-29T11:45:17-04:00",
+  "observedARMState": "Active",
+  "observedFabricState": "Active",
+  "capacityResumedByThisSession": false,
+  "userSelectedCapUSD": 200,
+  "userSelectedActiveHours": 48,
+  "cloudMutationAuthorized": false,
+  "estimatedScenarioUSD": 72.14851232876712,
+  "scenarioBasis": {
+    "48hF8Base": 69.12,
+    "2hRetryWindowF8Allowance": 2.88,
+    "30MinutesAutomationPaidTier": 0.06,
+    "1GBHotStorage48h": 0.0015123287671232877,
+    "1GBInternetEgressPaidTierConservative": 0.087
+  },
+  "limitsOfEstimate": [
+    "Storage/egress/job runtime are proposed bounds, not measured consumption.",
+    "No allowance guarantees a hard invoice cap on shared capacity.",
+    "Existing shared workloads, pause-time smoothed overages, discounts and taxes are not measured.",
+    "The retry window is contingency after the intended 48h shutdown, not approval to extend normal work."
+  ]
+}

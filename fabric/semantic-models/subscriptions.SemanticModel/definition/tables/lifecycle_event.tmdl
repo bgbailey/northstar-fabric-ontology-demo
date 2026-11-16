@@ -1,0 +1,75 @@
+/// Observed monthly activation or disconnection transitions.
+table 'Lifecycle Events'
+	lineageTag: fd122443-5717-5cc6-b0a6-51bc8a09ad5a
+
+	/// Technical identity; join only through the declared mapping.
+	column 'event_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: event_key
+		lineageTag: 7366f530-1ee9-5b6a-89e2-6521d3def4af
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'subscription_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: subscription_key
+		lineageTag: 408d2fdd-879f-5e19-b818-ba7291b77914
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'account_key'
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: account_key
+		lineageTag: 8ec1799a-8276-5a5b-bca8-578e74bfa915
+		isHidden
+		isAvailableInMdx: false
+		formatString: #,##0
+
+	/// Technical identity; join only through the declared mapping.
+	column 'market_id'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: market_id
+		lineageTag: b1bd00eb-fb31-526b-a7c1-f7357040bf2e
+		isHidden
+		isAvailableInMdx: false
+
+	/// Calendar date with no timezone or time-of-day.
+	column 'month'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: month
+		lineageTag: 516479a7-0448-5dd6-8535-d53b2e43b381
+		formatString: yyyy-MM-dd
+
+	/// UTC instant; validity intervals include the start and exclude the end.
+	column 'event_at'
+		dataType: dateTime
+		summarizeBy: none
+		sourceColumn: event_at
+		lineageTag: bc582f83-c492-5a89-8316-fe2692943086
+		isHidden
+		isAvailableInMdx: false
+		formatString: yyyy-MM-dd HH:mm:ss
+		annotation Timezone = UTC
+
+	/// Event type at the declared Lifecycle Events grain.
+	column 'event_type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: event_type
+		lineageTag: 8d74fa86-56dd-590a-b3e1-f399dd811a21
+
+	partition 'Lifecycle Events' = entity
+		mode: directLake
+		source
+			entityName: lifecycle_event
+			schemaName: dbo
+			expressionSource: 'OneLake Source'

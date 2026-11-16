@@ -1,0 +1,23 @@
+{
+  "status": "UNAPPROVED",
+  "target": "Only the owned Load_TelcoIQ_Miniature notebook in the approved P0 workspace",
+  "originalNotebookTemplateSha256": "210bf848e248bc98f54ef3e0d5f538c9312103d15a4ca919600adf2908b6a5ee",
+  "revisedNotebookTemplateSha256": "67b648d13c4bd1dfd8a5c47763e5f8fc34fbdb0d150d253d38f152ed0e3287df",
+  "diagnosedFailure": "Our SHOW SCHEMAS display-label guard rejected the lakehouse before any table-write loop; service metadata confirms defaultSchema=dbo.",
+  "change": [
+    "Probe the actual fully qualified approved workspace/lakehouse/dbo namespace with SHOW TABLES",
+    "Use the same fully qualified namespace for table existence, writes and exact-data readbacks",
+    "No changes to synthetic facts, metric formulas, model templates, target resources or permissions"
+  ],
+  "operations": [
+    "Read the current notebook definition and reject concurrent changes",
+    "Replace only its approved notebook content through updateDefinition, preserving other definition parts",
+    "Run one additional owned notebook job, bounded to ten minutes",
+    "Continue original model-creation approval only if source-to-Delta equality assertions succeed"
+  ],
+  "maximumTotalNotebookRuns": 2,
+  "existingOperationalCapUSD": 200,
+  "existingDeadlineUtc": "2026-10-01T15:30:00Z",
+  "noBudgetOrDeadlineIncrease": true,
+  "cloudRepairExecution": "NOT_RUN"
+}
