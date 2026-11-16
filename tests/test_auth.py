@@ -2,6 +2,7 @@ import base64
 import copy
 import hashlib
 import secrets
+import sys
 import threading
 import time
 from datetime import datetime, timedelta, timezone
@@ -105,6 +106,7 @@ def signed_in(manager):
     return manager.finish(key, {"code": "synthetic-code", "state": state})
 
 
+@pytest.mark.skipif(sys.platform != "win32", reason="Windows DPAPI credential protection requires Win32 crypt32")
 def test_dpapi_uses_current_user_os_protection():
     plain = b"synthetic unit-test material, not a credential"
     protected = dpapi(plain, decrypt=False)

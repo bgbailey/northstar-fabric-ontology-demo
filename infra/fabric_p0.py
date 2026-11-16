@@ -74,8 +74,9 @@ class Author:
         return json.loads(result.stdout)
 
     def save(self, name, value):
-        path = (self.private / name).resolve()
-        if not path.is_relative_to(self.private) or path == self.private:
+        base = self.private.resolve()
+        path = (base / str(name).replace("\\", "/")).resolve()
+        if not path.is_relative_to(base) or path == base:
             raise RuntimeError("Author receipt escaped its private state directory")
         path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
 

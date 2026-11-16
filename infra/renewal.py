@@ -198,8 +198,9 @@ def private_path(path: Path) -> Path:
 
 
 def local_file(private: Path, name: str) -> Path:
-    target = (private / name).resolve()
-    if not target.is_relative_to(private) or target == private:
+    base = private.resolve()
+    target = (base / str(name).replace("\\", "/")).resolve()
+    if not target.is_relative_to(base) or target == base:
         raise RuntimeError("Renewal receipt must be inside its private directory")
     return target
 
