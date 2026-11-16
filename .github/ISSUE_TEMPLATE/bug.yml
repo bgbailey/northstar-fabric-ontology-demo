@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a defect in the Northstar Fabric IQ ontology demo or its offline checks.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic examples only. Do not include customer data, demo tenant or workspace identifiers, item identifiers, tokens, certificates or approvals.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem in plain language.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the commands or steps that trigger the problem.
+      placeholder: |
+        1. Run `...`
+        2. Open `...`
+        3. Observe error `...`
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: State what should happen instead.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python version and Node.js version (do not include tenant or workspace identifiers).
+      placeholder: "Ubuntu 24.04 / Windows 11, Python 3.13, Node.js 24"
+    validations:
+      required: false
