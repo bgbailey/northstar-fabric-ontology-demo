@@ -1,0 +1,23 @@
+name: Question
+description: Ask a question about the architecture, semantic models, ontology contract, evaluation or deployment.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic examples only. Do not include customer data, demo tenant or workspace identifiers, item identifiers, tokens, certificates or approvals.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Ask your question clearly and note any document or file you already checked.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Share which scenario, agent surface or work item in `PLAN.md` relates to your question.
+    validations:
+      required: false
