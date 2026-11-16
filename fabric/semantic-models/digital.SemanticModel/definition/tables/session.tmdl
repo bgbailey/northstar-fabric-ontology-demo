@@ -8,7 +8,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: b92bb326-2440-52ae-85c1-efeb637a0e91
 		annotation MetricId = digital.sessions
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Sessions with resolved authenticated identity.
@@ -17,7 +16,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: 5517b3f1-aad3-5f0f-b1fc-fe4416c61eba
 		annotation MetricId = digital.authenticated_sessions
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Sessions eligible to attempt checkout.
@@ -26,7 +24,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: 6c6eeb13-ffb6-5871-8943-0747ccf87790
 		annotation MetricId = digital.eligible_checkout_sessions
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Successful eligible checkouts; not necessarily placed orders.
@@ -35,7 +32,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: ec19249c-c7c2-5975-bf2d-535055cd7221
 		annotation MetricId = digital.successful_checkout_sessions
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Successful divided by eligible checkout sessions.
@@ -44,7 +40,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: a4af351c-8aa2-580e-b147-163ff8b344e0
 		annotation MetricId = digital.checkout_conversion
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Observed eligible failures; abandonment is not a lost-order assertion.
@@ -53,7 +48,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: 8cb7687c-0fee-57aa-b7d1-645e0ba12401
 		annotation MetricId = digital.failed_checkouts
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Distinct resolved accounts; anonymous/null identities are excluded.
@@ -62,7 +56,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: 490356ce-113e-517e-a13b-fd38b396b116
 		annotation MetricId = digital.digital_active_accounts
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Median of session durations in the requested scope; never average medians.
@@ -71,7 +64,6 @@ table 'Sessions'
 		displayFolder: Digital Experience
 		lineageTag: 4f119e9e-f497-5ce5-a477-c7d347a10beb
 		annotation MetricId = digital.median_journey_duration
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Technical identity; join only through the declared mapping.

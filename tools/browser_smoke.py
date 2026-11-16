@@ -11,7 +11,7 @@ output = root / ".local" / "browser"
 output.mkdir(parents=True, exist_ok=True)
 errors = []
 expected_statuses = [e["status"] for e in json.loads(
-    (root / "experiments" / "register.json").read_text(encoding="utf-8")
+    (root / "eval" / "validation" / "register.json").read_text(encoding="utf-8")
 )["experiments"]]
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(channel="msedge", headless=True)

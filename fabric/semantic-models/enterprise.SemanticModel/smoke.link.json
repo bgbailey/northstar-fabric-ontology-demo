@@ -2,7 +2,7 @@
   "model": "enterprise",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "enterprise.contracted_services",
     "enterprise.monitored_service_minutes",

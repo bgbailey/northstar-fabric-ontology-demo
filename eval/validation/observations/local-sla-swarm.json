@@ -2,7 +2,6 @@
   "lane": "OFFLINE_SYNTHETIC_SUBMITTED_PLAN_FIXTURE",
   "status": "PASS",
   "observedAt": "2026-10-01T23:16:48.451662+00:00",
-  "implementationPlan": ".copilot/docs/telco-iq-implementation-plan-2026-10-01.md",
   "july": {
     "period": "2026-07",
     "contractRows": 2,

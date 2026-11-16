@@ -1,0 +1,2990 @@
+{
+  "version": "1.0",
+  "description": "Reviewed synthetic GUID allow-list for tools/check_sanitization.py. Categories distinguish zero-prefixed placeholders, deterministic UUIDv5 lineage tags, and sanitized recording or test run identifiers.",
+  "guids": {
+    "00000000-0000-0000-0000-000000000000": {
+      "category": "zero-prefixed",
+      "reason": "All-zero placeholder UUID"
+    },
+    "00000000-0000-0000-0000-000000000001": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000002": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000003": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000004": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000005": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000006": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000007": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000009": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000010": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000011": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000020": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000030": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000055": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000056": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000099": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000100": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000101": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000102": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000103": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000104": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000105": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000110": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000120": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000121": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000122": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000123": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000188": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000189": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000199": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000299": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000777": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000901": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00000000-0000-0000-0000-000000000999": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "00f3a5d7-bbba-5f79-9229-9b127cd36929": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "01203949-cf77-595b-9612-7c8729bf2738": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "01730da2-e326-5102-96d0-682476062400": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "01c2ef44-3d74-5f73-bad7-19dfbe5d770b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0216cbcc-9fde-5030-9064-c07ece1fc7c2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "029e222e-9991-5b67-a89a-aa978805f20a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "02baf10a-dc01-511f-b4b4-503644d9d25c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "02d66c45-6f63-56d4-a100-0a67b39fb2d2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "034b5f60-13b9-5100-a644-372847b85dca": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "038d0853-4855-562e-9194-352aa4112371": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "03a1b93e-63f7-5af6-9942-5f2ca9b91eff": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "03c7e097-b8c9-5166-9a98-2c7aa1db41d5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "03fd5baa-144d-584c-804a-5d053cf854cd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "04e37e18-5c2e-56cd-91d9-207a36fb3ac4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "04fa9b46-334e-56f2-9b00-89aa5356c91c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0500b425-8bc4-5875-a67c-c27f7a1b3357": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "056be58a-8183-507f-bb86-d49812bf236a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "057f7a39-b330-5840-878d-a15dd58fdd18": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "05a68905-5154-5e54-a4a4-0fa0d923e7ba": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0616129d-69ad-5a43-bbb1-c7f515df4300": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "06337a8b-58ef-5ffb-bce3-b6841dbbba9e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0647ba0f-eb70-5913-bf78-fcb117271726": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "06ad0d0c-f998-5297-b1a3-67a9676f39fb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "06aee6f9-0886-5844-b0bf-c7569731ee2e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "07a61e69-fab8-5b4d-a34b-0ab4a566374c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "07d10340-f177-56eb-b01d-c3736a717c06": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "07d6b111-a601-5421-8eb5-013b110cffb1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "07e4b5a4-f2b7-5f3d-919f-75c639b07f18": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "090eb63c-158d-5b35-b2dc-a458f5843cf5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0978b634-f35e-5f94-9a19-baf757aea397": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "098a2e33-80ae-5509-9d81-c76f91634791": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0a1a2f85-016a-5628-be0e-8999cfbd630e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0a3fa4d1-1a7f-5d80-9f58-fd2eea058a0e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0a5683da-fd35-5806-9269-884399a0b7a6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0af93e2a-3abb-50a1-b1c8-caa1955e68d4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0afda834-ecda-59e5-a688-20898dbf31a4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0b248986-1d90-56ba-a448-fe65b0ea7e39": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0b80bd92-f486-5f0d-b782-b5fadd9a1f1a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0c49f0b4-cce0-5fb1-9a2b-ced60c181533": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0d0edc13-b7f8-5765-8486-3948f961d062": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0d78c132-2bf3-53f1-ae2e-109d993dd6f9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0d8692a2-68e2-5f8e-976a-1d43b26a0f73": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0dc95d01-f9aa-56b5-b749-25f3cfa7493b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0e031171-bd5b-5256-a1fd-82bececa1673": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0e0bbd54-70e9-5b3b-b427-1cd62fde4cb8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0e6081e9-cbff-5c8c-a9d0-6eb5a5474cbb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0f660bd6-247e-5b11-9591-ebe6a4056a22": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0fa112ae-f8f2-5ab5-9695-b330e2f4e278": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "0fca9b88-1a4a-5f28-b63c-42ad2c724c47": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "102acea1-3cf7-5649-b03d-2e895dc703f8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "10ece3a9-5394-4116-9c75-1854a844747f": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "113350a0-4259-52da-9eb8-785f86e5710b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "114e21f6-1514-5714-9497-11859dfc60af": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1203b4fa-aef9-529a-9b6b-cc02ccdef6d7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1269c1f5-eda0-58c2-90eb-d563f2307089": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "134984d2-b47d-518a-a93b-c060053602ab": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "136fc635-f5aa-5506-a2af-199c4a8e1265": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "142cfb2e-5451-55d1-b7ea-7a1be8c203a5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "15bf001b-362e-5359-96e4-2bc8be0fe655": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "15c8aa2a-758f-5f3d-8b8d-787e26f2fbb2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "17236b83-56ea-5871-867a-efe27e474f7c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "179c7829-03a2-5cca-bf87-29870ee1331f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "17aa9a9e-aeeb-579d-a032-582d651d2a9d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "181e4961-cec3-5d7d-944d-79b09080d65e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "184d0b74-b348-5397-a170-d8ba9440205d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1895e88e-54f8-5dae-bd1d-8b490ee74601": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "19a68254-6e7f-443b-97f4-4b459c1264e0": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "19fbafb2-6403-553f-acfd-4ea0fd075006": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1a1a167a-c7a9-58b1-8b80-c6a7f2f6d992": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1a587880-59c5-520b-a8b3-d8fe1e4f6c55": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1aa412bb-beb0-5102-bdca-7153fce1b436": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1acfe6d8-b914-5d30-973a-fd80bd62d53d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1affd5e4-ba20-5027-9a52-7388de09cc58": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1b0137db-b580-5055-b029-3b6ea15dfd34": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1b169513-ebf2-52f6-9f54-0a9f6d15d33c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1bad9263-fd55-5381-bb50-657b6cfe69be": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1bdd84c3-ac4b-54d1-88f0-64d57b0c5554": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1c24c380-0ce2-5aca-9a91-a561c5700be6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1c4d171c-0a7a-57f8-af9d-3a6a54e3871a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1c627d5a-84d7-51e0-9643-73dab44fad8f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1c6cf734-114d-57c5-aa1a-6895f04da698": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1cdb6438-8a06-520a-85ff-5fc7ca9c6485": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1d3b4dea-66bb-5b8a-b357-213a35ca8fae": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1dbe37c5-3724-51ed-b6c6-f71880bfaf35": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1dc9344a-8544-5493-a6a7-3d972d15eac6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1dfcd2d7-8288-582a-b430-689182ed46e3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1e323cfe-c9d3-5632-8999-9ca1b3274a1d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1e4c228c-fca6-5b8f-85ef-ba85f3e01513": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1e4c8620-e679-5e30-b03f-073f06623ee1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1e702702-1144-58d9-9755-e071307c6874": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1f58e4a3-f9c0-5000-b369-f8bf52203894": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1fc05f84-b001-5adb-ba7f-f43eadf6d0f4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1fc5e47b-84bd-5c24-9661-fc48880c6b29": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "1fd07d1c-4b40-5ff7-928b-614f83ae983c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "203201f0-950c-520f-91cc-da36fa555a61": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2058459e-1584-59be-a001-6132dc396b12": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "209be5fa-0deb-5a30-b038-bcbf49ddd273": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "20ae1fbb-036b-5f15-b53a-4cb59fa02d81": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "216ad6f3-7203-5191-9128-99130deb94b9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "21aeaa6b-0366-54e4-9be3-3cceb4050464": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "21c28188-660a-5aa1-93e7-b93198460831": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "21c83268-e027-51ae-8f43-01d85a8c33b7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "233aa2dc-f384-5db7-9f40-6883d706f971": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "23aaacc3-903e-5569-9736-fe0f1ae9bd46": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2407ec06-84c8-5ca4-a632-8cd8023b8e3a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "24ab8de1-b924-5b51-8ace-19e96ebda55d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "24cf0d44-d558-59f6-966a-dca149e975fa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "24d62ee7-6daf-5cdf-88b9-88923cdc6257": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "25d68075-60f2-5e39-9a1f-cfa8071d8811": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "25d6e234-0f67-5550-bbb8-19176e42a60e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "27fc897f-0c31-59f9-89ff-6693e0133137": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "28485345-f778-5171-8303-237ff3c04850": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "28b87061-7bf9-5503-b033-50f552354fcf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "28de688d-ee12-55e2-bffa-28d0de435b09": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2907b3ba-9d4e-52e0-8c54-022a93ede833": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "295d05da-6a34-5f4b-96c9-28fbbc2f20d6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "29908886-d60d-5b87-b08a-4490ffe5a0a1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "29f713b5-4a90-5851-8094-e1deccf7d982": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2a4aa482-3a57-5085-8e55-6a5d05ead291": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2a7301cd-ddff-5443-bb58-ebf3200641f9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2a84d512-26c4-5424-a19c-ee9ff7c821fc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2a983f1b-aa4a-53a4-a295-cd7197cf8e19": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2b0cc3e1-cf38-534f-af0a-772c5601f43c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2b23a08b-b2fa-5caa-b265-33a543961017": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2bcee9de-fea7-5ee8-a318-812a4b56f3dd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2c54e978-e96a-5293-9a3a-38f639b206a8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2cb0e5d3-6232-5e10-8a26-25760aa47199": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2dd74511-8c42-5fa5-8910-0121da814f9a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2e28ab4c-0b77-5d62-9a6b-adfea3d8f9b0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2e86f07f-ab4a-5bf9-ad56-f2ace069121d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2eaa4fc7-97e2-4fd2-a70f-9a7ce1a1c79f": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "2eb67db4-8d0e-567f-b873-ba925ee35a71": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2f0f9108-fe41-5374-bd7f-6e8f678f844f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2f2078f6-33c3-52d1-9f37-3404b3f109e2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2f36930b-bbcc-54d8-a406-7aab74dfda21": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2fa2c9e6-6c05-58d9-b16a-e57fe056285b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "2ff36ab1-54c0-5f8e-a174-9ea4a821182a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "30c2f55c-6c79-5990-a6a3-8e844866f9a9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3143a92e-ef32-52c9-8f3e-e6914b5d4c60": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "31af146e-873e-5695-9a8f-7f7f0845c9a4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3221629c-aa23-5f51-8546-7361ee668085": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "329dd045-2cd1-5053-9114-3ab6d464ec40": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "32f7bbba-f7cd-58ba-8671-d90856b91483": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "33e99fc8-6cf6-5299-ac9b-f8c93e96e938": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "347d1a38-1514-5946-a318-bda78f3e6aa7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "350eb6e7-0781-59e3-87b8-aff83d150073": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "352839e2-9451-52fe-be21-f002f93f87e8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "36915ec5-8a30-5e24-ab8e-b52faf3742f6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "374cf80a-68a2-52f5-9225-3c40811e12c6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "37744760-cb2c-57ba-9a63-4d3634446e79": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "37e9aa34-5626-5069-8ea4-dd52b762f682": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "387e7196-c698-5613-aab4-517391e18b03": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "388c7d76-e17c-5f91-a24c-514211ec68af": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3a16954f-6504-5f14-a390-922be8adea18": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3a418ce2-e72d-56cb-9d3b-cde7d46f62a3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3a866e3b-6704-59f2-af48-e54820d3cbdc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3acd0899-e4fd-51d7-a8b0-7b69427f7671": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3b637d6c-7a75-51dc-a790-a182c60c053b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3c069f3e-b5ff-5e7f-b281-9712764a180e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3c08c5dd-ea1a-568d-bc7a-954e0ab14f00": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3c506e67-c61d-5945-bc47-b98cfa30c847": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3c525956-6906-5afb-9581-97eb54e06063": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3caf8c3f-2f98-5c47-9e82-31bd1b5c04a1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3d0c0c56-82eb-5926-9cdb-a79bed8320bc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3d660cb2-2d7e-5c82-82c8-b8c237769cde": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3d7dde00-4a35-5dbc-ab2f-41a5b264f449": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3d80e02f-5f5d-51ba-9d01-581dde18c32a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3d97b55f-8907-5683-94fc-9f24a3134192": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3db19cdc-e352-5ea4-9737-1cd9e8544a45": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3e46bbd9-eab5-5e35-bf4c-5a58c7127e03": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3e88398c-517c-5ed3-a3a6-a6cb65ec501e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "3f1db3de-ef01-56fa-aea1-3fe87e391b14": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "408d2fdd-879f-5e19-b818-ba7291b77914": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4127c8e7-ec24-5257-81e1-b47abba41f76": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "41884c7c-7590-5589-8f0b-9c9eef22e722": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "41b75e5f-eb69-5f29-9dae-c13128935e03": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4253bf44-48f1-5fd3-bfd2-4fe5f3f7bdc2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "42734670-b94f-5c94-8eba-fa22a3d052cb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4286a520-346d-52c6-b56a-d67ebb0e1997": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "42ef5d6e-754a-5ebc-a9c4-036a5c670b2f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "43132ee6-8653-5a88-921f-b5b0d12507ff": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "43886de8-b7f5-5be2-8f57-86ccc78e7484": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4446820a-1fbe-5067-b8ba-1f523522ba05": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "447f106b-5325-5a9f-8a39-883e94d4da21": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "44d4f742-e57a-52f8-a9e8-5d4796aad985": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "44ff320f-1bd5-525d-91f5-23481314c81a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "45032365-4a79-5c19-9d04-0152fc8813ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "455b73ab-14a1-5e12-b8ba-9cc7c68df0ff": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "45d91579-5e90-58d2-be4e-7b223eb5532b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4608cff0-fabb-555a-b540-b39268fa031c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "465810fe-a77f-5f61-b542-d6c2a8d2f5a7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "468389ab-47d5-5797-93a3-b23538a91cd7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4720ab89-990d-509f-8c9b-f4f7b55b1038": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "482becd0-1f53-5115-a50b-d5168ffca44d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "48e205cf-4f0f-57fd-8924-e0c5008542fe": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "490356ce-113e-517e-a13b-fd38b396b116": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "49057c41-d0d4-565f-b0eb-07abb559a1b3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "495fdbc2-027e-5d92-bf4b-d356dcc050c1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "497a0b12-0885-59e7-a9d4-8b2aa4486761": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "49ff7f91-3349-51da-a92c-dba3ce2f2f95": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4a15dd13-609c-5d25-82c7-f3e99fa753c6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4aa919de-4fc7-556d-bda9-655ff0fe7c60": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4b2a041c-0567-5ba1-a374-ca1df24d490c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4b6d3602-36da-5a2d-9bbd-5f4f23d25fd6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4b9581a9-d6cd-567c-8beb-2eadc02670ee": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4baa7c39-6aa6-4b66-9456-7ec244360be0": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "4bd36d30-8d23-5ad4-86e3-4699695aede0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4bddcb5d-f758-56ba-9f08-5eb6585a6ccd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4c974181-08dd-5c5d-b187-fbce52cb4533": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4cbab3e1-cefd-5447-b200-a1c8fdbdbed3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4cd7e172-5722-5a50-a9d8-02e2a7810472": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4d961285-ce93-53c5-8983-9b406ecd1878": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4da48965-9764-55c4-b472-a8296da284ff": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4ea2bff1-b31d-5545-bede-f24bf174c4bf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "4f119e9e-f497-5ce5-a477-c7d347a10beb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5025cc5a-d46d-5016-9185-117112dc268a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "507a7b46-064a-54a3-88fc-e9bda5e00314": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "50bdbba9-fcf7-5861-865b-f28faf5e0512": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "50d170d1-de3d-59d3-9189-beabfa4adec6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "50d4f5f2-dbaf-511e-8df7-daacab8c7599": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "51082a55-7261-5497-ac3d-d0370a329414": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "510b6915-1f62-54fd-8515-5838a778b204": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "511bf073-5af1-56fd-95f6-8d2a46dd541d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "516479a7-0448-5dd6-8535-d53b2e43b381": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "51a34559-c1a9-5f84-abf2-7e10805a0619": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "51e65fa9-0e7c-59b6-9e85-fc0965314cfe": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "52257bfe-b48f-5179-9482-ce35df1ea37d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5240d4e1-2350-5822-ba34-f6fcbc4876d7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "52e39aca-710c-5cb3-9570-dbd410df872f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "52f5182f-0375-5b3b-8f28-2d16cbffb4dd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5517b3f1-aad3-5f0f-b1fc-fe4416c61eba": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "55a9f331-b2d7-515e-8905-6b342fe431f5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5685607b-542c-530c-b604-e9163b0a5c41": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "56a49f5e-9d70-5f3a-a857-6388a5d71195": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5776b65b-0d14-5cb9-b86a-9ae97d500521": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "57e793c6-4e2f-5067-bcec-f4b017075c41": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "58a5ff6a-198e-5932-bc68-d56fc80ee99b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "591ef05c-ab2d-5e21-a472-fe4905fbb42d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "595306c7-852b-5ad8-bd7e-70be2776c111": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "59a8cd8b-84c9-5fc4-b7b1-7d5161d11b1e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5ac2e139-b4f7-5d3f-a51b-0b64ccc6a974": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5b2e13fe-dc82-5e51-a252-e0b3234e2766": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5b6c7008-0344-57b5-b047-9c9ed172de20": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5b81caae-9a2b-572b-824b-aab2911874fd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5b993f4f-5b9d-5f3c-8c7c-9d8ab7679dbb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5c225c32-daac-57af-9e2a-6eaff366b0ab": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5c91e9ca-0ab6-5d7f-9d94-e98c6bb647a6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5ca8827d-cc6e-5d33-b75a-5726b763e7dc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5cd2a991-a454-54fc-b02f-739056eb1482": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5d5838a8-cb0d-5c97-a1b7-3398400929ce": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5d645dd7-2d7b-5cac-8c57-6acee0e6ab48": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5de8250c-a793-5f90-8e65-5e2644557ec9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5e08fb99-9224-5572-b3c4-2babd39eae38": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5e9a15e1-bc63-5820-b8d2-243a3f9f8e6f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5ea0e080-9829-5dd9-8000-9d99e44de0bb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5eb4a290-e882-5b4c-9830-0620fc55226b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5ef2a5f6-15d8-5242-a1a2-10ca891ddb37": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "5f1dfb9e-769c-4fbc-8fc1-b18fa2054f16": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "612ac562-ed68-5aa2-ae58-dd441482ba2d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "612ff0f6-c701-57f6-9a76-2903b15c84c7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "620e4d44-602a-52f7-939a-2b5a642d3769": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "62d50ec2-0728-5586-aeb1-fbe07ad0e5f1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6377a4fd-6fca-5006-94d4-be15b3394680": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "63903c30-d604-54a1-886a-aab48975ad11": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "639549ff-3a54-5d83-b07b-d4df127a0244": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "63a75d29-46b6-57f7-a44e-09d2409c616c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "640607c1-7f1c-5114-b9a1-a31518c651e6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "64468bc0-1d5b-54fa-bb22-ab458ebcc833": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "659ba55a-86d0-52a3-b2d1-3b26d363938a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6626fe6f-c5cf-5e3c-b415-38c532bf3615": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "665fd9fb-455c-56e8-8460-bae56031adfe": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6660c29a-6a31-584a-8b36-7913e0f6cdc1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "66acab84-0492-504b-9111-714615314100": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "66d507af-56d4-5f08-8428-2965c2bf2a51": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "673a8293-1e46-5670-94e2-de3a53de68b0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "674375c0-9891-578f-b790-6a5e6eb08ccf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "67465d30-dc4f-5f7e-8767-fc871e5c065c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6763a329-2d12-539f-b3b7-442d6c73e064": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "67988a26-7ed0-51ed-8a57-c4b10e859532": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6804d88a-4e49-5f39-acc0-372a60e2d12c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "68114940-4cb4-5f19-bd94-b80f072bbbc0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "68726d98-e003-5a40-92ac-0e53eeb0d24e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6915ada9-4c71-52fd-bbb7-938654cd9885": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "69cadc24-5b4d-5842-9912-7810f02f66b7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6a12bf68-4bba-5399-8264-1e956cc5f0a9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6a7467eb-d89f-5c17-8aa2-ee5c32f46a44": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6a9a9b5d-2d37-551b-bfff-ba6943ea214d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6ada9eb9-d588-52a7-a7df-ff684b3989b4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6b209a19-a8b4-5dec-aa31-9262b0029bb1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6b34c727-2f64-54ec-8627-84c3d108bec0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6b4fa403-fb26-5fb4-af86-31167fb3d279": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6b6a996b-38fc-5233-87de-d8b00ec6d082": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6be8f058-3c9b-50ea-90d6-51aa0116f514": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6bfb402d-9b2a-54f8-ad01-cf34d283f1e2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6c44cb08-2535-5729-b6e4-0caed8164b50": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6c6eeb13-ffb6-5871-8943-0747ccf87790": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6c7b29e7-071a-5129-847a-76f08a0ba9b0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6d01e526-12d7-5d0f-af90-6e5623d0a5ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6d909abc-803c-59bc-b2be-3405c68ef482": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6dbb28a8-e326-5562-bb07-5f652ceaaf82": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6deb1c8e-4dc0-5f48-94d1-e31af0a6fb16": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6ee395b1-5540-5921-bb18-ab3cbb76927f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6ee61b26-a2d7-5d39-b7af-d4481c3a24d4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6f1088cf-0458-5d96-9cf2-fbbf4681796b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6f1bd8a4-d064-5e23-8b76-6a4630cb10fa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6f2f4277-f75c-5b51-bbf4-5432c700eded": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "6fbbb818-b786-5873-a3a3-91505eea849e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "70b06c73-c42e-58b4-a5d3-5e028dcbf95e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "72297126-fc6c-52ac-96ed-d6118694944e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "72a20132-c45f-4a8b-9a88-78f3ce6a45d7": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "72beadb7-525f-5eb9-b368-f75b242c2603": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "72ffa4e2-e255-5fdc-b09b-f388f017569e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7366f530-1ee9-5b6a-89e2-6521d3def4af": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "73ee40f3-b4f9-56df-9fe9-e18e800464ab": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "74681d8b-c62d-56e5-b4f4-ea73719c739b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "747fa805-aa2e-5313-8982-3f79a599fcb9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "74a5ed7d-bd77-5434-9974-d7b618dae265": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "74c64ede-56bf-5c82-aa14-697ee81e68ca": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "750f48f7-0149-5b2b-a8fb-5f9205cda65e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "75531b99-5aee-523f-b97a-67472bf04e6e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7632c3ea-4283-5dfd-b5a7-966a1bf924bf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "76476bec-ef04-58a6-83b0-03ae3aae3508": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "765ea7ff-f4ec-55f1-9cd7-190227eef3e3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "766b10dd-02d3-5355-8527-6ffd74c88c07": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7735ed62-2856-5b07-80ad-87bd3d749f35": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "77d5c593-8513-5d37-b1c8-0552ccc08681": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "77e45f3c-2bac-5567-8b85-29c0d07a5279": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "782bc197-9f7b-5d29-bcd7-be17c9e46225": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "78b3e19e-a756-5f9c-a0d4-a6554fd0f9f0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "79fbe324-eeed-5ac9-b0bd-44bf864526b5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7a1fd48f-7c7b-5d48-9da9-199e7f0fff60": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7a42282a-369e-52d2-a91b-421a499293d5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7a7beb2d-b3ad-5fde-8a24-2517e79b6593": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7a9ee7a4-6560-5759-b224-066802cdbf9c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7b150ef0-d31c-57df-8d23-9d330fabe500": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7b4260c1-66fb-53e6-a7fa-b91df582a19a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7b6ab821-c079-50fa-a934-d551c1196143": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7b96f1e9-e163-5690-9907-8138d842cc08": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7bbefb35-8435-5c09-a3c6-87a961ab7863": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7c0b4bc2-ad41-58fc-8b12-cacc2e648009": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7c5ed5d6-e9e3-5547-b981-086035047fdb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7ce92771-e352-5fbb-93a3-4ada024d8a88": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7d0c9c1b-729e-5ca3-b6e9-f75c5b13cf3a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7d685a93-3fb2-52ff-9086-9f88ab0d4657": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7dd9446c-fb2f-5acc-97bb-21a6c5c0a6c0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7e10a031-a81b-569d-8213-fb72f7f370d9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7ecfe372-da18-5ca8-9098-04f25660c291": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7f2bfb63-90d1-51f8-9184-6660799dde8a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7f5a0ac5-ccee-5b53-9a66-59821d84cf37": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7f5c600c-cd4d-48a5-b12f-f618137be285": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "7f8d8181-223c-5c9d-a31f-6fe9cf2aebba": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "7fae26a3-128d-5cfb-934a-8168be96e9a7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "801c9f6b-aea1-54e1-86a2-84b576e4a057": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "80737f83-7031-5774-840b-87588ef1f13f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "80b1271c-56c1-5880-8305-d144bc30148f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "80cd1c18-abda-540b-92ca-cedcbcb455c5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "814340dc-cb62-5ba6-ae1a-c8575bd05bef": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "827e3d54-f6d1-5b8c-8888-7137def6d591": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "839a70ff-a544-599e-88b5-83f22b03af71": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "839d3a6c-fc55-5339-b8dc-aafd64f9116b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "842a13c2-a445-5cb3-ae4a-dabdd9e86f4d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8467712f-4396-5b2c-b901-2f07b8f30c71": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "84a23de1-0bdb-54e5-90cc-c8dc207088ea": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "84a6cf26-af9f-57ae-88bc-4a2786828c8c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "84c696ed-918b-5f34-a4f5-32dad61debce": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "86a91076-093d-5bde-ae16-ba0783e805c5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "86d34bd2-c105-5b54-b368-e33d24be5226": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "86db2840-ec14-5c49-854c-94db1afef541": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "87187103-8ce3-5f78-9f55-acccb9cb6f4d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "883e6c27-8a7b-5fea-a2a8-669e02aa478d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8879afcd-3cf9-514b-972d-4ae2e121840f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8893ca7c-3e26-5c09-b231-3c5ca1beceac": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "89256289-4492-5506-a8d9-f4c52eb07730": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "89756569-56bd-5667-8ccd-a4f92c5b378f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "89d3546f-3070-5e4c-9fea-a84a39b7e11d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "89fa53f7-7117-5970-a7f9-891874306897": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8a6ab8d9-d5f3-5702-a553-922ca2efe1be": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8ae26374-c8ae-5ffe-9776-db55f41b27a2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8bb63784-e4bf-535b-83c6-d144e17f2f58": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8bc8547d-883d-59a8-87ac-d0815967c5ee": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8bdd2b22-2c42-5e7f-8bb3-ef9e059f7438": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8be1784b-24de-5b8d-99c3-53554308ee6c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8bea6724-b465-581c-9d67-4192553a3100": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8c16cf68-3447-50c8-bfc3-95b24813f9c9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8cb7687c-0fee-57aa-b7d1-645e0ba12401": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8d74fa86-56dd-590a-b3e1-f399dd811a21": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8da06bde-cc5d-5e15-b865-016acd55793b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8ded5193-b4e7-51f6-8ccc-aec6e1d28f39": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8e4bac13-7537-5f95-b494-6623c85c987e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8ec1799a-8276-5a5b-bca8-578e74bfa915": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8ef7e038-8379-5e4c-af5c-056a81dd59ec": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8f7a07c2-84fb-5f0f-8124-0c32d834a883": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "8fc1ad76-39e2-57fb-9643-11167c8c146f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "90ad0319-32d0-59a6-92e7-bc8ebcdfc292": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9123c173-979f-53bc-bc2a-001b47c0de59": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9230925e-944a-54b6-960e-5b509b921f12": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "926e7ba5-20fb-50fb-922e-026b39e5dffc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "92701967-c918-5ec3-9cde-d5aa9e18d771": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "927ca55b-beb1-56a2-bd13-5dde17446fae": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "927e2471-cd9a-57d6-8070-812d3e0d3f2e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9291b023-8ec5-5491-83a3-6edc7ce5543f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9293af97-314b-50fb-9a84-65b1152c2e07": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "92a43c45-0a92-5cd5-adc2-5ee89e148bae": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "92e27a77-fd00-5f96-b64d-6d39c6d429e6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "92ff819f-1056-5f1e-9c80-540cb707c7ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9333cfbb-2b8f-5890-8106-a090c5ba4dc2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "936401eb-996a-56fa-aa45-7211d3b9ca3c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "93e8e716-5cd2-5f1a-8296-043c5c06dc17": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9456d36e-29f0-5b69-8d4c-3d1e73bd75f7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "946af11d-0099-5e09-a67d-52c4b5779934": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "955f61b2-c724-5054-be50-c215e3223bc9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "95a135a5-0a94-57d8-8650-1f9044463d14": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "95a936fd-de11-53fe-8d0f-c9ae37e79bb8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9616d7bb-8b02-59d4-b524-ec50350568e9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "976b93bc-931b-5add-a602-67d131d9b854": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "97c18d40-5e10-5808-b7c3-8c9a2260ce60": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "97e170ba-b1c6-5d3a-bab4-d07f53c91897": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "97ea0f0a-3a9a-5874-8b7b-800141e206e9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "980e8b76-75a6-52b1-b0fc-5fdd74f37aa6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9848618a-f973-5464-9bdd-15780fb5828f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "984b23dc-7031-531b-9eae-4f74de45ab5e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "988ee37b-028b-5e1d-a7fb-5159f440afb9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "99c58050-8e7b-53b8-b73e-21141cb72b16": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9a08220a-6e4c-5896-89d7-968ccd846ba7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9a22b8c8-724d-555e-82cf-859220f60e89": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9af7520e-505b-53e0-8047-09a7bb8cc8a7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9b68c1aa-db08-5082-92c2-3df58a471008": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9bd5e6c0-65ff-59a6-9b1c-154c4bf82947": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9bf3a08e-037a-51cf-bd49-373da240794e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9c040d99-a63a-56db-bc26-d0377724f7cb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9c0e69a6-3c7f-5e49-8e5b-8fe46a2df3e4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9c0ef1f6-d5ec-5847-b0a2-9124808537a0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9cae5f99-dcc7-5287-8ab5-f0fc38c8d124": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9cbc52f9-4cb2-5cbb-8347-e7cf954eacfa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9d25ff2c-46a7-5286-99d7-70a91e4febe3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9d794c36-b09d-58c8-9490-fb43c39ec814": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9d9ea0ea-c4de-5759-8ed9-656d19467eb1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9dfaeb9b-3e80-505e-8a4a-f0161edebbf7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9e049d45-9976-5738-b7bd-46cad3ee7558": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9e4dd71e-5ea9-5a62-b792-1eb8de75825a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9e92f191-369a-5226-88ba-7d6aab83663d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9ea22949-2e52-53d8-829c-fb7dd4849d5b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9f542abe-b52f-5a12-93c6-b810b4fa7ab6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9f605310-85ac-5d61-adcb-1a8f041e9bba": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9f6a4e47-a0ae-5b6d-9d7a-cb60be3ac1ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "9ffe8697-fcb7-5669-b654-66347f2b3d2e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a037f1a9-c861-5a6f-913d-2f61aa77ba27": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a06aa732-9f3c-5037-ada9-557b8d105253": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a0705c27-bd2d-56b9-a92f-a8ee6a475324": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a17302a9-7b9f-54c4-a522-4b19eed64e2e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a257eac7-25ea-5027-bc29-e15bb7c3b2b5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a278e700-4e10-53d2-98a4-9731dab6f08a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a2ee1162-cd3c-5b87-a782-437de62e62f6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a2fb8c72-b800-5669-a9fb-6417b27209df": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a2fe0d59-0a6d-578a-908d-f9305e9640b0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a30740e2-3099-512c-8eba-8bd26a28b219": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a32411de-b57b-52bb-be02-5c3bf7b91787": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a3b916a3-2a17-5e94-8ce3-2340f9379bb3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a3f4ff8d-6e94-57e3-b782-28b1e36fec44": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a4464c86-4cbd-51d4-bb20-719740c158ab": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a4af351c-8aa2-580e-b147-163ff8b344e0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a4c231b0-e387-5d8c-baf5-7eaec204c09f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a4db2a48-3cc4-5bca-86d6-9d23cf1f1bb0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a50e092a-c974-5f92-a5f7-e57fbe135240": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a512a600-3205-5899-8c06-b44ae4aa50e2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a568c2dd-b3f4-582f-8f58-84fdeb673d4a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a579f8c9-0d47-5970-baf0-13f5cad35ec5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a6c38f4b-445f-580b-9ddb-a47c235c43c8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a70f5a29-7f24-55c8-a07f-860a5078b15e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a71348f3-ec20-5c27-ab65-22d8d55b4b15": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a7193355-c89e-5ed3-b32b-bd2f5df55ac7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a7285541-8e4a-5ac9-b9f2-5aad236c1c85": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a72a22c0-dbcc-5154-983e-180057e97e41": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a7ba3f74-3f76-5046-a983-adc4aa18239e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a804ea4b-8432-52f6-9a1f-f456f044ded5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a811b62f-8681-526b-9d45-97ce2bf74156": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a8e1bb8b-25d3-5bdb-a517-f04ba51521cb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a909d93c-bd3f-52e8-a48f-632d8d8703e9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a979c64d-320c-577c-b06b-bced499ea3f7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "a9be45e1-d78f-5aec-ad48-99baa39b58a2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "aaaaaaaa-0000-0000-0000-000000000006": {
+      "category": "zero-prefixed",
+      "reason": "Zero-prefixed synthetic placeholder identifier"
+    },
+    "aac517f4-fe76-5cf5-8d98-e02b83589bbc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "aba47399-e365-59eb-ae83-35ad901d62e0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "abcdefab-abcd-abcd-abcd-abcdefabcdef": {
+      "category": "synthetic-run",
+      "reason": "Synthetic repeating-hex test identifier in tests/test_renewal.py"
+    },
+    "abef82f1-afc6-54c4-a06e-ebebb56001bc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "acc6e8c0-fb60-5d92-8f6f-88cfb1dd8327": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ace4cd3c-bb8e-5fd1-8de6-b45d94520263": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ace9abe3-b7fe-5ccb-a822-497180e80885": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ad18993e-4407-5f73-9976-0dc85651b167": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ae3bd62c-5494-5fa3-88e3-fc64f221bca3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "aec070a3-fe99-539c-b454-e764b556d0ac": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "af599903-5fb7-5a79-af00-2955f2e50117": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "af7572b7-c12f-50e5-9d5b-502d7ccb42ea": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "aff4bf63-439c-5262-aa5f-6124c54ba8bc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b1bd00eb-fb31-526b-a7c1-f7357040bf2e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b1e8524f-d4a6-586d-aba1-e1b32c98e89b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b1f18f52-a872-5118-982d-dc28b0a984b2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b21a9f9d-eea2-5827-a7bb-953873df5d43": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b2205b80-e885-5b93-9d98-1b304d862480": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b24961d7-238e-5e5c-a941-77f21ad4768b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b256929f-552c-5093-8ecd-efe5fa73d0cd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b2719f02-08a1-52f1-ab9c-200e8ddf8e83": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b2aa75d6-9e84-570b-83a2-075cca13c917": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b2cce79d-41d2-502d-922b-30eb213e04da": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b2f537f0-0e3a-486c-b4eb-d73ffc9f8a0f": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "b4113b4d-1f77-5eaf-923f-2f14aaaef559": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b423ec64-200c-56af-912d-a80fc283dc29": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b450b86b-91bf-5a5f-8fe6-f1f0e702f4d6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b48412b2-a950-5f7f-8cbb-dfd4803ab316": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b4d66c37-9915-5693-87ab-3e54eea7056f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b5752071-84b8-5958-994e-f141c4d183ac": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b59dcd35-94e7-555c-bfc6-7a8918affc2b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b5aaa072-0eb6-5ad7-a55b-c06f386c7dd3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b5ee9fef-9218-517c-93e3-8e74c133bba6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b61c482d-c088-552b-a8cd-10456bc6070a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b6986b61-6d43-5c33-8e56-79b83e7f43ee": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b71870cc-2fa3-5504-b85e-a778c8405868": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b7431de8-6066-5426-a4e7-de1566f9c7ad": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b763fdcd-47fd-543d-8d9d-fb787f47ed33": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b770ad81-ac6c-572c-af27-c90335fc99a6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b79cac1b-2c0f-5a7f-921d-be0f5c54c157": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b7bbfd90-7fd3-5031-b1a3-d9ff604db23c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b7c6342c-ecaa-5898-94a5-154599a3e687": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b7d0b36a-c231-54d6-b567-01b767668a84": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b7d4aadb-6214-54e5-a1ad-1d66cc4d13bb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b83524fe-2ef7-5220-85fe-614feb86caaa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b8912a85-2ff7-534f-900e-ca3f34da7f19": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b92bb326-2440-52ae-85c1-efeb637a0e91": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b92f26d0-071e-513b-8fd7-c89a7909b0a2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b933bad6-71cb-51e4-9717-f89f9c7e42b8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "b9c9fadf-b9f8-53ae-8b60-8f1a52e458ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ba2aa943-35ec-5291-910f-6d3675a72053": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ba2c5bf5-46b3-52b6-b5bf-b94279ff65b6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "baed4c1c-3109-5bb9-be10-f97e14445bf3": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bb2a00f8-c250-52c1-8ccf-5a47a1b190ec": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bc1a3e04-a274-51e4-9802-70b44674a52c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bc2bd04a-bff0-5f57-98b6-c5c37bab819a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bc582f83-c492-5a89-8316-fe2692943086": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bce7a624-57b1-50db-8f1d-30882a4bbf04": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bd00fe65-f123-50a1-99e0-df80b8b3b908": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bd789a08-04f0-5ae4-92ca-e8b2b21a3faf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bd9c0a18-a3d1-51ba-9a0c-acdc3afe446d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bdbc620b-a70b-5cff-a230-18302defa468": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bf05a3ef-ad2d-5c41-97cf-b6400e44af7a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bf46e49e-fa7f-5da6-99a5-49590f261c86": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bf502eef-444b-5281-bf9a-8f9f1560140d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "bf696af3-6ed8-5285-a60b-7c1089430f37": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c00f6821-5d19-5424-b93d-523849f6d047": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c02522f2-03a6-5309-b967-b5178ab25aeb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c05ac306-70f0-5d14-afb5-09e22b2f67ea": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c10b1326-0cdc-585c-bba1-3dcdf3f9ae83": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c14462cd-472e-5da6-86dc-d73acdfa5a90": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c16cdd51-14aa-578e-8bea-ab14aaaeb552": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c212844b-853d-589a-9f12-75834c2c2313": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c24b5274-d538-5ab9-8c61-0069e7f097b7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c260f777-9d67-54e0-b042-c04372e53dae": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c3151318-c6b5-5e71-8bf4-89e6c9a73170": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c32fbf6e-e083-54d6-aa8c-9617669abfcb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c3b5dfbb-a8d5-5db8-b7e8-eb3a8b65aea6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c3cfdfeb-ac42-5d1e-94d7-da26efc49ff6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c3eb0901-e977-57f8-ab55-8d246081c31c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c42e8926-7957-5842-8c54-4927dfaa2d2a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c4481540-4757-51f3-b2f0-c7edef0282a9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c48983d7-8170-5869-9e9c-623e636bc86a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c4d537b8-bf5e-5fd9-87aa-f4d70624a275": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c55181bc-ed35-5134-8950-2554fd8c4709": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c5b1e578-5d3f-5b57-83ea-cfdf723f5769": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c648ad57-4acb-5240-b5c1-1c071bd0a41a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c662faf4-65d3-5ea4-b50b-83a1d1988ea9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c6ee632e-d739-5216-8ab1-44a37de1f771": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c7e0c0cc-8fea-5f52-af46-24654b539643": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c7ffdfd3-f50b-50df-8264-052f520e0e53": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c814cacd-1879-572a-8f23-5ffe01d8f4bd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c82fc1a5-1afe-5dda-b8dd-1972f41e5731": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c838d855-3551-5fca-b4c2-83800e1f5df5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c855ecae-4df3-5d14-a29d-ad744837a110": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c8d1c477-138d-58ef-b822-68b47dbeb42e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "c90d8e0e-19c7-5cc4-9dc7-9124e7b20c61": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ca4390c9-4c63-5914-a218-036d691f614b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cb5089f3-5455-5ad6-abe2-041ce9400bf9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cc5f4ff9-fa62-5adb-8121-a858547874b6": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cca7ddac-1325-5b53-a70d-a48dad5fde93": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cd901c98-1dd1-51c4-aac5-3d9a29947835": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ce14db92-007b-5a5d-b245-b21d76510ee0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ce1fc196-fbdb-550c-b28c-d3e8d4d34ad0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ce4d0118-4368-538c-bd57-dc518085816f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ce991efc-eacf-50eb-a33e-dc627c996052": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ceb10b29-cff8-591a-a9ce-1be16d5d25f4": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cec9223d-c96f-5f61-a937-65750c8ae8ce": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cecc434c-eaf7-55e6-935c-c6540ed6a3ee": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cf93015f-f58c-5a98-8679-97f7b409298a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "cfdf3be7-2846-5d86-a9ff-6d449aca7eff": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d010a470-958a-5749-ae96-5d67e8859e5d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d055ab12-975d-53c3-8467-e8417603778d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d078b5c0-3f3e-5c5f-9493-69cae037ef47": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d1443339-7d10-5323-ae83-36c6dee57c9d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d1814600-d2b0-4edc-ab61-2b9c0ed676c5": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "d1dfb7d1-43b1-57f4-8606-7f04122ed8a2": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d339a5df-da35-5e70-b87f-15237fd9ff64": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d35d6f3e-d1d7-5efe-8f48-850161511177": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d3c3e0a4-ecc5-5bf5-8934-2d5f74352631": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d3e84153-4f74-56c5-ac04-412684070107": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d40a084f-643a-54a8-90ce-a2b758076d7c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d4253dce-d5c3-5dd4-81f0-1cf810001d9e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d4a631d0-e43a-51d2-9e94-1450bc0fcd6a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d4f26e2c-0931-5c1f-8921-ab0c4236b05e": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d4fed25a-b016-5420-bd39-3850686b2da9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d597bec0-6814-5fa8-b057-0b345492e6da": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d602ae5f-b693-5689-b043-82a621aa98c8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d6a4fd22-bf9f-5feb-afc1-ab2be55a0265": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d6b5456f-7de6-526d-88b7-e1ac7c535a22": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d7111859-91e9-5101-93a9-dc938420ce48": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d747f8c3-6c16-591d-8ed8-84dded7c5fa7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d7515eb4-9922-5ac9-b010-1dda5d5ff7bf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d785c307-4eb3-5c0f-a909-4c3721565f5d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d7b913b3-9876-56ee-86b4-efe01c747bc7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d8802432-d53a-5561-a417-be49fcedb263": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d8fba806-bdcf-58c5-b966-4a053ed81692": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "d9137f69-08ca-5215-b11f-7e085ac34f6f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dab13b25-e9d6-5792-95dd-5184456c3107": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "db4f5a6f-e7e5-5b44-9d4b-c56bd6da2a0c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "db84194c-bf49-527e-8768-35c193540420": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dbb8127e-7b86-56bc-b5aa-b2f35cd302e8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dbf9d7de-84df-5769-ba23-575103d9bf36": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dd551057-659a-5759-b1e2-f436c740c5bd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dd5ecaf6-7843-5e2c-bce8-b17bba562a98": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "de27539d-4579-589c-9976-a0485b9d64c9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dec825ce-66c0-5161-a908-6a9a89fd79e9": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "defb2706-d4d9-5621-8c8d-154bc839d00c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "df665fb6-b4b5-54d8-8752-552c6c13718d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "dfcea01d-06c8-5ad6-99db-6b1e411b782f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e1311284-1ee7-515c-949a-6f219a91e4af": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e133eb7b-961b-5b5b-8c4b-a390e11b166f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e1a9a01b-af9f-5102-811f-338429cf83ed": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e1c72613-29a0-5f12-92ec-7ec068f1614b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e2dde234-9b7e-5919-aada-533ce991b578": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e30f894d-f014-5c7d-8084-7e2f929f3951": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e383096a-f817-5c10-98c3-2f4c36578510": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e4108d2a-e575-5bb4-9edc-46f1f60d4e7d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e5d66019-75e7-52ff-8853-9c0bc96a3631": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e5f4946f-c820-577e-b8a4-7174a0c2fe51": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e622aa3d-c55b-52ae-b9d9-de31d72320cf": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e671ffbd-dbb9-5c96-945c-862fac07a481": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e6a2c187-743b-50af-92a8-6d74dc8a4b2d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e6cbebe9-caaa-52d1-80d0-c987333bc07b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e75b6826-e6a2-5e97-9440-c8668d1cfe00": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e77f26b8-4f54-5051-8c94-bd2d3effaf10": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e7843532-03df-5441-9130-0af886f9a018": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e7fa7aeb-c9d2-581c-87b3-093c7e8d00aa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e83b4730-0771-5215-a2fe-1fdc956673fa": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e868f011-d221-5f61-a602-99b9e573ff95": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e8b43a6f-921e-509a-8403-bd1387bd0005": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e8c650ac-a9d8-599a-b9ae-f2625f8df455": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e9022f39-484d-51e9-9cab-099ca082bb14": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e975b84b-2fd7-5ab5-8aaa-8fd410a19b88": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e9820201-8778-565d-9161-1cf131ec06ab": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e9a20368-9115-581c-88eb-42cba611cfbc": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "e9d0b341-4891-5f4a-9836-02f55fe66698": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ea8d5aad-dbc5-5b2f-9597-685e48c539e7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "eb35fea3-286d-5740-bdd8-13d90ccf35a1": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ebbe31be-131e-5edd-acd2-c06152a0934c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ebfb8975-6693-5ef3-b27b-787dfcfd8491": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ec08bc3f-3b2f-5b19-8f8a-77410fe2fbb7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ec19249c-c7c2-5975-bf2d-535055cd7221": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ec345134-a8b1-5370-ad7b-8dbab58bcf6b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ec7f398e-b7da-5940-97f7-fa648d66a4fd": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "edd0ba5a-b1a1-589a-9b02-89c344acc653": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ee9aef1c-ec72-57da-8606-b448fc824bc5": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "eec8b286-7874-5706-ab82-1c7f5bb6761c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ef4aced7-272f-5ac8-8742-19ec9449e76b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ef7264ba-afa6-5499-87b4-09487c09a496": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "efabd537-37c1-534e-b59e-033f22b92a54": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "efae4596-fea8-5cb7-88be-bdd8c97ed516": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f036149c-443a-5f43-981d-a7225c153536": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f08d9667-3096-5d1b-ac9c-ef9bda3faa14": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f246c6f7-3873-53cf-8a59-f035a52568fb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f3238e31-9439-59e5-bd22-fbbf4703aa39": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f3b446bb-be35-5f88-864f-a8c4b24d759a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f4101605-5124-5991-a9c8-2ff851939170": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f4410510-5957-58cd-9c6e-ba7bedd4fd3c": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f4930398-e46b-5805-a875-8fae9437e80b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f5122e24-3d15-5697-9712-b5bf9223a07b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f5c47f0b-92b0-55d6-b660-6b388e7eca21": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f5edacba-e8a8-511c-81ea-bbb6cf21086b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f61bf0af-cf4e-5102-9615-eba37d1123ec": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f643f2bc-e517-5529-93ab-c61f7d26ff53": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f699c70b-0030-54ac-bafe-44d404a92228": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f7f9a787-cbff-5b45-8117-0bf5b15dc242": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f841e7d2-305e-515e-b79b-adb247a7d6bb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f87d3066-3d47-573a-93d5-f0c8a9a17e6b": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f8d4d392-7c12-4bd9-baff-66fbf7814b91": {
+      "category": "svg-asset",
+      "reason": "SVG layer or element identifier in docs/architecture/icons/entra-id.svg"
+    },
+    "f8fd6f19-0adc-5d9e-abfa-0b430ec8b227": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "f9a24dd9-e639-54f8-95a6-e439f8fffbda": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fa38b3d5-d955-5761-8dd6-ca8f31799fcb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fa5c04e4-d073-5290-826e-b2c5535afa86": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fb0f3641-b15a-5f61-b8c0-a7214a3cbdbb": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fb67ab7a-a67b-5b6a-9048-e93166e34ad7": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fb750817-770c-5761-9961-57871e6fd49d": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fc3a5e81-0bde-5773-9a50-59347b9fd858": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fc77e2a8-ad13-5b2d-b231-1822e6cfe2b8": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fc82715e-777c-51cd-9078-95d24b9719ce": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fd122443-5717-5cc6-b0a6-51bc8a09ad5a": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fd48af22-ac4f-5781-9de9-631a430d5a47": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fd62951c-2183-5369-b051-64459ee2f7fe": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fd972e90-0129-5c79-85c0-c0d6e9e97e36": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fde5f1d9-0369-5048-8296-bd1618fd5064": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fde961c1-96cc-5dc6-87f2-6878344d8f9f": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fe438bc0-a9dd-572a-a240-0e6cb1bd4829": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "fe6e08f4-8fd1-5c1c-8370-99674aa90290": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ff083883-d96c-5cac-8365-4894ce685602": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    },
+    "ff56605d-b62a-4309-a37d-3f38b354ca3b": {
+      "category": "synthetic-run",
+      "reason": "Synthetic recording or evaluation run identifier"
+    },
+    "ffbe9802-37c9-5398-91f5-dd6b087e9cd0": {
+      "category": "synthetic-lineage",
+      "reason": "Deterministic UUIDv5 name-based lineage identifier"
+    }
+  }
+}

@@ -8,7 +8,6 @@ table 'SLA Evaluation'
 		displayFolder: Enterprise Services
 		lineageTag: 839d3a6c-fc55-5339-b8dc-aafd64f9116b
 		annotation MetricId = enterprise.eligible_credits
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Eligible less already applied contract-month credits; not a repeated per-incident cap.
@@ -17,7 +16,6 @@ table 'SLA Evaluation'
 		displayFolder: Enterprise Services
 		lineageTag: ea8d5aad-dbc5-5b2f-9597-685e48c539e7
 		annotation MetricId = enterprise.credit_exposure
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

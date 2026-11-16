@@ -29,7 +29,7 @@
     "sourceCheckedMatchingAccounts": 1,
     "independentRegisteredSourcePopulation": 24,
     "nativeMetricCellsMatched": 3,
-    "recordedPacket": ".copilot/docs/northstar-executive-native-demo-2026-10-28.json",
+    "recordedPacket": "recordings/northstar-executive-native-demo-2026-10-28.json",
     "rawSourceValueReviewIncluded": false,
     "publicProjection": "Recorded packet retains original review hashes; private raw source evidence is not distributed.",
     "nativeInternalQueryTraceExposed": false,

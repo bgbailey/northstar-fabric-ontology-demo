@@ -2,7 +2,7 @@
   "model": "subscriptions",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "subscriptions.active_lines_eom",
     "subscriptions.active_accounts_eom",

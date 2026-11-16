@@ -1035,7 +1035,7 @@ def test_private_config_loader_and_target_free_proposal(tmp_path):
     config.config_path.write_text(config.model_dump_json(exclude={"config_path"}), encoding="utf-8")
     loaded = AzureOpenAIConfig.load(config.config_path)
     assert loaded == config
-    proposal = json.loads((REPO / "infra" / "azure-openai-proposal.json").read_text(encoding="utf-8"))
+    proposal = json.loads((REPO / "infra" / "azure-openai-proposal.example.json").read_text(encoding="utf-8"))
     assert proposal["status"] == "STAGED" and proposal["configurationStatus"] == "UNCONFIGURED"
     assert proposal["liveStatus"] == "NOT_RUN"
     assert proposal["deploymentAuthorized"] is False and proposal["inferenceAuthorized"] is False

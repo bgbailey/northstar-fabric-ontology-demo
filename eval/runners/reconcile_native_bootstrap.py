@@ -99,7 +99,7 @@ def main():
         ],
     }
     path = write_receipt(private / "native-evaluation", receipt)
-    public = ROOT / "experiments/observations/native-two-model-reconciliation.json"
+    public = ROOT / "eval/validation/observations/native-two-model-reconciliation.json"
     public.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
         "status": receipt["status"], "rows": len(observed),

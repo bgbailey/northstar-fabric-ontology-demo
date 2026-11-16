@@ -550,7 +550,7 @@ describe("comparison receipt wire contract", () => {
     }
     await act(async () => { events.send("comparison", result); events.close(); });
     expect([...container.querySelectorAll("tbody td")].map(cell => cell.textContent)).toEqual(["0", "UNKNOWN", "0", "UNKNOWN"]);
-    expect(container.textContent).toContain("Incomplete result (PARTIAL)");
+    expect(container.textContent).toContain("Partial result (incomplete or unmapped rows excluded)");
     expect(container.textContent).toContain("Source output incomplete");
     expect(container.textContent).toContain("Coverage is partial");
   });
@@ -559,12 +559,12 @@ describe("comparison receipt wire contract", () => {
     const result = pair(null);
     const final = { ...result, arms: result.arms.map(arm => arm.arm === "baseline"
       ? { ...arm, status: "BLOCKED_CAPABILITY", execution: { ...arm.execution, status: "BLOCKED_CAPABILITY", answer: null },
-        errors: ["Native context is stale; no answer accepted."] }
+        errors: ["Ontology context is stale; no answer accepted."] }
       : { ...arm, execution: { ...arm.execution, answer: { ...arm.execution.answer, rows: [] } } }) };
     await act(async () => { events.send("comparison", final); events.close(); });
     expect(container.textContent).toContain("missing or blocked is not zero");
     expect(container.textContent).toContain("Empty scoped result");
-    expect(container.textContent).toContain("Native context is stale");
+    expect(container.textContent).toContain("Ontology context is stale");
     expect(container.querySelectorAll("tbody td")).toHaveLength(0);
   });
   it("rejects an arm event that misattributes the other arm's result", async () => {

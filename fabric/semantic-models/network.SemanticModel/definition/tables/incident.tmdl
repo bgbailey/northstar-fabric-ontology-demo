@@ -8,7 +8,6 @@ table 'Incidents'
 		displayFolder: Network Operations
 		lineageTag: f4101605-5124-5991-a9c8-2ff851939170
 		annotation MetricId = network.major_incidents
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

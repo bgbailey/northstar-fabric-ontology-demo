@@ -2,7 +2,7 @@
   "model": "care",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "care.open_cases_eod",
     "care.new_cases",

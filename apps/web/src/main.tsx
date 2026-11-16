@@ -74,15 +74,15 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
       setHealth(h); setExperiments(c.experiments);
       if (h.mode === "RECORDED_DEMO_LIBRARY") {
         const packet = await request<unknown>("/api/demo-library", undefined, controller.signal);
-        if (!isRecordedDemoLibrary(packet)) throw new Error("Invalid two-stream native demo archive; no fallback selected.");
+        if (!isRecordedDemoLibrary(packet)) throw new Error("Invalid two-stream demo recording archive; no fallback selected.");
         if (!controller.signal.aborted) setDemoLibrary(packet);
       } else if (h.mode === "RECORDED_LIVE_COMPARISON") {
         const packet = await request<unknown>("/api/recorded-comparisons", undefined, controller.signal);
-        if (!isRecordedComparisons(packet)) throw new Error("Invalid recorded live comparison packet; no fallback selected.");
+        if (!isRecordedComparisons(packet)) throw new Error("Invalid recorded comparison file; no fallback selected.");
         if (!controller.signal.aborted) setRecordedComparisons(packet);
       } else if (h.mode === "RECORDED_NATIVE_DEMO") {
         const packet = await request<unknown>("/api/native-demo", undefined, controller.signal);
-        if (!isRecording(packet)) throw new Error("Missing or invalid recorded packet. No live or offline fallback was selected.");
+        if (!isRecording(packet)) throw new Error("Missing or invalid recording. No live or offline fallback was selected.");
         if (!controller.signal.aborted) setRecording(packet);
       } else if (h.mode === "OFFLINE_SYNTHETIC") {
         setContext(await request<unknown>("/api/context", undefined, controller.signal));
@@ -115,7 +115,7 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
         setHealth(h); setReaderVerified(h.authenticated === true);
       }).catch((reason: unknown) => {
         if (abort.signal.aborted || generation !== readerGeneration.current || authTransition.current) return;
-        const message = reason instanceof Error ? reason.message : "Reader session could not be verified.";
+        const message = reason instanceof Error ? reason.message : "Demo user session could not be verified.";
         csrfToken = null;
         setReaderVerified(false); setResult(null); setEvents([]); setContext(null); executionAbort.current?.abort();
         setHealth(previous => previous && { ...previous, authenticated: false, csrf_token: null,
@@ -179,7 +179,7 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
       if (!isHealth(current) || current.mode !== health.mode || !current.authenticated
         || !current.session_epoch || current.session_epoch === previousEpoch || !current.csrf_token
         || !("resource_consent" in current) || !hasResourceGrant(current.resource_consent, resource)) {
-        throw new Error("Existing grant did not produce a verified fresh reader session.");
+        throw new Error("Existing grant did not produce a verified fresh demo user session.");
       }
       csrfToken = current.csrf_token;
       setHealth(current); setReaderVerified(true);
@@ -260,13 +260,13 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
 
   if (health.mode === "RECORDED_DEMO_LIBRARY") {
     if (demoLibrary) return <DemoLibraryView library={demoLibrary} />;
-    return <main><h1>Native demo streams</h1>
-      {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the two recorded native streams...</p>}
+    return <main><h1>Demo streams in Fabric</h1>
+      {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the two recorded streams...</p>}
     </main>;
   }
   if (health?.mode === "RECORDED_NATIVE_DEMO") {
     if (recording) return <NativeDemo recording={recording} />;
-    return <main><h1>Recorded native demo</h1>
+    return <main><h1>Recorded ontology demo in Fabric</h1>
       {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the recorded capture...</p>}
     </main>;
   }
@@ -278,15 +278,15 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
   }
 
   return <main>
-    <header><div><p className="eyebrow">NORTHSTAR WIRELESS / {readerMode(health.mode) ? "CONNECTED BUSINESS CONTEXT" : "ENGINEERING LAB"}</p>
+    <header><div><p className="eyebrow">NORTHSTAR WIRELESS / {readerMode(health.mode) ? "CONNECTED BUSINESS CONTEXT" : "LOCAL WORKBENCH"}</p>
       <h1>Telco IQ</h1><p>{readerMode(health.mode)
         ? "Source-owned measures. Shared business meaning. Two transparent approaches."
         : "Governed source queries. Explicit joins. Evidence before claims."}</p></div>
       <span className="badge">{executionLabel(health.mode)}</span></header>
     <aside className="notice">
       {readerMode(health.mode)
-        ? "Delegated BFF: tokens stay server-side (authorization-code + PKCE, not OBO). Configuration is not current native/source authorization or a successful run. Use Comparison for the guarded application path."
-        : "Local synthetic execution only. Not Fabric DAX, native ontology, signed-in DEV identity, or RLS proof. Natural-language planning and live cloud execution are not enabled."}
+        ? "Delegated BFF: tokens stay server-side (authorization-code + PKCE, not OBO). Configuration is not current authorization in Fabric or a successful run. Use Comparison for the guarded evaluation arm path."
+        : "Local synthetic execution only. Not Fabric DAX, an ontology in Fabric, a signed-in demo user identity in a demo tenant, or RLS proof. Natural-language planning and live cloud execution are not enabled."}
     </aside>
     <section className="card" aria-label="Service readiness">
       <h2>{health.readiness.status}</h2><p>{health.readiness.claim}</p>
@@ -297,9 +297,9 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
       </details>
     </section>
     {readerMode(health.mode) && <section className="card">
-      <h2>DEV reader sign-in</h2>
+      <h2>Demo user sign-in (demo tenant)</h2>
       {!health.authenticated
-        ? <a href={health.signin_url ?? "/auth/login"}>Sign in to DEV</a>
+        ? <a href={health.signin_url ?? "/auth/login"}>Sign in to demo tenant</a>
         : <div className="row">
           <button disabled={!readerVerified || consentPending} onClick={async () => {
             try { setContext(await request("/api/mcp/inventory", {})); }
@@ -307,7 +307,7 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
           }}>Discover real GA IQ MCP tools</button>
           <button onClick={logout}>Sign out</button>
         </div>}
-      <p className="muted">A developer/author sign-in is not a reader RLS/OLS test.</p>
+      <p className="muted">A developer or author sign-in is not a demo user RLS/OLS test.</p>
     </section>}
     {readerMode(health.mode) && <ResourceConsent
       resources={"resource_consent" in health ? health.resource_consent : undefined}
@@ -315,19 +315,19 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
       onConsent={beginResourceConsent} onExistingGrant={authorizeExistingResource} />}
     <section className="identity">
       <strong>{health.mode === "OFFLINE_SYNTHETIC" ? "Local synthetic process"
-        : health.authenticated && readerVerified ? "Current delegated reader session" : "Not signed in"}</strong>
+        : health.authenticated && readerVerified ? "Current delegated demo user session" : "Not signed in"}</strong>
       <span>{health.mode === "OFFLINE_SYNTHETIC" ? `Fixture models: ${health.scope?.models.join(", ") ?? "Unknown"}`
         : "Source authorization: current probes required; sign-in alone is not source access"}</span>
       <span>Submitted-plan fixture: {health.data_ready ? "Available" : "Not enabled in this mode"}</span>
     </section>
-    <nav aria-label="Lab views">{["Execute", "Context", "Experiments", "Comparison"].map(t =>
+    <nav aria-label="Application views">{["Execute", "Context", "Experiments", "Comparison"].map(t =>
       <button key={t} aria-current={tab === t ? "page" : undefined} onClick={() => setTab(t)}>{t}</button>
     )}</nav>
     {error && <pre className="error" role="alert">{error}</pre>}
     {tab === "Execute" && <>
       {result && <section className="card execution-result" aria-live="polite">
         <h2>{executedQuestion}</h2>
-        <p>{executionLabel(result.mode)} · {result.status} · {result.elapsed_ms.toFixed(1)} ms</p>
+        <p>{executionLabel(result.mode)} · {result.status === "PARTIAL" ? "partial result (incomplete or unmapped rows excluded)" : result.status} · {result.elapsed_ms.toFixed(1)} ms</p>
         {!result.answer && <p>No business answer returned. Missing, blocked or stale is not measured zero.</p>}
         {result.answer && result.status !== "COMPLETE" &&
           <p className="notice">Incomplete result. Displayed rows are not a complete financial total.</p>}
@@ -398,8 +398,8 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
           <td>{e.status}</td></tr>)}</tbody></table></section>}
     {tab === "Comparison" && <ComparisonView key={health.session_epoch ?? health.mode} csrf={csrfToken}
       authenticated={readerMode(health.mode) && health.authenticated === true && readerVerified} />}
-    <footer>Evidence gaps / still thin: configuration and local tests do not demonstrate a current live application run.
-      Submitted-plan fixtures are local SQL. Recorded built-in-native answers are separate evidence; no comparative advantage is inferred.</footer>
+    <footer><strong>Limits of this recording:</strong> Configuration and local tests do not demonstrate a current live application run.
+      Submitted-plan fixtures are local SQL. Recorded answers from the ontology agent in Fabric are separate evidence; no comparative advantage is inferred. See <code>docs/limitations.md</code>.</footer>
   </main>;
 }
 

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -11,6 +12,8 @@ TENANT = "00000000-0000-0000-0000-000000000002"
 
 
 def invoke(mode="Inspect", deadline="2000-01-01T00:00:00Z", target_hash=None, state="Active"):
+    if shutil.which("pwsh") is None:
+        pytest.skip("PowerShell (pwsh) is required to test infra/pause-capacity.ps1")
     code = r"""
 $global:calls = @()
 function Disable-AzContextAutosave { param($Scope) }
@@ -74,7 +77,7 @@ def test_cloud_runbook_fails_closed(options):
 
 
 def test_role_does_not_grant_shared_resource_delete_or_resume():
-    proposal = json.loads((ROOT / "infra" / "lifecycle-proposal.json").read_text())
+    proposal = json.loads((ROOT / "infra" / "lifecycle-proposal.example.json").read_text(encoding="utf-8"))
     assert proposal["customRoleActions"] == [
         "Microsoft.Fabric/capacities/read", "Microsoft.Fabric/capacities/suspend/action",
     ]

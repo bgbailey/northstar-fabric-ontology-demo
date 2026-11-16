@@ -1,8 +1,8 @@
 {
   "status": "UNAPPROVED",
-  "purpose": "Cloud-owned capacity deadline; never rely on a CLI process or browser remaining open",
-  "accountName": "telcoiq-lifecycle-20260929",
-  "accountLocation": "centralus",
+  "purpose": "Example cloud-owned capacity pause schedule; never rely on a CLI process or browser remaining open",
+  "accountName": "NOT_SELECTED",
+  "accountLocation": "NOT_SELECTED",
   "accountApiVersion": "2024-10-23",
   "accountProperties": {
     "sku": {"name": "Basic"},
@@ -10,7 +10,7 @@
     "publicNetworkAccess": false
   },
   "identity": {"type": "SystemAssigned"},
-  "runbookName": "TelcoIQ-Pause-ApprovedCapacity",
+  "runbookName": "NOT_SELECTED",
   "runbookSource": "infra/pause-capacity.ps1",
   "requiredModule": "Az.Accounts; verify installed supported version before publishing/running",
   "customRoleActions": [
@@ -29,10 +29,6 @@
     "jobMode": "SuspendWhenDue"
   },
   "preflightJobMode": "Inspect",
-  "userSelectedMaximumActiveHours": 48,
-  "userSpendingCapUSD": 200,
-  "capacityAlreadyActive": true,
-  "capacityResumeByThisSession": false,
   "deadlineRequiresConfirmation": true,
   "spendingLimit": "User-approved operational cap, not a guaranteed Azure billing stop. Shared overages and delayed billing are not yet measured.",
   "teardown": {
@@ -40,13 +36,12 @@
     "removeOwnedSchedulerAfterVerifiedPause": true,
     "removeOnlyNewRoleAssignmentAndRoleDefinition": true,
     "fabricItems": "Separate owned-item manifest and explicit cleanup approval",
-    "owner": "Lab owner with this session recording action/readback receipts"
+    "owner": null
   },
-  "evidenceGaps": [
-    "No existing Azure Automation account found; creating one is a new mutation requiring approval.",
-    "Managed identity, custom role, runbook and schedule are not provisioned.",
+  "limitations": [
+    "Creating an Azure Automation account is a mutation requiring explicit approval.",
+    "Managed identity, custom role, runbook and schedule are not provisioned by this example.",
     "Dry-run checks target/read identity, not permission to execute suspend.",
-    "No actual scheduled suspension has been demonstrated.",
     "Runtime module availability and delegated deployment permissions require approved live validation."
   ]
 }

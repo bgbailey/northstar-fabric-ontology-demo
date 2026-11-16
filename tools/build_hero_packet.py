@@ -323,7 +323,7 @@ def build(
                 "Retain prior two-model/ontology proof; no automatic shared-capacity pause, resize, reassignment or billing stop",
             ],
         },
-        "modelProviderProposal": "infra/azure-openai-proposal.json (M lane; NEW DEV deployment)",
+        "modelProviderProposal": "infra/azure-openai-proposal.example.json",
         "guidance": {
             "commit": GUIDANCE_COMMIT,
             "paths": [

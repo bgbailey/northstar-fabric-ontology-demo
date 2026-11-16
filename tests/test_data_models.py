@@ -380,7 +380,7 @@ def test_model_census_and_source_lint(miniature, tmp_path):
     contract = json.loads((contracts / "catalog.json").read_text())
     assert len(contract["models"]) == 8 and len(contract["metrics"]) == 64
     assert Counter(metric["model"] for metric in contract["metrics"]) == dict.fromkeys(data.MODEL_NAMES, 8)
-    assert set(census["validation"].values()) == {"NOT_RUN", "SEE_TARGETED_TESTS"}
+    assert set(census["validation"].values()) == {"PENDING_DEMO_TENANT", "SEE_TARGETED_TESTS"}
     lineage_tags = []
     for model in contract["models"]:
         folder = output / f'{model["id"]}.SemanticModel'
@@ -388,6 +388,7 @@ def test_model_census_and_source_lint(miniature, tmp_path):
         model_text = (definition / "model.tmdl").read_text()
         assert "discourageImplicitMeasures" in model_text
         assert "ref role 'East Region'" in model_text
+        assert "LiveDax" not in model_text and "NOT_RUN" not in model_text
         assert not list(folder.glob("*.pbip")) and not list(folder.glob("*.pbir"))
         assert json.loads((folder / "definition.pbism").read_text())["version"] == "4.2"
         assert json.loads((folder / "smoke.link.json").read_text())["model"] == model["id"]
@@ -424,6 +425,7 @@ def test_model_census_and_source_lint(miniature, tmp_path):
             assert right["primaryKey"] == [rel["toColumn"]]
         role = (definition / "roles" / "East Region.tmdl").read_text()
         assert "modelPermission: read" in role and "tablePermission" in role
+        assert "NOT_RUN" not in role
         assert "member" not in role.lower().replace("membership absent", "")
     assert all(UUID(tag).version == 5 for tag in lineage_tags)
     assert len(lineage_tags) == len(set(lineage_tags))

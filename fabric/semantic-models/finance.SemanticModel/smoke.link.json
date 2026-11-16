@@ -2,7 +2,7 @@
   "model": "finance",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "finance.recognized_service_revenue",
     "finance.billed_charges",

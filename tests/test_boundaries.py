@@ -64,7 +64,7 @@ def test_sas_query_is_redacted_in_driver_log_text():
 
 
 def test_offline_pass_cannot_promote_live_claim():
-    register = json.loads((ROOT / "experiments" / "register.json").read_text())
+    register = json.loads((ROOT / "eval" / "validation" / "register.json").read_text(encoding="utf-8"))
     observations = [{
         "experimentId": e, "lane": "OFFLINE_SYNTHETIC", "status": "PASS",
         "featureOutcome": "SUPPORTED", "evidencePaths": ["offline-tests"],

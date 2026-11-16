@@ -2,7 +2,7 @@
   "model": "growth",
   "definition": "definition.pbism",
   "query": "smoke.dax",
-  "status": "NOT_RUN",
+  "status": "TEMPLATE",
   "metricIds": [
     "growth.eligible_population",
     "growth.assigned_population",

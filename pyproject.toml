@@ -3,10 +3,22 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "telco-iq-lab"
+name = "northstar-fabric-ontology-demo"
 version = "0.1.0"
-description = "Synthetic, evidence-first cross-model Fabric IQ ontology lab"
+description = "Synthetic telco demonstration and accelerator for Microsoft Fabric IQ ontology over Power BI semantic models"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Brendan Bailey" }]
 requires-python = ">=3.12"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
 dependencies = [
   "fastapi>=0.115,<1",
   "uvicorn>=0.34,<1",
@@ -20,6 +32,12 @@ dependencies = [
   "msal>=1.30,<2",
 ]
 
+[project.urls]
+Homepage = "https://github.com/bgbailey/northstar-fabric-ontology-demo"
+Repository = "https://github.com/bgbailey/northstar-fabric-ontology-demo"
+Issues = "https://github.com/bgbailey/northstar-fabric-ontology-demo/issues"
+Security = "https://github.com/bgbailey/northstar-fabric-ontology-demo/security"
+
 [dependency-groups]
 dev = [
   "pytest>=8.3,<10",
@@ -29,6 +47,7 @@ dev = [
 ]
 
 [project.scripts]
+northstar = "telco_iq.cli:main"
 telco-iq = "telco_iq.cli:main"
 
 [tool.hatch.build.targets.wheel]

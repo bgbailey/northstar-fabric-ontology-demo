@@ -1,64 +1,39 @@
-# Live reader boundary
+# Live demo user setup and boundaries
 
-Native Fabric is the primary customer-facing experience. This BFF supports
-the application comparison and approved source/native capture operations.
-The public repository contains no ready-to-use tenant configuration or grant.
+Microsoft Fabric is the primary interactive surface for Northstar. The local backend-for-frontend server supports controlled two-arm comparisons and approved metadata or query captures in a demo tenant. No live tenant configuration or access grant is committed to this repository.
 
-For predictable display-only playback, use:
+For display-only recorded playback with zero cloud calls, run in bash or PowerShell:
 
-```powershell
-.\tools\start-demo.ps1 -RecordedLibrary .copilot\docs\northstar-demo-library-v2-2026-10-28.json -Port 8767
+```bash
+python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767
 ```
 
-## Configure your own environment
+## Configure a demo tenant session
 
-1. Use supported Microsoft Entra delegated authentication for the exact
-   approved account/tenant. Verify the actual signed-in identity, not only
-   a login hint or ambient command-line account.
-2. Keep application credentials, certificate material, tokens, target identities
-   and approval receipts outside the repository and synchronized folders.
-3. Bind actual existing source models and ontology items through private
-   configuration. Public source names and recordings are aliases, not targets.
-4. Stage exact-target, artifact-bound operation approval. The public approval
-   contract uses `APPROVED_LAB_ONLY` as a fixed label; that label alone grants
-   nothing and does not replace target/artifact digest validation.
-5. Start the existing reader using your private configuration:
+1. Use Microsoft Entra ID delegated authentication (authorization code with PKCE) for the approved demo user and demo tenant. Verify both the signed-in user identity and tenant ID rather than relying on a login hint or ambient CLI session.
+2. Keep client credentials, certificates, tokens, workspace and item GUIDs, and approval files outside the repository and outside cloud-synchronized folders (see [security.md](security.md)).
+3. Bind deployed semantic models and ontology items in Fabric through private configuration files; public names in `recordings/` are display aliases, not live targets.
+4. Stage an exact-target, artifact-bound approval file with an explicit operation list, expiration timestamp, and spend ceiling before running live calls.
+5. Start the local server with your private demo user and live configuration files (works in bash and PowerShell; `./tools/start-demo.ps1` is an optional PowerShell wrapper):
 
-```powershell
-.\tools\start-demo.ps1 -ReaderConfig <private-reader.json> -LiveConfig <private-live.json>
+```bash
+python -m telco_iq.cli serve --reader-config <private-demo-user.json> --live-config <private-live.json> --port 8765
 ```
 
-The approved local callback uses port8765. A new reader session needs actual
-current enrollment, native/source metadata and source proof. Do not copy an old
-session epoch, consumed intent or display packet to bypass these checks.
+The local OAuth callback listens on port `8765`. Each demo user session requires fresh sign-in and current semantic-model and ontology probes in Fabric; old session epochs or saved recordings cannot authorize live queries.
 
-GA Fabric IQ and native ontology MCP are separate clients with independently
-discovered/reviewed tool contracts. No application-only or privileged
-source-data fallback is implied by control-plane API identity support.
+The generally available Fabric IQ MCP server and the item-scoped ontology MCP endpoint (preview, checked 16 November 2026) use separate clients and independently reviewed tool schemas. Service principals are not supported on the ontology MCP endpoint in preview; interactive demo user sign-in is required.
 
-## Execution guarantees
+## Execution safeguards
 
-- Both application arms use equal source instructions and equivalent facts.
-- Source measures remain authoritative; reviewed operators preserve identity,
-  temporal validity, grain and non-additive semantics.
-- Unknown, unmapped, unauthorized and measured zero remain distinct.
-- Shared source pre/postflight and current authorization govern answer release.
-  Failed verification discards every answer view.
-- Phase-local source deadlines do not reset cumulative request/row/byte counts
-  or renew source clocks. Bounded concurrent metadata reads preserve exact
-  identities, original responses and failure cancellation.
-- Native Rules are retrieved guidance. The application graph is observed
-  application execution, not a managed-native reasoning trace.
-- A recorded or fixture mode never silently substitutes for live execution.
+- Each evaluation arm (one side of a controlled comparison) receives identical model-level AI preparation and equivalent business facts.
+- Semantic models retain calculation ownership; validated plan operators preserve customer identity, half-open validity intervals, grain, and non-additive measure rules.
+- Unknown, unmapped, unauthorized, and measured-zero values stay distinct.
+- Pre-flight and post-flight checks govern answer release; if authorization is lost or a check fails, cached answers in both arms are discarded.
+- Plain-language rules in Fabric are retrieved as guidance, not executed as access control, and the application execution graph is local engine telemetry rather than an internal trace from the ontology agent in Fabric.
+- Recorded and offline fixture modes never substitute silently for a live request.
+- Never delete or empty a Microsoft Fabric workspace, and never pause, resize, reassign, or delete a capacity.
 
-Never delete or empty workspaces. Reuse existing source/model/report identities.
-A capacity operation, permission change, source refresh or publication requires
-its own explicit authority; reader setup does not grant those operations.
+## Limitations
 
-## Evidence gaps / still thin
-
-The included historical recordings do not establish current permissions,
-credentials, rollout, source freshness or live readiness in another tenant.
-Managed-native internal usage, automatic source-AI inheritance and Rule
-consideration remain unexposed. Public sanitized projections cannot become
-current source proof or reader authorization.
+See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

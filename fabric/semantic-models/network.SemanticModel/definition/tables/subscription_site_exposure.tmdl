@@ -8,7 +8,6 @@ table 'Subscription Site Exposure'
 		displayFolder: Network Operations
 		lineageTag: 41884c7c-7590-5589-8f0b-9c9eef22e722
 		annotation MetricId = network.exposed_lines
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Interval-unioned unavailable minutes per exposed line, additive across lines.
@@ -17,7 +16,6 @@ table 'Subscription Site Exposure'
 		displayFolder: Network Operations
 		lineageTag: cec9223d-c96f-5f61-a937-65750c8ae8ce
 		annotation MetricId = network.exposure_minutes
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

@@ -67,7 +67,7 @@ describe("readiness and provenance contracts", () => {
     expect(signInFailureMessage("sign_in_expired")).toContain("expired");
     expect(signInFailureMessage("sign_in_expired")).toContain("10 minutes");
     expect(signInFailureMessage("sign_in_restart")).toContain("newest");
-    expect(signInFailureMessage("reader_window_expired")).toContain("approved reader window");
+    expect(signInFailureMessage("reader_window_expired")).toContain("approved demo user window");
     expect(signInFailureMessage("untrusted-private-response")).not.toContain("untrusted-private-response");
     expect(signInFailureMessage("sign_in_failed")).not.toContain("identity is not approved");
   });
@@ -99,7 +99,7 @@ describe("actual readiness and recorded DOM", () => {
     expect(container.textContent).not.toContain("identity is not approved");
     expect(window.location.search).toBe("");
     expect(fetch.mock.calls.map(([url]) => url)).toEqual(["/api/health", "/api/capabilities"]);
-    expect(container.textContent).toContain("Sign in to DEV");
+    expect(container.textContent).toContain("Sign in to demo tenant");
   });
   it("does not contradict configured readiness with a hardcoded unconfigured banner", async () => {
     const fetch = transport(health());
@@ -122,22 +122,22 @@ describe("actual readiness and recorded DOM", () => {
     transport(state);
     await act(async () => root.render(createElement(App)));
     expect(container.textContent).toContain("Private evidence approval expired");
-    expect(container.textContent).toContain("Sign in to DEV");
-    expect(container.textContent).not.toContain("Current delegated reader session");
+    expect(container.textContent).toContain("Sign in to demo tenant");
+    expect(container.textContent).not.toContain("Current delegated demo user session");
   });
-  it("rechecks a reader expiry on focus and removes current-reader claims", async () => {
+  it("rechecks a demo user expiry on focus and removes current-session claims", async () => {
     const state = health();
     transport(state);
     await act(async () => root.render(createElement(App)));
-    expect(container.textContent).toContain("Current delegated reader session");
+    expect(container.textContent).toContain("Current delegated demo user session");
     state.authenticated = false; state.csrf_token = null;
     state.readiness.ready = false; state.readiness.reader_session = "BLOCKED_AUTH";
     state.readiness.status = "BLOCKED_AUTH";
-    state.readiness.blockers = ["The approved reader session window has expired"];
+    state.readiness.blockers = ["The approved demo user session window has expired"];
     await act(async () => window.dispatchEvent(new Event("focus")));
-    expect(container.textContent).not.toContain("Current delegated reader session");
-    expect(container.textContent).toContain("The approved reader session window has expired");
-    expect(container.textContent).toContain("Sign in to DEV");
+    expect(container.textContent).not.toContain("Current delegated demo user session");
+    expect(container.textContent).toContain("The approved demo user session window has expired");
+    expect(container.textContent).toContain("Sign in to demo tenant");
   });
   it("leads with the actual offline question and preserves zero, unknown and receipt clocks", async () => {
     const state = health("OFFLINE_SYNTHETIC");
@@ -189,7 +189,7 @@ describe("actual readiness and recorded DOM", () => {
     expect(container.querySelector(".badge")?.textContent).toBe("RECORDED");
     expect(container.textContent).not.toContain("RECORDED LIVE");
     expect(container.textContent).toContain("not proof of custom-application execution");
-    expect(container.textContent).toContain("Packet created Not recorded");
+    expect(container.textContent).toContain("Recording created Not recorded");
     expect([...container.querySelectorAll("time")].map(time => time.dateTime)).toEqual([
       packet.captured_at, packet.context_captured_at,
     ]);

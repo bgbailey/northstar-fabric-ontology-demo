@@ -56,7 +56,7 @@ export function RecordedComparisonsView({ recording, startWithAdvanced = false }
       <span className="badge">RECORDED LIVE</span></header>
     <aside className="notice">
       Deliberately selected historical playback. No sign-in, current source access, inference or new query runs here.
-      PARTIAL results, exclusions and failed comparison arms remain exactly qualified.
+      Partial results (with excluded unmapped or null-key rows), exclusions and failed evaluation arms remain qualified.
     </aside>
     <section className="card">
       <div className="story-presets" role="group" aria-label="Recorded customer stories">
@@ -64,7 +64,7 @@ export function RecordedComparisonsView({ recording, startWithAdvanced = false }
           aria-pressed={selected === index} onClick={() => setSelected(index)}>{item.title}</button>)}
       </div>
       <p>Original run started {entry.run_started_at}</p>
-      <p className="muted">Packet exported {recording.exported_at}. Export time is not a refreshed source clock.</p>
+      <p className="muted">Recording exported {recording.exported_at}. Export time is not a refreshed source clock.</p>
       <details><summary>Original capture and numerical-review hashes</summary>
         <pre>{JSON.stringify({
           result: entry.original_result_sha256, server_receipt: entry.original_server_receipt_sha256,
@@ -75,7 +75,7 @@ export function RecordedComparisonsView({ recording, startWithAdvanced = false }
     {entry.kind === "getting_started" && <section className="card" aria-label="Getting started: three domains, two models">
       <p className="eyebrow">START HERE / THREE DOMAINS, TWO SEMANTIC MODELS</p>
       <h2>Reuse the measures. Connect their meaning.</h2>
-      <p>A focused slice of the existing native ontology, not a newly created standalone ontology item.</p>
+      <p>A focused slice of the existing ontology in Fabric, not a newly created standalone ontology item.</p>
       <div className="table-scroll"><table><thead><tr><th>Domain</th><th>Source model</th><th>Reusable context or measure</th></tr></thead>
         <tbody><tr><td>Customers</td><td>Subscriptions + Finance</td><td>Reviewed shared account identity</td></tr>
           <tr><td>Subscriptions</td><td>Subscriptions</td><td>Active Lines EOM: month-end snapshot</td></tr>
@@ -95,6 +95,6 @@ export function RecordedComparisonsView({ recording, startWithAdvanced = false }
         [metric.id, `${metric.model} · ${metric.name}`]))} />
     {recording.ontology && <RecordedOntologyView ontology={recording.ontology}
       result={entry.result} events={entry.events} gettingStarted={entry.kind === "getting_started"} />}
-    <footer>{recording.limitations.map(item => <p key={item}>{item}</p>)}</footer>
+    <footer><p><strong>Limits of this recording</strong> (see <code>docs/limitations.md</code>):</p>{recording.limitations.map(item => <p key={item}>{item}</p>)}</footer>
   </main>;
 }

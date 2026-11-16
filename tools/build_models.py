@@ -290,7 +290,6 @@ def table_tmdl(model_id: str, spec: dict, measures: list[dict]) -> str:
                   f'\t\tdisplayFolder: {MODEL_NAMES[model_id]}',
                   f'\t\tlineageTag: {lineage(metric["id"])}',
                   f'\t\tannotation MetricId = {metric["id"]}',
-                  "\t\tannotation LiveDax = NOT_RUN",
                   f'\t\tannotation Aggregation = {metric["aggregation"]}']
     for column, kind in spec["columns"].items():
         hidden = column in {"coverage_complete", "expected_minutes"} or column.endswith(("_key", "_id")) or kind == "timestamp" or (
@@ -353,8 +352,9 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
     census = {
         "version": "1.0", "status": "UNDEPLOYED_TEMPLATE", "upstream_commit": UPSTREAM_COMMIT,
         "guidance_paths": GUIDANCE,
-        "validation": {"sql_reference": "SEE_TARGETED_TESTS", "tmdl_engine_parse": "NOT_RUN",
-                       "live_dax": "NOT_RUN", "direct_lake": "NOT_RUN", "source_rls": "NOT_RUN"},
+        "validation": {"sql_reference": "SEE_TARGETED_TESTS", "tmdl_engine_parse": "PENDING_DEMO_TENANT",
+                       "live_dax": "PENDING_DEMO_TENANT", "direct_lake": "PENDING_DEMO_TENANT",
+                       "source_rls": "PENDING_DEMO_TENANT"},
         "models": [],
     }
     if showcase:
@@ -376,8 +376,6 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
             f"/// {model['name']}; undeployed template requiring approved OneLake binding.",
             "model Model", "\tculture: en-US", "\tsourceQueryCulture: en-US",
             "\tdefaultPowerBIDataSourceVersion: powerBI_V3", "\tdiscourageImplicitMeasures",
-            "\tannotation LiveDax = NOT_RUN", "\tannotation DirectLake = NOT_RUN",
-            "\tannotation SourceRls = NOT_RUN",
             "\tannotation SourceRevision = " + (manifest["version"] if showcase else "1.0"), "",
             *refs, "", "ref role 'East Region'", "",
         ]))
@@ -412,7 +410,7 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
             elif "market_id" in spec["columns"]:
                 predicates.append({"table": identifier, "expression": f'{ref(identifier, "market_id")} = "M01"'})
         write_text(definition / "roles" / "East Region.tmdl", "\n".join([
-            "/// Synthetic East-region restriction; membership absent and source enforcement NOT_RUN.",
+            "/// Synthetic East-region sample role; membership absent and configured per demo tenant.",
             "role 'East Region'", "\tmodelPermission: read", "",
             *[f'\ttablePermission {quoted(TABLE_BY_ID[p["table"]]["displayName"])} = {p["expression"]}' for p in predicates], "",
         ]))
@@ -425,7 +423,7 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
             "version": "4.2", "settings": {"qnaEnabled": True},
         })
         smoke = ["// Model-linked query artifact; execute only after target binding.",
-                 f"// model: {model_id}.SemanticModel; live execution NOT_RUN", "EVALUATE",
+                 f"// model: {model_id}.SemanticModel", "EVALUATE",
                  "SUMMARIZECOLUMNS(", "\t'Calendar'[date],", "\t'Markets'[market_id],"]
         smoke += [f'\t"{metric["id"]}", [{metric["name"]}]' + ("," if index < len(model_metrics) - 1 else "")
                   for index, metric in enumerate(model_metrics)]
@@ -433,7 +431,7 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
         write_text(folder / "smoke.dax", "\n".join(smoke))
         write_json(folder / "smoke.link.json", {
             "model": model_id, "definition": "definition.pbism", "query": "smoke.dax",
-            "status": "NOT_RUN", "metricIds": [metric["id"] for metric in model_metrics],
+            "status": "TEMPLATE", "metricIds": [metric["id"] for metric in model_metrics],
         })
         census["models"].append({
             "id": model_id, "source_lineage": lineage(model_id + "/database"), "storage_mode": "directLake",

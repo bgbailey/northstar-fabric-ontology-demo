@@ -134,9 +134,9 @@ export function RecordedOntologyView({ ontology, result, events, gettingStarted 
     && (!gettingStarted || displayedMetrics.has(metric.id)));
   const rules = ontology.rules.filter(rule => !gettingStarted || rule.referenced_entities
     .some(id => graph.entities.some(item => item.id === id)));
-  return <section className="card" aria-label="Captured native ontology">
-    <div className="section-heading"><div><p className="eyebrow">ACTUAL GENERATION-2 NATIVE CONTEXT</p>
-      <h2>Connected business meaning</h2></div><span className="status-pill">NATIVE METADATA / RECORDED</span></div>
+  return <section className="card" aria-label="Captured ontology in Fabric">
+    <div className="section-heading"><div><p className="eyebrow">FABRIC IQ ONTOLOGY (CURRENT EXPERIENCE) IN FABRIC</p>
+      <h2>Connected business meaning</h2></div><span className="status-pill">ONTOLOGY METADATA / RECORDED</span></div>
     {gettingStarted && <p><strong>{result
       ? `${new Set((native?.execution?.receipts ?? []).map(receipt => receipt.model)).size} source models in this query`
       : `${ontology.sources.length} source models in this ontology`}</strong> · {graph.entities.length} captured source entities.
@@ -148,9 +148,9 @@ export function RecordedOntologyView({ ontology, result, events, gettingStarted 
     </details>
     <p className="muted">Definition graph, not an instance graph. Rose edges map to completed application
       traversals; grey edges are captured definitions, not proof that they ran.</p>
-    <label htmlFor="ontology-source">Explore native sources</label>
+    <label htmlFor="ontology-source">Explore ontology sources</label>
     <select id="ontology-source" value={source} onChange={event => { setSource(event.target.value); setSelected(null); }}>
-      {result && <option value="used">Entities queried by this native-context run</option>}
+      {result && <option value="used">Entities queried by this ontology-grounded run</option>}
       <option value="all">Full captured definition</option>
       {ontology.sources.map(model => <option key={model} value={model}>{model}</option>)}
     </select>
@@ -164,8 +164,8 @@ export function RecordedOntologyView({ ontology, result, events, gettingStarted 
     </div>
     {entity && <div className="detail-grid">
       <div><h3>{entity.model} / {entity.name}</h3><p>{entity.description}</p>
-        <p className="muted">Captured native entity: {entity.id}.</p>
-        <p className="muted">Declared native key: {entity.keys.join(", ") || "None captured"}.
+        <p className="muted">Captured ontology entity: {entity.id}.</p>
+        <p className="muted">Declared entity key: {entity.keys.join(", ") || "None captured"}.
           Execution still uses reviewed complete source/validity grains.</p>
         {metrics.map(metric => <details key={metric.id}><summary>{metric.name}</summary>
           <p>{metric.description}</p><p>Source: {metric.model} / {metric.table} / {metric.name}</p>
@@ -177,11 +177,11 @@ export function RecordedOntologyView({ ontology, result, events, gettingStarted 
           <p>{rule.statement}</p><p className="muted">Scope: {rule.property_scope};
             references {rule.referenced_entities.join(", ")}.</p>
         </details>)}
-        <p className="muted">These are real native Rule objects. Their presence does not prove managed
+        <p className="muted">These are Rule objects in Fabric. Their presence does not prove
           ask_ontology consideration or deterministic rule execution.</p>
       </div>
     </div>}
-    <details><summary>Native capture provenance</summary><p>{ontology.captured_at}</p>
+    <details><summary>Ontology capture provenance</summary><p>{ontology.captured_at}</p>
       <pre>{ontology.native_snapshot_hash}</pre>
       {ontology.limitations.map(item => <p key={item}>{item}</p>)}
     </details>

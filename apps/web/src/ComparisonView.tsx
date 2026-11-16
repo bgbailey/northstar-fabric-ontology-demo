@@ -19,7 +19,7 @@ const stories = [
   {
     label: "Getting started",
     models: "3 domains / 2 models: Customers, Subscriptions, Finance",
-    question: "For July 2026, show each registered customer account's source-owned Active Lines EOM from Subscriptions and Recognized Service Revenue and Contribution Margin from Finance, in cents. Use only these two semantic models. Connect their actual account dimensions through the reviewed shared customer identity and retain one account-month row. Active Lines means the month-end snapshot, not activations or a sum of monthly snapshots. Revenue means recognized service revenue, not billed charges or booked merchandise. Keep accounts with zero or unknown values distinct; never substitute zero for missing or unauthorized data. Explain the source measure ownership and additional customer, period and revenue-meaning context used. Shared execution-format clarification: ResolveConcept, ReadModelSchema and SelectMetric references must be source catalog model IDs, table IDs or metric IDs only. Native entity, Rule and relationship IDs remain planning context but are not allowed values in those no-data operator references. Keep source ownership and interpretation limits in hypotheses. This requirement applies equally to both approaches and supplies no answer, source values or query itinerary.",
+    question: "For July 2026, show each registered customer account's source-owned Active Lines EOM from Subscriptions and Recognized Service Revenue and Contribution Margin from Finance, in cents. Use only these two semantic models. Connect their actual account dimensions through the reviewed shared customer identity and retain one account-month row. Active Lines means the month-end snapshot, not activations or a sum of monthly snapshots. Revenue means recognized service revenue, not billed charges or booked merchandise. Keep accounts with zero or unknown values distinct; never substitute zero for missing or unauthorized data. Explain the source measure ownership and additional customer, period and revenue-meaning context used. Shared execution-format clarification: ResolveConcept, ReadModelSchema and SelectMetric references must be source catalog model IDs, table IDs or metric IDs only. Ontology entity, Rule and relationship IDs in Fabric remain planning context but are not allowed values in those no-data operator references. Keep source ownership and interpretation limits in hypotheses. This requirement applies equally to both approaches and supplies no answer, source values or query itinerary.",
   },
   {
     label: "SLA exposure",
@@ -38,8 +38,8 @@ const stories = [
   },
 ] as const;
 const initialArms = (): Record<Arm, ArmView> => ({
-  baseline: { nodes: [], events: [], phase: "NOT_RUN" },
-  native: { nodes: [], events: [], phase: "NOT_RUN" },
+  baseline: { nodes: [], events: [], phase: "IDLE" },
+  native: { nodes: [], events: [], phase: "IDLE" },
 });
 function object(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -50,7 +50,7 @@ function strings(value: unknown): value is string[] {
 function Qualification({ answer }: { answer: AnswerView }) {
   return <>
     {answer.population_qualification === "known_mapped_subset" &&
-      <p className="notice">Known mapped subset only — PARTIAL, not a complete population ranking or total.</p>}
+      <p className="notice">Known mapped subset only — partial result (unmapped observations and null-key rows excluded), not a complete population ranking or total.</p>}
     {answer.exclusions?.map((item, index) => <p className="muted" key={index}>
       {item.source_node}: {item.unknown_mapping_observations} unknown mapping observations; {item.null_key_rows} null-key rows excluded.
       These are separate diagnostics, not a count of distinct accounts.
@@ -129,7 +129,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
       return;
     }
     if (!authenticated) {
-      invalidateAuthorization("Reader authorization ended; both arm answers were discarded.");
+      invalidateAuthorization("Demo user authorization ended; both evaluation arm answers were discarded.");
     } else {
       clearRun(); setReadiness(null); setError("");
     }
@@ -146,14 +146,14 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
         const response = await fetch("/api/comparison/readiness", { signal: abort.signal });
         if (abort.signal.aborted || generation.current !== checkedGeneration) return;
         if (response.status === 401 || response.status === 403) {
-          invalidateAuthorization(`Server authorization refused during verification (HTTP ${response.status}); both arm answers were discarded.`);
+          invalidateAuthorization(`Server authorization refused during verification (HTTP ${response.status}); both evaluation arm answers were discarded.`);
           return;
         }
         const value: unknown = await response.json();
         if (abort.signal.aborted || generation.current !== checkedGeneration || !currentReader.current) return;
         if (!response.ok || !isReadiness(value)) throw new Error("Cannot verify comparison readiness.");
         if (value.status === "BLOCKED_AUTH") {
-          invalidateAuthorization("Server authorization remains blocked; both arm answers were discarded.");
+          invalidateAuthorization("Server authorization remains blocked; both evaluation arm answers were discarded.");
           return;
         }
         if (value.ready) {
@@ -192,7 +192,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
     const isCurrentRun = () => generation.current === runGeneration && controller.current === abort;
     const requireCurrentRun = () => {
       abort.signal.throwIfAborted();
-      if (!isCurrentRun() || !currentReader.current) throw new Error("Reader authorization ended; no answer accepted.");
+      if (!isCurrentRun() || !currentReader.current) throw new Error("Demo user authorization ended; no answer accepted.");
     };
     let pairId: string | null = null;
     let terminal = false;
@@ -204,7 +204,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
       });
       requireCurrentRun();
       if (response.status === 401 || response.status === 403) {
-        invalidateAuthorization(`Server authorization refused (HTTP ${response.status}); both arm answers were discarded.`);
+        invalidateAuthorization(`Server authorization refused (HTTP ${response.status}); both evaluation arm answers were discarded.`);
         return;
       }
       if (!response.ok) throw new Error(await response.text());
@@ -229,7 +229,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
             const data: unknown = JSON.parse(text);
             if (!object(data)) throw new Error("Invalid comparison event.");
             if (authorizationBlocked(data)) {
-              invalidateAuthorization("Server blocked reader/source authorization; both arm answers were discarded.");
+              invalidateAuthorization("Server blocked demo user or source authorization; both evaluation arm answers were discarded.");
               return;
             }
             if (kind === "error") throw new Error(typeof data.detail === "string" ? data.detail : "Comparison failed.");
@@ -284,7 +284,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
   return <section>
     {!recording && <div className="card">
       <h2>Ask both approaches</h2>
-      <p>One real application model, the same source facts, AI preparation and budgets. No fixture or recorded-answer fallback.</p>
+      <p>One real application model across two evaluation arms, the same source facts, AI preparation and budgets. No fixture or recorded-answer fallback.</p>
       <div className="story-presets" role="group" aria-label="Customer story questions">
         {stories.map(story => <button key={story.label} aria-label={story.label}
           aria-pressed={question === story.question} disabled={busy} onClick={() => setQuestion(story.question)}>
@@ -309,7 +309,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
         {busy ? "Planning and executing..." : "Run both approaches"}
       </button>
       {busy && <button onClick={() => controller.current?.abort()}>Cancel comparison</button>}
-      {!authenticated && <p className="muted">A current approved DEV reader sign-in is required for live comparison.</p>}
+      {!authenticated && <p className="muted">A current approved demo user sign-in to the demo tenant is required for live comparison.</p>}
     </div>}
     {error && <p className="error" role="alert">{error}</p>}
     {result && <div className="card"><h2>Source-backed business results</h2>
@@ -320,7 +320,7 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
       <p className="muted">{recording
         ? "Captured numeric values were checked against original source receipts. "
         : "Execution alone is not independent numerical validation. "}
-        No accuracy or native-context advantage is inferred.</p>
+        No accuracy or ontology-context advantage is inferred.</p>
     </div>}
     <div className="comparison-grid">{(["baseline", "native"] as const).map(arm => {
       const view = arms[arm]; const answer = view.outcome?.execution?.answer;
@@ -339,10 +339,11 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
         && Array.isArray(binding.generated_projection_nodes)
         && binding.generated_projection_nodes.every((value: unknown) => typeof value === "string")
         ? binding.generated_projection_nodes : null;
+      const statusPill = view.outcome?.status === "PARTIAL" ? "partial result" : (view.outcome?.status ?? view.phase);
       return <article key={arm}>
         <div className="card"><div className="section-heading">
-          <h2>{arm === "baseline" ? "Models & flat guidance" : "Native ontology context"}</h2>
-          <span className="status-pill">{view.outcome?.status ?? view.phase}</span></div>
+          <h2>{arm === "baseline" ? "Models & flat guidance" : "Ontology context in Fabric"}</h2>
+          <span className="status-pill">{statusPill}</span></div>
           {view.outcome?.execution && <p>{recording ? "RECORDED original live execution"
             : executionLabel(view.outcome.execution.mode)} · {
             recording ? "Historical terminal pair; not current source authorization"
@@ -370,10 +371,10 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
             </details>
           </aside>}
           {answer && view.outcome?.execution?.status !== "COMPLETE" &&
-            <p className="notice">Incomplete result ({view.outcome?.execution?.status}). These rows are not a complete financial total.</p>}
+            <p className="notice">{view.outcome?.execution?.status === "PARTIAL" ? "Partial result (incomplete or unmapped rows excluded)." : `Incomplete result (${view.outcome?.execution?.status}).`} These rows are not a complete financial total.</p>}
           {answer && <Qualification answer={answer} />}
           {answer && <MetricInsight answer={answer} />}
-          {answer?.status && <p className="muted">Primary source view: {answer.status}</p>}
+          {answer?.status && <p className="muted">Primary source view: {answer.status === "PARTIAL" ? "partial result (see exclusions and coverage)" : answer.status}</p>}
           {answer?.rows.length === 0 && <p>Empty scoped result; no measured financial zero is inferred.</p>}
           {answer && <div className="table-scroll"><table aria-label={`${arm} business answer`}><thead><tr>{columns.map(column =>
             <th key={column} title={column}>{columnLabel(column)}</th>)}</tr></thead><tbody>{answer.rows.map((row, index) =>
@@ -391,9 +392,11 @@ export function ComparisonView({ csrf, authenticated, recording, recordedEvents,
           {Object.entries(view.outcome?.execution?.additional_answers ?? {}).map(([label, separate]) => {
             const fields = [...new Set(separate.rows.flatMap(row => Object.keys(row)))]
               .filter(column => !column.startsWith("__right_"));
+            const separateStatus = separate.status === "PARTIAL"
+              ? "partial result (unmapped or incomplete rows excluded)" : separate.status;
             return <section key={label} aria-label={`${arm} ${label} result`}>
-              <details><summary>{label} · {separate.rows.length} rows · {separate.status}</summary>
-              <p>{separate.status} · Source grain: {separate.grain == null ? "Not preserved"
+              <details><summary>{label} · {separate.rows.length} rows · {separateStatus}</summary>
+              <p>{separateStatus} · Source grain: {separate.grain == null ? "Not preserved"
                 : separate.grain.length ? separate.grain.join(" + ") : "Scalar"}</p>
               <p className="muted">Separate source-grain view. These rows are not joined to or added into the primary table.</p>
               {separate.status !== "COMPLETE" && <p className="notice">Incomplete source view; no complete total is implied.</p>}

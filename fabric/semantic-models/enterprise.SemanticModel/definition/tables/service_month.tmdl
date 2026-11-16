@@ -8,7 +8,6 @@ table 'Service Month'
 		displayFolder: Enterprise Services
 		lineageTag: c4481540-4757-51f3-b2f0-c7edef0282a9
 		annotation MetricId = enterprise.contracted_services
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = semi_additive
 
 	/// Calendar minutes clipped to contract validity.
@@ -17,7 +16,6 @@ table 'Service Month'
 		displayFolder: Enterprise Services
 		lineageTag: a037f1a9-c861-5a6f-913d-2f61aa77ba27
 		annotation MetricId = enterprise.monitored_service_minutes
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Service-months exceeding their contract threshold.
@@ -26,7 +24,6 @@ table 'Service Month'
 		displayFolder: Enterprise Services
 		lineageTag: 447f106b-5325-5a9f-8a39-883e94d4da21
 		annotation MetricId = enterprise.breached_services
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Compliant contracted service-months divided by contracted service-months.
@@ -35,7 +32,6 @@ table 'Service Month'
 		displayFolder: Enterprise Services
 		lineageTag: 06aee6f9-0886-5844-b0bf-c7569731ee2e
 		annotation MetricId = enterprise.sla_compliance
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = non_additive
 
 	/// Contracted monthly recurring value, not finance recognized revenue.
@@ -44,7 +40,6 @@ table 'Service Month'
 		displayFolder: Enterprise Services
 		lineageTag: 67465d30-dc4f-5f7e-8767-fc871e5c065c
 		annotation MetricId = enterprise.contracted_recurring_revenue
-		annotation LiveDax = NOT_RUN
 		annotation Aggregation = additive
 
 	/// Technical identity; join only through the declared mapping.

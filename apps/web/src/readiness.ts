@@ -44,10 +44,10 @@ export function signInFailureMessage(reason: string | null): string {
     return "This sign-in request expired. Start a new sign-in and complete it within 10 minutes. No permissions were changed automatically.";
   }
   if (reason === "sign_in_restart") {
-    return "This sign-in request is missing, replaced or already used. Start a fresh sign-in and use only the newest lab sign-in window. No permissions were changed automatically.";
+    return "This sign-in request is missing, replaced or already used. Start a fresh sign-in and use only the newest sign-in window. No permissions were changed automatically.";
   }
   if (reason === "reader_window_expired") {
-    return "The approved reader window has expired. A new approved window is required before signing in again. No permissions were changed automatically.";
+    return "The approved demo user window has expired. A new approved window is required before signing in again. No permissions were changed automatically.";
   }
   return "Sign-in could not be completed. This alone does not establish an account or permission problem. Start a fresh sign-in; no permissions were changed automatically.";
 }
@@ -58,15 +58,15 @@ export function executionLabel(mode: string): string {
   if (mode === "RECORDED_NATIVE_DEMO") return "RECORDED";
   if (mode === "RECORDED_LIVE_COMPARISON") return "RECORDED LIVE / NO NEW EXECUTION";
   if (mode === "RECORDED_DEMO_LIBRARY") return "RECORDED DEMO STREAMS / NO NEW EXECUTION";
-  if (mode === "DELEGATED_READER_SETUP") return "READER SETUP / NOT EXECUTED";
+  if (mode === "DELEGATED_READER_SETUP") return "DEMO USER SETUP / NOT EXECUTED";
   return mode.replaceAll("_", " ");
 }
 export function readinessStages(value: Readiness): [string, string][] {
   return [
     ["Implementation", value.implementation ?? "UNKNOWN"],
     ["Configuration", value.configuration ?? "UNKNOWN"],
-    ["Reader session (not source authorization)", value.reader_session ?? "UNKNOWN"],
-    ["Current native/source authorization and probes", value.native_source_probe ?? "UNKNOWN_NOT_PROBED"],
+    ["Demo user session (not source authorization)", value.reader_session ?? "UNKNOWN"],
+    ["Current Fabric and source authorization probes", value.native_source_probe ?? "UNKNOWN_NOT_PROBED"],
     ["Application execution (requires separate run evidence)", value.application_execution ?? "NOT_ESTABLISHED"],
     ["Customer demonstration (requires separate evidence)", value.demonstration ?? "NOT_ESTABLISHED"],
   ];
