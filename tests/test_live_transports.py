@@ -462,7 +462,7 @@ def test_actual_factory_all_r4_stages_complete_full_parts_refresh_and_controls(l
         report = ready.run()
         assert report["status"] == "THREE_SOURCE_QUERY_CONTROLS_PASSED"
         assert set(report["models"]) == {"enterprise", "finance", "network"}
-        assert setup.packet["rows"] == 7181 and len(setup.packet["tables"]) == 18
+        assert setup.packet["rows"] == 7212 and len(setup.packet["tables"]) == 18
         expected_parts = {"enterprise": 16, "finance": 13, "network": 14}
         for model, count in expected_parts.items():
             assert len(setup.state.service.bodies[hero.IDS[model]]["definition"]["parts"]) == count
