@@ -37,6 +37,7 @@ This index organizes the architecture, scenarios, demo runbooks, deployment guid
 
 | Document | Summary |
 |---|---|
+| [Evaluation design and claims policy](evaluation/README.md) | Three evaluation arms (each one tested configuration over identical questions, data, and models), fairness invariants, deterministic oracle metrics, statistical intervals, and claims rules |
 | [Validation backlog](evaluation/validation-backlog.md) | Twenty-four live validation questions tracked from `eval/validation/register.json` |
 | [Synthetic data and semantic models](reference/data-models.md) | Deterministic Parquet generator, eight Direct Lake TMDL semantic models, and designed edge cases |
 | [Public product references](reference/sources.md) | Microsoft Learn and open-source reference links governing this repository |

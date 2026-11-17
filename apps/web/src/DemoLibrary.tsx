@@ -6,6 +6,9 @@ import { isRecordedOntology, RecordedOntologyView, type RecordedOntology } from 
 import {
   isRecordedServiceAssuranceDemo, ServiceAssuranceDemoView, type RecordedServiceAssuranceDemo,
 } from "./ServiceAssuranceDemo";
+import {
+  isRecordedScorecard, ScorecardView, type RecordedScorecard,
+} from "./ScorecardView";
 
 type ExecutiveAccount = {
   account_id: string; account_key: number; active_lines_eom: number;
@@ -30,6 +33,7 @@ export type RecordedDemoLibrary = {
   schema_version: "1.0"; mode: "RECORDED_DEMO_LIBRARY"; exported_at: string;
   executive: RecordedExecutiveDemo; customer360: RecordedComparisons;
   service_assurance?: RecordedServiceAssuranceDemo | null;
+  scorecard?: RecordedScorecard | null;
   limitations: string[];
 };
 function object(value: unknown): value is Record<string, unknown> {
@@ -91,6 +95,9 @@ export function isRecordedDemoLibrary(value: unknown): value is RecordedDemoLibr
     if (saHash === value.executive.ontology.native_snapshot_hash
       || saHash === value.customer360.ontology.native_snapshot_hash) return false;
   }
+  if (value.scorecard !== undefined && value.scorecard !== null) {
+    if (!isRecordedScorecard(value.scorecard)) return false;
+  }
   return true;
 }
 
@@ -151,20 +158,34 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
   </main>;
 }
 
+export type DemoStreamId = "executive" | "service_assurance" | "customer360" | "scorecard";
+
 export function DemoLibraryView({ library, initialStream = "executive" }: {
   library: RecordedDemoLibrary;
-  initialStream?: "executive" | "service_assurance" | "customer360";
+  initialStream?: DemoStreamId;
 }) {
   const hasServiceAssurance = Boolean(library.service_assurance);
-  const [stream, setStream] = useState<"executive" | "service_assurance" | "customer360">(
-    initialStream === "service_assurance" && !hasServiceAssurance ? "executive" : initialStream,
-  );
+  const hasScorecard = Boolean(library.scorecard);
+  const resolvedInitialStream: DemoStreamId =
+    (initialStream === "service_assurance" && !hasServiceAssurance)
+    || (initialStream === "scorecard" && !hasScorecard)
+      ? "executive"
+      : initialStream;
+  const [stream, setStream] = useState<DemoStreamId>(resolvedInitialStream);
+  const streamCount = 2 + (hasServiceAssurance ? 1 : 0) + (hasScorecard ? 1 : 0);
+  const streamClass = streamCount === 4
+    ? " four-streams"
+    : streamCount === 3
+      ? " three-streams"
+      : "";
   return <>
     <section className="card" aria-label="Choose the demo stream">
-      <p className="eyebrow">{hasServiceAssurance
-        ? "RECORDED DEMO STREAMS / THREE SCOPES"
-        : "TWO ONTOLOGIES IN FABRIC / TWO CONVERSATIONS"}</p>
-      <div className={`story-presets demo-stream-switch${hasServiceAssurance ? " three-streams" : ""}`}
+      <p className="eyebrow">{streamCount === 4
+        ? "RECORDED DEMO STREAMS AND EVALUATION SCORECARD"
+        : hasServiceAssurance
+          ? "RECORDED DEMO STREAMS / THREE SCOPES"
+          : "TWO ONTOLOGIES IN FABRIC / TWO CONVERSATIONS"}</p>
+      <div className={`story-presets demo-stream-switch${streamClass}`}
         role="group" aria-label="Demo streams">
         <button aria-pressed={stream === "executive"} onClick={() => setStream("executive")}>
           Executive quickstart · 2 models
@@ -177,6 +198,11 @@ export function DemoLibraryView({ library, initialStream = "executive" }: {
         <button aria-pressed={stream === "customer360"} onClick={() => setStream("customer360")}>
           Customer360 deep dive · 8 models
         </button>
+        {library.scorecard && (
+          <button aria-pressed={stream === "scorecard"} onClick={() => setStream("scorecard")}>
+            Evaluation scorecard
+          </button>
+        )}
       </div>
       <p className="muted">Explicit recorded playback. Separate ontology definitions and original capture clocks;
         no sign-in, model call or source query runs when switching streams.</p>
@@ -184,6 +210,8 @@ export function DemoLibraryView({ library, initialStream = "executive" }: {
     {stream === "executive" ? <ExecutiveDemoView recording={library.executive} />
       : stream === "service_assurance" && library.service_assurance
         ? <ServiceAssuranceDemoView recording={library.service_assurance} />
-        : <RecordedComparisonsView recording={library.customer360} startWithAdvanced />}
+        : stream === "scorecard" && library.scorecard
+          ? <ScorecardView scorecard={library.scorecard} />
+          : <RecordedComparisonsView recording={library.customer360} startWithAdvanced />}
   </>;
 }

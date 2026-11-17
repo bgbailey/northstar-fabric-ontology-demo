@@ -134,16 +134,26 @@ jobs:
             --questions eval/questions/service-assurance.jsonl \
             --profile all \
             --output .local/evaluation/offline-oracle-service-assurance.json
-          python eval/runners/run_offline_arms.py \
+          python eval/runners/run_arms.py \
+            --mode offline \
             --questions eval/questions/service-assurance.jsonl \
             --profile service-assurance \
-            --output .local/evaluation/offline-arms-service-assurance.json
+            --repeats 5 \
+            --output artifacts/offline-runs.jsonl
+          python eval/report/build_scorecard.py \
+            --runs artifacts/offline-runs.jsonl \
+            --questions eval/questions/service-assurance.jsonl \
+            --profile service-assurance \
+            --output-json artifacts/scorecard.json \
+            --output-html artifacts/scorecard.html
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: offline-evaluation-service-assurance
           path: |
             .local/evaluation/offline-oracle-service-assurance.json
-            .local/evaluation/offline-arms-service-assurance.json
+            artifacts/offline-runs.jsonl
+            artifacts/scorecard.json
+            artifacts/scorecard.html
           if-no-files-found: error
 
   audit:

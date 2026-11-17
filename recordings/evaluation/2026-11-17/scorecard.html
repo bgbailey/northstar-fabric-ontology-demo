@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northstar Service Assurance — Evaluation Scorecard</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #0f4c81;
+      --sig-bg: #dcfce7;
+      --sig-ink: #14532d;
+      --tie-bg: #f1f5f9;
+      --tie-ink: #334155;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem 1.25rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    main { max-width: 1240px; margin: 0 auto; }
+    header { margin-bottom: 1.75rem; }
+    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    h2 { margin: 2rem 0 0.75rem; font-size: 1.25rem; color: var(--accent); }
+    p.lead { margin: 0; color: var(--muted); }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+    }
+    .meta-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+    .meta-card dt { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); }
+    .meta-card dd { margin: 0.25rem 0 0; font-weight: 600; font-size: 0.95rem; }
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    caption {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      background: #f1f5f9;
+    }
+    th, td {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    thead th { background: #f8fafc; font-weight: 600; }
+    tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .badge-sig { background: var(--sig-bg); color: var(--sig-ink); }
+    .badge-tie { background: var(--tie-bg); color: var(--tie-ink); }
+    ul.limitations {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem 1rem 2.25rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Northstar Service Assurance — Evaluation Scorecard</h1>
+      <p class="lead">
+        Each evaluation arm is scored deterministically against the DuckDB oracle over identical
+        questions, data, and repeat counts. Proportions use 95% Wilson intervals; arm comparisons
+        use 95% paired bootstrap intervals over questions.
+      </p>
+    </header>
+
+    <dl class="meta-grid" aria-label="Run conditions">
+      <div class="meta-card"><dt>Execution mode</dt><dd>Live Demo Tenant</dd></div>
+      <div class="meta-card"><dt>Profile &amp; seed</dt><dd>service-assurance (20260929)</dd></div>
+      <div class="meta-card"><dt>Questions &times; repeats</dt><dd>27 &times; k=5</dd></div>
+      <div class="meta-card"><dt>Model deployment</dt><dd>gpt-5-mini (2025-08-07)</dd></div>
+      <div class="meta-card"><dt>Toolset variant</dt><dd>service_default</dd></div>
+      <div class="meta-card"><dt>Capacity &amp; region</dt><dd>F8 / Central US</dd></div>
+    </dl>
+
+    <h2>Overall Summary by Evaluation Arm</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Accuracy, set F1, path &amp; unknown handling, stability, and effort</caption>
+        <thead>
+          <tr>
+            <th scope="col">Evaluation arm</th>
+            <th scope="col">Correct runs</th>
+            <th scope="col">Answer accuracy (95% Wilson)</th>
+            <th scope="col">Mean key F1</th>
+            <th scope="col">Path accuracy</th>
+            <th scope="col">Unknown handling</th>
+            <th scope="col">Stability</th>
+            <th scope="col">Pass all k</th>
+            <th scope="col">Mean tool calls</th>
+            <th scope="col">Mean tokens (in / out)</th>
+            <th scope="col">Mean seconds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Arm A — Semantic models only</th><td>38 / 135</td><td>28.1% [21.2%, 36.3%]</td><td>59.8%</td><td>90.4% [84.2%, 94.3%]</td><td>86.7% [79.9%, 91.4%]</td><td>64.4%</td><td>25.9%</td><td>7.4</td><td>70928 / 8823</td><td>605.50s</td></tr><tr><th scope="row">Arm A+ — Semantic models + rules in prompt</th><td>41 / 135</td><td>30.4% [23.2%, 38.6%]</td><td>60.9%</td><td>89.6% [83.3%, 93.7%]</td><td>99.3% [95.9%, 99.9%]</td><td>61.5%</td><td>25.9%</td><td>7.3</td><td>72067 / 9198</td><td>559.67s</td></tr><tr><th scope="row">Arm B — Ontology-grounded</th><td>44 / 135</td><td>32.6% [25.3%, 40.9%]</td><td>73.4%</td><td>91.1% [85.1%, 94.8%]</td><td>97.8% [93.7%, 99.2%]</td><td>60.7%</td><td>25.9%</td><td>8.9</td><td>103271 / 11299</td><td>647.89s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Paired Bootstrap Differences (95% CI)</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Per-question paired bootstrap differences in answer accuracy</caption>
+        <thead>
+          <tr>
+            <th scope="col">Comparison</th>
+            <th scope="col">Metric</th>
+            <th scope="col">Difference [95% CI]</th>
+            <th scope="col">Interval check</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Arm B vs Arm A</th><td>answer_accuracy</td><td>+4.4 pp [-0.7, +11.1]</td><td><span class="badge badge-tie">Includes zero (tie / inconclusive)</span></td></tr><tr><th scope="row">Arm B vs Arm A+</th><td>answer_accuracy</td><td>+2.2 pp [-0.7, +6.7]</td><td><span class="badge badge-tie">Includes zero (tie / inconclusive)</span></td></tr><tr><th scope="row">Arm A+ vs Arm A</th><td>answer_accuracy</td><td>+2.2 pp [+0.0, +5.9]</td><td><span class="badge badge-tie">Includes zero (tie / inconclusive)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Breakdown by Question Level</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Answer accuracy and paired differences across L1–L4, N, and P</caption>
+        <thead>
+          <tr>
+            <th scope="col">Level</th>
+            <th scope="col">Questions</th>
+            <th scope="col">Arm A — Semantic models only</th><th scope="col">Arm A+ — Semantic models + rules in prompt</th><th scope="col">Arm B — Ontology-grounded</th>
+            <th scope="col">Paired differences</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">L1</th><td>6</td><td>86.7% [70.3%, 94.7%] (26/30)</td><td>86.7% [70.3%, 94.7%] (26/30)</td><td>86.7% [70.3%, 94.7%] (26/30)</td><td>Arm B vs Arm A: +0.0 pp [-10.0, +10.0] (includes 0); Arm B vs Arm A+: +0.0 pp [-10.0, +10.0] (includes 0); Arm A+ vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0)</td></tr><tr><th scope="row">L2</th><td>5</td><td>20.0% [8.9%, 39.1%] (5/25)</td><td>20.0% [8.9%, 39.1%] (5/25)</td><td>20.0% [8.9%, 39.1%] (5/25)</td><td>Arm B vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0); Arm B vs Arm A+: +0.0 pp [+0.0, +0.0] (includes 0); Arm A+ vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0)</td></tr><tr><th scope="row">L3</th><td>5</td><td>0.0% [0.0%, 13.3%] (0/25)</td><td>0.0% [0.0%, 13.3%] (0/25)</td><td>0.0% [0.0%, 13.3%] (0/25)</td><td>Arm B vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0); Arm B vs Arm A+: +0.0 pp [+0.0, +0.0] (includes 0); Arm A+ vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0)</td></tr><tr><th scope="row">L4</th><td>4</td><td>0.0% [0.0%, 16.1%] (0/20)</td><td>0.0% [0.0%, 16.1%] (0/20)</td><td>0.0% [0.0%, 16.1%] (0/20)</td><td>Arm B vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0); Arm B vs Arm A+: +0.0 pp [+0.0, +0.0] (includes 0); Arm A+ vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0)</td></tr><tr><th scope="row">N</th><td>4</td><td>35.0% [18.1%, 56.7%] (7/20)</td><td>50.0% [29.9%, 70.1%] (10/20)</td><td>65.0% [43.3%, 81.9%] (13/20)</td><td>Arm B vs Arm A: +30.0 pp [+0.0, +60.0] (includes 0); Arm B vs Arm A+: +15.0 pp [+0.0, +30.0] (includes 0); Arm A+ vs Arm A: +15.0 pp [+0.0, +30.0] (includes 0)</td></tr><tr><th scope="row">P</th><td>3</td><td>0.0% [0.0%, 20.4%] (0/15)</td><td>0.0% [0.0%, 20.4%] (0/15)</td><td>0.0% [0.0%, 20.4%] (0/15)</td><td>Arm B vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0); Arm B vs Arm A+: +0.0 pp [+0.0, +0.0] (includes 0); Arm A+ vs Arm A: +0.0 pp [+0.0, +0.0] (includes 0)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Failure Modes (Traps Hit)</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Count of runs matching each known schema-only failure trap</caption>
+        <thead>
+          <tr>
+            <th scope="col">Evaluation arm</th>
+            <th scope="col">site-key-only</th><th scope="col">credit-per-incident</th><th scope="col">revenue-fan-out</th><th scope="col">display-name-or-billing-key</th><th scope="col">missing-as-zero</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Arm A — Semantic models only</th><td>0</td><td>0</td><td>0</td><td>0</td><td>16</td></tr><tr><th scope="row">Arm A+ — Semantic models + rules in prompt</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th scope="row">Arm B — Ontology-grounded</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Failed Questions</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Questions with fewer than k correct repeats</caption>
+        <thead>
+          <tr>
+            <th scope="col">Question ID</th>
+            <th scope="col">Level</th>
+            <th scope="col">Evaluation arm</th>
+            <th scope="col">Correct repeats</th>
+            <th scope="col">Traps hit</th>
+            <th scope="col">Failure reasons</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>SA-L1-003</code></td><td>L1</td><td>Arm A — Semantic models only</td><td>1 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-001</code></td><td>L2</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-002</code></td><td>L2</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-003</code></td><td>L2</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>missing-as-zero</td><td>key_set_mismatch, trap:missing-as-zero, missing_expected_exclusions, unknown_coerced_to_zero, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-005</code></td><td>L2</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>missing-as-zero</td><td>key_set_mismatch, trap:missing-as-zero, unknown_coerced_to_zero</td></tr><tr><td><code>SA-L3-001</code></td><td>L3</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, missing_expected_exclusions</td></tr><tr><td><code>SA-L3-002</code></td><td>L3</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L3-003</code></td><td>L3</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-004</code></td><td>L3</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, missing_expected_exclusions</td></tr><tr><td><code>SA-L3-005</code></td><td>L3</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>missing-as-zero</td><td>key_set_mismatch, trap:missing-as-zero, unknown_coerced_to_zero, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-001</code></td><td>L4</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-002</code></td><td>L4</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-003</code></td><td>L4</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L4-004</code></td><td>L4</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-N-002</code></td><td>N</td><td>Arm A — Semantic models only</td><td>2 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-N-003</code></td><td>N</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-N-004</code></td><td>N</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>missing-as-zero</td><td>key_set_mismatch, trap:missing-as-zero, unknown_coerced_to_zero</td></tr><tr><td><code>SA-P-001</code></td><td>P</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-P-002</code></td><td>P</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-P-003</code></td><td>P</td><td>Arm A — Semantic models only</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L1-003</code></td><td>L1</td><td>Arm A+ — Semantic models + rules in prompt</td><td>1 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-001</code></td><td>L2</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-002</code></td><td>L2</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-003</code></td><td>L2</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L2-005</code></td><td>L2</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L3-001</code></td><td>L3</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-002</code></td><td>L3</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch, missing_expected_exclusions</td></tr><tr><td><code>SA-L3-003</code></td><td>L3</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L3-004</code></td><td>L3</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-005</code></td><td>L3</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-001</code></td><td>L4</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-002</code></td><td>L4</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L4-003</code></td><td>L4</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L4-004</code></td><td>L4</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-N-002</code></td><td>N</td><td>Arm A+ — Semantic models + rules in prompt</td><td>4 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-N-003</code></td><td>N</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-N-004</code></td><td>N</td><td>Arm A+ — Semantic models + rules in prompt</td><td>1 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-P-001</code></td><td>P</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-P-002</code></td><td>P</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch, duplicate_or_malformed_keys</td></tr><tr><td><code>SA-P-003</code></td><td>P</td><td>Arm A+ — Semantic models + rules in prompt</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L1-002</code></td><td>L1</td><td>Arm B — Ontology-grounded</td><td>4 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L1-003</code></td><td>L1</td><td>Arm B — Ontology-grounded</td><td>2 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-001</code></td><td>L2</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L2-002</code></td><td>L2</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L2-003</code></td><td>L2</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch, duplicate_or_malformed_keys, missing_expected_exclusions</td></tr><tr><td><code>SA-L2-005</code></td><td>L2</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L3-001</code></td><td>L3</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch, duplicate_or_malformed_keys</td></tr><tr><td><code>SA-L3-002</code></td><td>L3</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-003</code></td><td>L3</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-004</code></td><td>L3</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L3-005</code></td><td>L3</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-L4-001</code></td><td>L4</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-002</code></td><td>L4</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-003</code></td><td>L4</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-L4-004</code></td><td>L4</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch, numeric_value_mismatch</td></tr><tr><td><code>SA-N-003</code></td><td>N</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-N-004</code></td><td>N</td><td>Arm B — Ontology-grounded</td><td>3 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-P-001</code></td><td>P</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-P-002</code></td><td>P</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr><tr><td><code>SA-P-003</code></td><td>P</td><td>Arm B — Ontology-grounded</td><td>0 / 5</td><td>None</td><td>key_set_mismatch</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Limitations</h2>
+    <ul class="limitations">
+      <li>Results reflect the synthetic Northstar Wireless service assurance scenario in the recorded demo tenant configuration (model deployment, capacity size, and region).</li><li>A statement of accuracy benefit is supported only where the 95% paired bootstrap interval excludes zero; ties and inconclusive intervals are published alongside wins.</li><li>Workspace, tenant, and item UUIDs are omitted from published scorecards.</li>
+    </ul>
+  </main>
+</body>
+</html>

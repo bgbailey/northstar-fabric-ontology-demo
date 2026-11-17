@@ -11,6 +11,9 @@ import { DemoLibraryView, isRecordedDemoLibrary, type RecordedDemoLibrary } from
 import {
   AgentSurfaceCaptureView, isRecordedAgentSurface, type RecordedAgentSurface,
 } from "./ServiceAssuranceDemo";
+import {
+  isRecordedScorecard, ScorecardView, type RecordedScorecard,
+} from "./ScorecardView";
 import { hasResourceGrant, ResourceConsent, type ConsentResource } from "./ResourceConsent";
 import {
   executionLabel, isHealth, isRecording, readerMode, readinessStages, signInFailureMessage, type HealthState,
@@ -50,6 +53,7 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
   const [recordedComparisons, setRecordedComparisons] = useState<RecordedComparisons | null>(null);
   const [demoLibrary, setDemoLibrary] = useState<RecordedDemoLibrary | null>(null);
   const [agentSurface, setAgentSurface] = useState<RecordedAgentSurface | null>(null);
+  const [scorecard, setScorecard] = useState<RecordedScorecard | null>(null);
   const [readerVerified, setReaderVerified] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const readerGeneration = useRef(0);
@@ -86,6 +90,12 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
           throw new Error("Invalid recorded agent surface file; no fallback selected.");
         }
         if (!controller.signal.aborted) setAgentSurface(surfaceCapture);
+      } else if (h.mode === "RECORDED_SCORECARD") {
+        const scorecardPayload = await request<unknown>("/api/scorecard", undefined, controller.signal);
+        if (!isRecordedScorecard(scorecardPayload)) {
+          throw new Error("Invalid recorded scorecard file; no fallback selected.");
+        }
+        if (!controller.signal.aborted) setScorecard(scorecardPayload);
       } else if (h.mode === "RECORDED_LIVE_COMPARISON") {
         const packet = await request<unknown>("/api/recorded-comparisons", undefined, controller.signal);
         if (!isRecordedComparisons(packet)) throw new Error("Invalid recorded comparison file; no fallback selected.");
@@ -278,6 +288,12 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
     if (agentSurface) return <AgentSurfaceCaptureView surface={agentSurface} />;
     return <main><h1>Recorded agent surface</h1>
       {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the recorded surface capture...</p>}
+    </main>;
+  }
+  if (health.mode === "RECORDED_SCORECARD") {
+    if (scorecard) return <ScorecardView scorecard={scorecard} />;
+    return <main><h1>Evaluation scorecard</h1>
+      {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the recorded scorecard...</p>}
     </main>;
   }
   if (health?.mode === "RECORDED_NATIVE_DEMO") {

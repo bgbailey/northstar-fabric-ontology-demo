@@ -583,11 +583,17 @@ def update_library(
     library_path: Path = DEFAULT_LIBRARY,
     contract_path: Path = DEFAULT_CONTRACT,
     work_dir: Path = DEFAULT_WORK_DIR,
+    scorecard_path: Path | None = None,
 ) -> RecordedDemoLibrary:
     original_raw = library_path.read_text(encoding="utf-8")
     original = json.loads(original_raw)
     sa_demo = build_service_assurance_demo(contract_path=contract_path, work_dir=work_dir)
-    updated = {
+    scorecard_obj = (
+        json.loads(scorecard_path.read_text(encoding="utf-8"))
+        if scorecard_path is not None
+        else original.get("scorecard")
+    )
+    updated: dict = {
         "schema_version": original["schema_version"],
         "mode": original["mode"],
         "exported_at": original["exported_at"],
@@ -596,6 +602,8 @@ def update_library(
         "service_assurance": sa_demo.model_dump(mode="json"),
         "limitations": original["limitations"],
     }
+    if scorecard_obj is not None:
+        updated["scorecard"] = scorecard_obj
     validated = RecordedDemoLibrary.model_validate(updated)
     if updated["executive"] != original["executive"] or updated["customer360"] != original["customer360"]:
         raise RuntimeError("Existing executive or customer360 stream changed unexpectedly")
@@ -612,6 +620,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--library", type=Path, default=DEFAULT_LIBRARY, help="Path to recorded demo library JSON")
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT, help="Path to service-assurance.json")
     parser.add_argument("--work-dir", type=Path, default=DEFAULT_WORK_DIR, help="Workspace-local temporary build folder")
+    parser.add_argument("--scorecard", type=Path, default=None, help="Optional scorecard.json to embed in the library")
     parser.add_argument(
         "--write-surfaces",
         action=argparse.BooleanOptionalAction,
@@ -619,7 +628,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Also write the four standalone surface-*.json captures into the library's directory",
     )
     args = parser.parse_args(argv)
-    library = update_library(library_path=args.library, contract_path=args.contract, work_dir=args.work_dir)
+    library = update_library(
+        library_path=args.library,
+        contract_path=args.contract,
+        work_dir=args.work_dir,
+        scorecard_path=args.scorecard,
+    )
     surface_files = write_surface_files(args.library.parent) if args.write_surfaces else []
     assert library.service_assurance is not None
     print(
