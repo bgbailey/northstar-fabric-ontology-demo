@@ -82,7 +82,7 @@ In the 17 November 2026 demo tenant run (`405` runs: `27` questions × `3` evalu
 
 ## Deploy to your demo tenant
 
-Keep all demo tenant, workspace, and item identifiers, credentials, and live approval files outside the repository and outside cloud-synchronized folders. Never delete or empty a Microsoft Fabric workspace. Follow [docs/deploy/quickstart-ontology.md](docs/deploy/quickstart-ontology.md) to reproduce the quickstart ontology in Fabric and [docs/deploy/automation-boundaries.md](docs/deploy/automation-boundaries.md) for API and authoring boundaries.
+Keep all demo tenant, workspace, and item identifiers, credentials, and live approval files outside the repository and outside cloud-synchronized folders. Never delete or empty a Microsoft Fabric workspace. Use the [deployable accelerator guide](docs/deploy/README.md) to inspect `northstar deploy --dry-run`, deploy into an existing workspace, and continue with the [guided ontology bootstrap](docs/deploy/ontology.md). See [cost controls](docs/deploy/cost.md) and [source control and promotion](docs/deploy/lifecycle.md) before a live run. The [bring-your-own-models guide](docs/adapt/bring-your-own-models.md) covers adaptation to another decision path. For the earlier UI-first path, follow [docs/deploy/quickstart-ontology.md](docs/deploy/quickstart-ontology.md) and [docs/deploy/automation-boundaries.md](docs/deploy/automation-boundaries.md).
 
 ## Use your own semantic models
 

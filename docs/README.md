@@ -32,6 +32,11 @@ This index organizes the architecture, scenarios, demo runbooks, deployment guid
 | [Reproduce the quickstart ontology](deploy/quickstart-ontology.md) | Supported Plan and Act authoring steps in Microsoft Fabric and sanitized recording rebuild commands |
 | [Automation boundaries](deploy/automation-boundaries.md) | API-first boundaries across REST item endpoints, the ontology agent in Fabric, and MCP servers |
 | [Agent tooling and MCP setup](develop/agent-tooling.md) | Pinned Skills for Fabric setup and VS Code MCP configuration for Power BI semantic models and ontology items |
+| [Deployable accelerator](deploy/README.md) | Offline plan and guarded deployment of the generated service-assurance data, lakehouse, notebook, and four semantic models into an existing workspace |
+| [Guided ontology bootstrap](deploy/ontology.md) | Human-guided `northstar ontology bootstrap` flow, exact source-model checks, definition export, and conformance boundary |
+| [Cost controls and safe lifecycle](deploy/cost.md) | Capacity and token cost drivers, lease-aware pause guidance, and the read-only teardown safety contract |
+| [Source control and promotion](deploy/lifecycle.md) | Git connection, definition boundaries, deployment-pipeline promotion, and current ontology metric limitations |
+| [Bring your own semantic models](adapt/bring-your-own-models.md) | Review-first TMDL scaffold for adapting the ontology to one high-value decision |
 
 ## Evaluation, reference, and governance
 
