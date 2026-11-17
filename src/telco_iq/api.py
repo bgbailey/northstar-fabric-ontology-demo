@@ -19,7 +19,7 @@ from telco_iq.catalog import Catalog, digest
 from telco_iq.comparison import ComparisonRequest, PairEvent
 from telco_iq.context import offline_context
 from telco_iq.contracts import Context, ExecutionResult, Plan, Scope, Status
-from telco_iq.demo_library import RecordedAgentSurface, RecordedDemoLibrary
+from telco_iq.demo_library import RecordedAgentSurface, RecordedDemoLibrary, RecordedScorecard
 from telco_iq.errors import LabError
 from telco_iq.events import ExecutionEvent
 from telco_iq.evidence import write_receipt
@@ -95,10 +95,13 @@ def create_app(
     comparisons = RecordedComparisons.read(recorded_comparisons) if recorded_comparisons is not None else None
     library: RecordedDemoLibrary | None = None
     agent_surface: RecordedAgentSurface | None = None
+    scorecard: RecordedScorecard | None = None
     if recorded_library is not None:
         raw_recorded = json.loads(recorded_library.read_text(encoding="utf-8"))
         if isinstance(raw_recorded, dict) and raw_recorded.get("mode") == "RECORDED_AGENT_SURFACE":
             agent_surface = RecordedAgentSurface.model_validate(raw_recorded)
+        elif isinstance(raw_recorded, dict) and raw_recorded.get("mode") == "RECORDED_SCORECARD":
+            scorecard = RecordedScorecard.model_validate(raw_recorded)
         else:
             library = RecordedDemoLibrary.model_validate(raw_recorded)
     root = root.resolve()
@@ -122,6 +125,8 @@ def create_app(
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
 
     def server_mode() -> str:
+        if scorecard is not None:
+            return scorecard.mode
         if agent_surface is not None:
             return agent_surface.mode
         if library is not None:
@@ -197,7 +202,13 @@ def create_app(
         }
 
     def execution_block(request: Request) -> JSONResponse | None:
-        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
+        if (
+            recording is not None
+            or comparisons is not None
+            or library is not None
+            or agent_surface is not None
+            or scorecard is not None
+        ):
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "Recorded mode cannot execute or rerun a query.",
@@ -477,6 +488,17 @@ def create_app(
     async def health(request: Request):
         session, reader_error = current_reader(request)
         readiness = public_readiness(session, reader_error)
+        if scorecard is not None:
+            return {
+                "mode": scorecard.mode, "scope": None, "data_ready": False,
+                "context_revision": digest(scorecard.model_dump(mode="json")),
+                "authenticated": False, "live_auth": "NOT_USED_RECORDED_MODE",
+                "readiness": {
+                    "mode": scorecard.mode, "ready": False, "status": "RECORDED_ONLY",
+                    "blockers": ["Explicit evaluation scorecard playback; no live execution in this mode."],
+                    "claim": "Recorded evaluation scorecard with explicit run conditions, not a live grant.",
+                },
+            }
         if agent_surface is not None:
             return {
                 "mode": agent_surface.mode, "scope": None, "data_ready": False,
@@ -539,7 +561,13 @@ def create_app(
 
     @app.get("/api/catalog")
     async def get_catalog(request: Request):
-        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
+        if (
+            recording is not None
+            or comparisons is not None
+            or library is not None
+            or agent_surface is not None
+            or scorecard is not None
+        ):
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "Recorded sources are display-only, not the fixture catalogue.",
@@ -554,7 +582,13 @@ def create_app(
 
     @app.get("/api/context", response_model=Context)
     async def get_context(request: Request):
-        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
+        if (
+            recording is not None
+            or comparisons is not None
+            or library is not None
+            or agent_surface is not None
+            or scorecard is not None
+        ):
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "The recorded definition is display-only, not executable planner context.",
@@ -602,6 +636,15 @@ def create_app(
                 "detail": "Start explicitly with --recorded-library pointing to a surface capture; no automatic fallback.",
             }, status_code=409)
         return agent_surface
+
+    @app.get("/api/scorecard", response_model=RecordedScorecard)
+    async def recorded_scorecard():
+        if scorecard is None:
+            return JSONResponse({
+                "status": Status.BLOCKED_CAPABILITY,
+                "detail": "Start explicitly with --recorded-library pointing to a scorecard file; no automatic fallback.",
+            }, status_code=409)
+        return scorecard
 
     @app.get("/api/capabilities")
     async def capabilities():

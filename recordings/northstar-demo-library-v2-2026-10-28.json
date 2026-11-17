@@ -48431,5 +48431,1680 @@
     "No new query, model call, authentication or transaction occurs when switching recorded streams.",
     "Earlier errors, cancelled-unknown reservations and historical failed arms are retained rather than erased.",
     "Public sanitized display projection: source-environment display names and internal references are generalized. Retained provenance hashes identify privately retained originals, not this display file. Synthetic business values and source-measure ownership are unchanged; no live reader grant or current execution is conveyed."
-  ]
+  ],
+  "scorecard": {
+    "schema_version": "1.0",
+    "mode": "RECORDED_SCORECARD",
+    "generated_at": "2026-11-17T17:34:03.254737+00:00",
+    "conditions": {
+      "execution_mode": "live_demo_tenant",
+      "profile": "service-assurance",
+      "seed": 20260929,
+      "question_count": 27,
+      "repeats": 5,
+      "arms": [
+        "baseline",
+        "baseline_plus_rules",
+        "ontology"
+      ],
+      "capacity_sku": "F8",
+      "region": "Central US",
+      "model_deployment": "gpt-5-mini (2025-08-07)",
+      "toolset_variant": "service_default",
+      "started_at": "2026-11-17T15:45:03.884845+00:00",
+      "completed_at": "2026-11-17T17:32:40.758737+00:00"
+    },
+    "arm_labels": {
+      "baseline": "Arm A — Semantic models only",
+      "baseline_plus_rules": "Arm A+ — Semantic models + rules in prompt",
+      "ontology": "Arm B — Ontology-grounded"
+    },
+    "summary_by_arm": {
+      "baseline": {
+        "arm": "baseline",
+        "total_runs": 135,
+        "question_count": 27,
+        "repeats": 5,
+        "answer_correct_runs": 38,
+        "answer_accuracy": {
+          "proportion": 0.281481,
+          "low": 0.212478,
+          "high": 0.362577
+        },
+        "mean_key_precision": 0.623177,
+        "mean_key_recall": 0.635871,
+        "mean_key_f1": 0.597525,
+        "path_accuracy": {
+          "proportion": 0.903704,
+          "low": 0.84221,
+          "high": 0.942858
+        },
+        "unknown_handling_accuracy": {
+          "proportion": 0.866667,
+          "low": 0.799075,
+          "high": 0.913968
+        },
+        "mean_repeat_stability": 0.644444,
+        "unanimous_pass_rate": 0.259259,
+        "traps_hit": {
+          "site-key-only": 0,
+          "credit-per-incident": 0,
+          "revenue-fan-out": 0,
+          "display-name-or-billing-key": 0,
+          "missing-as-zero": 16
+        },
+        "effort": {
+          "mean_tool_calls": 7.422,
+          "mean_input_tokens": 70927.6,
+          "mean_output_tokens": 8823.1,
+          "mean_seconds": 605.4964,
+          "total_tokens": 10766342
+        }
+      },
+      "baseline_plus_rules": {
+        "arm": "baseline_plus_rules",
+        "total_runs": 135,
+        "question_count": 27,
+        "repeats": 5,
+        "answer_correct_runs": 41,
+        "answer_accuracy": {
+          "proportion": 0.303704,
+          "low": 0.232451,
+          "high": 0.385818
+        },
+        "mean_key_precision": 0.672702,
+        "mean_key_recall": 0.601785,
+        "mean_key_f1": 0.608915,
+        "path_accuracy": {
+          "proportion": 0.896296,
+          "low": 0.833448,
+          "high": 0.937215
+        },
+        "unknown_handling_accuracy": {
+          "proportion": 0.992593,
+          "low": 0.959236,
+          "high": 0.998691
+        },
+        "mean_repeat_stability": 0.614815,
+        "unanimous_pass_rate": 0.259259,
+        "traps_hit": {
+          "site-key-only": 0,
+          "credit-per-incident": 0,
+          "revenue-fan-out": 0,
+          "display-name-or-billing-key": 0,
+          "missing-as-zero": 0
+        },
+        "effort": {
+          "mean_tool_calls": 7.304,
+          "mean_input_tokens": 72067.3,
+          "mean_output_tokens": 9197.7,
+          "mean_seconds": 559.6704,
+          "total_tokens": 10970776
+        }
+      },
+      "ontology": {
+        "arm": "ontology",
+        "total_runs": 135,
+        "question_count": 27,
+        "repeats": 5,
+        "answer_correct_runs": 44,
+        "answer_accuracy": {
+          "proportion": 0.325926,
+          "low": 0.252628,
+          "high": 0.408856
+        },
+        "mean_key_precision": 0.879967,
+        "mean_key_recall": 0.699673,
+        "mean_key_f1": 0.734039,
+        "path_accuracy": {
+          "proportion": 0.911111,
+          "low": 0.851052,
+          "high": 0.948421
+        },
+        "unknown_handling_accuracy": {
+          "proportion": 0.977778,
+          "low": 0.936703,
+          "high": 0.992414
+        },
+        "mean_repeat_stability": 0.607407,
+        "unanimous_pass_rate": 0.259259,
+        "traps_hit": {
+          "site-key-only": 0,
+          "credit-per-incident": 0,
+          "revenue-fan-out": 0,
+          "display-name-or-billing-key": 0,
+          "missing-as-zero": 0
+        },
+        "effort": {
+          "mean_tool_calls": 8.911,
+          "mean_input_tokens": 103271.0,
+          "mean_output_tokens": 11299.3,
+          "mean_seconds": 647.8853,
+          "total_tokens": 15466984
+        }
+      }
+    },
+    "by_level": {
+      "L1": {
+        "question_count": 6,
+        "arms": {
+          "baseline": {
+            "runs": 30,
+            "total_runs": 30,
+            "answer_correct_runs": 26,
+            "answer_accuracy": {
+              "proportion": 0.866667,
+              "low": 0.703187,
+              "high": 0.946903
+            },
+            "mean_key_f1": 0.91828,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.966667,
+            "unanimous_pass_rate": 0.833333,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 30,
+            "total_runs": 30,
+            "answer_correct_runs": 26,
+            "answer_accuracy": {
+              "proportion": 0.866667,
+              "low": 0.703187,
+              "high": 0.946903
+            },
+            "mean_key_f1": 0.953204,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.9,
+            "unanimous_pass_rate": 0.833333,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 30,
+            "total_runs": 30,
+            "answer_correct_runs": 26,
+            "answer_accuracy": {
+              "proportion": 0.866667,
+              "low": 0.703187,
+              "high": 0.946903
+            },
+            "mean_key_f1": 0.953439,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.886487,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.866667,
+            "unanimous_pass_rate": 0.666667,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": -0.1,
+            "high": 0.1,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": -0.1,
+            "high": 0.1,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          }
+        ]
+      },
+      "L2": {
+        "question_count": 5,
+        "arms": {
+          "baseline": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 5,
+            "answer_accuracy": {
+              "proportion": 0.2,
+              "low": 0.088606,
+              "high": 0.39131
+            },
+            "mean_key_f1": 0.744993,
+            "path_accuracy": {
+              "proportion": 0.8,
+              "low": 0.60869,
+              "high": 0.911394
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 0.68,
+              "low": 0.484103,
+              "high": 0.827948
+            },
+            "mean_repeat_stability": 0.6,
+            "unanimous_pass_rate": 0.2,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 8
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 5,
+            "answer_accuracy": {
+              "proportion": 0.2,
+              "low": 0.088606,
+              "high": 0.39131
+            },
+            "mean_key_f1": 0.689865,
+            "path_accuracy": {
+              "proportion": 0.72,
+              "low": 0.524234,
+              "high": 0.857161
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.866808,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.56,
+            "unanimous_pass_rate": 0.2,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 5,
+            "answer_accuracy": {
+              "proportion": 0.2,
+              "low": 0.088606,
+              "high": 0.39131
+            },
+            "mean_key_f1": 0.868895,
+            "path_accuracy": {
+              "proportion": 0.88,
+              "low": 0.700442,
+              "high": 0.958332
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 0.88,
+              "low": 0.700442,
+              "high": 0.958332
+            },
+            "mean_repeat_stability": 0.48,
+            "unanimous_pass_rate": 0.2,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          }
+        ]
+      },
+      "L3": {
+        "question_count": 5,
+        "arms": {
+          "baseline": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.133192
+            },
+            "mean_key_f1": 0.497875,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.866808,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 0.8,
+              "low": 0.60869,
+              "high": 0.911394
+            },
+            "mean_repeat_stability": 0.44,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 3
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.133192
+            },
+            "mean_key_f1": 0.454513,
+            "path_accuracy": {
+              "proportion": 0.96,
+              "low": 0.804559,
+              "high": 0.992904
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 0.96,
+              "low": 0.804559,
+              "high": 0.992904
+            },
+            "mean_repeat_stability": 0.44,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 25,
+            "total_runs": 25,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.133192
+            },
+            "mean_key_f1": 0.517472,
+            "path_accuracy": {
+              "proportion": 0.96,
+              "low": 0.804559,
+              "high": 0.992904
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.866808,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.28,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          }
+        ]
+      },
+      "L4": {
+        "question_count": 4,
+        "arms": {
+          "baseline": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.161125
+            },
+            "mean_key_f1": 0.405888,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.35,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.161125
+            },
+            "mean_key_f1": 0.320103,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.5,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.161125
+            },
+            "mean_key_f1": 0.398242,
+            "path_accuracy": {
+              "proportion": 0.85,
+              "low": 0.639581,
+              "high": 0.947631
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.35,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          }
+        ]
+      },
+      "N": {
+        "question_count": 4,
+        "arms": {
+          "baseline": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 7,
+            "answer_accuracy": {
+              "proportion": 0.35,
+              "low": 0.181192,
+              "high": 0.567146
+            },
+            "mean_key_f1": 0.588053,
+            "path_accuracy": {
+              "proportion": 0.6,
+              "low": 0.386582,
+              "high": 0.781193
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 0.75,
+              "low": 0.531299,
+              "high": 0.888138
+            },
+            "mean_repeat_stability": 0.75,
+            "unanimous_pass_rate": 0.25,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 5
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 10,
+            "answer_accuracy": {
+              "proportion": 0.5,
+              "low": 0.299298,
+              "high": 0.700702
+            },
+            "mean_key_f1": 0.749439,
+            "path_accuracy": {
+              "proportion": 0.7,
+              "low": 0.481027,
+              "high": 0.854523
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.75,
+            "unanimous_pass_rate": 0.25,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 20,
+            "total_runs": 20,
+            "answer_correct_runs": 13,
+            "answer_accuracy": {
+              "proportion": 0.65,
+              "low": 0.432854,
+              "high": 0.818808
+            },
+            "mean_key_f1": 0.926736,
+            "path_accuracy": {
+              "proportion": 0.8,
+              "low": 0.583983,
+              "high": 0.919342
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.838875,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.8,
+            "unanimous_pass_rate": 0.5,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.3,
+            "low": 0.0,
+            "high": 0.6,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.15,
+            "low": 0.0,
+            "high": 0.3,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.15,
+            "low": 0.0,
+            "high": 0.3,
+            "excludes_zero": false
+          }
+        ]
+      },
+      "P": {
+        "question_count": 3,
+        "arms": {
+          "baseline": {
+            "runs": 15,
+            "total_runs": 15,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.203883
+            },
+            "mean_key_f1": 0.144467,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.796117,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.796117,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.666667,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "baseline_plus_rules": {
+            "runs": 15,
+            "total_runs": 15,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.203883
+            },
+            "mean_key_f1": 0.240476,
+            "path_accuracy": {
+              "proportion": 1.0,
+              "low": 0.796117,
+              "high": 1.0
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.796117,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.4,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          },
+          "ontology": {
+            "runs": 15,
+            "total_runs": 15,
+            "answer_correct_runs": 0,
+            "answer_accuracy": {
+              "proportion": 0.0,
+              "low": 0.0,
+              "high": 0.203883
+            },
+            "mean_key_f1": 0.622223,
+            "path_accuracy": {
+              "proportion": 0.933333,
+              "low": 0.701835,
+              "high": 0.988133
+            },
+            "unknown_handling_accuracy": {
+              "proportion": 1.0,
+              "low": 0.796117,
+              "high": 1.0
+            },
+            "mean_repeat_stability": 0.933333,
+            "unanimous_pass_rate": 0.0,
+            "traps_hit": {
+              "site-key-only": 0,
+              "credit-per-incident": 0,
+              "revenue-fan-out": 0,
+              "display-name-or-billing-key": 0,
+              "missing-as-zero": 0
+            }
+          }
+        },
+        "differences": [
+          {
+            "comparison": "Arm B vs Arm A",
+            "left_arm": "ontology",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm B vs Arm A+",
+            "left_arm": "ontology",
+            "right_arm": "baseline_plus_rules",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          },
+          {
+            "comparison": "Arm A+ vs Arm A",
+            "left_arm": "baseline_plus_rules",
+            "right_arm": "baseline",
+            "metric": "answer_accuracy",
+            "diff": 0.0,
+            "low": 0.0,
+            "high": 0.0,
+            "excludes_zero": false
+          }
+        ]
+      }
+    },
+    "overall_differences": [
+      {
+        "comparison": "Arm B vs Arm A",
+        "left_arm": "ontology",
+        "right_arm": "baseline",
+        "metric": "answer_accuracy",
+        "diff": 0.044444,
+        "low": -0.007407,
+        "high": 0.111111,
+        "excludes_zero": false
+      },
+      {
+        "comparison": "Arm B vs Arm A+",
+        "left_arm": "ontology",
+        "right_arm": "baseline_plus_rules",
+        "metric": "answer_accuracy",
+        "diff": 0.022222,
+        "low": -0.007407,
+        "high": 0.066667,
+        "excludes_zero": false
+      },
+      {
+        "comparison": "Arm A+ vs Arm A",
+        "left_arm": "baseline_plus_rules",
+        "right_arm": "baseline",
+        "metric": "answer_accuracy",
+        "diff": 0.022222,
+        "low": 0.0,
+        "high": 0.059259,
+        "excludes_zero": false
+      }
+    ],
+    "failed_questions": [
+      {
+        "question_id": "SA-L1-003",
+        "level": "L1",
+        "arm": "baseline",
+        "correct_repeats": 1,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-001",
+        "level": "L2",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-002",
+        "level": "L2",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-003",
+        "level": "L2",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [
+          "missing-as-zero"
+        ],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "trap:missing-as-zero",
+          "missing_expected_exclusions",
+          "unknown_coerced_to_zero",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-005",
+        "level": "L2",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [
+          "missing-as-zero"
+        ],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "trap:missing-as-zero",
+          "unknown_coerced_to_zero"
+        ]
+      },
+      {
+        "question_id": "SA-L3-001",
+        "level": "L3",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "missing_expected_exclusions"
+        ]
+      },
+      {
+        "question_id": "SA-L3-002",
+        "level": "L3",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-003",
+        "level": "L3",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-004",
+        "level": "L3",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "missing_expected_exclusions"
+        ]
+      },
+      {
+        "question_id": "SA-L3-005",
+        "level": "L3",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [
+          "missing-as-zero"
+        ],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "trap:missing-as-zero",
+          "unknown_coerced_to_zero",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-001",
+        "level": "L4",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-002",
+        "level": "L4",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-003",
+        "level": "L4",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-004",
+        "level": "L4",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-002",
+        "level": "N",
+        "arm": "baseline",
+        "correct_repeats": 2,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-003",
+        "level": "N",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-004",
+        "level": "N",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [
+          "missing-as-zero"
+        ],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "trap:missing-as-zero",
+          "unknown_coerced_to_zero"
+        ]
+      },
+      {
+        "question_id": "SA-P-001",
+        "level": "P",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-002",
+        "level": "P",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-003",
+        "level": "P",
+        "arm": "baseline",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L1-003",
+        "level": "L1",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 1,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-001",
+        "level": "L2",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-002",
+        "level": "L2",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-003",
+        "level": "L2",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-005",
+        "level": "L2",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-001",
+        "level": "L3",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-002",
+        "level": "L3",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch",
+          "missing_expected_exclusions"
+        ]
+      },
+      {
+        "question_id": "SA-L3-003",
+        "level": "L3",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-004",
+        "level": "L3",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-005",
+        "level": "L3",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-001",
+        "level": "L4",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-002",
+        "level": "L4",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-003",
+        "level": "L4",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-004",
+        "level": "L4",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-002",
+        "level": "N",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 4,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-003",
+        "level": "N",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-004",
+        "level": "N",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 1,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-001",
+        "level": "P",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-002",
+        "level": "P",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch",
+          "duplicate_or_malformed_keys"
+        ]
+      },
+      {
+        "question_id": "SA-P-003",
+        "level": "P",
+        "arm": "baseline_plus_rules",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L1-002",
+        "level": "L1",
+        "arm": "ontology",
+        "correct_repeats": 4,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L1-003",
+        "level": "L1",
+        "arm": "ontology",
+        "correct_repeats": 2,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-001",
+        "level": "L2",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-002",
+        "level": "L2",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L2-003",
+        "level": "L2",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch",
+          "duplicate_or_malformed_keys",
+          "missing_expected_exclusions"
+        ]
+      },
+      {
+        "question_id": "SA-L2-005",
+        "level": "L2",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-001",
+        "level": "L3",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch",
+          "duplicate_or_malformed_keys"
+        ]
+      },
+      {
+        "question_id": "SA-L3-002",
+        "level": "L3",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-003",
+        "level": "L3",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-004",
+        "level": "L3",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L3-005",
+        "level": "L3",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-001",
+        "level": "L4",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-002",
+        "level": "L4",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-003",
+        "level": "L4",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-L4-004",
+        "level": "L4",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch",
+          "numeric_value_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-003",
+        "level": "N",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-N-004",
+        "level": "N",
+        "arm": "ontology",
+        "correct_repeats": 3,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-001",
+        "level": "P",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-002",
+        "level": "P",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      },
+      {
+        "question_id": "SA-P-003",
+        "level": "P",
+        "arm": "ontology",
+        "correct_repeats": 0,
+        "repeats": 5,
+        "traps_hit": [],
+        "failure_reasons": [
+          "key_set_mismatch"
+        ]
+      }
+    ],
+    "limitations": [
+      "Results reflect the synthetic Northstar Wireless service assurance scenario in the recorded demo tenant configuration (model deployment, capacity size, and region).",
+      "A statement of accuracy benefit is supported only where the 95% paired bootstrap interval excludes zero; ties and inconclusive intervals are published alongside wins.",
+      "Workspace, tenant, and item UUIDs are omitted from published scorecards."
+    ]
+  }
 }

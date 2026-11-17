@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import ConfigDict, Field, model_validator
 
 from telco_iq.contracts import Contract, Sha256, SourceClock
 from telco_iq.recorded_comparison import RecordedComparisons
@@ -219,6 +219,176 @@ class RecordedServiceAssuranceDemo(Contract):
         return self
 
 
+class ScorecardContract(Contract):
+    model_config = ConfigDict(extra="ignore")
+
+
+class WilsonInterval(ScorecardContract):
+    proportion: float = Field(ge=0.0, le=1.0)
+    low: float = Field(ge=0.0, le=1.0)
+    high: float = Field(ge=0.0, le=1.0)
+
+    @model_validator(mode="after")
+    def validate_bounds(self):
+        if self.low - self.proportion > 1e-6 or self.proportion - self.high > 1e-6:
+            raise ValueError("Wilson interval requires low <= proportion <= high")
+        return self
+
+
+class ScorecardConditions(ScorecardContract):
+    execution_mode: Literal["offline_scripted", "live_demo_tenant"]
+    profile: str = Field(min_length=1)
+    seed: int | None = None
+    question_count: int = Field(strict=True, ge=1, lt=2**53)
+    repeats: int = Field(strict=True, ge=1, lt=2**53)
+    arms: list[str] = Field(min_length=1)
+    capacity_sku: str | None = None
+    region: str | None = None
+    model_deployment: str | None = None
+    toolset_variant: str | None = None
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
+
+    @model_validator(mode="after")
+    def validate_conditions(self):
+        if len(set(self.arms)) != len(self.arms) or any(not arm.strip() for arm in self.arms):
+            raise ValueError("Scorecard conditions require distinct non-empty arm identifiers")
+        if self.started_at is not None and self.started_at.tzinfo is None:
+            raise ValueError("Scorecard started_at requires a zoned UTC timestamp")
+        if self.completed_at is not None and self.completed_at.tzinfo is None:
+            raise ValueError("Scorecard completed_at requires a zoned UTC timestamp")
+        return self
+
+
+class ScorecardEffort(ScorecardContract):
+    mean_tool_calls: float = Field(ge=0.0)
+    mean_input_tokens: float = Field(ge=0.0)
+    mean_output_tokens: float = Field(ge=0.0)
+    mean_seconds: float = Field(ge=0.0)
+    total_tokens: int = Field(ge=0, lt=2**53)
+
+
+class ScorecardArmSummary(ScorecardContract):
+    arm: str = Field(min_length=1)
+    total_runs: int = Field(strict=True, ge=1, lt=2**53)
+    question_count: int = Field(strict=True, ge=1, lt=2**53)
+    repeats: int = Field(strict=True, ge=1, lt=2**53)
+    answer_correct_runs: int = Field(strict=True, ge=0, lt=2**53)
+    answer_accuracy: WilsonInterval
+    mean_key_precision: float = Field(ge=0.0, le=1.0)
+    mean_key_recall: float = Field(ge=0.0, le=1.0)
+    mean_key_f1: float = Field(ge=0.0, le=1.0)
+    path_accuracy: WilsonInterval
+    unknown_handling_accuracy: WilsonInterval
+    mean_repeat_stability: float = Field(ge=0.0, le=1.0)
+    unanimous_pass_rate: float = Field(ge=0.0, le=1.0)
+    traps_hit: dict[str, int] = Field(default_factory=dict)
+    effort: ScorecardEffort
+
+    @model_validator(mode="after")
+    def validate_arm_counts(self):
+        if self.answer_correct_runs > self.total_runs:
+            raise ValueError("answer_correct_runs cannot exceed total_runs")
+        if any(count < 0 for count in self.traps_hit.values()):
+            raise ValueError("traps_hit counts must be non-negative")
+        return self
+
+
+class ScorecardDifference(ScorecardContract):
+    comparison: str = Field(min_length=1)
+    left_arm: str = Field(min_length=1)
+    right_arm: str = Field(min_length=1)
+    metric: str = Field(min_length=1)
+    diff: float = Field(ge=-1.0, le=1.0)
+    low: float = Field(ge=-1.0, le=1.0)
+    high: float = Field(ge=-1.0, le=1.0)
+    excludes_zero: bool = Field(strict=True)
+
+    @model_validator(mode="after")
+    def validate_difference_interval(self):
+        if self.low - self.diff > 1e-6 or self.diff - self.high > 1e-6:
+            raise ValueError("Bootstrap interval requires low <= diff <= high")
+        return self
+
+
+class ScorecardLevelArmSummary(ScorecardContract):
+    runs: int = Field(strict=True, ge=1, lt=2**53)
+    answer_correct_runs: int = Field(strict=True, ge=0, lt=2**53)
+    answer_accuracy: WilsonInterval
+    mean_key_f1: float = Field(ge=0.0, le=1.0)
+    path_accuracy: WilsonInterval
+    unknown_handling_accuracy: WilsonInterval | None = None
+    mean_repeat_stability: float = Field(ge=0.0, le=1.0)
+
+    @model_validator(mode="after")
+    def validate_level_counts(self):
+        if self.answer_correct_runs > self.runs:
+            raise ValueError("Level answer_correct_runs cannot exceed runs")
+        return self
+
+
+class ScorecardLevelSummary(ScorecardContract):
+    question_count: int = Field(strict=True, ge=1, lt=2**53)
+    arms: dict[str, ScorecardLevelArmSummary] = Field(min_length=1)
+    differences: list[ScorecardDifference] = Field(default_factory=list)
+
+
+class ScorecardFailedQuestion(ScorecardContract):
+    question_id: str = Field(min_length=1)
+    level: str = Field(min_length=1)
+    arm: str = Field(min_length=1)
+    correct_repeats: int = Field(strict=True, ge=0, lt=2**53)
+    repeats: int = Field(strict=True, ge=1, lt=2**53)
+    traps_hit: list[str] = Field(default_factory=list)
+    failure_reasons: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_repeats(self):
+        if self.correct_repeats > self.repeats:
+            raise ValueError("correct_repeats cannot exceed repeats")
+        return self
+
+
+class RecordedScorecard(ScorecardContract):
+    schema_version: Literal["1.0"] = "1.0"
+    mode: Literal["RECORDED_SCORECARD"] = "RECORDED_SCORECARD"
+    generated_at: datetime
+    conditions: ScorecardConditions
+    arm_labels: dict[str, str] = Field(min_length=1)
+    summary_by_arm: dict[str, ScorecardArmSummary] = Field(min_length=1)
+    by_level: dict[str, ScorecardLevelSummary] = Field(min_length=1)
+    overall_differences: list[ScorecardDifference] = Field(default_factory=list)
+    failed_questions: list[ScorecardFailedQuestion] = Field(default_factory=list)
+    limitations: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_scorecard(self):
+        if self.generated_at.tzinfo is None:
+            raise ValueError("Scorecard recording requires a zoned UTC timestamp")
+        expected_arms = set(self.conditions.arms)
+        if set(self.summary_by_arm) != expected_arms:
+            raise ValueError("summary_by_arm keys must match conditions.arms")
+        for arm_key, summary in self.summary_by_arm.items():
+            if summary.arm != arm_key:
+                raise ValueError("summary_by_arm key must match summary.arm")
+        if not expected_arms <= set(self.arm_labels) or any(
+            not label.strip() for label in self.arm_labels.values()
+        ):
+            raise ValueError("arm_labels must provide a non-empty label for every arm in conditions.arms")
+        if any(not item.strip() for item in self.limitations):
+            raise ValueError("Scorecard limitations must be non-empty strings")
+        return self
+
+    def verify_private_identifiers_absent(self, values: set[str]):
+        text = self.model_dump_json().casefold()
+        if any(value and value.casefold() in text for value in values):
+            raise ValueError("Private target or principal identifier remains in the scorecard")
+
+    @classmethod
+    def read(cls, path: Path):
+        return cls.model_validate_json(path.read_text(encoding="utf-8"))
+
+
 class RecordedDemoLibrary(Contract):
     schema_version: Literal["1.0"] = "1.0"
     mode: Literal["RECORDED_DEMO_LIBRARY"] = "RECORDED_DEMO_LIBRARY"
@@ -226,6 +396,9 @@ class RecordedDemoLibrary(Contract):
     executive: RecordedExecutiveDemo
     customer360: RecordedComparisons
     service_assurance: RecordedServiceAssuranceDemo | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
+    scorecard: RecordedScorecard | None = Field(
         default=None, exclude_if=lambda value: value is None,
     )
     limitations: list[str] = Field(min_length=1)

@@ -15,6 +15,7 @@ from telco_iq.demo_library import (
     RecordedAgentSurface,
     RecordedDemoLibrary,
     RecordedExecutiveDemo,
+    RecordedScorecard,
     RecordedServiceAssuranceDemo,
 )
 from tools.build_agent_surface_captures import surface_filename
@@ -141,7 +142,14 @@ def test_two_stream_library_never_grants_live_reader_or_fixture_execution(tmp_pa
     assert health["mode"] == "RECORDED_DEMO_LIBRARY"
     assert not health["authenticated"] and health["scope"] is None and not health["data_ready"]
     assert client.get("/api/demo-library").json()["executive"]["separate_native_item_verified"] is True
-    for endpoint in ("/api/catalog", "/api/context", "/api/native-demo", "/api/recorded-comparisons", "/api/agent-surface"):
+    for endpoint in (
+        "/api/catalog",
+        "/api/context",
+        "/api/native-demo",
+        "/api/recorded-comparisons",
+        "/api/agent-surface",
+        "/api/scorecard",
+    ):
         assert client.get(endpoint).status_code == 409
     plan = {
         "request_id": "synthetic-library-execution-boundary", "question": "Not executed",
@@ -321,4 +329,290 @@ def test_four_sanitized_agent_surface_recordings_and_screenshots_play_standalone
     unzoned["captured_at"] = "2026-11-17T11:55:31"
     with pytest.raises(ValidationError):
         RecordedAgentSurface.model_validate(unzoned)
+
+
+def scorecard_fixture(execution_mode: str = "offline_scripted") -> dict:
+    return {
+        "schema_version": "1.0",
+        "mode": "RECORDED_SCORECARD",
+        "generated_at": "2026-11-17T13:30:00Z",
+        "conditions": {
+            "execution_mode": execution_mode,
+            "profile": "service-assurance",
+            "seed": 20260929,
+            "question_count": 27,
+            "repeats": 5,
+            "arms": ["baseline", "baseline_plus_rules", "ontology"],
+            "capacity_sku": "F8",
+            "region": "Central US",
+            "model_deployment": "gpt-5-mini",
+            "toolset_variant": "service_default",
+            "started_at": "2026-11-17T13:00:00Z",
+            "completed_at": "2026-11-17T13:20:00Z",
+        },
+        "arm_labels": {
+            "baseline": "Arm A - Semantic models only",
+            "baseline_plus_rules": "Arm A+ - Semantic models + rules in prompt",
+            "ontology": "Arm B - Ontology-grounded",
+        },
+        "summary_by_arm": {
+            "baseline": {
+                "arm": "baseline",
+                "total_runs": 135,
+                "question_count": 27,
+                "repeats": 5,
+                "answer_correct_runs": 30,
+                "answer_accuracy": {"proportion": 0.2222, "low": 0.1603, "high": 0.2995},
+                "mean_key_precision": 0.44,
+                "mean_key_recall": 0.52,
+                "mean_key_f1": 0.4767,
+                "path_accuracy": {"proportion": 0.2222, "low": 0.1603, "high": 0.2995},
+                "unknown_handling_accuracy": {"proportion": 0.25, "low": 0.14, "high": 0.4},
+                "mean_repeat_stability": 0.84,
+                "unanimous_pass_rate": 0.2222,
+                "traps_hit": {
+                    "site-key-only": 25,
+                    "credit-per-incident": 20,
+                    "revenue-fan-out": 15,
+                    "display-name-or-billing-key": 10,
+                    "missing-as-zero": 20,
+                },
+                "effort": {
+                    "mean_tool_calls": 9.8,
+                    "mean_input_tokens": 4120.0,
+                    "mean_output_tokens": 810.0,
+                    "mean_seconds": 15.6,
+                    "total_tokens": 665550,
+                },
+            },
+            "baseline_plus_rules": {
+                "arm": "baseline_plus_rules",
+                "total_runs": 135,
+                "question_count": 27,
+                "repeats": 5,
+                "answer_correct_runs": 93,
+                "answer_accuracy": {"proportion": 0.6889, "low": 0.6065, "high": 0.7608},
+                "mean_key_precision": 0.78,
+                "mean_key_recall": 0.81,
+                "mean_key_f1": 0.7947,
+                "path_accuracy": {"proportion": 0.6889, "low": 0.6065, "high": 0.7608},
+                "unknown_handling_accuracy": {"proportion": 0.75, "low": 0.6, "high": 0.86},
+                "mean_repeat_stability": 0.91,
+                "unanimous_pass_rate": 0.6296,
+                "traps_hit": {
+                    "site-key-only": 5,
+                    "credit-per-incident": 5,
+                    "revenue-fan-out": 4,
+                    "display-name-or-billing-key": 6,
+                    "missing-as-zero": 5,
+                },
+                "effort": {
+                    "mean_tool_calls": 8.6,
+                    "mean_input_tokens": 6450.0,
+                    "mean_output_tokens": 740.0,
+                    "mean_seconds": 14.2,
+                    "total_tokens": 970650,
+                },
+            },
+            "ontology": {
+                "arm": "ontology",
+                "total_runs": 135,
+                "question_count": 27,
+                "repeats": 5,
+                "answer_correct_runs": 135,
+                "answer_accuracy": {"proportion": 1.0, "low": 0.9723, "high": 1.0},
+                "mean_key_precision": 1.0,
+                "mean_key_recall": 1.0,
+                "mean_key_f1": 1.0,
+                "path_accuracy": {"proportion": 1.0, "low": 0.9723, "high": 1.0},
+                "unknown_handling_accuracy": {"proportion": 1.0, "low": 0.9723, "high": 1.0},
+                "mean_repeat_stability": 1.0,
+                "unanimous_pass_rate": 1.0,
+                "traps_hit": {
+                    "site-key-only": 0,
+                    "credit-per-incident": 0,
+                    "revenue-fan-out": 0,
+                    "display-name-or-billing-key": 0,
+                    "missing-as-zero": 0,
+                },
+                "effort": {
+                    "mean_tool_calls": 5.2,
+                    "mean_input_tokens": 1850.0,
+                    "mean_output_tokens": 420.0,
+                    "mean_seconds": 8.4,
+                    "total_tokens": 306450,
+                },
+            },
+        },
+        "by_level": {
+            "L1": {
+                "question_count": 6,
+                "arms": {
+                    "baseline": {
+                        "runs": 30,
+                        "answer_correct_runs": 30,
+                        "answer_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_key_f1": 1.0,
+                        "path_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "unknown_handling_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_repeat_stability": 1.0,
+                    },
+                    "baseline_plus_rules": {
+                        "runs": 30,
+                        "answer_correct_runs": 30,
+                        "answer_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_key_f1": 1.0,
+                        "path_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "unknown_handling_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_repeat_stability": 1.0,
+                    },
+                    "ontology": {
+                        "runs": 30,
+                        "answer_correct_runs": 30,
+                        "answer_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_key_f1": 1.0,
+                        "path_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "unknown_handling_accuracy": {"proportion": 1.0, "low": 0.8865, "high": 1.0},
+                        "mean_repeat_stability": 1.0,
+                    },
+                },
+                "differences": [
+                    {
+                        "comparison": "ontology_vs_baseline",
+                        "left_arm": "ontology",
+                        "right_arm": "baseline",
+                        "metric": "answer_accuracy",
+                        "diff": 0.0,
+                        "low": 0.0,
+                        "high": 0.0,
+                        "excludes_zero": False,
+                    }
+                ],
+            }
+        },
+        "overall_differences": [
+            {
+                "comparison": "ontology_vs_baseline",
+                "left_arm": "ontology",
+                "right_arm": "baseline",
+                "metric": "answer_accuracy",
+                "diff": 0.7778,
+                "low": 0.6296,
+                "high": 0.9259,
+                "excludes_zero": True,
+            }
+        ],
+        "failed_questions": [
+            {
+                "question_id": "SA-L2-001",
+                "level": "L2",
+                "arm": "baseline",
+                "correct_repeats": 0,
+                "repeats": 5,
+                "traps_hit": ["site-key-only"],
+                "failure_reasons": ["key_mismatch", "trap:site-key-only"],
+            }
+        ],
+        "limitations": ["Synthetic evaluation fixture only; not a live run."],
+    }
+
+
+def test_scorecard_contract_validates_bounds_and_embeds_cleanly_in_demo_library():
+    for mode in ("offline_scripted", "live_demo_tenant"):
+        raw = scorecard_fixture(mode)
+        raw["harmless_extra_metadata"] = "ignored_cleanly"
+        parsed = RecordedScorecard.model_validate(raw)
+        assert parsed.mode == "RECORDED_SCORECARD"
+        assert parsed.conditions.execution_mode == mode
+        assert parsed.summary_by_arm["ontology"].answer_accuracy.proportion == 1.0
+        parsed.verify_private_identifiers_absent({"SYNTHETIC_ABSENT_SECRET"})
+        with pytest.raises(ValueError, match="Private target"):
+            parsed.verify_private_identifiers_absent({"gpt-5-mini"})
+
+    with_scorecard = library_fixture()
+    with_scorecard["scorecard"] = scorecard_fixture("live_demo_tenant")
+    parsed_library = RecordedDemoLibrary.model_validate(with_scorecard)
+    assert parsed_library.scorecard is not None
+    assert parsed_library.scorecard.conditions.execution_mode == "live_demo_tenant"
+
+    without_scorecard = RecordedDemoLibrary.model_validate(library_fixture())
+    assert "scorecard" not in without_scorecard.model_dump(mode="json")
+
+    for mutation in (
+        lambda d: d.update(generated_at="2026-11-17T13:30:00"),
+        lambda d: d["conditions"].update(execution_mode="unknown_mode"),
+        lambda d: d["conditions"].update(started_at="2026-11-17T13:00:00"),
+        lambda d: d["summary_by_arm"].pop("baseline"),
+        lambda d: d["summary_by_arm"]["ontology"]["answer_accuracy"].update(low=1.0, proportion=0.9),
+        lambda d: d["summary_by_arm"]["ontology"].update(answer_correct_runs=136),
+        lambda d: d["overall_differences"][0].update(low=0.9, diff=0.7778, high=0.95),
+        lambda d: d["failed_questions"][0].update(correct_repeats=6),
+        lambda d: d.update(limitations=[]),
+    ):
+        broken = deepcopy(scorecard_fixture())
+        mutation(broken)
+        with pytest.raises(ValidationError):
+            RecordedScorecard.model_validate(broken)
+
+
+def test_standalone_scorecard_endpoint_serves_validated_json_and_blocks_execution(tmp_path):
+    scorecard_path = tmp_path / "scorecard.json"
+    scorecard_path.write_text(
+        RecordedScorecard.model_validate(scorecard_fixture("live_demo_tenant")).model_dump_json(),
+        encoding="utf-8",
+    )
+    client = TestClient(create_app(ROOT, recorded_library=scorecard_path), base_url="http://localhost:8765")
+
+    health = client.get("/api/health").json()
+    assert health["mode"] == "RECORDED_SCORECARD"
+    assert not health["authenticated"] and health["scope"] is None and not health["data_ready"]
+    assert health["readiness"]["status"] == "RECORDED_ONLY"
+    assert client.get("/api/capabilities").json()["mode"] == "RECORDED_SCORECARD"
+
+    served = client.get("/api/scorecard")
+    assert served.status_code == 200
+    payload = served.json()
+    assert payload["mode"] == "RECORDED_SCORECARD"
+    assert payload["conditions"]["execution_mode"] == "live_demo_tenant"
+    assert payload["overall_differences"][0]["excludes_zero"] is True
+
+    for blocked_get in (
+        "/api/demo-library",
+        "/api/agent-surface",
+        "/api/catalog",
+        "/api/context",
+        "/api/native-demo",
+        "/api/recorded-comparisons",
+        "/api/fixtures/sla",
+    ):
+        assert client.get(blocked_get).status_code == 409
+
+    plan = {
+        "request_id": "synthetic-scorecard-execution-boundary",
+        "question": "Not executed",
+        "principal_scope": {
+            "tenant": "synthetic",
+            "principal": "test",
+            "authorization_revision": "1",
+            "models": [],
+            "mode": "OFFLINE_SYNTHETIC",
+        },
+        "as_of": "2026-09-30T00:00:00Z",
+        "ontology_revision": "ignored",
+        "metric_selections": [],
+        "result_node": "answer",
+        "nodes": [{"id": "answer", "kind": "SynthesizeAnswer", "source": "not-executed"}],
+    }
+    for blocked_post in ("/api/execute", "/api/execute/stream"):
+        resp = client.post(blocked_post, json=plan, headers={"X-Telco-Local": "submitted-plan"})
+        assert resp.status_code == 409 and "cannot execute" in resp.json()["detail"]
+    assert client.post(
+        "/api/compare/stream",
+        json={"question": "Not executed"},
+        headers={"X-Telco-Local": "submitted-plan"},
+    ).status_code == 409
+
+    offline = TestClient(create_app(ROOT), base_url="http://localhost:8765")
+    assert offline.get("/api/scorecard").status_code == 409
+
 

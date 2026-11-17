@@ -26,7 +26,7 @@ The numbers match the diagram.
 4. **Context to agents.** An agent reads entity types, relationships, metrics and rules from the ontology through the ontology MCP endpoint or through a Fabric data agent that uses the ontology as a source. This is metadata and guidance, drawn as dashed lines.
 5. **Queries stay in the semantic models.** When numbers are needed, DAX runs on the semantic model that owns the measure, under the identity of the person asking. The Fabric IQ MCP server gives agents governed access to semantic models and reports directly. It does not read ontology items, which makes it the natural "semantic models only" baseline.
 6. **Agents and experiences.** A Microsoft Foundry agent, a Copilot Studio agent, agents published to Microsoft 365 Copilot and Teams, and GitHub Copilot in VS Code all use the same ontology. Reports and real-time dashboards show people the same entities and measures.
-7. **Evaluation.** The harness in this repository replays a fixed set of multi-hop questions through two arms, semantic models only and ontology-grounded, and scores the answer, the path, grain and unknown handling, and the effort. See [How a question is answered](#how-a-question-is-answered).
+7. **Evaluation.** The harness in this repository replays a fixed set of multi-hop questions across three evaluation arms (each evaluation arm is one tested configuration given the same questions, data, and model: semantic models only, semantic models with rules in the prompt, and ontology-grounded) and scores the answer, the path, grain and unknown handling, and the effort. See [How a question is answered](#how-a-question-is-answered) and [../evaluation/README.md](../evaluation/README.md).
 
 ### Components
 
@@ -86,12 +86,13 @@ Two models share one conformed key. Any capable agent can join two result sets o
 
 *Download the [SVG](images/question-flow-two-arms.svg).*
 
-Both arms use the same four semantic models, the same model-level AI preparation, the same permissions and the same model deployment. An agent can reach correct numbers without an ontology; this repository does not claim otherwise. The difference under test is where the cross-model meaning comes from:
+All evaluation arms use the same four semantic models, the same model-level AI preparation, the same demo user permissions and the same model deployment. An agent can reach correct numbers without an ontology; this repository does not claim otherwise. The difference under test is where the cross-model meaning comes from:
 
-- In **Arm A** the agent infers the bridges and carries the identity, validity and grain rules in its own instructions.
-- In **Arm B** the agent reads the bridges and the rules from the ontology, and every other agent reuses the same ones.
+- In **Arm A** (`baseline`) the agent queries the semantic models only and infers the bridges between them.
+- In **Arm A+** (`baseline_plus_rules`) the agent queries the semantic models with the five identity, validity and grain rules pasted into its own instructions.
+- In **Arm B** (`ontology`) the agent reads the bridges and the rules from the ontology, and every other agent reuses the same ones.
 
-The harness reports what it measures: whether the answer matches an independent oracle, whether the path and grain were right, whether unknown values were reported rather than zeroed, how many tool calls, tokens and seconds it took, and how stable the result is across repeated runs. No advantage is claimed that the scorecard does not show.
+The harness reports what it measures: whether the answer matches an independent oracle, whether the path and grain were right, whether unknown values were reported rather than zeroed, how many tool calls, tokens and seconds it took, and how stable the result is across repeated runs. No advantage is claimed that the scorecard does not show; see the [evaluation design and claims policy](../evaluation/README.md).
 
 ## Binding strategies
 

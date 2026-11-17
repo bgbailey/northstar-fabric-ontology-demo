@@ -172,7 +172,10 @@ describe("Service assurance recorded stream in DemoLibraryView", () => {
 
   it("omits the service assurance switcher button when a two-stream library is loaded", async () => {
     await act(async () => root.render(
-      <DemoLibraryView library={{ ...library, service_assurance: undefined }} initialStream="service_assurance" />,
+      <DemoLibraryView
+        library={{ ...library, service_assurance: undefined, scorecard: undefined }}
+        initialStream="service_assurance"
+      />,
     ));
     const labels = [...container.querySelectorAll(".demo-stream-switch button")].map(btn => btn.textContent?.trim());
     expect(labels).toEqual([

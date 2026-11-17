@@ -185,6 +185,15 @@ select { font: inherit; border: 1px solid var(--cp-border-strong); border-radius
 .surface-capture-stage footer p { margin: 4px 0; }
 .demo-stream-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .demo-stream-switch.three-streams { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.demo-stream-switch.four-streams { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.scorecard-stage table td:not(:first-child) { font-variant-numeric: tabular-nums; }
+.scorecard-conditions { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 16px; margin: 16px 0 0; }
+.scorecard-conditions div { border: 1px solid var(--cp-border); border-radius: .625rem; padding: 10px 14px; background: var(--cp-bg-elevated); min-width: 0; }
+.scorecard-conditions dt { font-size: 12px; color: var(--cp-text-muted); margin-bottom: 4px; }
+.scorecard-conditions dd { margin: 0; font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
+.scorecard-cell-detail { display: block; margin-top: 4px; font-size: 12px; color: var(--cp-text-muted); font-weight: normal; }
+.scorecard-level-diff { margin-bottom: 6px; font-size: 12px; }
+.scorecard-level-diff:last-child { margin-bottom: 0; }
 .story-presets button { display: flex; flex-direction: column; gap: 8px; padding: 16px; text-align: left; min-width: 0; }
 .story-presets small { color: var(--cp-text-muted); overflow-wrap: anywhere; }
 .native-stage { max-width: 1480px; }
@@ -277,12 +286,12 @@ button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visib
   outline: 2px solid var(--cp-accent); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .native-stage * { scroll-behavior: auto; } }
 @media(max-width: 1100px) {
-  .authority-grid, .evidence-path { grid-template-columns: repeat(2, 1fr); }
+  .authority-grid, .evidence-path, .demo-stream-switch.four-streams { grid-template-columns: repeat(2, 1fr); }
   .native-header { flex-wrap: wrap; }
   .native-header .capture-label { text-align: left; }
 }
 @media(max-width: 800px) { main { padding: 16px; } header, .row { flex-direction: column; align-items: stretch; }
-  .grid, .comparison-grid, .detail-grid, .fixture-controls, .story-presets, .demo-stream-switch.three-streams { grid-template-columns: 1fr; } nav { flex-wrap: wrap; }
+  .grid, .comparison-grid, .detail-grid, .fixture-controls, .story-presets, .demo-stream-switch.three-streams, .demo-stream-switch.four-streams { grid-template-columns: 1fr; } nav { flex-wrap: wrap; }
   .capture-label { text-align: left; } .section-heading { flex-wrap: wrap; }
   .native-graph { height: 400px; } .result-metrics strong { font-size: 28px; } }
 @media(max-width: 800px) {

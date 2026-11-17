@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isRecordedDemoLibrary, isRecordedExecutiveDemo } from "./DemoLibrary";
+import type { RecordedScorecard } from "./ScorecardView";
 import { isRecordedServiceAssuranceDemo } from "./ServiceAssuranceDemo";
 
 async function readCommittedLibrary(): Promise<unknown> {
@@ -54,6 +55,120 @@ function fixture() {
     limitations: ["SYNTHETIC UNIT ONLY; no actual native/service claim."],
   };
 }
+function scorecardFixture(): RecordedScorecard {
+  return {
+    schema_version: "1.0",
+    mode: "RECORDED_SCORECARD",
+    generated_at: "2026-11-17T13:30:00Z",
+    conditions: {
+      execution_mode: "offline_scripted",
+      profile: "service-assurance",
+      seed: 20260929,
+      question_count: 6,
+      repeats: 5,
+      arms: ["baseline", "ontology"],
+      capacity_sku: "F8",
+      region: "Central US",
+      model_deployment: "gpt-5-mini",
+      toolset_variant: "service_default",
+      started_at: "2026-11-17T13:00:00Z",
+      completed_at: "2026-11-17T13:20:00Z",
+    },
+    arm_labels: {
+      baseline: "Arm A - Semantic models only",
+      ontology: "Arm B - Ontology-grounded",
+    },
+    summary_by_arm: {
+      baseline: {
+        arm: "baseline",
+        total_runs: 30,
+        question_count: 6,
+        repeats: 5,
+        answer_correct_runs: 15,
+        answer_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+        mean_key_precision: 0.5,
+        mean_key_recall: 0.5,
+        mean_key_f1: 0.5,
+        path_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+        unknown_handling_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+        mean_repeat_stability: 0.9,
+        unanimous_pass_rate: 0.5,
+        traps_hit: { "site-key-only": 5 },
+        effort: {
+          mean_tool_calls: 8.0,
+          mean_input_tokens: 3200.0,
+          mean_output_tokens: 600.0,
+          mean_seconds: 12.0,
+          total_tokens: 114000,
+        },
+      },
+      ontology: {
+        arm: "ontology",
+        total_runs: 30,
+        question_count: 6,
+        repeats: 5,
+        answer_correct_runs: 30,
+        answer_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+        mean_key_precision: 1.0,
+        mean_key_recall: 1.0,
+        mean_key_f1: 1.0,
+        path_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+        unknown_handling_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+        mean_repeat_stability: 1.0,
+        unanimous_pass_rate: 1.0,
+        traps_hit: { "site-key-only": 0 },
+        effort: {
+          mean_tool_calls: 5.0,
+          mean_input_tokens: 1800.0,
+          mean_output_tokens: 400.0,
+          mean_seconds: 8.0,
+          total_tokens: 66000,
+        },
+      },
+    },
+    by_level: {
+      L1: {
+        question_count: 6,
+        arms: {
+          baseline: {
+            runs: 30,
+            answer_correct_runs: 15,
+            answer_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+            mean_key_f1: 0.5,
+            path_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+            unknown_handling_accuracy: { proportion: 0.5, low: 0.33, high: 0.67 },
+            mean_repeat_stability: 0.9,
+          },
+          ontology: {
+            runs: 30,
+            answer_correct_runs: 30,
+            answer_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+            mean_key_f1: 1.0,
+            path_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+            unknown_handling_accuracy: { proportion: 1.0, low: 0.8865, high: 1.0 },
+            mean_repeat_stability: 1.0,
+          },
+        },
+        differences: [],
+      },
+    },
+    overall_differences: [
+      {
+        comparison: "ontology_vs_baseline",
+        left_arm: "ontology",
+        right_arm: "baseline",
+        metric: "answer_accuracy",
+        diff: 0.5,
+        low: 0.3,
+        high: 0.7,
+        excludes_zero: true,
+      },
+    ],
+    failed_questions: [],
+    limitations: ["SYNTHETIC UNIT ONLY"],
+  };
+}
+
 describe("separate executive native archive", () => {
   it("requires the actual separate-item and source-review declarations", () => {
     const value = fixture();
@@ -125,6 +240,15 @@ describe("separate executive native archive", () => {
         ...sa,
         ontology: { ...sa.ontology, native_snapshot_hash: library.executive.ontology.native_snapshot_hash },
       },
+    })).toBe(false);
+
+    const scorecard = scorecardFixture();
+    expect(isRecordedDemoLibrary({ ...library, scorecard: undefined })).toBe(true);
+    expect(isRecordedDemoLibrary({ ...library, scorecard: null })).toBe(true);
+    expect(isRecordedDemoLibrary({ ...library, scorecard })).toBe(true);
+    expect(isRecordedDemoLibrary({
+      ...library,
+      scorecard: { ...scorecard, mode: "OFFLINE_SYNTHETIC" },
     })).toBe(false);
   });
 });
