@@ -27,7 +27,7 @@ dependencies = [
   "mcp>=1.12,<2",
   "jsonschema>=4.23,<5",
   "duckdb>=1.2,<2",
-  "pyarrow>=19,<24",
+  "pyarrow>=19,<27",
   "tzdata>=2026.5,<2027; sys_platform == 'win32'",
   "msal>=1.30,<2",
 ]
