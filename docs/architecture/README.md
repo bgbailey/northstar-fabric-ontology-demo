@@ -200,6 +200,16 @@ Text is measured with an Arial-metric font (Liberation Sans or Arial) so that wr
 
 Icon sources and terms of use are listed in [icons/README.md](icons/README.md).
 
+## Architecture decisions
+
+Key design choices for this architecture are recorded in `docs/decisions/`:
+
+- [0001. Semantic models own the calculations](../decisions/0001-semantic-models-own-calculations.md) — Keep DAX measures, units, grain, and row-level security in Power BI Direct Lake semantic models while ontology metrics link to source measures.
+- [0002. Four-model service assurance scenario](../decisions/0002-four-model-hero.md) — Anchor the primary scenario on four models (Network, Enterprise services, Finance, and Care) to show multi-hop, time-valid, multi-grain context within interactive time budgets.
+- [0003. Semantic-model binding by default, with a hybrid graph spike](../decisions/0003-binding-strategy.md) — Default to semantic-model binding to preserve trusted measures and security, state clearly that it omits ontology-managed graph traversal, and test hybrid Delta-table spine binding in a live spike.
+- [0004. Three-arm evaluation and evidence-gated claims](../decisions/0004-evaluation-and-claims.md) — Evaluate semantic-models-only (`Arm A`), prompt-rules (`Arm A+`), and ontology-grounded (`Arm B`) evaluation arms against an independent DuckDB oracle, requiring scorecard evidence for every benefit claim.
+- [0005. Lead with product agent surfaces; keep the web app as an evidence viewer](../decisions/0005-agent-surfaces.md) — Lead with the ontology agent in Fabric, Microsoft Foundry, Microsoft Copilot Studio, Microsoft 365 Copilot, and GitHub Copilot over one ontology, keeping `apps/web` for offline recordings and scorecards.
+
 ## Related resources
 
 - [What is Fabric IQ?](https://learn.microsoft.com/en-us/fabric/iq/overview)

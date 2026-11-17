@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "fabricIq": {
+      "type": "http",
+      "url": "https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq",
+      "tools": ["*"]
+    },
+    "northstarOntology": {
+      "type": "http",
+      "url": "https://api.fabric.microsoft.com/v1/mcp/dataPlane/workspaces/<WORKSPACE_ID>/items/<ONTOLOGY_ITEM_ID>/ontologyEndpoint",
+      "tools": ["*"]
+    }
+  }
+}

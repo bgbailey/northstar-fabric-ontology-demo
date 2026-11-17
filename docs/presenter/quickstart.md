@@ -1,6 +1,6 @@
 # Executive quickstart script: why ontology, without a giant model
 
-**Target:** a small Fabric IQ ontology (current experience, preview checked 16 November 2026) over the Subscriptions and Finance semantic models in Fabric: four entity types, three focus measures, and two short rules. It sits alongside the wider Northstar estate rather than replacing or trimming it.
+**Target:** a small [Fabric IQ ontology](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview) (current experience, preview checked 16 November 2026) over the Subscriptions and Finance Power BI semantic models in Microsoft Fabric: four entity types, three focus measures, and two short rules. It sits alongside the wider Northstar estate rather than replacing or trimming it.
 
 **Recorded October 28 evidence:** the dedicated ontology item in Fabric, four-entity / three-relationship structure, two linked rules, and answer from the ontology agent in Fabric are captured in `recordings/northstar-demo-library-v2-2026-10-28.json`. Generation created 14 metrics linked to source measures on the selected tables; the presentation highlights three focus measures while retaining all 14 bindings.
 
@@ -9,13 +9,13 @@
 | Stream | Audience and purpose | Scope in Fabric |
 |---|---|---|
 | Executive quickstart | Explain why an ontology sits above semantic models using one compact question | Dedicated small item: Customers, Subscriptions, and Finance across two semantic models |
-| Service assurance and Customer360 deep dive | Show multi-hop service assurance (SLA credit exposure and account priority), incident recovery, and checkout questions | Four-model service assurance scenario ([architecture/hero-scenario.md](architecture/hero-scenario.md)) and eight-model Customer360 item (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) |
+| Service assurance and Customer360 deep dive | Show multi-hop service assurance (SLA credit exposure and account priority), incident recovery, and checkout questions | Four-model service assurance scenario ([../architecture/hero-scenario.md](../architecture/hero-scenario.md)) and eight-model Customer360 item (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) |
 
 Both streams keep calculations inside the semantic models and give every evaluation arm (one side of a controlled comparison) the same AI preparation.
 
 ## Talk track
 
-Lead with the ontology item in Fabric when presenting live after rehearsal, and use the recorded viewer (`http://localhost:8767/`) for supporting evidence or fallback. See [demo-streams.md](demo-streams.md) for startup commands.
+Lead with the ontology item in Microsoft Fabric when presenting live after rehearsal, and use the recorded viewer (`http://localhost:8767/`) for supporting evidence or fallback. See [../run/streams.md](../run/streams.md) for startup commands.
 
 | Beat | Show | Say |
 |---|---|---|
@@ -54,8 +54,8 @@ Hand off to the deeper scenario:
 
 > "Two models share one key. Where connected context really earns its keep is service assurance after a network outage, where an agent has to cross Network, Enterprise services, Finance, and Care across time-valid site assignments and separate contract-month and account-month grains."
 
-Switch to **Customer360 deep dive** -> **SLA exposure and account priority (Oct 28 live)** (or walk through [architecture/hero-scenario.md](architecture/hero-scenario.md)), keeping partial results (with excluded unmapped observations and null-key rows) and failed evaluation arms visible.
+Switch to **Customer360 deep dive** -> **SLA exposure and account priority (Oct 28 live)** (or walk through [../architecture/hero-scenario.md](../architecture/hero-scenario.md)), keeping partial results (with excluded unmapped observations and null-key rows) and failed evaluation arms visible.
 
 ## Limitations
 
-See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.
+See [../limitations.md](../limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

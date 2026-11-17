@@ -48,6 +48,15 @@ The five files taken from GitHub repositories are unchanged copies. Their Git bl
 | `entra-id.svg` | `0ed35fb73bcf41561166bcf9deebfdeb17c7071f` |
 | `github.svg` | `81949e7b460a7bbf1cb2431462f6bd947e32f0ce` |
 
+## Source review
+
+All 23 icon sources, their unmodified `viewBox` geometry, Git blob hashes, and usage terms were reviewed and confirmed on 16 November 2026 with no open questions:
+
+- Every `.svg` file in this folder matches the source table one-for-one (`18` extracted unchanged from `@fabric-msft/svg-icons` 8.2.0 and `5` copied unchanged from public Microsoft and GitHub repositories).
+- Every file keeps its original `viewBox` geometry (`0 0 48 48` for the seven `48Color` icons and `fabric-iq.svg`, `0 0 64 64` for the eleven `64Item` icons, `0 0 18 18` for `foundry.svg` and `entra-id.svg`, `0 0 96 96` for `copilot-studio.svg`, and `0 0 24 24` for `github.svg`).
+- All five GitHub-sourced files match `git hash-object` against the Git blob identifiers listed above.
+- Trademark and usage terms were confirmed against the [Microsoft Fabric icons](https://learn.microsoft.com/en-us/fabric/fundamentals/icons) guidance, the [Azure architecture icons](https://learn.microsoft.com/en-us/azure/architecture/icons/) terms, and the GitHub Octicons MIT licence and GitHub logo policy.
+
 ## Updating an icon
 
 1. Take the icon from the official source listed above. Prefer the 64-pixel item icons for Fabric items and the 48-pixel colour icons for workloads and products.
