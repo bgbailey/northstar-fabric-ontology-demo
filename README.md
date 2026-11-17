@@ -39,6 +39,7 @@ All customer names, accounts, contracts, sites, incidents, and amounts in this r
 Answering it crosses four Direct Lake Power BI semantic models — **Network**, **Enterprise services**, **Finance**, and **Care** — across time-valid site assignments and separate contract-month and account-month grains.
 
 - **Service assurance scenario specification:** [docs/architecture/hero-scenario.md](docs/architecture/hero-scenario.md) and the [service assurance ontology map](docs/architecture/images/service-assurance-ontology.png)
+- **Agent surfaces, captures, and Microsoft 365 Copilot routing:** [docs/agents/README.md](docs/agents/README.md)
 - **Twenty-minute service assurance run of show:** [docs/presenter/service-assurance.md](docs/presenter/service-assurance.md)
 - **Two-model quickstart opener (Subscriptions and Finance):** [docs/scenario/quickstart.md](docs/scenario/quickstart.md)
 - **Full documentation index:** [docs/README.md](docs/README.md)
@@ -47,7 +48,8 @@ Answering it crosses four Direct Lake Power BI semantic models — **Network**, 
 
 | Folder | Contents |
 |---|---|
-| `apps/web/` | React and TypeScript viewer for recorded evidence, ontology maps, and side-by-side comparisons |
+| `agents/` | Shared agent instructions, starter prompts, Microsoft Foundry builder, and Microsoft Copilot Studio setup assets ([docs/agents/README.md](docs/agents/README.md)) |
+| `apps/web/` | React and TypeScript viewer for recorded evidence, ontology maps, agent surface captures, and side-by-side comparisons |
 | `contracts/` | JSON Schemas for context, typed query plans, and execution results |
 | `data/` | Synthetic data contracts (`data/contracts/`) and miniature Parquet fixtures (`data/fixtures/`) |
 | `docs/` | Architecture, scenario, run, presenter, deployment, and reference guides ([docs/README.md](docs/README.md)) |
@@ -63,12 +65,12 @@ Answering it crosses four Direct Lake Power BI semantic models — **Network**, 
 
 An evaluation arm is one tested configuration given the same question, semantic models, and model-level AI preparation.
 
-| Area | Status (checked 16 November 2026) | Details |
+| Area | Status (checked 17 November 2026) | Details |
 |---|---|---|
-| Synthetic data, Direct Lake templates, and viewer | Works offline today | Deterministic generator, eight TMDL semantic models (64 governed measures), guarded runtime, and sanitized October 28 recordings |
+| Synthetic data, Direct Lake templates, and viewer | Works offline today | Deterministic generator, eight TMDL semantic models (64 governed measures), guarded runtime, and sanitized October 28 and November 17 recordings |
 | Fabric IQ MCP server (semantic models and reports) | Generally available | Read-only semantic-model discovery and DAX execution under delegated user identity ([Microsoft Learn](https://learn.microsoft.com/en-us/fabric/iq/connectors/fabric-iq-mcp)) |
 | Fabric IQ ontology, ontology agent in Fabric, and ontology MCP endpoint | Preview | Item-scoped ontology authoring, metrics linked to source measures, plain-language rules, and Microsoft Foundry / Microsoft Copilot Studio connections ([docs/architecture/platform-status.md](docs/architecture/platform-status.md)) |
-| Service assurance benchmark and live agent surfaces | Planned milestones (`M2`–`M7`) | Golden question scorecard, live validation checks, and reproducible deployment tracked in [PLAN.md](PLAN.md) and [docs/evaluation/validation-backlog.md](docs/evaluation/validation-backlog.md) |
+| Agent surfaces and service assurance benchmark | Live Foundry + MCP verified; benchmark in `M4`–`M7` | Four agent surface guides and captures in [docs/agents/README.md](docs/agents/README.md) (published Copilot Studio agent routes into Microsoft 365 Copilot and Teams; Fabric data agent over semantic-model bindings does not work); scorecard and remaining checks tracked in [PLAN.md](PLAN.md) and [docs/evaluation/validation-backlog.md](docs/evaluation/validation-backlog.md) |
 
 ## Deploy to your demo tenant
 

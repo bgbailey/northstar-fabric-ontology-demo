@@ -121,6 +121,56 @@ class ServiceAssuranceExclusion(Contract):
     reason: str = Field(min_length=1)
 
 
+class SurfaceQuestionTurn(Contract):
+    question_id: str = Field(min_length=1)
+    level: Literal["L2", "L4"]
+    question: str = Field(min_length=1)
+    tool_calls: list[str] = Field(min_length=1)
+    models_queried: list[Literal["network", "enterprise", "finance", "care"]] = Field(min_length=1)
+    answer_summary: str = Field(min_length=1)
+    answer_markdown: str = Field(min_length=1, max_length=200000)
+    row_count: int = Field(strict=True, ge=0, lt=2**53)
+    exclusions_reported: int = Field(strict=True, ge=0, lt=2**53)
+
+
+class RecordedAgentSurface(Contract):
+    schema_version: Literal["1.0"] = "1.0"
+    mode: Literal["RECORDED_AGENT_SURFACE"] = "RECORDED_AGENT_SURFACE"
+    surface_id: Literal[
+        "fabric-ontology-mcp",
+        "foundry-agent",
+        "github-copilot-vscode",
+        "copilot-studio-m365",
+    ]
+    surface_name: str = Field(min_length=1)
+    provenance: Literal[
+        "LIVE_DEMO_TENANT_SANITIZED_CAPTURE",
+        "STAGED_SURFACE_PREVIEW_CAPTURE",
+    ]
+    captured_at: datetime
+    connection_summary: str = Field(min_length=1)
+    turns: list[SurfaceQuestionTurn] = Field(min_length=2, max_length=4)
+    limitations: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_surface_capture(self):
+        if self.captured_at.tzinfo is None:
+            raise ValueError("Agent surface recording requires a zoned UTC timestamp")
+        levels = [turn.level for turn in self.turns]
+        if len(set(levels)) != len(levels) or not {"L2", "L4"} <= set(levels):
+            raise ValueError("Agent surface recording requires distinct L2 and L4 turns")
+        return self
+
+    def verify_private_identifiers_absent(self, values: set[str]):
+        text = self.model_dump_json().casefold()
+        if any(value and value.casefold() in text for value in values):
+            raise ValueError("Private target or principal identifier remains in the surface capture")
+
+    @classmethod
+    def read(cls, path: Path):
+        return cls.model_validate_json(path.read_text(encoding="utf-8"))
+
+
 class RecordedServiceAssuranceDemo(Contract):
     schema_version: Literal["1.0"] = "1.0"
     mode: Literal["RECORDED_SERVICE_ASSURANCE"] = "RECORDED_SERVICE_ASSURANCE"
@@ -133,6 +183,7 @@ class RecordedServiceAssuranceDemo(Contract):
     model_evidence: list[ServiceAssuranceModelEvidence] = Field(min_length=4, max_length=4)
     ranked_accounts: list[ServiceAssuranceAccountRow] = Field(min_length=1, max_length=250)
     exclusions: list[ServiceAssuranceExclusion] = Field(min_length=1)
+    agent_surfaces: list[RecordedAgentSurface] = Field(default_factory=list)
     limitations: list[str] = Field(min_length=1)
 
     @model_validator(mode="after")
@@ -163,6 +214,8 @@ class RecordedServiceAssuranceDemo(Contract):
             raise ValueError(
                 "Service assurance accounts must be ordered by credit_exposure_cents descending then contribution_margin_cents descending"
             )
+        if len({surface.surface_id for surface in self.agent_surfaces}) != len(self.agent_surfaces):
+            raise ValueError("Service assurance agent surfaces must not repeat surface_id")
         return self
 
 

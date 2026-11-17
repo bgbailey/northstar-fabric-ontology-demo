@@ -19,7 +19,7 @@ from telco_iq.catalog import Catalog, digest
 from telco_iq.comparison import ComparisonRequest, PairEvent
 from telco_iq.context import offline_context
 from telco_iq.contracts import Context, ExecutionResult, Plan, Scope, Status
-from telco_iq.demo_library import RecordedDemoLibrary
+from telco_iq.demo_library import RecordedAgentSurface, RecordedDemoLibrary
 from telco_iq.errors import LabError
 from telco_iq.events import ExecutionEvent
 from telco_iq.evidence import write_receipt
@@ -93,7 +93,14 @@ def create_app(
         raise ValueError("An existing live gateway cannot be replaced by deferred configuration")
     recording = RecordedDemo.read(recorded_native) if recorded_native is not None else None
     comparisons = RecordedComparisons.read(recorded_comparisons) if recorded_comparisons is not None else None
-    library = RecordedDemoLibrary.read(recorded_library) if recorded_library is not None else None
+    library: RecordedDemoLibrary | None = None
+    agent_surface: RecordedAgentSurface | None = None
+    if recorded_library is not None:
+        raw_recorded = json.loads(recorded_library.read_text(encoding="utf-8"))
+        if isinstance(raw_recorded, dict) and raw_recorded.get("mode") == "RECORDED_AGENT_SURFACE":
+            agent_surface = RecordedAgentSurface.model_validate(raw_recorded)
+        else:
+            library = RecordedDemoLibrary.model_validate(raw_recorded)
     root = root.resolve()
     deferred_live_config = private_config_path(deferred_live_config, root) if deferred_live_config is not None else None
     source_observation_config = (
@@ -115,6 +122,8 @@ def create_app(
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
 
     def server_mode() -> str:
+        if agent_surface is not None:
+            return agent_surface.mode
         if library is not None:
             return library.mode
         if comparisons is not None:
@@ -188,7 +197,7 @@ def create_app(
         }
 
     def execution_block(request: Request) -> JSONResponse | None:
-        if recording is not None or comparisons is not None or library is not None:
+        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "Recorded mode cannot execute or rerun a query.",
@@ -468,6 +477,17 @@ def create_app(
     async def health(request: Request):
         session, reader_error = current_reader(request)
         readiness = public_readiness(session, reader_error)
+        if agent_surface is not None:
+            return {
+                "mode": agent_surface.mode, "scope": None, "data_ready": False,
+                "context_revision": digest(agent_surface.model_dump(mode="json")),
+                "authenticated": False, "live_auth": "NOT_USED_RECORDED_MODE",
+                "readiness": {
+                    "mode": agent_surface.mode, "ready": False, "status": "RECORDED_ONLY",
+                    "blockers": ["Explicit single-surface capture playback; no live execution in this mode."],
+                    "claim": "Sanitized agent surface capture with explicit provenance, not a reader grant.",
+                },
+            }
         if library is not None:
             return {
                 "mode": library.mode, "scope": None, "data_ready": False,
@@ -519,7 +539,7 @@ def create_app(
 
     @app.get("/api/catalog")
     async def get_catalog(request: Request):
-        if recording is not None or comparisons is not None or library is not None:
+        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "Recorded sources are display-only, not the fixture catalogue.",
@@ -534,7 +554,7 @@ def create_app(
 
     @app.get("/api/context", response_model=Context)
     async def get_context(request: Request):
-        if recording is not None or comparisons is not None or library is not None:
+        if recording is not None or comparisons is not None or library is not None or agent_surface is not None:
             return JSONResponse({
                 "status": Status.BLOCKED_CAPABILITY,
                 "detail": "The recorded definition is display-only, not executable planner context.",
@@ -573,6 +593,15 @@ def create_app(
                 "detail": "Start explicitly with --recorded-library; no automatic recording or fixture fallback.",
             }, status_code=409)
         return library
+
+    @app.get("/api/agent-surface", response_model=RecordedAgentSurface)
+    async def recorded_agent_surface():
+        if agent_surface is None:
+            return JSONResponse({
+                "status": Status.BLOCKED_CAPABILITY,
+                "detail": "Start explicitly with --recorded-library pointing to a surface capture; no automatic fallback.",
+            }, status_code=409)
+        return agent_surface
 
     @app.get("/api/capabilities")
     async def capabilities():

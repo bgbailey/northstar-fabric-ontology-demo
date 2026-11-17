@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "mode": "RECORDED_AGENT_SURFACE",
+  "surface_id": "github-copilot-vscode",
+  "surface_name": "GitHub Copilot in Visual Studio Code",
+  "provenance": "STAGED_SURFACE_PREVIEW_CAPTURE",
+  "captured_at": "2026-11-17T11:55:31Z",
+  "connection_summary": "Staged developer preview capture using the workspace .mcp.example.json dual-server configuration (northstarOntology + fabricIq V2) and .github/prompts/*.prompt.md workflows grounded on the live-verified 17 November 2026 ontology contract and semantic-model query results (interactive Visual Studio Code OAuth GUI session remains TODO(verify-live): G5).",
+  "turns": [
+    {
+      "question_id": "SA-L2-001",
+      "level": "L2",
+      "question": "Which enterprise services ran over sites that had a major incident in July 2026, and how many major incidents overlapped each service's active assignment and contract?",
+      "tool_calls": [
+        "northstarOntology:list_ontology_entities",
+        "northstarOntology:list_ontology_rules",
+        "fabricIq:GetSemanticModelSchema(Northstar_Network,Northstar_Enterprise)",
+        "fabricIq:ExecuteQuery(Northstar_Network,Northstar_Enterprise)"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise"
+      ],
+      "answer_summary": "Staged developer workflow preview mapping Hop 1 to Hop 3 across Network and Enterprise (site_key bridge + half-open UTC overlap R1), returning 53 exposed services and 2 unknown exclusions without copying DAX into prompts.",
+      "answer_markdown": "Staged Visual Studio Code developer preview (`.mcp.example.json` + `agents/shared/instructions.md`)\n\n1. MCP servers configured in `.mcp.json` (workspace-local, uncommitted):\n   - `northstarOntology` (`.../workspaces/<WORKSPACE_ID>/items/<ONTOLOGY_ITEM_ID>/ontologyEndpoint`): reads `enterprise_Services`, `enterprise_ServiceSiteMap`, `enterprise_Contracts`, `network_Incidents`, and rules `ExposureNeedsOverlap` + `UnknownIsNotZero`.\n   - `fabricIq` (`https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq`): inspects `Northstar_Network` and `Northstar_Enterprise` schemas and runs `ExecuteQuery` on `Incidents[Major Incidents]`.\n\n2. Grounded `L2` result (53 exposed services; top rows):\n   - `service_key=1`: 3 overlapping July 2026 major incidents\n   - `service_key=2`, `service_key=6`: 2 overlapping July 2026 major incidents\n   - `service_key=3, 4, 5, 7, 8, 9, 17` (+43 additional services): 1 overlapping July 2026 major incident\n\n3. Exclusions kept explicit (`UnknownIsNotZero`):\n   - `incident_key=7` at `site_key=6`: `unmapped_incident_window`\n   - `service_key=10` (`contract_key=8`, `account_key=6`, `site_key=6`): `incomplete_mapping_coverage`\n\n4. Developer workflow verification:\n   - Pair with `/explain-hero-path` and `/find-credit-exposure-measure` in `.github/prompts/` to inspect measure ownership in `tools/build_models.py` without copying DAX formulas into ontology contracts or prompt files.",
+      "row_count": 53,
+      "exclusions_reported": 2
+    },
+    {
+      "question_id": "SA-L4-001",
+      "level": "L4",
+      "question": "Which enterprise customers were served from sites hit by July 2026 incidents, what SLA credit exposure do we carry on their contracts, how much revenue and margin is at stake, and who already has escalated cases?",
+      "tool_calls": [
+        "northstarOntology:list_ontology_entities",
+        "northstarOntology:list_ontology_rules",
+        "fabricIq:DiscoverArtifacts",
+        "fabricIq:ExecuteQuery(Northstar_Network)",
+        "fabricIq:ExecuteQuery(Northstar_Enterprise)",
+        "fabricIq:ExecuteQuery(Northstar_Finance)",
+        "fabricIq:ExecuteQuery(Northstar_Care)"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise",
+        "finance",
+        "care"
+      ],
+      "answer_summary": "Staged developer workflow preview tracing all seven hops across Network, Enterprise, Finance, and Care, ranking 46 affected enterprise accounts by Credit Exposure (account_key=1 at 13,580 cents) with 3 explicit R5 exclusions.",
+      "answer_markdown": "Staged Visual Studio Code developer preview across all four semantic models (`L4`)\n\n1. Traversal path verified from `northstarOntology` (`/explain-hero-path`):\n   - Hop 1–3 (`Network` -> `Enterprise`): `Incident` -> `Site` (`site_key`) -> `Service-site assignment` -> `Contract` (half-open UTC overlap across incident, assignment, and contract windows).\n   - Hop 4–5 (`Enterprise`): `Contract` -> `SLA evaluation` (`Credit Exposure` once per contract-month) and `Account` (`account_key`).\n   - Hop 6 (`Enterprise` -> `Finance`): `Account` -> `Account month` (`Recognized Service Revenue`, `Contribution Margin` at one row per account-month).\n   - Hop 7 (`Enterprise` -> `Care`): `Account` -> `Case` (`Escalated Cases`, `Repeat Contacts`).\n\n2. Grounded `L4` result from `fabricIq` `ExecuteQuery` (46 ranked enterprise accounts; top 5 shown in integer cents):\n   - `account_key=1`: `13,580` cents exposure | `9,000` cents revenue | `-1,400` cents margin | `0` escalated cases\n   - `account_key=12`: `12,960` cents exposure | `31,903` cents revenue | `18,168` cents margin | `0` escalated cases\n   - `account_key=44`: `8,760` cents exposure | `59,492` cents revenue | `36,555` cents margin | `1` escalated case\n   - `account_key=42`: `6,300` cents exposure | `44,673` cents revenue | `25,926` cents margin | `1` escalated case\n   - `account_key=36`: `6,120` cents exposure | `50,193` cents revenue | `28,831` cents margin | `1` escalated case\n\n3. Exclusions reported as unknown (3 items):\n   - `incident_key=7` (`site_key=6`): `unmapped_incident_window`\n   - `service_key=10` (`contract_key=8`, `account_key=6`, `site_key=6`): `incomplete_mapping_coverage`\n   - `account_key=6` (`contract_key=8`): `incomplete_mapping_coverage`",
+      "row_count": 46,
+      "exclusions_reported": 3
+    }
+  ],
+  "limitations": [
+    "Staged surface preview capture (STAGED_SURFACE_PREVIEW_CAPTURE, 17 November 2026), not a recording of an interactive Visual Studio Code GUI click-through.",
+    "Grounded on the live-verified 17 November 2026 Ontology MCP schema/rules and Fabric IQ MCP V2 query results; interactive Visual Studio Code OAuth user sign-off remains tracked as TODO(verify-live): G5 in docs/architecture/platform-status.md.",
+    "Workspace .mcp.example.json keeps <WORKSPACE_ID> and <ONTOLOGY_ITEM_ID> out of source control."
+  ]
+}

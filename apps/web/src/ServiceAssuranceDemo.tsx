@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { isRecordedOntology, RecordedOntologyView, type RecordedOntology } from "./RecordedOntology";
 
 export type ServiceAssuranceHop = {
@@ -42,6 +43,40 @@ export type ServiceAssuranceExclusion = {
   reason: string;
 };
 
+export type AgentSurfaceId =
+  | "fabric-ontology-mcp"
+  | "foundry-agent"
+  | "github-copilot-vscode"
+  | "copilot-studio-m365";
+
+export type AgentSurfaceProvenance =
+  | "LIVE_DEMO_TENANT_SANITIZED_CAPTURE"
+  | "STAGED_SURFACE_PREVIEW_CAPTURE";
+
+export type SurfaceQuestionTurn = {
+  question_id: string;
+  level: "L2" | "L4";
+  question: string;
+  tool_calls: string[];
+  models_queried: ("network" | "enterprise" | "finance" | "care")[];
+  answer_summary: string;
+  answer_markdown: string;
+  row_count: number;
+  exclusions_reported: number;
+};
+
+export type RecordedAgentSurface = {
+  schema_version: "1.0";
+  mode: "RECORDED_AGENT_SURFACE";
+  surface_id: AgentSurfaceId;
+  surface_name: string;
+  provenance: AgentSurfaceProvenance;
+  captured_at: string;
+  connection_summary: string;
+  turns: SurfaceQuestionTurn[];
+  limitations: string[];
+};
+
 export type RecordedServiceAssuranceDemo = {
   schema_version: "1.0";
   mode: "RECORDED_SERVICE_ASSURANCE";
@@ -54,10 +89,21 @@ export type RecordedServiceAssuranceDemo = {
   model_evidence: ServiceAssuranceModelEvidence[];
   ranked_accounts: ServiceAssuranceAccountRow[];
   exclusions: ServiceAssuranceExclusion[];
+  agent_surfaces?: RecordedAgentSurface[];
   limitations: string[];
 };
 
 const SERVICE_ASSURANCE_MODELS = ["network", "enterprise", "finance", "care"] as const;
+const AGENT_SURFACE_IDS: readonly AgentSurfaceId[] = [
+  "fabric-ontology-mcp",
+  "foundry-agent",
+  "github-copilot-vscode",
+  "copilot-studio-m365",
+];
+const AGENT_SURFACE_PROVENANCES: readonly AgentSurfaceProvenance[] = [
+  "LIVE_DEMO_TENANT_SANITIZED_CAPTURE",
+  "STAGED_SURFACE_PREVIEW_CAPTURE",
+];
 const SERVICE_ASSURANCE_FOCUS_METRICS = [
   "network.major_incidents",
   "enterprise.credit_exposure",
@@ -86,6 +132,35 @@ function nonEmptyStrings(value: unknown): value is string[] {
 function positiveInts(value: unknown): value is number[] {
   return Array.isArray(value) && value.length > 0
     && value.every(item => typeof item === "number" && Number.isSafeInteger(item) && item >= 1);
+}
+
+function isSurfaceQuestionTurn(value: unknown): value is SurfaceQuestionTurn {
+  return object(value)
+    && nonEmptyString(value.question_id)
+    && (value.level === "L2" || value.level === "L4")
+    && nonEmptyString(value.question)
+    && nonEmptyStrings(value.tool_calls)
+    && Array.isArray(value.models_queried) && value.models_queried.length > 0
+    && value.models_queried.every(m => SERVICE_ASSURANCE_MODELS.includes(m as typeof SERVICE_ASSURANCE_MODELS[number]))
+    && nonEmptyString(value.answer_summary)
+    && nonEmptyString(value.answer_markdown)
+    && typeof value.row_count === "number" && Number.isSafeInteger(value.row_count) && value.row_count >= 0
+    && typeof value.exclusions_reported === "number"
+    && Number.isSafeInteger(value.exclusions_reported) && value.exclusions_reported >= 0;
+}
+
+export function isRecordedAgentSurface(value: unknown): value is RecordedAgentSurface {
+  if (!object(value) || value.schema_version !== "1.0" || value.mode !== "RECORDED_AGENT_SURFACE"
+    || !AGENT_SURFACE_IDS.includes(value.surface_id as AgentSurfaceId)
+    || !nonEmptyString(value.surface_name)
+    || !AGENT_SURFACE_PROVENANCES.includes(value.provenance as AgentSurfaceProvenance)
+    || !zoned(value.captured_at)
+    || !nonEmptyString(value.connection_summary)
+    || !Array.isArray(value.turns) || value.turns.length < 2
+    || !value.turns.every(isSurfaceQuestionTurn)
+    || !nonEmptyStrings(value.limitations)) return false;
+  const levels = value.turns.map(turn => turn.level);
+  return new Set(levels).size === levels.length && levels.includes("L2") && levels.includes("L4");
 }
 
 export function isRecordedServiceAssuranceDemo(value: unknown): value is RecordedServiceAssuranceDemo {
@@ -142,7 +217,144 @@ export function isRecordedServiceAssuranceDemo(value: unknown): value is Recorde
       && nonEmptyString(item.category) && nonEmptyString(item.subject)
       && nonEmptyString(item.rule_id) && nonEmptyString(item.reason))) return false;
 
+  if (value.agent_surfaces !== undefined) {
+    if (!Array.isArray(value.agent_surfaces)
+      || !value.agent_surfaces.every(isRecordedAgentSurface)
+      || new Set(value.agent_surfaces.map(item => item.surface_id)).size !== value.agent_surfaces.length) {
+      return false;
+    }
+  }
+
   return true;
+}
+
+function provenanceBadgeLabel(provenance: AgentSurfaceProvenance): string {
+  return provenance === "LIVE_DEMO_TENANT_SANITIZED_CAPTURE"
+    ? "LIVE DEMO TENANT CAPTURE · SANITIZED"
+    : "STAGED SURFACE PREVIEW CAPTURE";
+}
+
+function provenanceExplanation(provenance: AgentSurfaceProvenance): string {
+  return provenance === "LIVE_DEMO_TENANT_SANITIZED_CAPTURE"
+    ? "Sanitized capture from the demo tenant (F8, Central US, 17 November 2026). Replay runs offline with no sign-in, model call, or Microsoft Fabric query."
+    : "Staged preview capture grounded on the live-verified 17 November 2026 ontology contract and semantic-model query results, not a recording of an interactive GUI click-through. Interactive OAuth user sign-off remains tracked under check G5 in docs/architecture/platform-status.md.";
+}
+
+function SurfaceTurnCard({ turn, compact }: { turn: SurfaceQuestionTurn; compact: boolean }) {
+  return <article className="surface-turn-card" data-turn-level={turn.level}>
+    <div className="section-heading">
+      <div>
+        <p className="eyebrow">{turn.level} QUESTION · {turn.question_id}</p>
+        <h3>{turn.level === "L2" ? "Two-model site bridge and timing" : "Four-model service assurance outreach"}</h3>
+      </div>
+      <span className="status-pill observed">{turn.models_queried.length} MODELS · {turn.models_queried.join(", ").toUpperCase()}</span>
+    </div>
+    <p className="surface-question"><strong>Prompt:</strong> {turn.question}</p>
+    <div className="surface-kpis">
+      <div>
+        <strong>{turn.row_count.toLocaleString("en-US")}</strong>
+        <span>{turn.level === "L2" ? "Matched exposed services" : "Matched affected accounts"}</span>
+      </div>
+      <div>
+        <strong>{turn.exclusions_reported.toLocaleString("en-US")} exclusions</strong>
+        <span>Reported explicitly as unknown (R5)</span>
+      </div>
+    </div>
+    <p>{turn.answer_summary}</p>
+    <div className="measure-chips" aria-label={`${turn.level} tool calls`}>
+      {turn.tool_calls.map(tool => <span key={tool} className="origin-tag">{tool}</span>)}
+    </div>
+    <pre className={compact ? "surface-markdown compact" : "surface-markdown"}>{turn.answer_markdown}</pre>
+  </article>;
+}
+
+export function AgentSurfaceExplorer({
+  surfaces,
+  defaultLevel = "L4",
+  standalone = false,
+}: {
+  surfaces: RecordedAgentSurface[];
+  defaultLevel?: "both" | "L2" | "L4";
+  standalone?: boolean;
+}) {
+  const [selectedSurfaceId, setSelectedSurfaceId] = useState<AgentSurfaceId>(surfaces[0].surface_id);
+  const [levelFilter, setLevelFilter] = useState<"both" | "L2" | "L4">(defaultLevel);
+  const activeSurface = surfaces.find(item => item.surface_id === selectedSurfaceId) ?? surfaces[0];
+  const visibleTurns = levelFilter === "both"
+    ? activeSurface.turns
+    : activeSurface.turns.filter(turn => turn.level === levelFilter);
+
+  return <section className="card" aria-label="Agent surface captures">
+    {!standalone && <>
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">SHARED ONTOLOGY ACROSS AGENT SURFACES · 17 NOVEMBER 2026</p>
+          <h2>Agent surface captures</h2>
+        </div>
+        <span className={activeSurface.provenance === "LIVE_DEMO_TENANT_SANITIZED_CAPTURE"
+          ? "status-pill observed"
+          : "status-pill"}>
+          {provenanceBadgeLabel(activeSurface.provenance)}
+        </span>
+      </div>
+      <p>Four agent surfaces share one ontology definition without copying DAX formulas or rules R1 through R5 into prompts. Live testing on 17 November 2026 confirmed that a Fabric data agent over a semantic-model-bound ontology does not work; the supported route into Microsoft Teams and Microsoft 365 Copilot is the published Microsoft Copilot Studio agent.</p>
+    </>}
+    {surfaces.length > 1 && (
+      <div className="story-presets surface-switcher" role="group" aria-label="Agent surfaces">
+        {surfaces.map(surface => (
+          <button
+            key={surface.surface_id}
+            data-surface-id={surface.surface_id}
+            aria-pressed={surface.surface_id === activeSurface.surface_id}
+            onClick={() => setSelectedSurfaceId(surface.surface_id)}
+          >
+            <strong>{surface.surface_name}</strong>
+            <small>{provenanceBadgeLabel(surface.provenance)}</small>
+          </button>
+        ))}
+      </div>
+    )}
+    <aside className="notice surface-provenance-banner" data-provenance={activeSurface.provenance}>
+      <strong>{activeSurface.surface_name}</strong> ({activeSurface.provenance} · captured {activeSurface.captured_at}): {provenanceExplanation(activeSurface.provenance)}
+      <span className="surface-connection">{activeSurface.connection_summary}</span>
+    </aside>
+    <div className="ontology-toolbar">
+      <div className="segmented-controls" role="group" aria-label="Surface question turns">
+        <button aria-pressed={levelFilter === "L2"} onClick={() => setLevelFilter("L2")}>
+          L2 · Exposed services
+        </button>
+        <button aria-pressed={levelFilter === "L4"} onClick={() => setLevelFilter("L4")}>
+          L4 · Service assurance
+        </button>
+        <button aria-pressed={levelFilter === "both"} onClick={() => setLevelFilter("both")}>
+          Both L2 and L4
+        </button>
+      </div>
+    </div>
+    <div className={visibleTurns.length > 1 ? "comparison-grid" : "single-turn-stack"}>
+      {visibleTurns.map(turn => (
+        <SurfaceTurnCard key={`${activeSurface.surface_id}:${turn.level}`} turn={turn} compact={visibleTurns.length > 1} />
+      ))}
+    </div>
+  </section>;
+}
+
+export function AgentSurfaceCaptureView({ surface }: { surface: RecordedAgentSurface }) {
+  return <main className="surface-capture-stage">
+    <header>
+      <div>
+        <p className="eyebrow">NORTHSTAR WIRELESS / RECORDED AGENT SURFACE CAPTURE</p>
+        <h1>{surface.surface_name}</h1>
+        <p>Captured {surface.captured_at} · Offline replay with explicit provenance (no live sign-in, model call, or Microsoft Fabric query).</p>
+      </div>
+      <span className="badge">{provenanceBadgeLabel(surface.provenance)}</span>
+    </header>
+    <AgentSurfaceExplorer surfaces={[surface]} defaultLevel="both" standalone />
+    <footer>
+      <p><strong>Limits of this recording</strong> (see <code>docs/limitations.md</code>):</p>
+      {surface.limitations.map(item => <p key={item}>{item}</p>)}
+    </footer>
+  </main>;
 }
 
 export function ServiceAssuranceDemoView({ recording }: { recording: RecordedServiceAssuranceDemo }) {
@@ -176,6 +388,10 @@ export function ServiceAssuranceDemoView({ recording }: { recording: RecordedSer
       </div>
       <p className="muted">Selecting this stream displays saved offline synthetic evidence; it runs no sign-in, language model call, or live Microsoft Fabric query.</p>
     </section>
+
+    {recording.agent_surfaces && recording.agent_surfaces.length > 0 && (
+      <AgentSurfaceExplorer surfaces={recording.agent_surfaces} defaultLevel="L4" />
+    )}
 
     <section className="card" aria-label="Path through the seven hops">
       <div className="section-heading">

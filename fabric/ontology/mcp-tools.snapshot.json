@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0",
+  "reviewedAt": "2026-11-16",
+  "description": "Dated per-endpoint snapshot of discovered MCP tools, capability mappings, and reviewed JSON Schema hashes. Runtime clients always discover tools via tools/list and verify reviewed schema hashes before invocation.",
+  "capabilityMap": {
+    "list_entities": [
+      "list_ontology_entities",
+      "list_ontology_entity_types"
+    ],
+    "list_rules": [
+      "list_ontology_rules"
+    ],
+    "ask": [
+      "ask_ontology",
+      "search_ontology"
+    ]
+  },
+  "endpoints": {
+    "ontology_item_endpoint": {
+      "urlPattern": "https://api.fabric.microsoft.com/v1/mcp/dataPlane/workspaces/<WORKSPACE_ID>/items/<ONTOLOGY_ITEM_ID>/ontologyEndpoint",
+      "kind": "ontology",
+      "protocol": "2025-06-18",
+      "reviewedAt": "2026-11-16",
+      "toolsetVariant": "service_default",
+      "status": "LIVE_VERIFIED",
+      "reference": "https://learn.microsoft.com/en-us/fabric/iq/ontology/how-to-use-ontology-mcp-server",
+      "outputContract": "NOT_YET_NORMALIZED; preserve actual raw MCP content, not an invented entity/metric schema.",
+      "tools": [
+        {
+          "name": "ask_ontology",
+          "capability": "ask",
+          "schemaHash": "551ba30c6c725cb6b068154ecbadb64271ef0ab637371a61c9d3e0ef8f9370cf",
+          "defaultArguments": null
+        },
+        {
+          "name": "list_ontology_entities",
+          "capability": "list_entities",
+          "schemaHash": "d714de8dffc02283ad2f437ea51892620855d15ab4c2e305698730014edfed70",
+          "defaultArguments": {}
+        },
+        {
+          "name": "list_ontology_rules",
+          "capability": "list_rules",
+          "schemaHash": "d3e6c9dac0122cbd4d08896c0255bc6a1d7370147e8cd1e68df521c04384fad7",
+          "defaultArguments": {}
+        }
+      ],
+      "historicalSnapshots": [
+        {
+          "reviewedAt": "2026-09-30",
+          "protocol": "2025-06-18",
+          "sourceReceiptHash": "3f087c5c4b25117ada1d02ab9541a65802e2d7f880fd7fceec9661e00f789858",
+          "schemaHashes": {
+            "list_ontology_entities": "f685259f0852058d31981e1e1b48522b82f34cee7246374347fcbac478c84782",
+            "list_ontology_rules": "d3e6c9dac0122cbd4d08896c0255bc6a1d7370147e8cd1e68df521c04384fad7"
+          },
+          "note": "Initial empty-ontology discovery before ask_ontology was advertised."
+        }
+      ]
+    },
+    "fabric_iq_server": {
+      "urlPattern": "https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq",
+      "alternateUrlPatterns": [
+        "https://api.fabric.microsoft.com/v1/mcp/fabriciq"
+      ],
+      "kind": "iq",
+      "protocol": "2025-11-25",
+      "reviewedAt": "2026-11-16",
+      "toolsetVariant": "service_default",
+      "equivalentExplicitVariant": "Fabric.Routing.FabricIQ.V2",
+      "status": "LIVE_VERIFIED",
+      "reference": "https://learn.microsoft.com/en-us/fabric/iq/connectors/fabric-iq-mcp",
+      "tools": [
+        {
+          "name": "DiscoverArtifacts",
+          "capability": null,
+          "schemaHash": "5cabae6c02ee4b289f471db305781c1e86d5f62bb42bc8b66844e759c7e1f619",
+          "defaultArguments": {}
+        },
+        {
+          "name": "ExecuteQuery",
+          "capability": null,
+          "schemaHash": "826d259139b426d750caf3991fc29805956ff04ed3362258e29e6b042b59939c",
+          "defaultArguments": null
+        },
+        {
+          "name": "GetReportMetadata",
+          "capability": null,
+          "schemaHash": "cd54b9a5428e7d79c47945ed1848cd20f5e2c564adb1b3639046fc3a18446d50",
+          "defaultArguments": null
+        },
+        {
+          "name": "GetSemanticModelSchema",
+          "capability": null,
+          "schemaHash": "787bb1608b31bb74cb5ad19e62cf4396b224b6ea8dc5fdf95cd829a31812dd39",
+          "defaultArguments": null
+        },
+        {
+          "name": "ResolveFabricItem",
+          "capability": null,
+          "schemaHash": "b496bfe35e0121b53811144e0c84be72e32901a2e3ae460a3424eddcecfb6a79",
+          "defaultArguments": null
+        },
+        {
+          "name": "ValueSearch",
+          "capability": null,
+          "schemaHash": "ef9d8fe294c3abc96bfbb6981d4330c89528e58057731feddbdc9a11d8d9795a",
+          "defaultArguments": null
+        }
+      ]
+    },
+    "copilot_studio_agent365_ontology": {
+      "urlPattern": "https://agent365.svc.cloud.microsoft/agents/tenants/<TENANT_ID>/servers/mcp_FabricIQOntology/workspaces/<WORKSPACE_ID>/ontologies/<ONTOLOGY_ITEM_ID>",
+      "kind": "ontology",
+      "protocol": null,
+      "reviewedAt": "2026-11-16",
+      "toolsetVariant": "service_default",
+      "status": "DOCUMENTED_R14_VERIFY_LIVE_SCHEMA_AT_RUNTIME",
+      "schemaHashes": null,
+      "reference": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-fabric-iq-ontology",
+      "tools": [
+        {
+          "name": "list_ontology_entity_types",
+          "capability": "list_entities",
+          "schemaHash": null,
+          "defaultArguments": {}
+        },
+        {
+          "name": "search_ontology",
+          "capability": "ask",
+          "schemaHash": null,
+          "defaultArguments": null
+        }
+      ]
+    }
+  }
+}

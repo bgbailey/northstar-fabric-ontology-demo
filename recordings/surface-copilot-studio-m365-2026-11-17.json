@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "mode": "RECORDED_AGENT_SURFACE",
+  "surface_id": "copilot-studio-m365",
+  "surface_name": "Microsoft Copilot Studio (Teams & Microsoft 365 Copilot)",
+  "provenance": "STAGED_SURFACE_PREVIEW_CAPTURE",
+  "captured_at": "2026-11-17T11:55:31Z",
+  "connection_summary": "Staged low-code channel preview for the Northstar Service Assurance agent over Agent 365 mcp_FabricIQOntology (McpServers.FabricIQOntology.All; list_ontology_entity_types, search_ontology) grounded on the live-verified 17 November 2026 ontology contract and semantic-model query results. Published Copilot Studio agent is the verified route into Microsoft Teams and Microsoft 365 Copilot (interactive Agent 365 OAuth user sign-off remains TODO(verify-live): G5).",
+  "turns": [
+    {
+      "question_id": "SA-L2-001",
+      "level": "L2",
+      "question": "Which enterprise services ran over sites that had a major incident in July 2026, and how many major incidents overlapped each service's active assignment and contract?",
+      "tool_calls": [
+        "mcp_FabricIQOntology:list_ontology_entity_types",
+        "mcp_FabricIQOntology:search_ontology"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise"
+      ],
+      "answer_summary": "Staged Copilot Studio and Microsoft 365 Copilot preview over mcp_FabricIQOntology reporting 53 exposed enterprise services in July 2026, citing Network and Enterprise measures and flagging 2 unmapped or incomplete exclusions.",
+      "answer_markdown": "Staged Microsoft Copilot Studio -> Microsoft Teams & Microsoft 365 Copilot preview (`L2`)\n\n**Headline:** 53 enterprise services had active site assignments and contracts overlapping July 2026 major incidents (`Network` -> `Enterprise`, rule `ExposureNeedsOverlap`).\n\n**Highest-overlap services**\n- `service_key=1` — 3 major incidents (`Network.Incidents[Major Incidents]`)\n- `service_key=2` and `service_key=6` — 2 major incidents each\n- 50 additional enterprise services — 1 overlapping major incident each\n\n**Unknown / excluded rows (`UnknownIsNotZero`)**\n- `incident_key=7` (`site_key=6`, July 2026): unmapped incident window — excluded as unknown.\n- `service_key=10` (`contract_key=8`, `account_key=6`, `site_key=6`, July 2026): incomplete serving-site mapping coverage — excluded as unknown.\n\n**Channel routing note (verified 17 November 2026):** Ontology context reaches Microsoft Teams and Microsoft 365 Copilot through this published Copilot Studio agent (`mcp_FabricIQOntology`), not through a Fabric data agent.",
+      "row_count": 53,
+      "exclusions_reported": 2
+    },
+    {
+      "question_id": "SA-L4-001",
+      "level": "L4",
+      "question": "Which enterprise customers were served from sites hit by July 2026 incidents, what SLA credit exposure do we carry on their contracts, how much revenue and margin is at stake, and who already has escalated cases?",
+      "tool_calls": [
+        "mcp_FabricIQOntology:list_ontology_entity_types",
+        "mcp_FabricIQOntology:search_ontology"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise",
+        "finance",
+        "care"
+      ],
+      "answer_summary": "Staged Copilot Studio and Microsoft 365 Copilot preview ranking 46 affected enterprise accounts for outreach review (led by account_key 1 at 13,580 cents exposure and account_key 44 with active Care escalation) and isolating 3 unknown exclusions.",
+      "answer_markdown": "Staged Microsoft Copilot Studio -> Microsoft Teams & Microsoft 365 Copilot preview (`L4`)\n\n**Headline:** 46 enterprise accounts matched across `Network`, `Enterprise`, `Finance`, and `Care` for July 2026 outreach review (ranked by contract-month `Credit Exposure`, rule `CreditPerContractMonth`, with one row per account-month in `Finance`, rule `FinancePerAccountMonth`).\n\n**Priority outreach queue (top 5 of 46; human review required)**\n1. `account_key=1` — Credit Exposure `$135.80` (`13,580` cents) · Revenue `$90.00` (`9,000` cents) · Margin `-$14.00` (`-1,400` cents) · Escalated Cases `0`\n2. `account_key=12` — Credit Exposure `$129.60` (`12,960` cents) · Revenue `$319.03` (`31,903` cents) · Margin `$181.68` (`18,168` cents) · Escalated Cases `0`\n3. `account_key=44` — Credit Exposure `$87.60` (`8,760` cents) · Revenue `$594.92` (`59,492` cents) · Margin `$365.55` (`36,555` cents) · Escalated Cases `1` (active escalation)\n4. `account_key=42` — Credit Exposure `$63.00` (`6,300` cents) · Revenue `$446.73` (`44,673` cents) · Margin `$259.26` (`25,926` cents) · Escalated Cases `1` (active escalation)\n5. `account_key=36` — Credit Exposure `$61.20` (`6,120` cents) · Revenue `$501.93` (`50,193` cents) · Margin `$288.31` (`28,831` cents) · Escalated Cases `1` (active escalation)\n\n**Unknown / excluded items (3 exclusions; never treated as zero)**\n- `incident_key=7` (`site_key=6`): `unmapped_incident_window`\n- `service_key=10` (`contract_key=8`, `account_key=6`): `incomplete_mapping_coverage`\n- `account_key=6` (`contract_key=8`): `incomplete_mapping_coverage`\n\n**Recommended reviewer actions**\n- Hold a joint Care escalation huddle before contacting `account_key` 44, 42, 36, 2, or 81.\n- Resolve the `site_key=6` / `account_key=6` mapping gaps before quoting SLA credit figures for those contracts.",
+      "row_count": 46,
+      "exclusions_reported": 3
+    }
+  ],
+  "limitations": [
+    "Staged surface preview capture (STAGED_SURFACE_PREVIEW_CAPTURE, 17 November 2026), not a recording of an interactive Copilot Studio, Microsoft Teams, or Microsoft 365 Copilot GUI session.",
+    "Grounded on the live-verified 17 November 2026 ontology contract and semantic-model query results; interactive Agent 365 OAuth user sign-off (McpServers.FabricIQOntology.All) remains tracked as TODO(verify-live): G5 in docs/architecture/platform-status.md.",
+    "Live testing on 17 November 2026 confirmed that a Fabric data agent over a semantic-model-bound ontology does not work; publishing this Copilot Studio agent is the supported route into Microsoft 365 Copilot and Microsoft Teams."
+  ]
+}

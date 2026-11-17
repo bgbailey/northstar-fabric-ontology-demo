@@ -164,6 +164,25 @@ select { font: inherit; border: 1px solid var(--cp-border-strong); border-radius
 .execution-node.partial > span { color: var(--cp-warning); }
 .paired-question { height: 120px; font: inherit; }
 .story-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.story-presets.surface-switcher { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.surface-provenance-banner { margin: 12px 0 16px; font-size: 13px; }
+.surface-connection { display: block; margin-top: 6px; color: var(--cp-text-muted); font-size: 12px; overflow-wrap: anywhere; }
+.single-turn-stack { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.surface-turn-card { border: 1px solid var(--cp-border); border-radius: 12px; padding: 18px 20px; background: var(--cp-bg-elevated); min-width: 0; }
+.surface-turn-card h3 { margin: 4px 0 8px; font-size: 18px; }
+.surface-question { font-size: 13px; color: var(--cp-text); margin: 8px 0 12px; }
+.surface-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; padding: 12px; border: 1px solid var(--cp-border); border-radius: .625rem; background: var(--cp-surface); }
+.surface-kpis strong { display: block; font-size: 24px; line-height: 1.2; color: var(--cp-accent); font-variant-numeric: tabular-nums; }
+.surface-kpis span { display: block; font-size: 12px; color: var(--cp-text-muted); }
+.surface-markdown { max-height: 360px; overflow: auto; margin-top: 10px; font-size: 12px; line-height: 1.45; }
+.surface-markdown.compact { max-height: 155px; }
+.surface-capture-stage { padding: 20px 28px; }
+.surface-capture-stage h1 { font-size: 30px; margin: 4px 0; }
+.surface-capture-stage header p { margin: 4px 0 12px; }
+.surface-capture-stage .card { padding: 18px 20px; margin-bottom: 14px; }
+.surface-capture-stage .surface-provenance-banner { margin: 0 0 12px; padding: 12px 14px; }
+.surface-capture-stage footer { margin-top: 10px; }
+.surface-capture-stage footer p { margin: 4px 0; }
 .demo-stream-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .demo-stream-switch.three-streams { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .story-presets button { display: flex; flex-direction: column; gap: 8px; padding: 16px; text-align: left; min-width: 0; }

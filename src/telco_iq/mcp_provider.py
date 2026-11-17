@@ -602,6 +602,7 @@ class MCPQueryProvider:
                             }),
                             "source_schema_hash": profile.source_schema_hash,
                             "schema_hash": schema_hash, "review": asdict(profile.source.review),
+                            "toolset_variant": self.client.endpoint.toolset_variant,
                             "before": before.model_dump(mode="json"),
                         },
                         private_identifiers=private_identifiers(self.binding), synthetic=self.synthetic,
@@ -641,6 +642,7 @@ class MCPQueryProvider:
                         "source": source.identity.model_dump(mode="json"),
                         "query_node": node.model_dump(mode="json"),
                         "schema_hash": schema_hash, "review": asdict(source.review),
+                        "toolset_variant": self.client.endpoint.toolset_variant,
                         "configuration_hash": self._configuration_hash,
                         "before": before.model_dump(mode="json"),
                         "ontology_clock": self.binding.native_snapshot_hash,
@@ -978,14 +980,18 @@ class ReaderProbe:
         configuration = self._configuration()
         clients = (self.native_client, self.source_client)
         self._current(binding, configuration)
-        native_tools = {"list_ontology_entities", "list_ontology_rules"}
-        if set(self.native_arguments) != native_tools or set(self.schema_profiles) != set(binding.sources):
+        if set(self.schema_profiles) != set(binding.sources):
             _blocked("Reader probe requires reviewed native inputs and every bound source schema")
         for alias, profile in self.schema_profiles.items():
             profile.verify(self.source_client.schema_hash("GetSemanticModelSchema"), synthetic=self.synthetic)
         for client in clients:
             await client.discover()
             self._current(binding, configuration)
+        entity_tool = self.native_client.resolve_ontology_tool("list_entities")
+        rules_tool = self.native_client.resolve_ontology_tool("list_rules")
+        native_tools = {entity_tool, rules_tool}
+        if set(self.native_arguments) != native_tools:
+            _blocked("Reader probe requires reviewed native inputs and every bound source schema")
         native_hashes = {name: self.native_client.schema_hash(name) for name in native_tools}
         for name, value in native_hashes.items():
             if self.native_client.reviewed_hashes.get(name) != value:
@@ -1071,7 +1077,7 @@ class ReaderProbe:
             _blocked("Reader tool schemas changed during context acquisition")
         return ReaderProbeReceipt(
             binding_hash=binding.binding_hash, checked_at=datetime.now(timezone.utc),
-            native_entities=native_values["list_ontology_entities"], native_rules=native_values["list_ontology_rules"],
+            native_entities=native_values[entity_tool], native_rules=native_values[rules_tool],
             source_schema_hashes=schema_hashes, observed_source_states=states, evidence_hashes=evidence,
         )
 

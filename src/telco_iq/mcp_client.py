@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta, timezone
+from pathlib import Path
 from typing import AsyncIterator, Literal
 from urllib.parse import urlparse
 from uuid import UUID
@@ -29,19 +30,76 @@ from telco_iq.contracts import Scope, Status
 from telco_iq.errors import LabError
 from telco_iq.retry import ReadOnlyRetryTransport
 
+DEFAULT_TOOLSET_VARIANT = "service_default"
 IQ_TOOLS = frozenset({
     "DiscoverArtifacts", "ResolveFabricItem", "GetReportMetadata",
     "GetSemanticModelSchema", "ValueSearch", "ExecuteQuery",
 })
 ONTOLOGY_READ_TOOLS = frozenset({
-    "list_ontology_entities", "list_ontology_entity_types", "list_ontology_rules", "ask_ontology",
+    "list_ontology_entities",
+    "list_ontology_entity_types",
+    "list_ontology_rules",
+    "ask_ontology",
+    "search_ontology",
 })
+OntologyCapability = Literal["list_entities", "list_rules", "ask"]
+# TODO(verify-live): G4 — Confirm tool names and schemas across ontology endpoints in the demo tenant.
+ONTOLOGY_CAPABILITY_CANDIDATES: dict[str, tuple[str, ...]] = {
+    "list_entities": ("list_ontology_entities", "list_ontology_entity_types"),
+    "list_rules": ("list_ontology_rules",),
+    "ask": ("ask_ontology", "search_ontology"),
+}
 IQ_ENDPOINTS = frozenset({
     "https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq",
     "https://api.fabric.microsoft.com/v1/mcp/fabriciq",
 })
 CaptureKind = Literal["MCP_TOOL_RESULT", "MCP_PROTOCOL_ERROR", "SDK_RESULT_UNOBTAINABLE"]
 ResultCapture = Callable[[str, dict, dict, CaptureKind], None]
+
+
+def load_ontology_snapshot(path: Path) -> dict:
+    """Load and structurally validate a dated MCP tools snapshot document."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        not isinstance(data, dict)
+        or data.get("schemaVersion") != "1.0"
+        or not isinstance(data.get("reviewedAt"), str)
+        or not isinstance(data.get("endpoints"), dict)
+        or not data["endpoints"]
+    ):
+        raise LabError("Invalid MCP tools snapshot format", Status.BLOCKED_CAPABILITY)
+    return data
+
+
+def snapshot_endpoint_review(
+    snapshot: dict,
+    endpoint_key: str,
+    *,
+    capabilities: tuple[OntologyCapability, ...] | None = None,
+) -> tuple[dict[str, str], dict[str, dict]]:
+    """Extract reviewed schema hashes and default arguments for one snapshot endpoint."""
+    entry = snapshot.get("endpoints", {}).get(endpoint_key)
+    if not isinstance(entry, dict) or not isinstance(entry.get("tools"), list):
+        raise LabError(
+            f"Missing or malformed endpoint '{endpoint_key}' in MCP tools snapshot",
+            Status.BLOCKED_CAPABILITY,
+        )
+    hashes: dict[str, str] = {}
+    arguments: dict[str, dict] = {}
+    allowed_caps = set(capabilities) if capabilities is not None else None
+    for tool in entry["tools"]:
+        if not isinstance(tool, dict) or not isinstance(tool.get("name"), str):
+            raise LabError("Malformed tool entry in MCP tools snapshot", Status.BLOCKED_CAPABILITY)
+        if allowed_caps is not None and tool.get("capability") not in allowed_caps:
+            continue
+        name = tool["name"]
+        schema_hash = tool.get("schemaHash")
+        if isinstance(schema_hash, str) and schema_hash:
+            hashes[name] = schema_hash
+        default_args = tool.get("defaultArguments")
+        if isinstance(default_args, dict):
+            arguments[name] = deepcopy(default_args)
+    return hashes, arguments
 
 
 class MCPToolError(LabError):
@@ -86,8 +144,18 @@ def _schema_valid(schema: dict, value: object) -> bool:
 class Endpoint:
     url: str
     kind: Literal["iq", "ontology", "synthetic_test"]
+    toolset_variant: str = DEFAULT_TOOLSET_VARIANT
 
     def validate(self) -> None:
+        if (
+            not isinstance(self.toolset_variant, str)
+            or not self.toolset_variant.strip()
+            or self.toolset_variant != self.toolset_variant.strip()
+            or any(ord(ch) < 32 or ord(ch) == 127 for ch in self.toolset_variant)
+        ):
+            raise LabError("Toolset variant must be a non-empty token without control characters")
+        if self.kind == "ontology" and self.toolset_variant != DEFAULT_TOOLSET_VARIANT:
+            raise LabError("Ontology endpoints do not accept Fabric IQ X-Variants toolset routing")
         url = urlparse(self.url)
         if url.username or url.password or url.query or url.fragment:
             raise LabError("Endpoint must not contain credentials, query or fragment")
@@ -98,25 +166,35 @@ class Endpoint:
             if self.url not in IQ_ENDPOINTS:
                 raise LabError("Not an approved GA IQ endpoint")
         elif self.kind == "ontology":
-            import re
-            import uuid
-            match = re.fullmatch(
-                r"/v1/mcp/dataPlane/workspaces/([^/]+)/items/([^/]+)/ontologyEndpoint", url.path
+            direct = (
+                url.netloc == "api.fabric.microsoft.com"
+                and re.fullmatch(
+                    r"/v1/mcp/dataPlane/workspaces/([^/]+)/items/([^/]+)/ontologyEndpoint",
+                    url.path,
+                )
             )
-            if url.scheme != "https" or url.netloc != "api.fabric.microsoft.com" or not match:
+            agent365 = (
+                url.netloc == "agent365.svc.cloud.microsoft"
+                and re.fullmatch(
+                    r"/agents/tenants/([^/]+)/servers/mcp_FabricIQOntology"
+                    r"/workspaces/([^/]+)/ontologies/([^/]+)",
+                    url.path,
+                )
+            )
+            match = direct or agent365
+            if url.scheme != "https" or not match:
                 raise LabError("Not a documented direct ontology endpoint")
             for value in match.groups():
                 try:
-                    uuid.UUID(value)
+                    UUID(value)
                 except ValueError as error:
                     raise LabError("Ontology endpoint requires resolved item UUIDs") from error
 
     @property
     def headers(self) -> dict[str, str]:
-        headers = {}
-        if self.kind == "iq":
-            headers["X-Variants"] = "Fabric.Routing.FabricIQ.V1"
-        return headers
+        if self.kind in {"iq", "synthetic_test"} and self.toolset_variant != DEFAULT_TOOLSET_VARIANT:
+            return {"X-Variants": self.toolset_variant}
+        return {}
 
 
 class DiscoveredClient:
@@ -129,6 +207,11 @@ class DiscoveredClient:
         self.reviewed_hashes = reviewed_hashes or {}
         self.tools: dict[str, Tool] = {}
         self.reader_scope = reader_scope.model_copy(deep=True) if reader_scope else None
+        self.last_capture_metadata: dict[str, object] | None = None
+
+    @property
+    def toolset_variant(self) -> str:
+        return self.endpoint.toolset_variant
 
     @asynccontextmanager
     async def connect(
@@ -188,22 +271,96 @@ class DiscoveredClient:
         return {
             "provenance": "ACTUAL_MCP_INITIALIZE_AND_TOOLS_LIST",
             "lane": self.endpoint.kind, "protocol": self.protocol,
+            "toolset_variant": self.endpoint.toolset_variant,
             "tools": [
                 {"schema_hash": self.schema_hash(name), "definition": tool.model_dump(mode="json")}
                 for name, tool in sorted(self.tools.items())
             ],
         }
 
+    def resolve_ontology_tool(self, capability: OntologyCapability) -> str:
+        if self.endpoint.kind == "iq":
+            raise LabError(
+                "Fabric IQ endpoint does not serve ontology capabilities", Status.BLOCKED_CAPABILITY,
+            )
+        candidates = ONTOLOGY_CAPABILITY_CANDIDATES.get(capability)
+        if candidates is None:
+            raise LabError(f"Unknown ontology capability '{capability}'", Status.BLOCKED_CAPABILITY)
+        matches = [name for name in candidates if name in self.tools]
+        if not matches:
+            raise LabError(
+                f"Ontology MCP endpoint does not advertise required capability '{capability}' "
+                f"(checked {candidates})",
+                Status.BLOCKED_CAPABILITY,
+            )
+        if len(matches) > 1:
+            raise LabError(
+                f"Ambiguous ontology capability '{capability}': multiple aliases advertised ({matches})",
+                Status.BLOCKED_CAPABILITY,
+            )
+        return matches[0]
+
+    def ontology_capabilities(self) -> dict[str, str]:
+        if self.endpoint.kind == "iq":
+            raise LabError(
+                "Fabric IQ endpoint does not serve ontology capabilities", Status.BLOCKED_CAPABILITY,
+            )
+        resolved: dict[str, str] = {}
+        for capability, candidates in ONTOLOGY_CAPABILITY_CANDIDATES.items():
+            matches = [name for name in candidates if name in self.tools]
+            if len(matches) > 1:
+                raise LabError(
+                    f"Ambiguous ontology capability '{capability}': multiple aliases advertised ({matches})",
+                    Status.BLOCKED_CAPABILITY,
+                )
+            if len(matches) == 1:
+                resolved[capability] = matches[0]
+        return resolved
+
+    async def call_ontology_capability(
+        self,
+        capability: OntologyCapability,
+        arguments: dict,
+        timeout: float = 45,
+        *,
+        capture: ResultCapture | None = None,
+        synthetic_capture: bool = False,
+    ) -> CallToolResult:
+        tool_name = self.resolve_ontology_tool(capability)
+        return await self.call(
+            tool_name,
+            arguments,
+            timeout=timeout,
+            capture=capture,
+            synthetic_capture=synthetic_capture,
+        )
+
+    def _record_capture_metadata(self, name: str, kind: CaptureKind) -> None:
+        self.last_capture_metadata = {
+            "tool": name,
+            "lane": self.endpoint.kind,
+            "protocol": self.protocol,
+            "toolset_variant": self.endpoint.toolset_variant,
+            "response_kind": kind,
+        }
+
     async def call(
         self, name: str, arguments: dict, timeout: float = 45, *,
         capture: ResultCapture | None = None, synthetic_capture: bool = False,
     ) -> CallToolResult:
-        allowed = ONTOLOGY_READ_TOOLS if self.endpoint.kind == "ontology" else IQ_TOOLS
+        if self.endpoint.kind == "ontology":
+            allowed = ONTOLOGY_READ_TOOLS
+        elif self.endpoint.kind == "synthetic_test":
+            allowed = IQ_TOOLS | ONTOLOGY_READ_TOOLS
+        else:
+            allowed = IQ_TOOLS
         if name not in allowed or name not in self.tools:
             raise LabError("Tool is absent or outside runtime read-only allowlist", Status.BLOCKED_CAPABILITY)
         tool = self.tools[name]
         tool_hash = self.schema_hash(name)
-        if self.endpoint.kind == "ontology" and self.reviewed_hashes.get(name) != self.schema_hash(name):
+        if (self.endpoint.kind == "ontology" or name in ONTOLOGY_READ_TOOLS) and (
+            self.reviewed_hashes.get(name) != tool_hash
+        ):
             raise LabError("Ontology tool effects/schema require review before invocation", Status.BLOCKED_CAPABILITY)
         if tool.annotations and tool.annotations.destructiveHint is True:
             raise LabError("Destructive tool annotation contradicts read-only runtime")
@@ -234,17 +391,20 @@ class DiscoveredClient:
                         )
                         original = fixture.model_dump(mode="json", exclude_unset=True)
                 except McpError as error:
+                    self._record_capture_metadata(name, "MCP_PROTOCOL_ERROR")
                     capture(name, deepcopy(arguments), error.error.model_dump(mode="json", exclude_unset=True),
                             "MCP_PROTOCOL_ERROR")
                     raise LabError("MCP protocol error retained; no tool result is available",
                                    Status.BLOCKED_CAPABILITY) from None
                 except ValidationError:
+                    self._record_capture_metadata(name, "SDK_RESULT_UNOBTAINABLE")
                     capture(name, deepcopy(arguments), {
                         "failure_type": "SDK_RESULT_VALIDATION_ERROR", "tool_result_available": False,
                         "limit": "Supported SDK did not expose the original protocol-invalid result or wire bytes",
                     }, "SDK_RESULT_UNOBTAINABLE")
                     raise LabError("SDK did not expose an original tool result; failure evidence only",
                                    Status.BLOCKED_CAPABILITY) from None
+                self._record_capture_metadata(name, "MCP_TOOL_RESULT")
                 capture(name, deepcopy(arguments), deepcopy(original), "MCP_TOOL_RESULT")
                 try:
                     result = CallToolResult.model_validate(original)
@@ -797,3 +957,6 @@ class OntologyAdapter:
     async def read(self, tool: str, arguments: dict) -> CallToolResult:
         # No guessed entity/metric/context response normalization.
         return await self.client.call(tool, arguments)
+
+    async def read_capability(self, capability: OntologyCapability, arguments: dict) -> CallToolResult:
+        return await self.client.call_ontology_capability(capability, arguments)

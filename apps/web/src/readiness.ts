@@ -27,7 +27,7 @@ export function isReadiness(value: unknown): value is Readiness {
 }
 export function isHealth(value: unknown): value is HealthState {
   return object(value) && ["OFFLINE_SYNTHETIC", "RECORDED_NATIVE_DEMO", "RECORDED_LIVE_COMPARISON",
-    "RECORDED_DEMO_LIBRARY", "DELEGATED_READER_SETUP", "LIVE_CONFIGURED"]
+    "RECORDED_DEMO_LIBRARY", "RECORDED_AGENT_SURFACE", "DELEGATED_READER_SETUP", "LIVE_CONFIGURED"]
     .includes(String(value.mode)) && typeof value.data_ready === "boolean"
     && typeof value.context_revision === "string" && isReadiness(value.readiness) && value.readiness.mode === value.mode
     && scope(value.scope)
@@ -58,6 +58,7 @@ export function executionLabel(mode: string): string {
   if (mode === "RECORDED_NATIVE_DEMO") return "RECORDED";
   if (mode === "RECORDED_LIVE_COMPARISON") return "RECORDED LIVE / NO NEW EXECUTION";
   if (mode === "RECORDED_DEMO_LIBRARY") return "RECORDED DEMO STREAMS / NO NEW EXECUTION";
+  if (mode === "RECORDED_AGENT_SURFACE") return "RECORDED AGENT SURFACE / NO NEW EXECUTION";
   if (mode === "DELEGATED_READER_SETUP") return "DEMO USER SETUP / NOT EXECUTED";
   return mode.replaceAll("_", " ");
 }

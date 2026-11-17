@@ -34,7 +34,8 @@ On Windows PowerShell, `./tools/start-demo.ps1 -RecordedLibrary recordings/north
 
 | Mode | Command | Behaviour |
 |---|---|---|
-| Both recorded streams | `northstar serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` | Quickstart answer from the ontology agent in Fabric plus ten Customer360 evaluation arm pairs; zero cloud calls |
+| Both recorded streams | `northstar serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` | Quickstart answer from the ontology agent in Fabric, four-model Service assurance stream (with all four agent surface captures), plus ten Customer360 evaluation arm pairs; zero cloud calls |
+| Single agent-surface capture | `northstar serve --recorded-library recordings/surface-foundry-agent-2026-11-17.json --port 8767` | Standalone `L2` and `L4` playback for any `recordings/surface-*-2026-11-17.json` capture ([agent surfaces](../agents/README.md)); zero cloud calls |
 | Recorded evaluation arm comparisons | `northstar serve --recorded-comparisons recordings/northstar-recorded-live-v6-2026-10-28.json --port 8767` | Ten recorded evaluation arm pairs with no live fallback |
 | Single ontology-agent recording | `northstar serve --recorded-native recordings/northstar-executive-native-demo-2026-10-28.json --port 8768` | Standalone July 2026 capture from the ontology agent in Fabric |
 | Local synthetic fixture workbench | Generate miniature data below, then run `northstar serve --data data/generated/miniature --port 8766` | Local DuckDB SQL over synthetic Parquet files; not a live Microsoft Fabric session |

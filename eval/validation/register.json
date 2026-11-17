@@ -251,7 +251,7 @@
       "hypothesis": "The app can use the six GA tools for discover/schema/values/per-model DAX with the pinned variant.",
       "unknown": "Exact current input/output schemas, query-count bounds, maxRows and session requirements.",
       "procedure": [
-        "Use the GA endpoint and X-Variants Fabric.Routing.FabricIQ.V1 on every request.",
+        "Use the GA endpoint and the default Fabric IQ toolset (or an explicit X-Variants header when testing a specific version) on every request.",
         "Capture schemas for DiscoverArtifacts, ResolveFabricItem, GetReportMetadata, GetSemanticModelSchema, ValueSearch and ExecuteQuery.",
         "Discover both fixture models, retrieve schema, resolve one value and execute one governed measure per model.",
         "Test the documented absent-Build permission case independently from ontology permissions.",

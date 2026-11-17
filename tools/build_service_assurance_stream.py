@@ -29,10 +29,12 @@ from telco_iq.recorded_ontology import (
 )
 
 try:
+    from .build_agent_surface_captures import build_agent_surfaces, write_surface_files
     from .build_data import SEED, TABLE_BY_ID
     from .build_data import build as build_data
     from .build_models import metrics as build_catalog_metrics
 except ImportError:
+    from build_agent_surface_captures import build_agent_surfaces, write_surface_files
     from build_data import SEED, TABLE_BY_ID
     from build_data import build as build_data
     from build_models import metrics as build_catalog_metrics
@@ -567,6 +569,7 @@ def build_service_assurance_demo(
         model_evidence=model_evidence,
         ranked_accounts=ranked_accounts,
         exclusions=exclusions,
+        agent_surfaces=build_agent_surfaces(),
         limitations=[
             "Offline synthetic playback generated deterministically from fabric/ontology/service-assurance.json and the seeded service-assurance dataset (seed 20260929).",
             "Does not execute live DAX, call Microsoft Fabric endpoints, or verify row-level security; live demo tenant checks are tracked in docs/architecture/platform-status.md.",
@@ -609,8 +612,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--library", type=Path, default=DEFAULT_LIBRARY, help="Path to recorded demo library JSON")
     parser.add_argument("--contract", type=Path, default=DEFAULT_CONTRACT, help="Path to service-assurance.json")
     parser.add_argument("--work-dir", type=Path, default=DEFAULT_WORK_DIR, help="Workspace-local temporary build folder")
+    parser.add_argument(
+        "--write-surfaces",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Also write the four standalone surface-*.json captures into the library's directory",
+    )
     args = parser.parse_args(argv)
     library = update_library(library_path=args.library, contract_path=args.contract, work_dir=args.work_dir)
+    surface_files = write_surface_files(args.library.parent) if args.write_surfaces else []
     assert library.service_assurance is not None
     print(
         json.dumps(
@@ -626,6 +636,8 @@ def main(argv: list[str] | None = None) -> int:
                 "hops": len(library.service_assurance.hops),
                 "ranked_accounts": len(library.service_assurance.ranked_accounts),
                 "exclusions": len(library.service_assurance.exclusions),
+                "agent_surfaces": len(library.service_assurance.agent_surfaces),
+                "surface_files": [path.name for path in surface_files],
             }
         )
     )
