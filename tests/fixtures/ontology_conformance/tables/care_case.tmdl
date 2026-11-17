@@ -1,0 +1,45 @@
+table care_case
+	measure 'Escalated Cases' = EXTERNALMEASURE("Escalated Cases", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE")
+	measure 'Repeat Contacts' = EXTERNALMEASURE("Repeat Contacts", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE")
+	column case_key
+		dataType: int64
+		sourceColumn: case_key
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column opened_at
+		dataType: dateTime
+		sourceColumn: opened_at
+	column resolved_at
+		dataType: dateTime
+		sourceColumn: resolved_at
+	column resolved
+		dataType: int64
+		sourceColumn: resolved
+	column repeat_contact
+		dataType: int64
+		sourceColumn: repeat_contact
+	column escalated
+		dataType: int64
+		sourceColumn: escalated
+	column first_contact_resolved
+		dataType: int64
+		sourceColumn: first_contact_resolved
+	column resolution_minutes
+		dataType: int64
+		sourceColumn: resolution_minutes
+	column reason
+		dataType: string
+		sourceColumn: reason
+	partition care_case = entity
+		mode: directQuery
+		source
+			entityName: Cases
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE'
+		annotation ONT_ItemName = Synthetic care

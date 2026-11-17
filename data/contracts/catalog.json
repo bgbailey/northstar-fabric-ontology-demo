@@ -1440,7 +1440,7 @@
       "sql": "SUM(escalated)",
       "aggregation": "additive",
       "unit": "count",
-      "description": "Cases escalated at least once.",
+      "description": "Cases escalated at least once, attributed to case opening month.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",
@@ -1598,7 +1598,7 @@
       "sql": "SUM(failed_sessions)",
       "aggregation": "additive",
       "unit": "count",
-      "description": "Observed failed network sessions, distinct from digital checkout sessions.",
+      "description": "Observed failed radio/network sessions in the hourly monitoring window; not web or app sessions.",
       "dateColumn": "month",
       "allowedDimensions": [
         "site_key",
@@ -1670,7 +1670,7 @@
       "sql": "SUM(booked_revenue_cents)",
       "aggregation": "additive",
       "unit": "cents",
-      "description": "Booked device revenue, intentionally distinct from finance recognized service revenue.",
+      "description": "Booked merchandise and device value in integer cents at order placement, not recurring service billing.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",
@@ -1864,7 +1864,7 @@
       "sql": "SUM(offer_cost_cents)",
       "aggregation": "additive",
       "unit": "cents",
-      "description": "Observed accepted-offer cost.",
+      "description": "Observed accepted-offer cost in integer cents for eligible assignments.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",
@@ -1884,7 +1884,7 @@
       "sql": "SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 1 THEN retained ELSE 0 END)",
       "aggregation": "additive",
       "unit": "count",
-      "description": "Retained eligible randomized assignment units; observational campaign excluded.",
+      "description": "Retained eligible randomized treatment-arm units; observational campaign excluded.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",
@@ -1904,7 +1904,7 @@
       "sql": "SUM(CASE WHEN randomized AND eligible = 1 AND treatment = 0 THEN retained ELSE 0 END)",
       "aggregation": "additive",
       "unit": "count",
-      "description": "Retained eligible randomized assignment units; observational campaign excluded.",
+      "description": "Retained eligible randomized control-arm units; observational campaign excluded.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",
@@ -2012,7 +2012,7 @@
       "sql": "SUM(recurring_revenue_cents)",
       "aggregation": "additive",
       "unit": "cents",
-      "description": "Contracted monthly recurring value, not finance recognized revenue.",
+      "description": "Contracted monthly recurring service value in integer cents, not billed or recognized revenue.",
       "dateColumn": "month",
       "allowedDimensions": [
         "account_key",

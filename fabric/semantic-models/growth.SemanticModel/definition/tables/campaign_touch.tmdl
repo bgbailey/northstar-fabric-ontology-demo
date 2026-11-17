@@ -2,7 +2,7 @@
 table 'Campaign Touches'
 	lineageTag: c24b5274-d538-5ab9-8c61-0069e7f097b7
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'touch_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Campaign Touches'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'assignment_key'
 		dataType: int64
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Campaign Touches'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -32,7 +32,7 @@ table 'Campaign Touches'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -41,7 +41,7 @@ table 'Campaign Touches'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month when the outbound or inbound campaign contact occurred.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -49,7 +49,7 @@ table 'Campaign Touches'
 		lineageTag: a70f5a29-7f24-55c8-a07f-860a5078b15e
 		formatString: yyyy-MM-dd
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'campaign_key'
 		dataType: int64
 		summarizeBy: none
@@ -59,7 +59,7 @@ table 'Campaign Touches'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'touched_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -70,7 +70,7 @@ table 'Campaign Touches'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Channel at the declared Campaign Touches grain.
+	/// Outreach delivery medium (such as email, SMS, or in-app) for the campaign touch.
 	column 'channel'
 		dataType: string
 		summarizeBy: none

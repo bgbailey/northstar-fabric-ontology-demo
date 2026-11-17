@@ -46462,6 +46462,1736 @@
       ]
     }
   },
+  "service_assurance": {
+    "schema_version": "1.0",
+    "mode": "RECORDED_SERVICE_ASSURANCE",
+    "generated_at": "2026-11-16T00:00:00Z",
+    "profile": "service-assurance",
+    "period": "2026-07",
+    "question": "Which enterprise customers were served from sites hit by July incidents, what SLA credit exposure do we carry on their contracts, how much revenue and margin is at stake, and who already has escalated cases?",
+    "ontology": {
+      "captured_at": "2026-11-16T00:00:00Z",
+      "native_snapshot_hash": "1679bb3fe2098b17ae8a2b6a667bac1ed7f764573315ef9d9a1923f3baef5946",
+      "provenance": "ACTUAL_NATIVE_DEFINITION_AND_METADATA_CAPTURE",
+      "sources": [
+        "network",
+        "enterprise",
+        "finance",
+        "care"
+      ],
+      "entities": [
+        {
+          "id": "network_Incidents",
+          "model": "network",
+          "table": "incident",
+          "name": "Incidents",
+          "description": "Incident in Network (Incidents). Raw outage intervals may overlap; union intervals before measuring unavailable minutes. Event interval columns: start to end (UTC).",
+          "keys": [
+            "incident_key"
+          ]
+        },
+        {
+          "id": "network_Sites",
+          "model": "network",
+          "table": "site",
+          "name": "Sites",
+          "description": "Site in Network (Sites). Physical network sites, distinct from service and account identities.",
+          "keys": [
+            "site_key"
+          ]
+        },
+        {
+          "id": "network_SiteHour",
+          "model": "network",
+          "table": "site_hour",
+          "name": "Site Hour",
+          "description": "Site hour in Network (Site Hour). Hourly monitoring for a bounded five-day window per month; overlapping outages are normalized.",
+          "keys": [
+            "site_key",
+            "hour_start"
+          ]
+        },
+        {
+          "id": "network_Accounts",
+          "model": "network",
+          "table": "account",
+          "name": "Accounts",
+          "description": "Account in Network (Accounts). Registered accounts, not active accounts; names are deliberately nonunique.",
+          "keys": [
+            "account_key"
+          ]
+        },
+        {
+          "id": "enterprise_Sites",
+          "model": "enterprise",
+          "table": "site",
+          "name": "Sites",
+          "description": "Site in Enterprise Services (Sites). Physical network sites, distinct from service and account identities.",
+          "keys": [
+            "site_key"
+          ]
+        },
+        {
+          "id": "enterprise_ServiceSiteMap",
+          "model": "enterprise",
+          "table": "service_site_map",
+          "name": "Service Site Map",
+          "description": "Service-site assignment in Enterprise Services (Service Site Map). Half-open serving-site history; service 1 moves mid-incident without overlapping mappings. Half-open UTC validity columns: valid_from to valid_to.",
+          "keys": [
+            "service_key",
+            "site_key",
+            "valid_from"
+          ]
+        },
+        {
+          "id": "enterprise_Services",
+          "model": "enterprise",
+          "table": "service",
+          "name": "Services",
+          "description": "Service in Enterprise Services (Services). Enterprise service registry; serving sites are resolved with time-valid mappings.",
+          "keys": [
+            "service_key"
+          ]
+        },
+        {
+          "id": "enterprise_ServiceMonth",
+          "model": "enterprise",
+          "table": "service_month",
+          "name": "Service Month",
+          "description": "Service month in Enterprise Services (Service Month). Service-month operations with validity-clipped monitored minutes.",
+          "keys": [
+            "service_key",
+            "month"
+          ]
+        },
+        {
+          "id": "enterprise_Contracts",
+          "model": "enterprise",
+          "table": "contract",
+          "name": "Contracts",
+          "description": "Contract in Enterprise Services (Contracts). Time-valid SLA terms; threshold per service-month, then one monetary cap per contract-month. Half-open UTC validity columns: valid_from to valid_to.",
+          "keys": [
+            "contract_key"
+          ]
+        },
+        {
+          "id": "enterprise_SlaEvaluation",
+          "model": "enterprise",
+          "table": "sla_evaluation",
+          "name": "SLA Evaluation",
+          "description": "SLA evaluation in Enterprise Services (SLA Evaluation). Operational contract-month SLA settlement; raw intervals remain available for independent reconciliation.",
+          "keys": [
+            "contract_key",
+            "month"
+          ]
+        },
+        {
+          "id": "enterprise_AppliedCredits",
+          "model": "enterprise",
+          "table": "applied_credit",
+          "name": "Applied Credits",
+          "description": "Applied credit in Enterprise Services (Applied Credits). Actually applied SLA credits, which can be less than eligible credit.",
+          "keys": [
+            "contract_key",
+            "month"
+          ]
+        },
+        {
+          "id": "enterprise_Accounts",
+          "model": "enterprise",
+          "table": "account",
+          "name": "Accounts",
+          "description": "Account in Enterprise Services (Accounts). Registered accounts, not active accounts; names are deliberately nonunique.",
+          "keys": [
+            "account_key"
+          ]
+        },
+        {
+          "id": "finance_Accounts",
+          "model": "finance",
+          "table": "account",
+          "name": "Accounts",
+          "description": "Account in Finance (Accounts). Registered accounts, not active accounts; names are deliberately nonunique.",
+          "keys": [
+            "account_key"
+          ]
+        },
+        {
+          "id": "finance_AccountMonth",
+          "model": "finance",
+          "table": "account_month",
+          "name": "Account Month",
+          "description": "Account month in Finance (Account Month). Account service-month control totals; credits recognized in service month, not posting month.",
+          "keys": [
+            "account_key",
+            "month"
+          ]
+        },
+        {
+          "id": "care_Accounts",
+          "model": "care",
+          "table": "account",
+          "name": "Accounts",
+          "description": "Account in Care (Accounts). Registered accounts, not active accounts; names are deliberately nonunique.",
+          "keys": [
+            "account_key"
+          ]
+        },
+        {
+          "id": "care_Cases",
+          "model": "care",
+          "table": "case",
+          "name": "Cases",
+          "description": "Case in Care (Cases). One care case; repeat contact means same account and reason within seven days.",
+          "keys": [
+            "case_key"
+          ]
+        },
+        {
+          "id": "care_CaseDailySnapshot",
+          "model": "care",
+          "table": "case_daily_snapshot",
+          "name": "Case Daily Snapshot",
+          "description": "Case daily snapshot in Care (Case Daily Snapshot). End-of-day case state; additive across cases but never across dates.",
+          "keys": [
+            "case_key",
+            "snapshot_date"
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "id": "hop1_network_Incidents_to_network_Sites",
+          "source": "network_Incidents",
+          "target": "network_Sites",
+          "description": "Hop 1 · Join on site_key. An incident occurs at one site."
+        },
+        {
+          "id": "hop2_network_Sites_to_enterprise_Sites",
+          "source": "network_Sites",
+          "target": "enterprise_Sites",
+          "description": "Hop 2 · Join on site_key · crosses semantic models. Same site in both models; the site key is the identity."
+        },
+        {
+          "id": "hop2_enterprise_Sites_to_enterprise_ServiceSiteMap",
+          "source": "enterprise_Sites",
+          "target": "enterprise_ServiceSiteMap",
+          "description": "Hop 2 · Join on site_key · validity: assignment period overlaps the incident interval. A site serves a service for a period."
+        },
+        {
+          "id": "hop3_enterprise_ServiceSiteMap_to_enterprise_Contracts",
+          "source": "enterprise_ServiceSiteMap",
+          "target": "enterprise_Contracts",
+          "description": "Hop 3 · Join on contract_key · validity: contract period overlaps the incident interval. The assignment is covered by a contract."
+        },
+        {
+          "id": "hop4_enterprise_Contracts_to_enterprise_SlaEvaluation",
+          "source": "enterprise_Contracts",
+          "target": "enterprise_SlaEvaluation",
+          "description": "Hop 4 · Join on contract_key · period: month of the incident. Credit is settled per contract and month."
+        },
+        {
+          "id": "hop5_enterprise_Contracts_to_enterprise_Accounts",
+          "source": "enterprise_Contracts",
+          "target": "enterprise_Accounts",
+          "description": "Hop 5 · Join on account_key. A contract is held by one account."
+        },
+        {
+          "id": "hop6_enterprise_Accounts_to_finance_Accounts",
+          "source": "enterprise_Accounts",
+          "target": "finance_Accounts",
+          "description": "Hop 6 · Join on account_key · crosses semantic models. Same customer; display names are not identity."
+        },
+        {
+          "id": "hop6_finance_Accounts_to_finance_AccountMonth",
+          "source": "finance_Accounts",
+          "target": "finance_AccountMonth",
+          "description": "Hop 6 · Join on account_key · period: same service month. Finance measures stay at account and month."
+        },
+        {
+          "id": "hop7_enterprise_Accounts_to_care_Accounts",
+          "source": "enterprise_Accounts",
+          "target": "care_Accounts",
+          "description": "Hop 7 · Join on account_key · crosses semantic models. Same customer."
+        },
+        {
+          "id": "hop7_care_Accounts_to_care_Cases",
+          "source": "care_Accounts",
+          "target": "care_Cases",
+          "description": "Hop 7 · Join on account_key. An account raises cases."
+        },
+        {
+          "id": "network_SiteHour_to_network_Sites",
+          "source": "network_SiteHour",
+          "target": "network_Sites",
+          "description": "Join on site_key. Hourly availability telemetry belongs to one site."
+        },
+        {
+          "id": "network_Accounts_to_enterprise_Accounts",
+          "source": "network_Accounts",
+          "target": "enterprise_Accounts",
+          "description": "Join on account_key · crosses semantic models. Same customer account across Network and Enterprise services."
+        },
+        {
+          "id": "enterprise_ServiceSiteMap_to_enterprise_Services",
+          "source": "enterprise_ServiceSiteMap",
+          "target": "enterprise_Services",
+          "description": "Join on service_key. Each serving-site assignment belongs to one enterprise service."
+        },
+        {
+          "id": "enterprise_ServiceMonth_to_enterprise_Services",
+          "source": "enterprise_ServiceMonth",
+          "target": "enterprise_Services",
+          "description": "Join on service_key. Monthly SLA performance belongs to one enterprise service."
+        },
+        {
+          "id": "enterprise_ServiceMonth_to_enterprise_Contracts",
+          "source": "enterprise_ServiceMonth",
+          "target": "enterprise_Contracts",
+          "description": "Join on contract_key. Monthly service performance is governed by one contract."
+        },
+        {
+          "id": "enterprise_Contracts_to_enterprise_AppliedCredits",
+          "source": "enterprise_Contracts",
+          "target": "enterprise_AppliedCredits",
+          "description": "Join on contract_key · period: same service month. Applied SLA credits are recorded per contract and service month."
+        },
+        {
+          "id": "care_CaseDailySnapshot_to_care_Cases",
+          "source": "care_CaseDailySnapshot",
+          "target": "care_Cases",
+          "description": "Join on case_key. End-of-day open-case snapshots track one care case."
+        }
+      ],
+      "metrics": [
+        {
+          "id": "network.major_incidents",
+          "model": "network",
+          "table": "incident",
+          "entity": "network_Incidents",
+          "name": "Major Incidents",
+          "description": "Raw major incident count; overlap is allowed.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "network.unavailable_site_minutes",
+          "model": "network",
+          "table": "site_hour",
+          "entity": "network_SiteHour",
+          "name": "Unavailable Site Minutes",
+          "description": "Per-site interval-unioned unavailability, without double-counting overlaps.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "network.availability_percent",
+          "model": "network",
+          "table": "site_hour",
+          "entity": "network_SiteHour",
+          "name": "Availability Percent",
+          "description": "Eligible-minute weighted availability; not the mean of site percentages.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "enterprise.eligible_credits",
+          "model": "enterprise",
+          "table": "sla_evaluation",
+          "entity": "enterprise_SlaEvaluation",
+          "name": "Eligible Credits",
+          "description": "Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "enterprise.credit_exposure",
+          "model": "enterprise",
+          "table": "sla_evaluation",
+          "entity": "enterprise_SlaEvaluation",
+          "name": "Credit Exposure",
+          "description": "Eligible less already applied contract-month credits; not a repeated per-incident cap.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "enterprise.applied_credits",
+          "model": "enterprise",
+          "table": "applied_credit",
+          "entity": "enterprise_AppliedCredits",
+          "name": "Applied Credits",
+          "description": "Applied credits attributed to SLA service month, with separate posting timestamp.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "enterprise.sla_compliance",
+          "model": "enterprise",
+          "table": "service_month",
+          "entity": "enterprise_ServiceMonth",
+          "name": "SLA Compliance",
+          "description": "Compliant contracted service-months divided by contracted service-months.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "enterprise.breached_services",
+          "model": "enterprise",
+          "table": "service_month",
+          "entity": "enterprise_ServiceMonth",
+          "name": "Breached Services",
+          "description": "Service-months exceeding their contract threshold.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "finance.recognized_service_revenue",
+          "model": "finance",
+          "table": "account_month",
+          "entity": "finance_AccountMonth",
+          "name": "Recognized Service Revenue",
+          "description": "Recognized service revenue before service-month credits, in integer cents.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "finance.contribution_margin",
+          "model": "finance",
+          "table": "account_month",
+          "entity": "finance_AccountMonth",
+          "name": "Contribution Margin",
+          "description": "Net recognized service revenue minus attributed service cost.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "finance.margin_percent",
+          "model": "finance",
+          "table": "account_month",
+          "entity": "finance_AccountMonth",
+          "name": "Margin Percent",
+          "description": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "care.escalated_cases",
+          "model": "care",
+          "table": "case",
+          "entity": "care_Cases",
+          "name": "Escalated Cases",
+          "description": "Cases escalated at least once, attributed to case opening month.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "care.repeat_contacts",
+          "model": "care",
+          "table": "case",
+          "entity": "care_Cases",
+          "name": "Repeat Contacts",
+          "description": "Subsequent same-reason contacts within seven days for the same account.",
+          "representation": "EXTERNALMEASURE"
+        },
+        {
+          "id": "care.open_cases_eod",
+          "model": "care",
+          "table": "case_daily_snapshot",
+          "entity": "care_CaseDailySnapshot",
+          "name": "Open Cases EOD",
+          "description": "Open cases at a specified observed day end. Requires one snapshot_date per result; never sum snapshots over time.",
+          "representation": "EXTERNALMEASURE"
+        }
+      ],
+      "rules": [
+        {
+          "id": "R1",
+          "statement": "A service is exposed to an incident only when the incident interval, the service-site assignment and the contract are valid at the same time. Validity periods are half-open UTC intervals.",
+          "referenced_entities": [
+            "network_Incidents",
+            "enterprise_ServiceSiteMap",
+            "enterprise_Contracts"
+          ],
+          "property_scope": "None"
+        },
+        {
+          "id": "R2",
+          "statement": "SLA credit is evaluated per service-month against its threshold, then capped once per contract-month. It is a whole-month settlement, not a loss caused by one incident. Never allocate it to an incident and never apply the cap twice. Credit exposure is eligible credit minus applied credit, as defined by the source measure.",
+          "referenced_entities": [
+            "enterprise_Contracts",
+            "enterprise_SlaEvaluation",
+            "enterprise_AppliedCredits"
+          ],
+          "property_scope": "None"
+        },
+        {
+          "id": "R3",
+          "statement": "Recognized revenue and margin are stated per account and month. Bring the list of accounts down to one row per account-month before looking up finance measures, so that several contracts or services never multiply revenue or margin. Credits posted in Finance are not netted against Enterprise services credits.",
+          "referenced_entities": [
+            "enterprise_Accounts",
+            "finance_Accounts",
+            "finance_AccountMonth"
+          ],
+          "property_scope": "None"
+        },
+        {
+          "id": "R4",
+          "statement": "The account key identifies a customer in every model. Display names are not identity. A billing key is not an account key even when the numbers match; map it through the billing account map for the service date.",
+          "referenced_entities": [
+            "network_Accounts",
+            "enterprise_Accounts",
+            "finance_Accounts",
+            "care_Accounts"
+          ],
+          "property_scope": "None"
+        },
+        {
+          "id": "R5",
+          "statement": "A missing mapping, an absent credit row or a period with no data is unknown. Report it as an exclusion. Do not sum ratios, distinct counts or daily snapshots over time; ask the source measure at the final grain.",
+          "referenced_entities": [
+            "network_Incidents",
+            "network_Sites",
+            "network_SiteHour",
+            "network_Accounts",
+            "enterprise_Sites",
+            "enterprise_ServiceSiteMap",
+            "enterprise_Services",
+            "enterprise_ServiceMonth",
+            "enterprise_Contracts",
+            "enterprise_SlaEvaluation",
+            "enterprise_AppliedCredits",
+            "enterprise_Accounts",
+            "finance_Accounts",
+            "finance_AccountMonth",
+            "care_Accounts",
+            "care_Cases",
+            "care_CaseDailySnapshot"
+          ],
+          "property_scope": "None"
+        }
+      ],
+      "execution_relationships": {},
+      "limitations": [
+        "Projected offline from fabric/ontology/service-assurance.json for deterministic playback; live verification in a demo tenant is tracked in docs/architecture/platform-status.md.",
+        "Definition graph over four Direct Lake semantic-model templates, not a materialized instance graph.",
+        "All 14 ontology metrics link to source semantic-model DAX measures; calculations remain in their home models.",
+        "Rules R1 through R5 are plain-language guidance read by agents, not executable data constraints or access policies."
+      ]
+    },
+    "hops": [
+      {
+        "hop": 1,
+        "from_entity": "Incident",
+        "to_entity": "Site",
+        "join_keys": [
+          "site_key"
+        ],
+        "validity": "Incident interval start to end overlaps July 2026",
+        "crosses_models": false,
+        "models_label": "Network",
+        "summary": "Locate physical network sites hit by outages overlapping July 2026."
+      },
+      {
+        "hop": 2,
+        "from_entity": "Site",
+        "to_entity": "Service-site assignment",
+        "join_keys": [
+          "site_key"
+        ],
+        "validity": "Assignment valid_from to valid_to overlaps the incident",
+        "crosses_models": true,
+        "models_label": "Network -> Enterprise Services",
+        "summary": "Bridge from Network sites to enterprise service-site assignments active during the outage."
+      },
+      {
+        "hop": 3,
+        "from_entity": "Service-site assignment",
+        "to_entity": "Contract",
+        "join_keys": [
+          "contract_key"
+        ],
+        "validity": "Contract valid_from to valid_to overlaps the incident",
+        "crosses_models": false,
+        "models_label": "Enterprise Services",
+        "summary": "Retain only contracts whose half-open UTC validity also overlaps the incident window."
+      },
+      {
+        "hop": 4,
+        "from_entity": "Contract",
+        "to_entity": "SLA evaluation",
+        "join_keys": [
+          "contract_key",
+          "month"
+        ],
+        "validity": "Contract-month (2026-07-01)",
+        "crosses_models": false,
+        "models_label": "Enterprise Services",
+        "summary": "Read whole-month capped Credit Exposure once per contract-month without multiplying across incidents."
+      },
+      {
+        "hop": 5,
+        "from_entity": "Contract",
+        "to_entity": "Account",
+        "join_keys": [
+          "account_key"
+        ],
+        "validity": "Registered customer account key",
+        "crosses_models": false,
+        "models_label": "Enterprise Services",
+        "summary": "Deduplicate exposed contracts to canonical account_key identities rather than display names."
+      },
+      {
+        "hop": 6,
+        "from_entity": "Account",
+        "to_entity": "Account month",
+        "join_keys": [
+          "account_key",
+          "month"
+        ],
+        "validity": "Account-month (2026-07-01)",
+        "crosses_models": true,
+        "models_label": "Enterprise Services -> Finance",
+        "summary": "Bridge to Finance at one row per account-month for Recognized Service Revenue and Contribution Margin."
+      },
+      {
+        "hop": 7,
+        "from_entity": "Account",
+        "to_entity": "Case",
+        "join_keys": [
+          "account_key",
+          "month"
+        ],
+        "validity": "Cases opened in July 2026 (2026-07-01)",
+        "crosses_models": true,
+        "models_label": "Enterprise Services -> Care",
+        "summary": "Bridge to Care on account_key to count July Escalated Cases and Repeat Contacts."
+      }
+    ],
+    "model_evidence": [
+      {
+        "model_id": "network",
+        "model_name": "Network",
+        "home_tables": [
+          "Incidents",
+          "Sites",
+          "Site Hour",
+          "Accounts"
+        ],
+        "measures": [
+          "Major Incidents",
+          "Unavailable Site Minutes",
+          "Availability Percent"
+        ],
+        "grain": "Incident and site-hour",
+        "summary": "19 outages overlap July 2026 across 18 physical sites (14 major incidents in July 2026).",
+        "row_count": 57919
+      },
+      {
+        "model_id": "enterprise",
+        "model_name": "Enterprise Services",
+        "home_tables": [
+          "Sites",
+          "Service Site Map",
+          "Services",
+          "Service Month",
+          "Contracts",
+          "SLA Evaluation",
+          "Applied Credits",
+          "Accounts"
+        ],
+        "measures": [
+          "Eligible Credits",
+          "Credit Exposure",
+          "Applied Credits",
+          "SLA Compliance",
+          "Breached Services"
+        ],
+        "grain": "Service-site interval, service-month, and contract-month",
+        "summary": "64 exposed contracts settled once per July 2026 contract-month across 58 complete enterprise accounts; 2 incomplete contracts excluded.",
+        "row_count": 4499
+      },
+      {
+        "model_id": "finance",
+        "model_name": "Finance",
+        "home_tables": [
+          "Accounts",
+          "Account Month"
+        ],
+        "measures": [
+          "Recognized Service Revenue",
+          "Contribution Margin",
+          "Margin Percent"
+        ],
+        "grain": "Account and service month",
+        "summary": "58 affected enterprise accounts deduplicated to one row per July 2026 account-month so multi-contract accounts never multiply revenue or margin.",
+        "row_count": 3120
+      },
+      {
+        "model_id": "care",
+        "model_name": "Care",
+        "home_tables": [
+          "Accounts",
+          "Cases",
+          "Case Daily Snapshot"
+        ],
+        "measures": [
+          "Escalated Cases",
+          "Repeat Contacts",
+          "Open Cases EOD"
+        ],
+        "grain": "Case and daily case snapshot",
+        "summary": "307 July 2026 care cases across the population, including 28 escalated cases and 24 repeat contacts on ranked affected accounts.",
+        "row_count": 7740
+      }
+    ],
+    "ranked_accounts": [
+      {
+        "account_key": 1,
+        "account_id": "service-assurance:acct:000001",
+        "display_name": "Northstar Business",
+        "region": "East",
+        "affected_sites": [
+          1,
+          2,
+          3
+        ],
+        "affected_contracts": [
+          1,
+          2
+        ],
+        "credit_exposure_cents": 13580,
+        "recognized_service_revenue_cents": 9000,
+        "contribution_margin_cents": -1400,
+        "escalated_cases": 0,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 12,
+        "account_id": "service-assurance:acct:000012",
+        "display_name": "Account 0012",
+        "region": "South",
+        "affected_sites": [
+          10,
+          19
+        ],
+        "affected_contracts": [
+          16
+        ],
+        "credit_exposure_cents": 12960,
+        "recognized_service_revenue_cents": 31903,
+        "contribution_margin_cents": 18168,
+        "escalated_cases": 0,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 44,
+        "account_id": "service-assurance:acct:000044",
+        "display_name": "Account 0044",
+        "region": "South",
+        "affected_sites": [
+          10,
+          19
+        ],
+        "affected_contracts": [
+          48
+        ],
+        "credit_exposure_cents": 8760,
+        "recognized_service_revenue_cents": 59492,
+        "contribution_margin_cents": 36555,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 42,
+        "account_id": "service-assurance:acct:000042",
+        "display_name": "Account 0042",
+        "region": "West",
+        "affected_sites": [
+          9
+        ],
+        "affected_contracts": [
+          46
+        ],
+        "credit_exposure_cents": 6300,
+        "recognized_service_revenue_cents": 44673,
+        "contribution_margin_cents": 25926,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 36,
+        "account_id": "service-assurance:acct:000036",
+        "display_name": "Account 0036",
+        "region": "South",
+        "affected_sites": [
+          11
+        ],
+        "affected_contracts": [
+          40
+        ],
+        "credit_exposure_cents": 6120,
+        "recognized_service_revenue_cents": 50193,
+        "contribution_margin_cents": 28831,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 2,
+        "account_id": "service-assurance:acct:000002",
+        "display_name": "Northstar Business",
+        "region": "West",
+        "affected_sites": [
+          2,
+          3
+        ],
+        "affected_contracts": [
+          3
+        ],
+        "credit_exposure_cents": 5700,
+        "recognized_service_revenue_cents": 24000,
+        "contribution_margin_cents": 0,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 32,
+        "account_id": "service-assurance:acct:000032",
+        "display_name": "Account 0032",
+        "region": "South",
+        "affected_sites": [
+          14
+        ],
+        "affected_contracts": [
+          36
+        ],
+        "credit_exposure_cents": 5580,
+        "recognized_service_revenue_cents": 42925,
+        "contribution_margin_cents": 24973,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 81,
+        "account_id": "service-assurance:acct:000081",
+        "display_name": "Account 0081",
+        "region": "East",
+        "affected_sites": [
+          12
+        ],
+        "affected_contracts": [
+          85
+        ],
+        "credit_exposure_cents": 5220,
+        "recognized_service_revenue_cents": 72367,
+        "contribution_margin_cents": 41146,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 24,
+        "account_id": "service-assurance:acct:000024",
+        "display_name": "Account 0024",
+        "region": "South",
+        "affected_sites": [
+          15,
+          17
+        ],
+        "affected_contracts": [
+          28,
+          118
+        ],
+        "credit_exposure_cents": 4500,
+        "recognized_service_revenue_cents": 43427,
+        "contribution_margin_cents": 25977,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 74,
+        "account_id": "service-assurance:acct:000074",
+        "display_name": "Account 0074",
+        "region": "West",
+        "affected_sites": [
+          9
+        ],
+        "affected_contracts": [
+          78
+        ],
+        "credit_exposure_cents": 4230,
+        "recognized_service_revenue_cents": 80270,
+        "contribution_margin_cents": 48362,
+        "escalated_cases": 0,
+        "repeat_contacts": 2
+      },
+      {
+        "account_key": 68,
+        "account_id": "service-assurance:acct:000068",
+        "display_name": "Account 0068",
+        "region": "South",
+        "affected_sites": [
+          11
+        ],
+        "affected_contracts": [
+          72
+        ],
+        "credit_exposure_cents": 4140,
+        "recognized_service_revenue_cents": 69920,
+        "contribution_margin_cents": 41562,
+        "escalated_cases": 0,
+        "repeat_contacts": 2
+      },
+      {
+        "account_key": 23,
+        "account_id": "service-assurance:acct:000023",
+        "display_name": "Account 0023",
+        "region": "North",
+        "affected_sites": [
+          11,
+          12
+        ],
+        "affected_contracts": [
+          27,
+          117
+        ],
+        "credit_exposure_cents": 3510,
+        "recognized_service_revenue_cents": 38540,
+        "contribution_margin_cents": 21613,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 17,
+        "account_id": "service-assurance:acct:000017",
+        "display_name": "Account 0017",
+        "region": "East",
+        "affected_sites": [
+          12,
+          14
+        ],
+        "affected_contracts": [
+          21,
+          111
+        ],
+        "credit_exposure_cents": 3510,
+        "recognized_service_revenue_cents": 30966,
+        "contribution_margin_cents": 17404,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 38,
+        "account_id": "service-assurance:acct:000038",
+        "display_name": "Account 0038",
+        "region": "West",
+        "affected_sites": [
+          12
+        ],
+        "affected_contracts": [
+          42
+        ],
+        "credit_exposure_cents": 3510,
+        "recognized_service_revenue_cents": 49994,
+        "contribution_margin_cents": -2500,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 57,
+        "account_id": "service-assurance:acct:000057",
+        "display_name": "Account 0057",
+        "region": "East",
+        "affected_sites": [
+          11,
+          20
+        ],
+        "affected_contracts": [
+          61
+        ],
+        "credit_exposure_cents": 3240,
+        "recognized_service_revenue_cents": 55093,
+        "contribution_margin_cents": 31979,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 64,
+        "account_id": "service-assurance:acct:000064",
+        "display_name": "Account 0064",
+        "region": "South",
+        "affected_sites": [
+          14
+        ],
+        "affected_contracts": [
+          68
+        ],
+        "credit_exposure_cents": 2820,
+        "recognized_service_revenue_cents": 69065,
+        "contribution_margin_cents": 40330,
+        "escalated_cases": 1,
+        "repeat_contacts": 2
+      },
+      {
+        "account_key": 56,
+        "account_id": "service-assurance:acct:000056",
+        "display_name": "Account 0056",
+        "region": "South",
+        "affected_sites": [
+          15
+        ],
+        "affected_contracts": [
+          60
+        ],
+        "credit_exposure_cents": 2700,
+        "recognized_service_revenue_cents": 64389,
+        "contribution_margin_cents": 37015,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 14,
+        "account_id": "service-assurance:acct:000014",
+        "display_name": "Account 0014",
+        "region": "West",
+        "affected_sites": [
+          11,
+          20
+        ],
+        "affected_contracts": [
+          18
+        ],
+        "credit_exposure_cents": 2220,
+        "recognized_service_revenue_cents": 32240,
+        "contribution_margin_cents": -2500,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 16,
+        "account_id": "service-assurance:acct:000016",
+        "display_name": "Account 0016",
+        "region": "South",
+        "affected_sites": [
+          9
+        ],
+        "affected_contracts": [
+          110
+        ],
+        "credit_exposure_cents": 2130,
+        "recognized_service_revenue_cents": 38596,
+        "contribution_margin_cents": 22773,
+        "escalated_cases": 2,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 10,
+        "account_id": "service-assurance:acct:000010",
+        "display_name": "Account 0010",
+        "region": "West",
+        "affected_sites": [
+          9
+        ],
+        "affected_contracts": [
+          14
+        ],
+        "credit_exposure_cents": 2130,
+        "recognized_service_revenue_cents": 35885,
+        "contribution_margin_cents": 22748,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 100,
+        "account_id": "service-assurance:acct:000100",
+        "display_name": "Account 0100",
+        "region": "South",
+        "affected_sites": [
+          11
+        ],
+        "affected_contracts": [
+          104
+        ],
+        "credit_exposure_cents": 2100,
+        "recognized_service_revenue_cents": 95031,
+        "contribution_margin_cents": 56007,
+        "escalated_cases": 0,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 69,
+        "account_id": "service-assurance:acct:000069",
+        "display_name": "Account 0069",
+        "region": "East",
+        "affected_sites": [
+          16
+        ],
+        "affected_contracts": [
+          73
+        ],
+        "credit_exposure_cents": 1980,
+        "recognized_service_revenue_cents": 64063,
+        "contribution_margin_cents": 37478,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 45,
+        "account_id": "service-assurance:acct:000045",
+        "display_name": "Account 0045",
+        "region": "East",
+        "affected_sites": [
+          15
+        ],
+        "affected_contracts": [
+          49
+        ],
+        "credit_exposure_cents": 1980,
+        "recognized_service_revenue_cents": 46780,
+        "contribution_margin_cents": 27142,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 30,
+        "account_id": "service-assurance:acct:000030",
+        "display_name": "Account 0030",
+        "region": "West",
+        "affected_sites": [
+          13
+        ],
+        "affected_contracts": [
+          34
+        ],
+        "credit_exposure_cents": 1980,
+        "recognized_service_revenue_cents": 36149,
+        "contribution_margin_cents": 20989,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 49,
+        "account_id": "service-assurance:acct:000049",
+        "display_name": "Account 0049",
+        "region": "East",
+        "affected_sites": [
+          12
+        ],
+        "affected_contracts": [
+          53
+        ],
+        "credit_exposure_cents": 1770,
+        "recognized_service_revenue_cents": 56414,
+        "contribution_margin_cents": 33582,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 88,
+        "account_id": "service-assurance:acct:000088",
+        "display_name": "Account 0088",
+        "region": "South",
+        "affected_sites": [
+          15
+        ],
+        "affected_contracts": [
+          92
+        ],
+        "credit_exposure_cents": 1380,
+        "recognized_service_revenue_cents": 89817,
+        "contribution_margin_cents": 54250,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 62,
+        "account_id": "service-assurance:acct:000062",
+        "display_name": "Account 0062",
+        "region": "West",
+        "affected_sites": [
+          13
+        ],
+        "affected_contracts": [
+          66
+        ],
+        "credit_exposure_cents": 1350,
+        "recognized_service_revenue_cents": 67903,
+        "contribution_margin_cents": 39581,
+        "escalated_cases": 2,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 26,
+        "account_id": "service-assurance:acct:000026",
+        "display_name": "Account 0026",
+        "region": "West",
+        "affected_sites": [
+          16
+        ],
+        "affected_contracts": [
+          30
+        ],
+        "credit_exposure_cents": 1350,
+        "recognized_service_revenue_cents": 46862,
+        "contribution_margin_cents": 28161,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 11,
+        "account_id": "service-assurance:acct:000011",
+        "display_name": "Account 0011",
+        "region": "North",
+        "affected_sites": [
+          10,
+          13
+        ],
+        "affected_contracts": [
+          15,
+          105
+        ],
+        "credit_exposure_cents": 1350,
+        "recognized_service_revenue_cents": 31924,
+        "contribution_margin_cents": 17708,
+        "escalated_cases": 2,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 25,
+        "account_id": "service-assurance:acct:000025",
+        "display_name": "Account 0025",
+        "region": "East",
+        "affected_sites": [
+          11,
+          20
+        ],
+        "affected_contracts": [
+          29
+        ],
+        "credit_exposure_cents": 1140,
+        "recognized_service_revenue_cents": 40217,
+        "contribution_margin_cents": 22841,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 18,
+        "account_id": "service-assurance:acct:000018",
+        "display_name": "Account 0018",
+        "region": "West",
+        "affected_sites": [
+          17,
+          19
+        ],
+        "affected_contracts": [
+          22,
+          112
+        ],
+        "credit_exposure_cents": 900,
+        "recognized_service_revenue_cents": 27554,
+        "contribution_margin_cents": 15853,
+        "escalated_cases": 2,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 94,
+        "account_id": "service-assurance:acct:000094",
+        "display_name": "Account 0094",
+        "region": "West",
+        "affected_sites": [
+          13
+        ],
+        "affected_contracts": [
+          98
+        ],
+        "credit_exposure_cents": 690,
+        "recognized_service_revenue_cents": 95996,
+        "contribution_margin_cents": 58535,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 58,
+        "account_id": "service-assurance:acct:000058",
+        "display_name": "Account 0058",
+        "region": "West",
+        "affected_sites": [
+          16
+        ],
+        "affected_contracts": [
+          62
+        ],
+        "credit_exposure_cents": 690,
+        "recognized_service_revenue_cents": 64174,
+        "contribution_margin_cents": 37281,
+        "escalated_cases": 0,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 37,
+        "account_id": "service-assurance:acct:000037",
+        "display_name": "Account 0037",
+        "region": "East",
+        "affected_sites": [
+          16
+        ],
+        "affected_contracts": [
+          41
+        ],
+        "credit_exposure_cents": 690,
+        "recognized_service_revenue_cents": 49799,
+        "contribution_margin_cents": 28851,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 13,
+        "account_id": "service-assurance:acct:000013",
+        "display_name": "Account 0013",
+        "region": "East",
+        "affected_sites": [
+          15
+        ],
+        "affected_contracts": [
+          17
+        ],
+        "credit_exposure_cents": 690,
+        "recognized_service_revenue_cents": 36897,
+        "contribution_margin_cents": 22822,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 20,
+        "account_id": "service-assurance:acct:000020",
+        "display_name": "Account 0020",
+        "region": "South",
+        "affected_sites": [
+          18
+        ],
+        "affected_contracts": [
+          24
+        ],
+        "credit_exposure_cents": 540,
+        "recognized_service_revenue_cents": 39432,
+        "contribution_margin_cents": 23625,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 50,
+        "account_id": "service-assurance:acct:000050",
+        "display_name": "Account 0050",
+        "region": "West",
+        "affected_sites": [
+          17
+        ],
+        "affected_contracts": [
+          54
+        ],
+        "credit_exposure_cents": 390,
+        "recognized_service_revenue_cents": 59804,
+        "contribution_margin_cents": 34908,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 52,
+        "account_id": "service-assurance:acct:000052",
+        "display_name": "Account 0052",
+        "region": "South",
+        "affected_sites": [
+          18
+        ],
+        "affected_contracts": [
+          56
+        ],
+        "credit_exposure_cents": 300,
+        "recognized_service_revenue_cents": 62745,
+        "contribution_margin_cents": 37543,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 82,
+        "account_id": "service-assurance:acct:000082",
+        "display_name": "Account 0082",
+        "region": "West",
+        "affected_sites": [
+          17
+        ],
+        "affected_contracts": [
+          86
+        ],
+        "credit_exposure_cents": 210,
+        "recognized_service_revenue_cents": 82160,
+        "contribution_margin_cents": 47917,
+        "escalated_cases": 2,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 76,
+        "account_id": "service-assurance:acct:000076",
+        "display_name": "Account 0076",
+        "region": "South",
+        "affected_sites": [
+          19
+        ],
+        "affected_contracts": [
+          80
+        ],
+        "credit_exposure_cents": 180,
+        "recognized_service_revenue_cents": 79703,
+        "contribution_margin_cents": 46537,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 33,
+        "account_id": "service-assurance:acct:000033",
+        "display_name": "Account 0033",
+        "region": "East",
+        "affected_sites": [
+          19
+        ],
+        "affected_contracts": [
+          37
+        ],
+        "credit_exposure_cents": 180,
+        "recognized_service_revenue_cents": 38213,
+        "contribution_margin_cents": 21812,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 89,
+        "account_id": "service-assurance:acct:000089",
+        "display_name": "Account 0089",
+        "region": "East",
+        "affected_sites": [
+          20
+        ],
+        "affected_contracts": [
+          93
+        ],
+        "credit_exposure_cents": 150,
+        "recognized_service_revenue_cents": 91649,
+        "contribution_margin_cents": 55354,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 65,
+        "account_id": "service-assurance:acct:000065",
+        "display_name": "Account 0065",
+        "region": "East",
+        "affected_sites": [
+          19
+        ],
+        "affected_contracts": [
+          69
+        ],
+        "credit_exposure_cents": 150,
+        "recognized_service_revenue_cents": 71706,
+        "contribution_margin_cents": 42720,
+        "escalated_cases": 1,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 46,
+        "account_id": "service-assurance:acct:000046",
+        "display_name": "Account 0046",
+        "region": "West",
+        "affected_sites": [
+          20
+        ],
+        "affected_contracts": [
+          50
+        ],
+        "credit_exposure_cents": 90,
+        "recognized_service_revenue_cents": 59953,
+        "contribution_margin_cents": 35216,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 5,
+        "account_id": "service-assurance:acct:000005",
+        "display_name": "Account 0005",
+        "region": "East",
+        "affected_sites": [
+          5
+        ],
+        "affected_contracts": [
+          6
+        ],
+        "credit_exposure_cents": 90,
+        "recognized_service_revenue_cents": 16000,
+        "contribution_margin_cents": 10500,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 3,
+        "account_id": "service-assurance:acct:000003",
+        "display_name": "Harbor Business",
+        "region": "North",
+        "affected_sites": [
+          1
+        ],
+        "affected_contracts": [
+          4
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 80000,
+        "contribution_margin_cents": 58000,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 95,
+        "account_id": "service-assurance:acct:000095",
+        "display_name": "Account 0095",
+        "region": "North",
+        "affected_sites": [
+          18
+        ],
+        "affected_contracts": [
+          99
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 92596,
+        "contribution_margin_cents": 54662,
+        "escalated_cases": 0,
+        "repeat_contacts": 2
+      },
+      {
+        "account_key": 75,
+        "account_id": "service-assurance:acct:000075",
+        "display_name": "Account 0075",
+        "region": "North",
+        "affected_sites": [
+          14
+        ],
+        "affected_contracts": [
+          79
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 82107,
+        "contribution_margin_cents": 50205,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 87,
+        "account_id": "service-assurance:acct:000087",
+        "display_name": "Account 0087",
+        "region": "North",
+        "affected_sites": [
+          10
+        ],
+        "affected_contracts": [
+          91
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 84970,
+        "contribution_margin_cents": 49311,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 63,
+        "account_id": "service-assurance:acct:000063",
+        "display_name": "Account 0063",
+        "region": "North",
+        "affected_sites": [
+          9,
+          18
+        ],
+        "affected_contracts": [
+          67
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 72916,
+        "contribution_margin_cents": 44173,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 55,
+        "account_id": "service-assurance:acct:000055",
+        "display_name": "Account 0055",
+        "region": "North",
+        "affected_sites": [
+          10
+        ],
+        "affected_contracts": [
+          59
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 66244,
+        "contribution_margin_cents": 39852,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 43,
+        "account_id": "service-assurance:acct:000043",
+        "display_name": "Account 0043",
+        "region": "North",
+        "affected_sites": [
+          14
+        ],
+        "affected_contracts": [
+          47
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 57289,
+        "contribution_margin_cents": 34473,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 51,
+        "account_id": "service-assurance:acct:000051",
+        "display_name": "Account 0051",
+        "region": "North",
+        "affected_sites": [
+          13
+        ],
+        "affected_contracts": [
+          55
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 57555,
+        "contribution_margin_cents": 33582,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 39,
+        "account_id": "service-assurance:acct:000039",
+        "display_name": "Account 0039",
+        "region": "North",
+        "affected_sites": [
+          17
+        ],
+        "affected_contracts": [
+          43
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 50947,
+        "contribution_margin_cents": 29368,
+        "escalated_cases": 1,
+        "repeat_contacts": 1
+      },
+      {
+        "account_key": 31,
+        "account_id": "service-assurance:acct:000031",
+        "display_name": "Account 0031",
+        "region": "North",
+        "affected_sites": [
+          9,
+          18
+        ],
+        "affected_contracts": [
+          35
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 46387,
+        "contribution_margin_cents": 26160,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 15,
+        "account_id": "service-assurance:acct:000015",
+        "display_name": "Account 0015",
+        "region": "North",
+        "affected_sites": [
+          14
+        ],
+        "affected_contracts": [
+          19
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 39068,
+        "contribution_margin_cents": 24307,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 19,
+        "account_id": "service-assurance:acct:000019",
+        "display_name": "Account 0019",
+        "region": "North",
+        "affected_sites": [
+          13
+        ],
+        "affected_contracts": [
+          23
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 36824,
+        "contribution_margin_cents": 21180,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      },
+      {
+        "account_key": 4,
+        "account_id": "service-assurance:acct:000004",
+        "display_name": "Harbor Business",
+        "region": "South",
+        "affected_sites": [
+          4
+        ],
+        "affected_contracts": [
+          5
+        ],
+        "credit_exposure_cents": 0,
+        "recognized_service_revenue_cents": 0,
+        "contribution_margin_cents": -400,
+        "escalated_cases": 0,
+        "repeat_contacts": 0
+      }
+    ],
+    "exclusions": [
+      {
+        "category": "unknown_coverage",
+        "subject": "account_key=6 (service-assurance:acct:000006) · contract_key=8 · service_key=10",
+        "rule_id": "R5",
+        "reason": "Service 10 has incomplete July 2026 serving-site coverage (43,200 of 44,640 expected minutes mapped; coverage_complete = false), so contract 8 and account 6 remain unknown rather than zero exposure."
+      },
+      {
+        "category": "unknown_coverage",
+        "subject": "account_key=9 (service-assurance:acct:000009) · contract_key=13 · service_key=16",
+        "rule_id": "R5",
+        "reason": "Service 16 has incomplete July 2026 serving-site coverage (41,760 of 44,640 expected minutes mapped; coverage_complete = false), so contract 13 and account 9 remain unknown rather than zero exposure."
+      },
+      {
+        "category": "non_overlapping_validity",
+        "subject": "account_key=4 (service-assurance:acct:000004) · contract_key=9 · service_key=12 · site_key=2",
+        "rule_id": "R1",
+        "reason": "Assignment of service 12 to site 2 ended 2026-07-10T00:00:00Z, before July incident(s) 3 started at 2026-07-15T00:00:00Z."
+      },
+      {
+        "category": "non_overlapping_validity",
+        "subject": "account_key=5 (service-assurance:acct:000005) · contract_key=10 · service_key=13 · site_key=1",
+        "rule_id": "R1",
+        "reason": "Contract 10 for service 13 started 2026-07-20T00:00:00Z, after July incident(s) 1, 2 on site 1 ended at 2026-07-18T00:00:00Z."
+      },
+      {
+        "category": "non_overlapping_validity",
+        "subject": "account_key=7 (service-assurance:acct:000007) · contract_key=11 · service_key=14 · site_key=1",
+        "rule_id": "R1",
+        "reason": "Assignment of service 14 to site 1 ended 2026-07-12T00:00:00Z, before July incident(s) 1, 2 started at 2026-07-15T00:00:00Z."
+      },
+      {
+        "category": "non_overlapping_validity",
+        "subject": "account_key=8 (service-assurance:acct:000008) · contract_key=12 · service_key=15 · site_key=2",
+        "rule_id": "R1",
+        "reason": "Contract 12 for service 15 started 2026-07-22T00:00:00Z, after July incident(s) 3 on site 2 ended at 2026-07-18T00:00:00Z."
+      },
+      {
+        "category": "non_overlapping_validity",
+        "subject": "account_key=23 (service-assurance:acct:000023) · contract_key=27 · service_key=30 · site_key=10",
+        "rule_id": "R1",
+        "reason": "Assignment of service 30 to site 10 ended 2026-02-01T00:00:00Z, before July incident(s) 9 started at 2026-07-15T08:00:00Z."
+      }
+    ],
+    "limitations": [
+      "Offline synthetic playback generated deterministically from fabric/ontology/service-assurance.json and the seeded service-assurance dataset (seed 20260929).",
+      "Does not execute live DAX, call Microsoft Fabric endpoints, or verify row-level security; live demo tenant checks are tracked in docs/architecture/platform-status.md.",
+      "Partial result (accounts 6 and 9 with incomplete July 2026 serving-site mapping coverage and non-overlapping validity records are excluded rather than treated as zero).",
+      "Contract-month SLA credit exposure and account-month finance totals remain at their home semantic-model grains and are review guidance only, not automated customer credits."
+    ]
+  },
   "limitations": [
     "Two genuinely separate native ontologies: small executive managed-native answer and full Customer360 application comparisons.",
     "Source models own calculations. The executive result retains independent source verification, not an exposed native internal trace or a fabricated shared source window.",

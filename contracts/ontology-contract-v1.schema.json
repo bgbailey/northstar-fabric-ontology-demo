@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bgbailey/northstar-fabric-ontology-demo/contracts/ontology-contract-v1.schema.json",
+  "title": "OntologyContractV1",
+  "description": "Structural authoring contract for a Fabric IQ ontology over Power BI semantic models.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "stream",
+    "displayName",
+    "ontologyGeneration",
+    "sourceModels",
+    "entities",
+    "relationships",
+    "rules",
+    "businessQuestion"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "metrics"
+      ]
+    },
+    {
+      "required": [
+        "sourceMetrics"
+      ]
+    }
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "stream": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "itemAlias": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "displayName": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "ontologyGeneration": {
+      "const": 2,
+      "type": "integer"
+    },
+    "separateNativeItemRequired": {
+      "type": "boolean"
+    },
+    "filteredCustomer360ViewIsNotEquivalent": {
+      "type": "boolean"
+    },
+    "preserveCustomer360": {
+      "type": "boolean"
+    },
+    "sourceModels": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "businessDomains": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/Entity"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "sourceMetrics": {
+      "items": {
+        "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/Metric"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "sourceMetricsArePresenterFocus": {
+      "type": "boolean"
+    },
+    "preserveAllGeneratedSourceProxies": {
+      "type": "boolean"
+    },
+    "observedNativeSourceProxyCount": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "acceptedNativeAnswer": {
+      "$ref": "#/$defs/AcceptedNativeAnswer"
+    },
+    "nativeGenerationObservation": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "relationships": {
+      "items": {
+        "$ref": "#/$defs/Relationship"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "businessQuestion": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "checks": {
+      "items": {
+        "pattern": "^G[1-9][0-9]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "nativeBootstrap": {
+      "$ref": "#/$defs/NativeBootstrap"
+    },
+    "boundaries": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "if": {
+    "required": [
+      "metrics"
+    ]
+  },
+  "then": {
+    "required": [
+      "checks"
+    ],
+    "properties": {
+      "entities": {
+        "items": {
+          "required": [
+            "name",
+            "logical",
+            "model",
+            "table",
+            "modelTable",
+            "key"
+          ]
+        }
+      },
+      "relationships": {
+        "items": {
+          "required": [
+            "from",
+            "to",
+            "on",
+            "crossesModels",
+            "meaning"
+          ]
+        }
+      },
+      "rules": {
+        "items": {
+          "required": [
+            "id",
+            "name",
+            "linkedTo",
+            "statement"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ColumnSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "to": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "type": "object"
+    },
+    "Entity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "logical": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "table": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "modelTable": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "key": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "interval": {
+          "$ref": "#/$defs/ColumnSpan"
+        },
+        "validity": {
+          "$ref": "#/$defs/ColumnSpan"
+        }
+      },
+      "required": [
+        "name",
+        "model",
+        "table"
+      ],
+      "type": "object"
+    },
+    "Relationship": {
+      "additionalProperties": false,
+      "properties": {
+        "hop": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "from": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "to": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "on": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "identity": {
+          "type": "boolean"
+        },
+        "crossesModels": {
+          "type": "boolean"
+        },
+        "validity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "period": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "meaning": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "meaning"
+      ],
+      "type": "object"
+    },
+    "Metric": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "modelTable": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "entity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "grain": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "additive": {
+          "type": "boolean"
+        },
+        "unit": {
+          "enum": [
+            "count",
+            "minutes",
+            "percent",
+            "cents",
+            "ratio",
+            "lines",
+            "hours"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "model",
+        "modelTable",
+        "entity",
+        "grain",
+        "additive",
+        "unit"
+      ],
+      "type": "object"
+    },
+    "Rule": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "linkedTo": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "statement": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "statement"
+      ],
+      "type": "object"
+    },
+    "AcceptedNativeAnswer": {
+      "additionalProperties": false,
+      "properties": {
+        "capturedAt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sourceCheckedMatchingAccounts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "independentRegisteredSourcePopulation": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "nativeMetricCellsMatched": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "recordedPacket": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "rawSourceValueReviewIncluded": {
+          "type": "boolean"
+        },
+        "publicProjection": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "nativeInternalQueryTraceExposed": {
+          "type": "boolean"
+        },
+        "ruleConsiderationProven": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "capturedAt",
+        "sourceCheckedMatchingAccounts",
+        "independentRegisteredSourcePopulation",
+        "nativeMetricCellsMatched",
+        "recordedPacket",
+        "rawSourceValueReviewIncluded",
+        "publicProjection",
+        "nativeInternalQueryTraceExposed",
+        "ruleConsiderationProven"
+      ],
+      "type": "object"
+    },
+    "NativeBootstrap": {
+      "additionalProperties": false,
+      "properties": {
+        "route": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "planBeforeAct": {
+          "type": "boolean"
+        },
+        "reviewExactSmallDraftBeforeApply": {
+          "type": "boolean"
+        },
+        "sourceCalculationsCopiedOrEdited": {
+          "type": "boolean"
+        },
+        "legacyOntologyRecipesAllowed": {
+          "type": "boolean"
+        },
+        "largeOntologyDefinitionMayBeReplaced": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "route",
+        "planBeforeAct",
+        "reviewExactSmallDraftBeforeApply",
+        "sourceCalculationsCopiedOrEdited",
+        "legacyOntologyRecipesAllowed",
+        "largeOntologyDefinitionMayBeReplaced"
+      ],
+      "type": "object"
+    }
+  }
+}

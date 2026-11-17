@@ -1,0 +1,5 @@
+rule CreditPerContractMonth
+	statement: SLA credit is evaluated per service-month against its threshold, then capped once per contract-month. It is a whole-month settlement, not a loss caused by one incident. Never allocate it to an incident and never apply the cap twice. Credit exposure is eligible credit minus applied credit, as defined by the source measure.
+	ruleReferencedEntity enterprise_Contracts
+	ruleReferencedEntity enterprise_SlaEvaluation
+	ruleReferencedEntity enterprise_AppliedCredits

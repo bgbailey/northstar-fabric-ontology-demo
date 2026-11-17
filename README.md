@@ -39,6 +39,7 @@ All customer names, accounts, contracts, sites, incidents, and amounts in this r
 Answering it crosses four Direct Lake Power BI semantic models — **Network**, **Enterprise services**, **Finance**, and **Care** — across time-valid site assignments and separate contract-month and account-month grains.
 
 - **Service assurance scenario specification:** [docs/architecture/hero-scenario.md](docs/architecture/hero-scenario.md) and the [service assurance ontology map](docs/architecture/images/service-assurance-ontology.png)
+- **Twenty-minute service assurance run of show:** [docs/presenter/service-assurance.md](docs/presenter/service-assurance.md)
 - **Two-model quickstart opener (Subscriptions and Finance):** [docs/scenario/quickstart.md](docs/scenario/quickstart.md)
 - **Full documentation index:** [docs/README.md](docs/README.md)
 

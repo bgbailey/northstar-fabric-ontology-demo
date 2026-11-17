@@ -1,0 +1,34 @@
+table enterprise_contract
+	column contract_key
+		dataType: int64
+		sourceColumn: contract_key
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column credit_cap_cents
+		dataType: int64
+		sourceColumn: credit_cap_cents
+	column credit_per_minute_cents
+		dataType: int64
+		sourceColumn: credit_per_minute_cents
+	column threshold_minutes
+		dataType: int64
+		sourceColumn: threshold_minutes
+	column valid_from
+		dataType: dateTime
+		sourceColumn: valid_from
+	column valid_to
+		dataType: dateTime
+		sourceColumn: valid_to
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	partition enterprise_contract = entity
+		mode: directQuery
+		source
+			entityName: Contracts
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

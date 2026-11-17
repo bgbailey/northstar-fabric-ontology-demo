@@ -2,7 +2,7 @@
 table 'Markets'
 	lineageTag: 511bf073-5af1-56fd-95f6-8d2a46dd541d
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -12,14 +12,14 @@ table 'Markets'
 		isAvailableInMdx: false
 		isKey
 
-	/// Market name at the declared Markets grain.
+	/// Human-readable home market label for customer and regional reporting.
 	column 'market_name'
 		dataType: string
 		summarizeBy: none
 		sourceColumn: market_name
 		lineageTag: 50bdbba9-fcf7-5861-865b-f28faf5e0512
 
-	/// Region at the declared Markets grain.
+	/// Parent operating region grouping home markets for regional summaries and security filtering.
 	column 'region'
 		dataType: string
 		summarizeBy: none

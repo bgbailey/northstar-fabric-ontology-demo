@@ -10,7 +10,7 @@ table 'Charge Lines'
 		annotation MetricId = finance.billed_charges
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'charge_key'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Charge Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -30,7 +30,7 @@ table 'Charge Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'billing_key'
 		dataType: int64
 		summarizeBy: none
@@ -40,7 +40,7 @@ table 'Charge Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -49,7 +49,7 @@ table 'Charge Lines'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the billed service month; separate from the posting timestamp.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -57,7 +57,7 @@ table 'Charge Lines'
 		lineageTag: 37e9aa34-5626-5069-8ea4-dd52b762f682
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'service_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -68,7 +68,7 @@ table 'Charge Lines'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'posted_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -79,7 +79,7 @@ table 'Charge Lines'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'amount_cents'
 		dataType: int64
 		summarizeBy: none
@@ -89,7 +89,7 @@ table 'Charge Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Charge type at the declared Charge Lines grain.
+	/// Billing line category distinguishing recurring service charges, usage charges, and reversals.
 	column 'charge_type'
 		dataType: string
 		summarizeBy: none

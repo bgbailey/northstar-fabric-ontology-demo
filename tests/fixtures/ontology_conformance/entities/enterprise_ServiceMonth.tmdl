@@ -1,0 +1,40 @@
+entity enterprise_ServiceMonth
+	backingTable: enterprise_service_month
+	keyProperty: service_key
+	keyProperty: month
+	property service_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.service_key
+	property contract_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.contract_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.account_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_service_month.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_service_month.month
+	property contracted
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.contracted
+	property monitored_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.monitored_minutes
+	property breached
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.breached
+	property recurring_revenue_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_month.recurring_revenue_cents

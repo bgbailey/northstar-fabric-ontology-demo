@@ -1,5 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { isRecordedDemoLibrary, isRecordedExecutiveDemo } from "./DemoLibrary";
+import { isRecordedServiceAssuranceDemo } from "./ServiceAssuranceDemo";
+
+async function readCommittedLibrary(): Promise<unknown> {
+  const fsSpecifier = "node:" + "fs";
+  const pathSpecifier = "node:" + "path";
+  const { readFileSync } = await import(/* @vite-ignore */ fsSpecifier) as {
+    readFileSync: (path: string, encoding: string) => string;
+  };
+  const { resolve } = await import(/* @vite-ignore */ pathSpecifier) as {
+    resolve: (...segments: string[]) => string;
+  };
+  const raw = readFileSync(
+    resolve("..", "..", "recordings", "northstar-demo-library-v2-2026-10-28.json"),
+    "utf-8",
+  );
+  return JSON.parse(raw) as unknown;
+}
 
 function fixture() {
   const entities = [
@@ -67,6 +84,47 @@ describe("separate executive native archive", () => {
       schema_version: "1.0", mode: "RECORDED_DEMO_LIBRARY",
       exported_at: "2026-10-28T12:03:00Z", executive: fixture(), customer360: null,
       limitations: ["SYNTHETIC"],
+    })).toBe(false);
+  });
+  it("accepts the committed demo library with the four-model service assurance stream and rejects malformed variants", async () => {
+    const library = await readCommittedLibrary();
+    expect(isRecordedDemoLibrary(library)).toBe(true);
+    if (!isRecordedDemoLibrary(library) || !library.service_assurance) {
+      throw new Error("Expected committed demo library to contain service_assurance");
+    }
+    const sa = library.service_assurance;
+    expect(sa.ontology.sources).toEqual(["network", "enterprise", "finance", "care"]);
+    expect(sa.ontology.entities).toHaveLength(17);
+    expect(sa.ontology.relationships).toHaveLength(17);
+    expect(sa.ontology.metrics).toHaveLength(14);
+    expect(sa.ontology.rules).toHaveLength(5);
+    expect(sa.hops).toHaveLength(7);
+    expect(sa.model_evidence).toHaveLength(4);
+    expect(sa.ranked_accounts.length).toBeGreaterThanOrEqual(15);
+    expect(sa.exclusions.length).toBeGreaterThanOrEqual(5);
+
+    expect(isRecordedDemoLibrary({ ...library, service_assurance: undefined })).toBe(true);
+    expect(isRecordedDemoLibrary({ ...library, service_assurance: null })).toBe(true);
+    expect(isRecordedDemoLibrary({ ...library, service_assurance: { ...sa, hops: sa.hops.slice(0, 6) } })).toBe(false);
+    expect(isRecordedServiceAssuranceDemo({
+      ...sa, ontology: { ...sa.ontology, sources: ["network", "enterprise", "finance"] },
+    })).toBe(false);
+    expect(isRecordedServiceAssuranceDemo({
+      ...sa, generated_at: "2026-11-16T00:00:00",
+    })).toBe(false);
+    expect(isRecordedServiceAssuranceDemo({
+      ...sa, ranked_accounts: [sa.ranked_accounts[1], sa.ranked_accounts[0], ...sa.ranked_accounts.slice(2)],
+    })).toBe(false);
+    expect(isRecordedServiceAssuranceDemo({
+      ...sa, ranked_accounts: [sa.ranked_accounts[0], sa.ranked_accounts[0]],
+    })).toBe(false);
+    expect(isRecordedServiceAssuranceDemo({ ...sa, exclusions: [] })).toBe(false);
+    expect(isRecordedDemoLibrary({
+      ...library,
+      service_assurance: {
+        ...sa,
+        ontology: { ...sa.ontology, native_snapshot_hash: library.executive.ontology.native_snapshot_hash },
+      },
     })).toBe(false);
   });
 });

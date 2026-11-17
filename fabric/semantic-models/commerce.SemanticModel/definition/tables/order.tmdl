@@ -18,7 +18,7 @@ table 'Orders'
 		annotation MetricId = commerce.cancellations
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'order_key'
 		dataType: int64
 		summarizeBy: none
@@ -28,7 +28,7 @@ table 'Orders'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -38,7 +38,7 @@ table 'Orders'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'Orders'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the order placement month; fulfillment and return dates are tracked separately.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -55,7 +55,7 @@ table 'Orders'
 		lineageTag: 8bdd2b22-2c42-5e7f-8bb3-ef9e059f7438
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'ordered_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -66,7 +66,7 @@ table 'Orders'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'fulfilled_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -77,7 +77,7 @@ table 'Orders'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'returned_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -88,7 +88,7 @@ table 'Orders'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'store_key'
 		dataType: int64
 		summarizeBy: none
@@ -98,7 +98,7 @@ table 'Orders'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'device_key'
 		dataType: int64
 		summarizeBy: none
@@ -108,7 +108,7 @@ table 'Orders'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'session_key'
 		dataType: int64
 		summarizeBy: none
@@ -118,7 +118,7 @@ table 'Orders'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Cancelled at the declared Orders grain.
+	/// Hidden numeric input on Orders; use explicit model measures instead.
 	column 'cancelled'
 		dataType: int64
 		summarizeBy: none

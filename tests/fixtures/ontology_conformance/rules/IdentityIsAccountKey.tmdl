@@ -1,0 +1,6 @@
+rule IdentityIsAccountKey
+	statement: The account key identifies a customer in every model. Display names are not identity. A billing key is not an account key even when the numbers match; map it through the billing account map for the service date.
+	ruleReferencedEntity network_Accounts
+	ruleReferencedEntity enterprise_Accounts
+	ruleReferencedEntity finance_Accounts
+	ruleReferencedEntity care_Accounts

@@ -66,7 +66,7 @@ table 'Sessions'
 		annotation MetricId = digital.median_journey_duration
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'session_key'
 		dataType: int64
 		summarizeBy: none
@@ -76,7 +76,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -86,7 +86,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -95,7 +95,7 @@ table 'Sessions'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month when the digital browsing or checkout session started.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -103,7 +103,7 @@ table 'Sessions'
 		lineageTag: 9d25ff2c-46a7-5286-99d7-70a91e4febe3
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'started_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -114,7 +114,7 @@ table 'Sessions'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'anonymous_id'
 		dataType: string
 		summarizeBy: none
@@ -123,14 +123,14 @@ table 'Sessions'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Authenticated at the declared Sessions grain.
+	/// True when the session resolved to a signed-in account; false for anonymous browsing.
 	column 'authenticated'
 		dataType: boolean
 		summarizeBy: none
 		sourceColumn: authenticated
 		lineageTag: fc77e2a8-ad13-5b2d-b231-1822e6cfe2b8
 
-	/// Eligible checkout at the declared Sessions grain.
+	/// Hidden numeric input on Sessions; use explicit model measures instead.
 	column 'eligible_checkout'
 		dataType: int64
 		summarizeBy: none
@@ -140,7 +140,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Successful checkout at the declared Sessions grain.
+	/// Hidden numeric input on Sessions; use explicit model measures instead.
 	column 'successful_checkout'
 		dataType: int64
 		summarizeBy: none
@@ -150,7 +150,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Failed checkout at the declared Sessions grain.
+	/// Hidden numeric input on Sessions; use explicit model measures instead.
 	column 'failed_checkout'
 		dataType: int64
 		summarizeBy: none
@@ -160,7 +160,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Duration seconds at the declared Sessions grain.
+	/// Hidden duration in seconds; query explicit duration measures instead of summing.
 	column 'duration_seconds'
 		dataType: int64
 		summarizeBy: none
@@ -170,7 +170,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'device_key'
 		dataType: int64
 		summarizeBy: none
@@ -180,7 +180,7 @@ table 'Sessions'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Release version at the declared Sessions grain.
+	/// Client app or web release identifier active during the session for defect triage.
 	column 'release_version'
 		dataType: string
 		summarizeBy: none

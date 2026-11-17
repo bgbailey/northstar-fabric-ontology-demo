@@ -2,7 +2,7 @@
 
 ## Run of show
 
-Use [../run/streams.md](../run/streams.md) as the entry point for startup and readiness checks. Open in Microsoft Fabric with the two-model quickstart ontology ([quickstart.md](quickstart.md)), then transition to the service assurance SLA exposure and account-priority segment ([../architecture/hero-scenario.md](../architecture/hero-scenario.md)).
+Use [../run/streams.md](../run/streams.md) as the entry point for startup and readiness checks. Open in Microsoft Fabric with the two-model quickstart ontology ([quickstart.md](quickstart.md)), then run the twenty-minute four-model service assurance talk track in [service-assurance.md](service-assurance.md) (scenario specification in [../architecture/hero-scenario.md](../architecture/hero-scenario.md)).
 
 The local web viewer (`apps/web`) provides side-by-side evidence, DAX query receipts, and recorded fallback; it does not replace the product experience in Microsoft Fabric. Before presenting live, verify recorded playback first and run live questions only after fresh demo user sign-in and rehearsal in your demo tenant.
 

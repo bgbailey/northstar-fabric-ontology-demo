@@ -1,0 +1,31 @@
+entity network_Accounts
+	backingTable: network_account
+	keyProperty: account_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_account.account_key
+	property account_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_account.account_id
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_account.market_id
+	property region
+		dataType: string
+		backingConfiguration
+			valueColumn: network_account.region
+	property consent
+		dataType: boolean
+		backingConfiguration
+			valueColumn: network_account.consent
+	property enterprise
+		dataType: boolean
+		backingConfiguration
+			valueColumn: network_account.enterprise
+	property display_name
+		dataType: string
+		backingConfiguration
+			valueColumn: network_account.display_name

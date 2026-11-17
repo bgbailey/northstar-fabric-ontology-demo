@@ -1,0 +1,33 @@
+entity enterprise_ServiceSiteMap
+	backingTable: enterprise_service_site_map
+	keyProperty: service_key
+	keyProperty: site_key
+	keyProperty: valid_from
+	property service_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.service_key
+	property site_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.site_key
+	property contract_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.contract_key
+	property valid_from
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.valid_from
+	property valid_to
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.valid_to
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_service_site_map.month

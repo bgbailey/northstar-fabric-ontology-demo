@@ -1,0 +1,15 @@
+entity enterprise_Services
+	backingTable: enterprise_service
+	keyProperty: service_key
+	property service_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service.service_key
+	property service_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_service.service_id
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_service.account_key

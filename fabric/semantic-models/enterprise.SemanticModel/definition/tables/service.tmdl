@@ -2,7 +2,7 @@
 table 'Services'
 	lineageTag: a9be45e1-d78f-5aec-ad48-99baa39b58a2
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'service_key'
 		dataType: int64
 		summarizeBy: none
@@ -13,7 +13,7 @@ table 'Services'
 		isKey
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'service_id'
 		dataType: string
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Services'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none

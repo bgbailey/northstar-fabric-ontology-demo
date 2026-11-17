@@ -1,0 +1,30 @@
+table enterprise_sla_evaluation
+	measure 'Eligible Credits' = EXTERNALMEASURE("Eligible Credits", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE")
+	measure 'Credit Exposure' = EXTERNALMEASURE("Credit Exposure", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE")
+	column contract_key
+		dataType: int64
+		sourceColumn: contract_key
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column outage_minutes
+		dataType: int64
+		sourceColumn: outage_minutes
+	column eligible_credit_cents
+		dataType: int64
+		sourceColumn: eligible_credit_cents
+	column applied_credit_cents
+		dataType: int64
+		sourceColumn: applied_credit_cents
+	partition enterprise_sla_evaluation = entity
+		mode: directQuery
+		source
+			entityName: 'SLA Evaluation'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

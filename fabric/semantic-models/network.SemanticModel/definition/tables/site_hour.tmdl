@@ -26,7 +26,7 @@ table 'Site Hour'
 		annotation MetricId = network.availability_percent
 		annotation Aggregation = non_additive
 
-	/// Observed failed network sessions, distinct from digital checkout sessions.
+	/// Observed failed radio/network sessions in the hourly monitoring window; not web or app sessions.
 	measure 'Failed Sessions' = SUM('Site Hour'[failed_sessions])
 		formatString: #,##0
 		displayFolder: Network Operations
@@ -42,7 +42,7 @@ table 'Site Hour'
 		annotation MetricId = network.service_degradation_percent
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_key'
 		dataType: int64
 		summarizeBy: none
@@ -52,7 +52,7 @@ table 'Site Hour'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -61,7 +61,7 @@ table 'Site Hour'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month for the bounded hourly site-monitoring window.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -69,7 +69,7 @@ table 'Site Hour'
 		lineageTag: b2719f02-08a1-52f1-ab9c-200e8ddf8e83
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'hour_start'
 		dataType: dateTime
 		summarizeBy: none
@@ -80,7 +80,7 @@ table 'Site Hour'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Eligible minutes at the declared Site Hour grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'eligible_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -90,7 +90,7 @@ table 'Site Hour'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Unavailable minutes at the declared Site Hour grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'unavailable_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -100,7 +100,7 @@ table 'Site Hour'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Failed sessions at the declared Site Hour grain.
+	/// Hidden numeric input on Site Hour; use explicit model measures instead.
 	column 'failed_sessions'
 		dataType: int64
 		summarizeBy: none
@@ -110,7 +110,7 @@ table 'Site Hour'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Total sessions at the declared Site Hour grain.
+	/// Hidden numeric input on Site Hour; use explicit model measures instead.
 	column 'total_sessions'
 		dataType: int64
 		summarizeBy: none

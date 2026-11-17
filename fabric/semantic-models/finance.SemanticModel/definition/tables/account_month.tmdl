@@ -50,7 +50,7 @@ table 'Account Month'
 		annotation MetricId = finance.revenue_per_active_line
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -60,7 +60,7 @@ table 'Account Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'billing_key'
 		dataType: int64
 		summarizeBy: none
@@ -70,7 +70,7 @@ table 'Account Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -79,7 +79,7 @@ table 'Account Month'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the service month for recognized revenue, service-month credits, and cost.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -87,7 +87,7 @@ table 'Account Month'
 		lineageTag: 06337a8b-58ef-5ffb-bce3-b6841dbbba9e
 		formatString: yyyy-MM-dd
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'revenue_cents'
 		dataType: int64
 		summarizeBy: none
@@ -97,7 +97,7 @@ table 'Account Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'credit_cents'
 		dataType: int64
 		summarizeBy: none
@@ -107,7 +107,7 @@ table 'Account Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'service_cost_cents'
 		dataType: int64
 		summarizeBy: none
@@ -117,7 +117,7 @@ table 'Account Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Active lines eom at the declared Account Month grain.
+	/// Hidden numeric input on Account Month; use explicit model measures instead.
 	column 'active_lines_eom'
 		dataType: int64
 		summarizeBy: none

@@ -2,7 +2,7 @@
 table 'Site Day'
 	lineageTag: e1311284-1ee7-515c-949a-6f219a91e4af
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Site Day'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -21,7 +21,7 @@ table 'Site Day'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month containing the daily site-monitoring rollup.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -29,7 +29,7 @@ table 'Site Day'
 		lineageTag: 28de688d-ee12-55e2-bffa-28d0de435b09
 		formatString: yyyy-MM-dd
 
-	/// Calendar date with no timezone or time-of-day.
+	/// Calendar day of the bounded daily site-availability rollup.
 	column 'snapshot_date'
 		dataType: dateTime
 		summarizeBy: none
@@ -37,7 +37,7 @@ table 'Site Day'
 		lineageTag: 2bcee9de-fea7-5ee8-a318-812a4b56f3dd
 		formatString: yyyy-MM-dd
 
-	/// Eligible minutes at the declared Site Day grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'eligible_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'Site Day'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Unavailable minutes at the declared Site Day grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'unavailable_minutes'
 		dataType: int64
 		summarizeBy: none

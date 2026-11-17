@@ -10,7 +10,7 @@ table 'Order Lines'
 		annotation MetricId = commerce.units
 		annotation Aggregation = additive
 
-	/// Booked device revenue, intentionally distinct from finance recognized service revenue.
+	/// Booked merchandise and device value in integer cents at order placement, not recurring service billing.
 	measure 'Booked Revenue' = SUM('Order Lines'[booked_revenue_cents])
 		formatString: #,##0" cents"
 		displayFolder: Commerce and Devices
@@ -34,7 +34,7 @@ table 'Order Lines'
 		annotation MetricId = commerce.device_return_rate
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'order_key'
 		dataType: int64
 		summarizeBy: none
@@ -44,7 +44,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Line number at the declared Order Lines grain.
+	/// Hidden numeric input on Order Lines; use explicit model measures instead.
 	column 'line_number'
 		dataType: int64
 		summarizeBy: none
@@ -54,7 +54,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -64,7 +64,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -73,7 +73,7 @@ table 'Order Lines'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the parent order placement month governing booked units, revenue, and return rates.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -81,7 +81,7 @@ table 'Order Lines'
 		lineageTag: ebfb8975-6693-5ef3-b27b-787dfcfd8491
 		formatString: yyyy-MM-dd
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'store_key'
 		dataType: int64
 		summarizeBy: none
@@ -91,7 +91,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'device_key'
 		dataType: int64
 		summarizeBy: none
@@ -101,7 +101,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Units at the declared Order Lines grain.
+	/// Hidden numeric input on Order Lines; use explicit model measures instead.
 	column 'units'
 		dataType: int64
 		summarizeBy: none
@@ -111,7 +111,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'booked_revenue_cents'
 		dataType: int64
 		summarizeBy: none
@@ -121,7 +121,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Fulfilled units at the declared Order Lines grain.
+	/// Hidden numeric input on Order Lines; use explicit model measures instead.
 	column 'fulfilled_units'
 		dataType: int64
 		summarizeBy: none
@@ -131,7 +131,7 @@ table 'Order Lines'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Returned units at the declared Order Lines grain.
+	/// Hidden numeric input on Order Lines; use explicit model measures instead.
 	column 'returned_units'
 		dataType: int64
 		summarizeBy: none

@@ -1,4 +1,4 @@
-"""Display-only archives of the two demo streams, not a native wire schema or reader grant."""
+"""Display-only archives of the recorded demo streams, not a wire schema or user grant."""
 
 import hashlib
 from datetime import datetime
@@ -16,6 +16,7 @@ EXECUTIVE_METRICS = {
     "finance.recognized_service_revenue",
     "finance.contribution_margin",
 }
+SERVICE_ASSURANCE_SOURCES = {"network", "enterprise", "finance", "care"}
 
 
 class ExecutiveAccount(Contract):
@@ -78,12 +79,102 @@ class RecordedExecutiveDemo(Contract):
         return self
 
 
+class ServiceAssuranceHop(Contract):
+    hop: int = Field(strict=True, ge=1, le=7)
+    from_entity: str = Field(min_length=1)
+    to_entity: str = Field(min_length=1)
+    join_keys: list[str] = Field(min_length=1)
+    validity: str = Field(min_length=1)
+    crosses_models: bool = Field(strict=True)
+    models_label: str = Field(min_length=1)
+    summary: str = Field(min_length=1)
+
+
+class ServiceAssuranceModelEvidence(Contract):
+    model_id: Literal["network", "enterprise", "finance", "care"]
+    model_name: str = Field(min_length=1)
+    home_tables: list[str] = Field(min_length=1)
+    measures: list[str] = Field(min_length=1)
+    grain: str = Field(min_length=1)
+    summary: str = Field(min_length=1)
+    row_count: int = Field(strict=True, ge=0, lt=2**53)
+
+
+class ServiceAssuranceAccountRow(Contract):
+    account_key: int = Field(strict=True, ge=1, lt=2**53)
+    account_id: str = Field(min_length=1)
+    display_name: str = Field(min_length=1)
+    region: str = Field(min_length=1)
+    affected_sites: list[int] = Field(min_length=1)
+    affected_contracts: list[int] = Field(min_length=1)
+    credit_exposure_cents: int = Field(strict=True, gt=-(2**53), lt=2**53)
+    recognized_service_revenue_cents: int = Field(strict=True, gt=-(2**53), lt=2**53)
+    contribution_margin_cents: int = Field(strict=True, gt=-(2**53), lt=2**53)
+    escalated_cases: int = Field(strict=True, ge=0, lt=2**53)
+    repeat_contacts: int = Field(strict=True, ge=0, lt=2**53)
+
+
+class ServiceAssuranceExclusion(Contract):
+    category: str = Field(min_length=1)
+    subject: str = Field(min_length=1)
+    rule_id: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+
+
+class RecordedServiceAssuranceDemo(Contract):
+    schema_version: Literal["1.0"] = "1.0"
+    mode: Literal["RECORDED_SERVICE_ASSURANCE"] = "RECORDED_SERVICE_ASSURANCE"
+    generated_at: datetime
+    profile: str = Field(min_length=1)
+    period: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    ontology: RecordedOntology
+    hops: list[ServiceAssuranceHop] = Field(min_length=7, max_length=7)
+    model_evidence: list[ServiceAssuranceModelEvidence] = Field(min_length=4, max_length=4)
+    ranked_accounts: list[ServiceAssuranceAccountRow] = Field(min_length=1, max_length=250)
+    exclusions: list[ServiceAssuranceExclusion] = Field(min_length=1)
+    limitations: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_service_assurance_stream(self):
+        if self.generated_at.tzinfo is None:
+            raise ValueError("Service assurance recording requires a zoned UTC timestamp")
+        if self.profile != "service-assurance":
+            raise ValueError("Service assurance recording requires profile='service-assurance'")
+        if set(self.ontology.sources) != SERVICE_ASSURANCE_SOURCES:
+            raise ValueError("Service assurance ontology requires network, enterprise, finance and care sources")
+        if (
+            len(self.ontology.entities) != 17
+            or len(self.ontology.relationships) != 17
+            or len(self.ontology.metrics) != 14
+            or len(self.ontology.rules) != 5
+        ):
+            raise ValueError("Service assurance ontology must match the 17-entity, 17-relationship, 14-metric, 5-rule contract")
+        if [item.hop for item in self.hops] != list(range(1, 8)):
+            raise ValueError("Service assurance path requires ordered hops 1 through 7")
+        if {item.model_id for item in self.model_evidence} != SERVICE_ASSURANCE_SOURCES:
+            raise ValueError("Service assurance model evidence must cover all four semantic models")
+        if len({row.account_id for row in self.ranked_accounts}) != len(self.ranked_accounts) or (
+            len({row.account_key for row in self.ranked_accounts}) != len(self.ranked_accounts)
+        ):
+            raise ValueError("Service assurance ranked account identities must not repeat")
+        keys = [(-row.credit_exposure_cents, -row.contribution_margin_cents) for row in self.ranked_accounts]
+        if keys != sorted(keys):
+            raise ValueError(
+                "Service assurance accounts must be ordered by credit_exposure_cents descending then contribution_margin_cents descending"
+            )
+        return self
+
+
 class RecordedDemoLibrary(Contract):
     schema_version: Literal["1.0"] = "1.0"
     mode: Literal["RECORDED_DEMO_LIBRARY"] = "RECORDED_DEMO_LIBRARY"
     exported_at: datetime
     executive: RecordedExecutiveDemo
     customer360: RecordedComparisons
+    service_assurance: RecordedServiceAssuranceDemo | None = Field(
+        default=None, exclude_if=lambda value: value is None,
+    )
     limitations: list[str] = Field(min_length=1)
 
     @model_validator(mode="after")
@@ -93,6 +184,16 @@ class RecordedDemoLibrary(Contract):
             len(full.entities) <= 4 or full.native_snapshot_hash == self.executive.ontology.native_snapshot_hash
         ):
             raise ValueError("Both streams require distinct actual small/full native captures and original zoned dates")
+        if self.service_assurance is not None:
+            if set(self.service_assurance.ontology.sources) != SERVICE_ASSURANCE_SOURCES or (
+                len(self.service_assurance.hops) != 7
+            ):
+                raise ValueError("Service assurance stream requires four models and seven hops")
+            if self.service_assurance.ontology.native_snapshot_hash in {
+                self.executive.ontology.native_snapshot_hash,
+                full.native_snapshot_hash,
+            }:
+                raise ValueError("Service assurance ontology snapshot must remain distinct from executive and customer360")
         return self
 
     def verify_private_identifiers_absent(self, values: set[str]):

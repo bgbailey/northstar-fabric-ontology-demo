@@ -10,7 +10,7 @@ table 'Case Daily Snapshot'
 		annotation MetricId = care.open_cases_eod
 		annotation Aggregation = semi_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'case_key'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Case Daily Snapshot'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -30,7 +30,7 @@ table 'Case Daily Snapshot'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -39,7 +39,7 @@ table 'Case Daily Snapshot'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month containing the daily open-case observation.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'Case Daily Snapshot'
 		lineageTag: 842a13c2-a445-5cb3-ae4a-dabdd9e86f4d
 		formatString: yyyy-MM-dd
 
-	/// Calendar date with no timezone or time-of-day.
+	/// Observed end-of-day date for open case backlog; select one date, never sum across days.
 	column 'snapshot_date'
 		dataType: dateTime
 		summarizeBy: none
@@ -55,7 +55,7 @@ table 'Case Daily Snapshot'
 		lineageTag: e868f011-d221-5f61-a602-99b9e573ff95
 		formatString: yyyy-MM-dd
 
-	/// Open eod at the declared Case Daily Snapshot grain.
+	/// Hidden numeric input on Case Daily Snapshot; use explicit model measures instead.
 	column 'open_eod'
 		dataType: int64
 		summarizeBy: none

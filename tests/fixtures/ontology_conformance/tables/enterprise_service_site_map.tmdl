@@ -1,0 +1,28 @@
+table enterprise_service_site_map
+	column service_key
+		dataType: int64
+		sourceColumn: service_key
+	column site_key
+		dataType: int64
+		sourceColumn: site_key
+	column contract_key
+		dataType: int64
+		sourceColumn: contract_key
+	column valid_from
+		dataType: dateTime
+		sourceColumn: valid_from
+	column valid_to
+		dataType: dateTime
+		sourceColumn: valid_to
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	partition enterprise_service_site_map = entity
+		mode: directQuery
+		source
+			entityName: 'Service Site Map'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

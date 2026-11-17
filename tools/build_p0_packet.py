@@ -22,6 +22,9 @@ if context["currentWorkspaceName"] != "ws-telco-iq-p0-20260929":
 if context["defaultLakehouseName"] != "lh_telcoiq_p0":
     raise RuntimeError("Approved P0 lakehouse must be attached")
 spark.conf.set("spark.sql.session.timeZone", "UTC")
+spark.conf.set("spark.databricks.delta.properties.defaults.enableDeletionVectors", "false")
+spark.conf.set("spark.databricks.delta.properties.defaults.minReaderVersion", "1")
+spark.conf.set("spark.databricks.delta.properties.defaults.minWriterVersion", "2")
 # Test actual namespace resolution, not SHOW SCHEMAS display labels.
 schema_name = "`ws-telco-iq-p0-20260929`.`lh_telcoiq_p0`.`dbo`"
 existing_tables = {row["tableName"] for row in spark.sql("SHOW TABLES IN " + schema_name).collect()}
@@ -48,7 +51,14 @@ for asset, frame in prepared:
             raise RuntimeError("Existing table differs; overwrite is not authorized: " + name)
         state = "EXISTING_EXACT_MATCH"
     else:
-        frame.write.format("delta").mode("errorifexists").saveAsTable(name)
+        (
+            frame.write.format("delta")
+            .option("delta.enableDeletionVectors", "false")
+            .option("delta.minReaderVersion", "1")
+            .option("delta.minWriterVersion", "2")
+            .mode("errorifexists")
+            .saveAsTable(name)
+        )
         state = "CREATED"
     stored = spark.table(name).select(frame.columns)
     if stored.count() != asset["rows"] or frame.exceptAll(stored).limit(1).count() or stored.exceptAll(frame).limit(1).count():

@@ -18,7 +18,7 @@ table 'Store Device Day'
 		annotation MetricId = commerce.stockout_store_days
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'store_key'
 		dataType: int64
 		summarizeBy: none
@@ -28,7 +28,7 @@ table 'Store Device Day'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'device_key'
 		dataType: int64
 		summarizeBy: none
@@ -38,7 +38,7 @@ table 'Store Device Day'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'Store Device Day'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month containing the store-device inventory observation.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -55,7 +55,7 @@ table 'Store Device Day'
 		lineageTag: 6763a329-2d12-539f-b3b7-442d6c73e064
 		formatString: yyyy-MM-dd
 
-	/// Calendar date with no timezone or time-of-day.
+	/// Observed end-of-day date for physical store inventory; select one date, never sum across days.
 	column 'snapshot_date'
 		dataType: dateTime
 		summarizeBy: none
@@ -63,7 +63,7 @@ table 'Store Device Day'
 		lineageTag: a7ba3f74-3f76-5046-a983-adc4aa18239e
 		formatString: yyyy-MM-dd
 
-	/// Inventory eod at the declared Store Device Day grain.
+	/// Hidden numeric input on Store Device Day; use explicit model measures instead.
 	column 'inventory_eod'
 		dataType: int64
 		summarizeBy: none
@@ -73,7 +73,7 @@ table 'Store Device Day'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Stockout at the declared Store Device Day grain.
+	/// Hidden numeric input on Store Device Day; use explicit model measures instead.
 	column 'stockout'
 		dataType: int64
 		summarizeBy: none

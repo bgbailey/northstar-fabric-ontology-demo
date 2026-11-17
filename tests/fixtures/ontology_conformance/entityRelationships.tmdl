@@ -1,0 +1,101 @@
+entityRelationship network_Incidents_to_network_Sites
+	fromEntity: network_Incidents
+	toEntity: network_Sites
+	backingConfiguration
+		relationship: rel_network_Incidents_to_network_Sites
+
+entityRelationship network_Sites_to_enterprise_Sites
+	fromEntity: network_Sites
+	toEntity: enterprise_Sites
+	backingConfiguration
+		relationship: rel_network_Sites_to_enterprise_Sites
+
+entityRelationship enterprise_Sites_to_enterprise_ServiceSiteMap
+	fromEntity: enterprise_Sites
+	toEntity: enterprise_ServiceSiteMap
+	backingConfiguration
+		relationship: rel_enterprise_Sites_to_enterprise_ServiceSiteMap
+
+entityRelationship enterprise_ServiceSiteMap_to_enterprise_Contracts
+	fromEntity: enterprise_ServiceSiteMap
+	toEntity: enterprise_Contracts
+	backingConfiguration
+		relationship: rel_enterprise_ServiceSiteMap_to_enterprise_Contracts
+
+entityRelationship enterprise_Contracts_to_enterprise_SlaEvaluation
+	fromEntity: enterprise_Contracts
+	toEntity: enterprise_SlaEvaluation
+	backingConfiguration
+		relationship: rel_enterprise_Contracts_to_enterprise_SlaEvaluation
+
+entityRelationship enterprise_Contracts_to_enterprise_Accounts
+	fromEntity: enterprise_Contracts
+	toEntity: enterprise_Accounts
+	backingConfiguration
+		relationship: rel_enterprise_Contracts_to_enterprise_Accounts
+
+entityRelationship enterprise_Accounts_to_finance_Accounts
+	fromEntity: enterprise_Accounts
+	toEntity: finance_Accounts
+	backingConfiguration
+		relationship: rel_enterprise_Accounts_to_finance_Accounts
+
+entityRelationship finance_Accounts_to_finance_AccountMonth
+	fromEntity: finance_Accounts
+	toEntity: finance_AccountMonth
+	backingConfiguration
+		relationship: rel_finance_Accounts_to_finance_AccountMonth
+
+entityRelationship enterprise_Accounts_to_care_Accounts
+	fromEntity: enterprise_Accounts
+	toEntity: care_Accounts
+	backingConfiguration
+		relationship: rel_enterprise_Accounts_to_care_Accounts
+
+entityRelationship care_Accounts_to_care_Cases
+	fromEntity: care_Accounts
+	toEntity: care_Cases
+	backingConfiguration
+		relationship: rel_care_Accounts_to_care_Cases
+
+entityRelationship network_SiteHour_to_network_Sites
+	fromEntity: network_SiteHour
+	toEntity: network_Sites
+	backingConfiguration
+		relationship: rel_network_SiteHour_to_network_Sites
+
+entityRelationship network_Accounts_to_enterprise_Accounts
+	fromEntity: network_Accounts
+	toEntity: enterprise_Accounts
+	backingConfiguration
+		relationship: rel_network_Accounts_to_enterprise_Accounts
+
+entityRelationship enterprise_ServiceSiteMap_to_enterprise_Services
+	fromEntity: enterprise_ServiceSiteMap
+	toEntity: enterprise_Services
+	backingConfiguration
+		relationship: rel_enterprise_ServiceSiteMap_to_enterprise_Services
+
+entityRelationship enterprise_ServiceMonth_to_enterprise_Services
+	fromEntity: enterprise_ServiceMonth
+	toEntity: enterprise_Services
+	backingConfiguration
+		relationship: rel_enterprise_ServiceMonth_to_enterprise_Services
+
+entityRelationship enterprise_ServiceMonth_to_enterprise_Contracts
+	fromEntity: enterprise_ServiceMonth
+	toEntity: enterprise_Contracts
+	backingConfiguration
+		relationship: rel_enterprise_ServiceMonth_to_enterprise_Contracts
+
+entityRelationship enterprise_Contracts_to_enterprise_AppliedCredits
+	fromEntity: enterprise_Contracts
+	toEntity: enterprise_AppliedCredits
+	backingConfiguration
+		relationship: rel_enterprise_Contracts_to_enterprise_AppliedCredits
+
+entityRelationship care_CaseDailySnapshot_to_care_Cases
+	fromEntity: care_CaseDailySnapshot
+	toEntity: care_Cases
+	backingConfiguration
+		relationship: rel_care_CaseDailySnapshot_to_care_Cases

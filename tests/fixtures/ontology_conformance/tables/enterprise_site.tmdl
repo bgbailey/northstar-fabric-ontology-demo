@@ -1,0 +1,19 @@
+table enterprise_site
+	column site_key
+		dataType: int64
+		sourceColumn: site_key
+	column site_id
+		dataType: string
+		sourceColumn: site_id
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column region
+		dataType: string
+		sourceColumn: region
+	partition enterprise_site = entity
+		mode: directQuery
+		source
+			entityName: Sites
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

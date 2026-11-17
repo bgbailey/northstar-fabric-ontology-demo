@@ -1,0 +1,36 @@
+entity finance_AccountMonth
+	backingTable: finance_account_month
+	keyProperty: account_key
+	keyProperty: month
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.account_key
+	property billing_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.billing_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: finance_account_month.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: finance_account_month.month
+	property revenue_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.revenue_cents
+	property credit_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.credit_cents
+	property service_cost_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.service_cost_cents
+	property active_lines_eom
+		dataType: int64
+		backingConfiguration
+			valueColumn: finance_account_month.active_lines_eom

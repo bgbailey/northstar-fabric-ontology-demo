@@ -19,15 +19,26 @@ ROOT = Path(__file__).resolve().parents[1]
 SEED = 20260929
 UTC = timezone.utc
 MONTHS = tuple(date(2026, month, 1) for month in range(3, 9))
+SA_MONTHS = (
+    *(date(2025, month, 1) for month in range(9, 13)),
+    *(date(2026, month, 1) for month in range(1, 9)),
+)
 START = datetime(2026, 3, 1, tzinfo=UTC)
+SA_START = datetime(2025, 9, 1, tzinfo=UTC)
 STOP = datetime(2026, 9, 1, tzinfo=UTC)
 AS_OF = datetime(2026, 9, 29, tzinfo=UTC)
 PROFILES = {
     "miniature": {"accounts": 10, "subscriptions": 20, "sites": 4, "cases": 8},
     "smoke": {"accounts": 1000, "subscriptions": 2400, "sites": 20, "cases": 800},
     "showcase-v2": {"accounts": 24, "subscriptions": 72, "sites": 8, "cases": 24},
+    "service-assurance": {"accounts": 240, "subscriptions": 480, "sites": 40, "cases": 1500},
 }
 SHOWCASE_REVISION = "showcase-v2.3"
+SERVICE_ASSURANCE_REVISION = "service-assurance-v1.0"
+VERSIONED_REVISIONS = {
+    "showcase-v2": SHOWCASE_REVISION,
+    "service-assurance": SERVICE_ASSURANCE_REVISION,
+}
 MODEL_NAMES = {
     "subscriptions": "Customer and Subscriptions",
     "finance": "Billing and Finance",
@@ -173,7 +184,7 @@ TABLE_BY_ID = {spec["id"]: spec for spec in TABLES}
 
 
 def source_tables(profile: str) -> list[dict]:
-    if profile != "showcase-v2":
+    if profile not in VERSIONED_REVISIONS:
         return TABLES
     return [
         spec | {
@@ -224,6 +235,8 @@ class Sources:
             raise ValueError("standard/scale are disabled pending live miniature proof; use miniature or smoke")
         self.profile, self.seed = profile, seed
         self.size = PROFILES[profile]
+        self.start = START
+        self.months = MONTHS
         self.enterprise_count = max(2, self.size["accounts"] // 20)
 
     def rng(self, scope: str, key: int) -> random.Random:
@@ -254,7 +267,8 @@ class Sources:
 
     @staticmethod
     def billing_key(account: int, month: date) -> int:
-        if (account == 1 and month.month < 6) or (account == 2 and month.month >= 6):
+        cutoff = date(2026, 6, 1)
+        if (account == 1 and month < cutoff) or (account == 2 and month >= cutoff):
             return 2
         return 1000 + account
 
@@ -262,22 +276,23 @@ class Sources:
         lines = [list(self.lifecycle(key)) for key in
                  range(account, self.size["subscriptions"] + 1, self.size["accounts"])]
         price = self.rng("price", account).randint(3800, 7200)
-        for index, month in enumerate(MONTHS):
+        for index, month in enumerate(self.months):
             active = sum(line[index]["active_eom"] for line in lines)
             revenue = active * price
-            credit = 900 if account % 5 == 1 and month.month == 7 else 0
+            credit = 900 if account % 5 == 1 and month == date(2026, 7, 1) else 0
             yield dict(account_key=account, billing_key=self.billing_key(account, month),
                        market_id=self.market(account), month=month, revenue_cents=revenue,
                        credit_cents=credit, service_cost_cents=active * 1800 + 400,
                        active_lines_eom=active)
 
     def sessions(self) -> Iterator[dict]:
+        stride = len(self.months) * 2
         for account in range(1, self.size["accounts"] + 1):
-            for index, month in enumerate(MONTHS):
+            for index, month in enumerate(self.months):
                 for attempt in range(2):
-                    key = (account - 1) * 12 + index * 2 + attempt + 1
+                    key = (account - 1) * stride + index * 2 + attempt + 1
                     eligible = int(attempt == 1 or account % 3 == 0)
-                    failed = int(eligible and month.month == 7 and account % 2 == 1)
+                    failed = int(eligible and month == date(2026, 7, 1) and account % 2 == 1)
                     success = int(eligible and not failed and (account + index) % 3 != 0)
                     unknown = key == 1
                     yield dict(session_key=key, account_key=None if unknown else account,
@@ -288,7 +303,7 @@ class Sources:
                                successful_checkout=success, failed_checkout=failed,
                                duration_seconds=self.rng("session", key).randint(20, 900),
                                device_key=1 if account % 2 else 2,
-                               release_version="2.1" if month.month == 7 else "2.0")
+                               release_version="2.1" if month == date(2026, 7, 1) else "2.0")
 
     def cases(self) -> Iterator[dict]:
         for key in range(1, self.size["cases"] + 1):
@@ -342,7 +357,7 @@ class Sources:
         incidents = self.incidents()
         for contract in self.contracts():
             key = contract["contract_key"]
-            for month in MONTHS:
+            for month in self.months:
                 left = max(stamp(month), contract["valid_from"])
                 right = min(stamp(next_month(month)), contract["valid_to"])
                 service_intervals = {}
@@ -413,8 +428,8 @@ class Sources:
             for key, region in enumerate(("East", "West", "North", "South"), 1):
                 yield dict(market_id=self.market(key), market_name=f"{region} Market", region=region)
         elif identifier == "calendar_date":
-            for offset in range((AS_OF - START).days):
-                day = (START + timedelta(days=offset)).date()
+            for offset in range((AS_OF - self.start).days):
+                day = (self.start + timedelta(days=offset)).date()
                 yield dict(date=day, year=day.year, quarter=(day.month - 1) // 3 + 1,
                            month_number=day.month, month_name=calendar.month_name[day.month], day=day.day)
         elif identifier == "site":
@@ -455,7 +470,7 @@ class Sources:
         elif identifier == "billing_account_map":
             split = datetime(2026, 6, 1, tzinfo=UTC)
             for account in range(1, n + 1):
-                periods = [(START, split), (split, STOP)] if account <= 2 else [(START, STOP)]
+                periods = [(self.start, split), (split, STOP)] if account <= 2 else [(self.start, STOP)]
                 for left, right in periods:
                     yield dict(billing_key=self.billing_key(account, left.date()), account_key=account,
                                valid_from=left, valid_to=right)
@@ -486,9 +501,12 @@ class Sources:
                                account_key=row["account_key"], market_id=row["market_id"], month=row["month"],
                                event_at=row["started_at"] + timedelta(seconds=offset * 10), event_type=kind)
         elif identifier == "identity_map":
-            yield dict(anonymous_id="anon:unresolved", account_key=None, valid_from=START, valid_to=AS_OF)
+            yield dict(
+                anonymous_id="anon:unresolved", account_key=None, valid_from=self.start, valid_to=AS_OF,
+            )
             for account in range(1, n + 1):
-                yield dict(anonymous_id=f"anon:{account}", account_key=account, valid_from=START, valid_to=AS_OF)
+                yield dict(anonymous_id=f"anon:{account}", account_key=account,
+                           valid_from=self.start, valid_to=AS_OF)
         elif identifier == "case":
             yield from self.cases()
         elif identifier == "case_activity":
@@ -509,7 +527,7 @@ class Sources:
             yield from self.incidents()
         elif identifier in ("site_hour", "site_day"):
             for site in range(1, self.size["sites"] + 1):
-                for month in MONTHS:
+                for month in self.months:
                     for day in range(14, 19):
                         left = stamp(month.replace(day=day))
                         for hour in range(24) if identifier == "site_hour" else (None,):
@@ -547,8 +565,8 @@ class Sources:
                 fulfilled[key] = fulfilled.get(key, 0) + (1 - order["cancelled"])
             for store in range(1, 5):
                 for device in (1, 2):
-                    for month in MONTHS:
-                        initial = 2 if device == 1 and month.month == 8 else 20
+                    for month in self.months:
+                        initial = 2 if device == 1 and month == date(2026, 8, 1) else 20
                         for day in range(20, 23):
                             inventory = initial - (fulfilled.get((store, device, month), 0) if day == 22 else 0)
                             yield dict(store_key=store, device_key=device, market_id=self.market(store),
@@ -609,9 +627,13 @@ class Sources:
 class ShowcaseSources(Sources):
     """An opt-in population revision; historical Sources arithmetic/bytes stay intact."""
 
+    ID_PREFIX = "showcase-v2"
+    EXPLICIT_ZERO_CONTRACTS = frozenset({2})
     # Actual source registry, not evaluator labels or a scenario-to-answer lookup.
-    SERVICE_CONTRACTS = {1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4, 7: 5, 8: 6, 9: 7, 10: 8, 11: 8}
-    CONTRACT_ACCOUNTS = {1: 1, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 6}
+    SERVICE_CONTRACTS = {
+        1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4, 7: 5, 8: 6, 9: 7, 10: 8, 11: 8, 12: 9, 13: 10,
+    }
+    CONTRACT_ACCOUNTS = {1: 1, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 6, 9: 4, 10: 5}
 
     def __init__(self, profile: str, seed: int):
         super().__init__(profile, seed)
@@ -624,9 +646,9 @@ class ShowcaseSources(Sources):
             5: (16000, 500, 5000), 6: (60000, 600, 16000),
         }
         for row in super().financial(account):
-            if row["month"].month == 7 and account in july:
+            if row["month"] == date(2026, 7, 1) and account in july:
                 row["revenue_cents"], row["credit_cents"], row["service_cost_cents"] = july[account]
-            elif row["month"].month == 6 and account <= 6:
+            elif row["month"] == date(2026, 6, 1) and account <= 6:
                 row["credit_cents"] = account * 100
             yield row
 
@@ -643,42 +665,62 @@ class ShowcaseSources(Sources):
         return rows
 
     def contracts(self) -> Iterator[dict]:
+        post_incident = datetime(2026, 7, 20, tzinfo=UTC)
         for key, account in self.CONTRACT_ACCOUNTS.items():
+            starts = post_incident if key == 10 else self.start
             yield dict(contract_key=key, account_key=account, market_id=self.market(account),
                        credit_cap_cents=5000 if key == 1 else 30000,
                        credit_per_minute_cents=2, threshold_minutes=10000 if key == 5 else 30,
-                       valid_from=START, valid_to=STOP, month=MONTHS[0])
+                       valid_from=starts, valid_to=STOP, month=starts.date().replace(day=1))
+
+    def _periods(self, service: int) -> list[tuple[datetime, datetime, int]]:
+        split = datetime(2026, 7, 16, 12, tzinfo=UTC)
+        ended_early = datetime(2026, 7, 10, tzinfo=UTC)
+        sites = {2: 1, 3: 2, 4: 2, 5: 3, 6: 1, 7: 4, 8: 5, 9: 3, 11: 7, 13: 1}
+        if service == 1:
+            return [(self.start, split, 1), (split, STOP, 3)]
+        if service == 10:
+            # Known service with a real source-mapping gap; not an unaffected observation.
+            return [(self.start, stamp(date(2026, 6, 30)), 6), (stamp(date(2026, 7, 2)), STOP, 6)]
+        if service == 12:
+            # Assignment to site 2 ends before July 15 incident 3 and moves to unaffected site 7.
+            return [(self.start, ended_early, 2), (ended_early, STOP, 7)]
+        return [(self.start, STOP, sites[service])]
 
     def mappings(self) -> Iterator[dict]:
-        split = datetime(2026, 7, 16, 12, tzinfo=UTC)
-        sites = {2: 1, 3: 2, 4: 2, 5: 3, 6: 1, 7: 4, 8: 5, 9: 3, 11: 7}
         for service, contract in self.SERVICE_CONTRACTS.items():
-            if service == 1:
-                periods = [(START, split, 1), (split, STOP, 3)]
-            elif service == 10:
-                # Known service with a real source-mapping gap; not an unaffected observation.
-                periods = [(START, stamp(date(2026, 6, 30)), 6),
-                           (stamp(date(2026, 7, 2)), STOP, 6)]
-            else:
-                periods = [(START, STOP, sites[service])]
-            for left, right, site in periods:
+            for left, right, site in self._periods(service):
                 yield dict(service_key=service, site_key=site, contract_key=contract,
                            valid_from=left, valid_to=right, market_id=self.market(site),
                            month=left.date().replace(day=1))
 
+    def _applied_settlement(self, key: int, month: date, eligible: int) -> int:
+        if key in {3, 6}:
+            if eligible % 2:
+                raise ValueError("Partial settlement requires exact integer cents; no rounding")
+            return eligible // 2
+        if key in {4, 7}:
+            return eligible
+        return 0
+
     def settlements(self) -> Iterator[dict]:
         contracts = {row["contract_key"]: row for row in self.contracts()}
-        mappings = list(self.mappings())
+        by_service: dict[int, list[dict]] = {}
+        for mapping in self.mappings():
+            by_service.setdefault(mapping["service_key"], []).append(mapping)
+        services_by_contract: dict[int, list[int]] = {}
+        for service, owner in self.SERVICE_CONTRACTS.items():
+            services_by_contract.setdefault(owner, []).append(service)
         for row in super().settlements():
             key, eligible = row["contract_key"], row["eligible_credit_cents"]
             contract = contracts[key]
             left, right = max(stamp(row["month"]), contract["valid_from"]), min(
                 stamp(next_month(row["month"])), contract["valid_to"])
             expected_minutes = max(0, int((right - left).total_seconds() // 60))
-            incomplete = any(
+            incomplete = expected_minutes > 0 and any(
                 union_minutes([(max(left, mapping["valid_from"]), min(right, mapping["valid_to"]))
-                               for mapping in mappings if mapping["service_key"] == service]) < expected_minutes
-                for service, owner in self.SERVICE_CONTRACTS.items() if owner == key
+                               for mapping in by_service.get(service, ())]) < expected_minutes
+                for service in services_by_contract.get(key, ())
             )
             if incomplete:
                 yield row | {
@@ -686,30 +728,28 @@ class ShowcaseSources(Sources):
                     "applied_credit_cents": None, "coverage_complete": False,
                 }
                 continue
-            if key in {3, 6}:
-                if eligible % 2:
-                    raise ValueError("Partial settlement requires exact integer cents; no rounding")
-                applied = eligible // 2
-            elif key in {4, 7}:
-                applied = eligible
-            else:
-                applied = 0
+            applied = self._applied_settlement(key, row["month"], eligible)
             yield row | {"applied_credit_cents": applied, "coverage_complete": True}
 
     def rows(self, identifier: str) -> Iterator[dict]:
         if identifier == "service":
             for service, contract in self.SERVICE_CONTRACTS.items():
-                yield dict(service_key=service, service_id=f"showcase-v2:service:{service:05}",
+                yield dict(service_key=service, service_id=f"{self.ID_PREFIX}:service:{service:05}",
                            account_key=self.CONTRACT_ACCOUNTS[contract])
         elif identifier == "service_month":
             contracts = {row["contract_key"]: row for row in self.contracts()}
-            mappings, incidents = list(self.mappings()), self.incidents()
+            by_service: dict[int, list[dict]] = {}
+            for mapping in self.mappings():
+                by_service.setdefault(mapping["service_key"], []).append(mapping)
+            by_site: dict[int, list[dict]] = {}
+            for incident in self.incidents():
+                by_site.setdefault(incident["site_key"], []).append(incident)
             for service, key in self.SERVICE_CONTRACTS.items():
                 contract = contracts[key]
-                for month in MONTHS:
+                spans = by_service.get(service, [])
+                for month in self.months:
                     left, right = max(stamp(month), contract["valid_from"]), min(
                         stamp(next_month(month)), contract["valid_to"])
-                    spans = [row for row in mappings if row["service_key"] == service]
                     monitored = union_minutes([(max(left, row["valid_from"]), min(right, row["valid_to"]))
                                                for row in spans])
                     expected = max(0, int((right - left).total_seconds() // 60))
@@ -717,11 +757,12 @@ class ShowcaseSources(Sources):
                     outage = union_minutes([
                         (max(left, row["valid_from"], incident["start"]),
                          min(right, row["valid_to"], incident["end"]))
-                        for row in spans for incident in incidents if row["site_key"] == incident["site_key"]
+                        for row in spans for incident in by_site.get(row["site_key"], ())
                     ])
                     yield dict(service_key=service, contract_key=key, account_key=contract["account_key"],
                                market_id=contract["market_id"], month=month, contracted=int(expected > 0),
-                               monitored_minutes=monitored, expected_minutes=expected, coverage_complete=complete,
+                               monitored_minutes=monitored, expected_minutes=expected,
+                               coverage_complete=complete,
                                breached=int(outage > contract["threshold_minutes"]) if complete else None,
                                recurring_revenue_cents=150000 if monitored else 0)
         elif identifier == "credit":
@@ -731,17 +772,229 @@ class ShowcaseSources(Sources):
                              * 1_000_000 + row["account_key"]}
         elif identifier == "applied_credit":
             for row in self.settlements():
-                if row["applied_credit_cents"] or (row["contract_key"] == 2 and row["month"].month == 7):
+                explicit_zero = (
+                    row["contract_key"] in self.EXPLICIT_ZERO_CONTRACTS
+                    and row["month"] == date(2026, 7, 1)
+                    and row["applied_credit_cents"] == 0
+                )
+                if row["applied_credit_cents"] or explicit_zero:
                     yield dict(contract_key=row["contract_key"], account_key=row["account_key"],
                                market_id=row["market_id"], month=row["month"],
                                amount_cents=row["applied_credit_cents"],
                                posted_at=stamp(next_month(row["month"]) + timedelta(days=9)))
         elif identifier in {"account", "subscription", "site"}:
+            id_fields = {"account": "account_id", "subscription": "subscription_id", "site": "site_id"}
             for row in super().rows(identifier):
-                field = {"account": "account_id", "subscription": "subscription_id", "site": "site_id"}[identifier]
-                yield row | {field: "showcase-v2:" + row[field]}
+                field = id_fields[identifier]
+                yield row | {field: f"{self.ID_PREFIX}:" + row[field]}
         else:
             yield from super().rows(identifier)
+
+
+class ServiceAssuranceSources(ShowcaseSources):
+    """Twelve-month, 240-account service-assurance population with fixed hero anchor keys."""
+
+    ID_PREFIX = "service-assurance"
+    EXPLICIT_ZERO_CONTRACTS = frozenset({2, 20})
+    CONTRACT_ACCOUNTS = (
+        ShowcaseSources.CONTRACT_ACCOUNTS
+        | {key: key - 4 for key in range(11, 105)}
+        | {key: key - 94 for key in range(105, 121)}
+    )
+    SERVICE_CONTRACTS = (
+        ShowcaseSources.SERVICE_CONTRACTS
+        | {service: service - 3 for service in range(14, 124)}
+        | {service: service - 110 for service in range(124, 181)}
+    )
+
+    def __init__(self, profile: str, seed: int):
+        super().__init__(profile, seed)
+        self.start = SA_START
+        self.months = SA_MONTHS
+        self.enterprise_count = 100
+        self._incidents = self._build_incidents()
+        self._incidents_by_site: dict[int, list[dict]] = {}
+        for item in self._incidents:
+            self._incidents_by_site.setdefault(item["site_key"], []).append(item)
+
+    def _build_incidents(self) -> list[dict]:
+        rows = super().incidents()
+        july_extras = (
+            (8, 9, 14, 6, 15, 18, "major"),
+            (9, 10, 15, 8, 16, 20, "major"),
+            (10, 11, 15, 12, 16, 6, "major"),
+            (11, 12, 16, 0, 17, 6, "major"),
+            (12, 13, 16, 4, 16, 16, "major"),
+            (13, 14, 17, 0, 18, 0, "major"),
+            (14, 15, 17, 6, 17, 18, "major"),
+            (15, 16, 14, 12, 15, 0, "major"),
+            (16, 17, 15, 10, 15, 14, "minor"),
+            (17, 18, 16, 8, 16, 11, "minor"),
+            (18, 19, 17, 9, 17, 11, "minor"),
+            (19, 20, 18, 2, 18, 4, "minor"),
+        )
+        for key, site, d1, h1, d2, h2, severity in july_extras:
+            rows.append(dict(
+                incident_key=key, site_key=site,
+                start=datetime(2026, 7, d1, h1, tzinfo=UTC),
+                end=datetime(2026, 7, d2, h2, tzinfo=UTC),
+                market_id=self.market(site), month=date(2026, 7, 1), severity=severity,
+            ))
+        for index, month in enumerate(self.months[:10]):
+            first_site = 9 + (index * 3) % 18
+            second_site = 10 + (index * 5) % 17
+            rows.append(dict(
+                incident_key=20 + index * 2, site_key=first_site,
+                start=datetime(month.year, month.month, 15, 6, tzinfo=UTC),
+                end=datetime(month.year, month.month, 16, 0, tzinfo=UTC),
+                market_id=self.market(first_site), month=month, severity="major",
+            ))
+            rows.append(dict(
+                incident_key=21 + index * 2, site_key=second_site,
+                start=datetime(month.year, month.month, 16, 12, tzinfo=UTC),
+                end=datetime(month.year, month.month, 16, 18, tzinfo=UTC),
+                market_id=self.market(second_site), month=month,
+                severity="minor" if index % 2 else "major",
+            ))
+        return rows
+
+    def incidents(self) -> list[dict]:
+        return list(self._incidents)
+
+    def outage(self, site: int, left: datetime, right: datetime) -> int:
+        return union_minutes([
+            (max(left, item["start"]), min(right, item["end"]))
+            for item in self._incidents_by_site.get(site, ())
+        ])
+
+    def lifecycle(self, key: int) -> Iterator[dict]:
+        account = self.owner(key)
+        active = int(key % 5 != 0)
+        for month in self.months:
+            opening = active
+            add = int(not active and (
+                (key % 5 == 0 and month == date(2026, 5, 1))
+                or (key % 7 == 0 and month == date(2026, 7, 1))
+                or (key % 13 == 0 and month == date(2025, 11, 1))
+            ))
+            disconnect = int(opening and (
+                (month == date(2026, 7, 1) and (account <= 2 or (account % 4 in (1, 2) and key % 3 == 0)))
+                or (month == date(2026, 8, 1) and key % 11 == 0)
+                or (month == date(2026, 2, 1) and key % 17 == 0 and account > 6)
+            ))
+            active += add - disconnect
+            yield dict(subscription_key=key, account_key=account, market_id=self.market(account),
+                       month=month, opening_active=opening, active_eom=active,
+                       gross_add=add, disconnect=disconnect)
+
+    def financial(self, account: int) -> Iterator[dict]:
+        ent_rev = 14000 + account * 720 + self.rng("ent_rev", account).randint(0, 600)
+        ent_cost = 6000 + account * 290 + self.rng("ent_cost", account).randint(0, 500)
+        for row in super().financial(account):
+            if 6 < account <= self.enterprise_count:
+                row["revenue_cents"] += ent_rev
+                row["service_cost_cents"] += ent_cost
+                if account in {14, 22, 38} and row["month"] == date(2026, 7, 1):
+                    row["service_cost_cents"] = row["revenue_cents"] + 2500
+                elif row["month"] == date(2026, 3, 1) and account % 6 == 0:
+                    row["credit_cents"] = 450
+            yield row
+
+    def contracts(self) -> Iterator[dict]:
+        base = {key: row for key, row in zip(range(1, 11), super().contracts()) if key <= 10}
+        yield from base.values()
+        for key, account in self.CONTRACT_ACCOUNTS.items():
+            if key <= 10:
+                continue
+            if key == 12:
+                starts = datetime(2026, 7, 22, tzinfo=UTC)
+            elif key in {85, 95, 115}:
+                starts = datetime(2026, 1, 1, tzinfo=UTC)
+            else:
+                starts = self.start
+            cap = 6000 if key in {14, 18, 22} else (12000, 20000, 30000, 44000)[(key - 11) % 4]
+            rate = 2 if key == 12 else (2, 4, 6)[(key - 11) % 3]
+            threshold = 10000 if key == 25 else 30 if key == 12 else (30, 45, 60)[(key - 11) % 3]
+            yield dict(contract_key=key, account_key=account, market_id=self.market(account),
+                       credit_cap_cents=cap, credit_per_minute_cents=rate,
+                       threshold_minutes=threshold, valid_from=starts, valid_to=STOP,
+                       month=starts.date().replace(day=1))
+
+    def _periods(self, service: int) -> list[tuple[datetime, datetime, int]]:
+        if service <= 13:
+            return super()._periods(service)
+        if service == 14:
+            cutoff = datetime(2026, 7, 12, tzinfo=UTC)
+            return [(self.start, cutoff, 1), (cutoff, STOP, 8)]
+        if service == 15:
+            return [(self.start, STOP, 2)]
+        if service == 16:
+            return [(self.start, stamp(date(2026, 7, 10)), 28), (stamp(date(2026, 7, 12)), STOP, 28)]
+        pinned = {17: 9, 18: 10, 21: 11, 22: 14, 108: 13}
+        site = pinned.get(service, 9 + ((service - 17) * 5) % 32)
+        if service in {30, 45, 60}:
+            move = datetime(2026, 2, 1, tzinfo=UTC)
+            return [(self.start, move, site), (move, STOP, 9 + (site - 8) % 32)]
+        return [(self.start, STOP, site)]
+
+    def _applied_settlement(self, key: int, month: date, eligible: int) -> int:
+        if key <= 10:
+            return super()._applied_settlement(key, month, eligible)
+        if key % 4 == 0:
+            return 0
+        if key % 4 in (1, 2):
+            if eligible % 2:
+                raise ValueError("Partial settlement requires exact integer cents; no rounding")
+            return eligible // 2
+        return eligible
+
+    def cases(self) -> Iterator[dict]:
+        july_pool = [acct for acct in range(7, self.size["accounts"] + 1) if acct not in {15, 19, 23}]
+        other_pool = [acct for acct in range(1, self.size["accounts"] + 1) if acct != 15]
+        other_months = [month for month in self.months if month != date(2026, 7, 1)]
+        for key in range(1, self.size["cases"] + 1):
+            if key <= 24:
+                account = ((key - 1) // 2) % 24 + 1
+                opened = datetime(2026, 7 if key <= 4 else 8, 16 + (key - 1) % 2, 9, tzinfo=UTC)
+                minutes = 60 * (12 + (key % 24) * 3)
+                resolved = key % 4 != 0
+                repeat = int(key % 2 == 0)
+                escalated = int(key % 3 == 0)
+                yield dict(
+                    case_key=key, account_key=account, market_id=self.market(account),
+                    month=opened.date().replace(day=1), opened_at=opened,
+                    resolved_at=opened + timedelta(minutes=minutes) if resolved else None,
+                    resolved=int(resolved), repeat_contact=repeat, escalated=escalated,
+                    first_contact_resolved=int(resolved and not escalated and not repeat),
+                    resolution_minutes=minutes if resolved else None,
+                    reason="network" if account % 4 in (1, 2) else "billing",
+                )
+                continue
+            rng = self.rng("sa_case", key)
+            month = date(2026, 7, 1) if rng.random() < 0.2 else rng.choice(other_months)
+            account = rng.choice(july_pool if month == date(2026, 7, 1) else other_pool)
+            day = rng.randint(1, 24)
+            hour = rng.randint(0, 23)
+            minute = rng.choice((0, 15, 30, 45))
+            opened = datetime(month.year, month.month, day, hour, minute, tzinfo=UTC)
+            resolved = rng.random() < 0.78
+            minutes = 60 * rng.randint(4, 72)
+            repeat = int(rng.random() < 0.25)
+            esc_rate = 0.35 if month == date(2026, 7, 1) and account <= self.enterprise_count else 0.18
+            escalated = int(rng.random() < esc_rate)
+            reason = (
+                "network"
+                if (month == date(2026, 7, 1) and account <= self.enterprise_count) or rng.random() < 0.45
+                else "billing"
+            )
+            yield dict(
+                case_key=key, account_key=account, market_id=self.market(account),
+                month=month, opened_at=opened,
+                resolved_at=opened + timedelta(minutes=minutes) if resolved else None,
+                resolved=int(resolved), repeat_contact=repeat, escalated=escalated,
+                first_contact_resolved=int(resolved and not escalated and not repeat),
+                resolution_minutes=minutes if resolved else None, reason=reason,
+            )
 
 
 def arrow_schema(spec: dict) -> pa.Schema:
@@ -802,7 +1055,13 @@ def write_table(spec: dict, rows: Iterator[dict], output: Path, batch_size: int,
 
 def build(profile: str, seed: int, output: Path, batch_size: int = 1024) -> dict:
     showcase = profile == "showcase-v2"
-    sources = ShowcaseSources(profile, seed) if showcase else Sources(profile, seed)
+    versioned = VERSIONED_REVISIONS.get(profile)
+    if profile == "service-assurance":
+        sources: Sources = ServiceAssuranceSources(profile, seed)
+    elif showcase:
+        sources = ShowcaseSources(profile, seed)
+    else:
+        sources = Sources(profile, seed)
     if not 1 <= batch_size <= 65536:
         raise ValueError("batch_size must be between 1 and 65536")
     started = time.perf_counter()
@@ -811,13 +1070,14 @@ def build(profile: str, seed: int, output: Path, batch_size: int = 1024) -> dict
     output.mkdir(parents=True, exist_ok=True)
     # An interrupted rebuild must not retain a success-shaped old manifest.
     (output / "manifest.json").unlink(missing_ok=True)
-    files = [write_table(spec, sources.rows(spec["id"]), output, batch_size, strict=showcase)
+    files = [write_table(spec, sources.rows(spec["id"]), output, batch_size, strict=versioned is not None)
              for spec in source_tables(profile)]
+    service_months = [month.isoformat() for month in sources.months]
     watermarks = {model: (AS_OF - timedelta(days=index, hours=2)).isoformat()
                   for index, model in enumerate(MODEL_NAMES)}
     manifest = {
         "version": "1.0", "profile": profile, "seed": seed, "as_of": AS_OF.isoformat(),
-        "service_months": [month.isoformat() for month in MONTHS],
+        "service_months": service_months,
         "tables": files, "rows": sum(item["rows"] for item in files),
         "generated_bytes": sum(item["bytes"] for item in files),
         "generation_seconds": round(time.perf_counter() - started, 6), "batch_size": batch_size,
@@ -832,18 +1092,18 @@ def build(profile: str, seed: int, output: Path, batch_size: int = 1024) -> dict
         },
         "validation": {"live_dax": "NOT_RUN", "direct_lake": "NOT_RUN", "source_rls": "NOT_RUN"},
     }
-    if showcase:
+    if versioned is not None:
         identities = [spec for spec in TABLES if
                       (spec["model"] == "core" and spec["id"] != "quarantine") or
                       spec["id"].endswith("_map") or spec["id"] in {"subscription", "contract"}]
         table_hashes = {item["id"]: item["content_sha256"] for item in files}
         manifest.update({
-            "version": SHOWCASE_REVISION,
+            "version": versioned,
             # Wall-clock timing is deliberately outside the deterministic revision manifest.
             "generation_seconds": None,
             "generator_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             "population": {
-                "profile": profile, "seed": seed, "generatorRevision": SHOWCASE_REVISION,
+                "profile": profile, "seed": seed, "generatorRevision": versioned,
                 "identityRevision": hashlib.sha256(canonical({
                     spec["id"]: {key: spec[key] for key in ("columns", "primaryKey")}
                     for spec in sorted(identities, key=lambda spec: spec["id"])
@@ -860,7 +1120,7 @@ def build(profile: str, seed: int, output: Path, batch_size: int = 1024) -> dict
                 "growth": "Synthetic seeded randomized eligible arms; observed retention, not causal proof",
             },
             "coverage": {
-                "service_months": [month.isoformat() for month in MONTHS],
+                "service_months": service_months,
                 "network_monitoring": "Only days 14-18 inclusive per service month; incidents have separate exact intervals",
                 "case_snapshots": "Only four observed dates per case, not a contiguous full-period census",
                 "inventory": "Only days 20-22 per month; finite fixture snapshots, not event-based stock accounting",
@@ -870,7 +1130,7 @@ def build(profile: str, seed: int, output: Path, batch_size: int = 1024) -> dict
                 "enterprise_services": "expected_minutes clips calendar to contract validity; monitored_minutes is mapped coverage. Unknown breached stays null; continuous mapping with no outage is measured zero.",
             },
         })
-        manifest["clocks"]["source_model"]["revision"] = SHOWCASE_REVISION
+        manifest["clocks"]["source_model"]["revision"] = versioned
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 

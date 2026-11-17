@@ -66,7 +66,7 @@ table 'Subscription Month'
 		annotation MetricId = subscriptions.average_active_lines
 		annotation Aggregation = semi_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'subscription_key'
 		dataType: int64
 		summarizeBy: none
@@ -76,7 +76,7 @@ table 'Subscription Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -86,7 +86,7 @@ table 'Subscription Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -95,7 +95,7 @@ table 'Subscription Month'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the reporting month for subscription state; select a single month for snapshots.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -103,7 +103,7 @@ table 'Subscription Month'
 		lineageTag: 6660c29a-6a31-584a-8b36-7913e0f6cdc1
 		formatString: yyyy-MM-dd
 
-	/// Opening active at the declared Subscription Month grain.
+	/// Hidden numeric input on Subscription Month; use explicit model measures instead.
 	column 'opening_active'
 		dataType: int64
 		summarizeBy: none
@@ -113,7 +113,7 @@ table 'Subscription Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Active eom at the declared Subscription Month grain.
+	/// Hidden numeric input on Subscription Month; use explicit model measures instead.
 	column 'active_eom'
 		dataType: int64
 		summarizeBy: none
@@ -123,7 +123,7 @@ table 'Subscription Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Gross add at the declared Subscription Month grain.
+	/// Hidden numeric input on Subscription Month; use explicit model measures instead.
 	column 'gross_add'
 		dataType: int64
 		summarizeBy: none
@@ -133,7 +133,7 @@ table 'Subscription Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Disconnect at the declared Subscription Month grain.
+	/// Hidden numeric input on Subscription Month; use explicit model measures instead.
 	column 'disconnect'
 		dataType: int64
 		summarizeBy: none

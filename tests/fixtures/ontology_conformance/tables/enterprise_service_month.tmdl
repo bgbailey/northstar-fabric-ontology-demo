@@ -1,0 +1,36 @@
+table enterprise_service_month
+	measure 'SLA Compliance' = EXTERNALMEASURE("SLA Compliance", DOUBLE, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE")
+	measure 'Breached Services' = EXTERNALMEASURE("Breached Services", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE")
+	column service_key
+		dataType: int64
+		sourceColumn: service_key
+	column contract_key
+		dataType: int64
+		sourceColumn: contract_key
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column contracted
+		dataType: int64
+		sourceColumn: contracted
+	column monitored_minutes
+		dataType: int64
+		sourceColumn: monitored_minutes
+	column breached
+		dataType: int64
+		sourceColumn: breached
+	column recurring_revenue_cents
+		dataType: int64
+		sourceColumn: recurring_revenue_cents
+	partition enterprise_service_month = entity
+		mode: directQuery
+		source
+			entityName: 'Service Month'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

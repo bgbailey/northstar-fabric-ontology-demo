@@ -1,0 +1,67 @@
+relationship rel_network_Incidents_to_network_Sites
+	fromColumn: network_incident.site_key
+	toColumn: network_site.site_key
+
+relationship rel_network_Sites_to_enterprise_Sites
+	fromColumn: network_site.site_key
+	toColumn: enterprise_site.site_key
+
+relationship rel_enterprise_Sites_to_enterprise_ServiceSiteMap
+	fromColumn: enterprise_site.site_key
+	toColumn: enterprise_service_site_map.site_key
+
+relationship rel_enterprise_ServiceSiteMap_to_enterprise_Contracts
+	fromColumn: enterprise_service_site_map.contract_key
+	toColumn: enterprise_contract.contract_key
+
+relationship rel_enterprise_Contracts_to_enterprise_SlaEvaluation
+	fromColumn: enterprise_contract.contract_key
+	toColumn: enterprise_sla_evaluation.contract_key
+
+relationship rel_enterprise_Contracts_to_enterprise_Accounts
+	fromColumn: enterprise_contract.account_key
+	toColumn: enterprise_account.account_key
+
+relationship rel_enterprise_Accounts_to_finance_Accounts
+	fromColumn: enterprise_account.account_key
+	toColumn: finance_account.account_key
+
+relationship rel_finance_Accounts_to_finance_AccountMonth
+	fromColumn: finance_account.account_key
+	toColumn: finance_account_month.account_key
+
+relationship rel_enterprise_Accounts_to_care_Accounts
+	fromColumn: enterprise_account.account_key
+	toColumn: care_account.account_key
+
+relationship rel_care_Accounts_to_care_Cases
+	fromColumn: care_account.account_key
+	toColumn: care_case.account_key
+
+relationship rel_network_SiteHour_to_network_Sites
+	fromColumn: network_site_hour.site_key
+	toColumn: network_site.site_key
+
+relationship rel_network_Accounts_to_enterprise_Accounts
+	fromColumn: network_account.account_key
+	toColumn: enterprise_account.account_key
+
+relationship rel_enterprise_ServiceSiteMap_to_enterprise_Services
+	fromColumn: enterprise_service_site_map.service_key
+	toColumn: enterprise_service.service_key
+
+relationship rel_enterprise_ServiceMonth_to_enterprise_Services
+	fromColumn: enterprise_service_month.service_key
+	toColumn: enterprise_service.service_key
+
+relationship rel_enterprise_ServiceMonth_to_enterprise_Contracts
+	fromColumn: enterprise_service_month.contract_key
+	toColumn: enterprise_contract.contract_key
+
+relationship rel_enterprise_Contracts_to_enterprise_AppliedCredits
+	fromColumn: enterprise_contract.contract_key
+	toColumn: enterprise_applied_credit.contract_key
+
+relationship rel_care_CaseDailySnapshot_to_care_Cases
+	fromColumn: care_case_daily_snapshot.case_key
+	toColumn: care_case.case_key

@@ -1,0 +1,5 @@
+rule ExposureNeedsOverlap
+	statement: A service is exposed to an incident only when the incident interval, the service-site assignment and the contract are valid at the same time. Validity periods are half-open UTC intervals.
+	ruleReferencedEntity network_Incidents
+	ruleReferencedEntity enterprise_ServiceSiteMap
+	ruleReferencedEntity enterprise_Contracts

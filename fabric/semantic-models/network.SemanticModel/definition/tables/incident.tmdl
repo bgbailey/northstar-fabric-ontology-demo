@@ -10,7 +10,7 @@ table 'Incidents'
 		annotation MetricId = network.major_incidents
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'incident_key'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Incidents'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_key'
 		dataType: int64
 		summarizeBy: none
@@ -30,7 +30,7 @@ table 'Incidents'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'start'
 		dataType: dateTime
 		summarizeBy: none
@@ -41,7 +41,7 @@ table 'Incidents'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'end'
 		dataType: dateTime
 		summarizeBy: none
@@ -52,7 +52,7 @@ table 'Incidents'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -61,7 +61,7 @@ table 'Incidents'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month when the outage started; cross-month overlap uses UTC start/end.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -69,7 +69,7 @@ table 'Incidents'
 		lineageTag: 4d961285-ce93-53c5-8983-9b406ecd1878
 		formatString: yyyy-MM-dd
 
-	/// Severity at the declared Incidents grain.
+	/// Operational impact tier (major or minor); filter to major for headline outage counts.
 	column 'severity'
 		dataType: string
 		summarizeBy: none

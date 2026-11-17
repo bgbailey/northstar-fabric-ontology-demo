@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sys
 from copy import deepcopy
 from pathlib import Path
@@ -210,3 +211,183 @@ def test_cli_writes_only_the_requested_review_packet(monkeypatch, tmp_path, caps
     assert json.loads(output.read_bytes()) == prep.build_packet(CATALOG, SLA)
     report = json.loads(capsys.readouterr().out)
     assert report == {"status": "DRAFT_NOT_APPLIED", "models": 8, "sourceMeasures": 64, "deployed_or_applied": False}
+
+
+@pytest.mark.parametrize("model_id", ["network", "enterprise", "finance", "care"])
+def test_hero_models_tmdl_every_table_measure_and_visible_column_has_concise_description(model_id):
+    tables_dir = ROOT / "fabric" / "semantic-models" / f"{model_id}.SemanticModel" / "definition" / "tables"
+    tmdl_files = sorted(tables_dir.glob("*.tmdl"))
+    assert tmdl_files
+    measure_count = 0
+    visible_column_count = 0
+
+    for tmdl_path in tmdl_files:
+        lines = tmdl_path.read_text(encoding="utf-8").splitlines()
+        assert lines[0].startswith("/// ")
+        table_desc = lines[0][4:].strip()
+        assert 0 < len(table_desc) <= 200, f"Invalid table description in {tmdl_path}"
+        assert lines[1].startswith("table '")
+
+        for idx, line in enumerate(lines):
+            if line.startswith("\tmeasure '"):
+                measure_count += 1
+                assert idx > 0 and lines[idx - 1].startswith("\t/// "), (
+                    f"Missing measure description in {tmdl_path}:{idx + 1}"
+                )
+                desc = lines[idx - 1][5:].strip()
+                assert 0 < len(desc) <= 200, f"Measure description >200 chars in {tmdl_path}:{idx}"
+            elif line.startswith("\tcolumn '"):
+                assert idx > 0 and lines[idx - 1].startswith("\t/// "), (
+                    f"Missing column description in {tmdl_path}:{idx + 1}"
+                )
+                desc = lines[idx - 1][5:].strip()
+                assert 0 < len(desc) <= 200, f"Column description >200 chars in {tmdl_path}:{idx}"
+                block_end = next(
+                    (
+                        j
+                        for j in range(idx + 1, len(lines))
+                        if lines[j].startswith(("\tcolumn ", "\tmeasure ", "\tpartition "))
+                    ),
+                    len(lines),
+                )
+                is_hidden = "\t\tisHidden" in lines[idx + 1 : block_end]
+                if not is_hidden:
+                    visible_column_count += 1
+                    assert "at the declared " not in desc, (
+                        f"Generic placeholder description on visible column in {tmdl_path}:{idx + 1}"
+                    )
+
+    assert measure_count == 8
+    assert visible_column_count > 0
+
+
+def test_no_ai_instruction_mentions_another_model():
+    catalog = Catalog(CATALOG)
+    all_models = catalog.raw["models"]
+    sla_packet = json.loads(SLA.read_text(encoding="utf-8"))
+    guidance_packet = json.loads((ROOT / "fabric" / "ai-prep" / "model-guidance.json").read_text(encoding="utf-8"))
+    sa_packet = json.loads(
+        (ROOT / "fabric" / "ai-prep" / "service-assurance-ai-prep.json").read_text(encoding="utf-8")
+    )
+
+    for source_models, key in (
+        (sla_packet["models"], "instructions"),
+        (guidance_packet["models"], "instructions"),
+        (sa_packet["models"], "aiInstructions"),
+    ):
+        for entry in source_models:
+            model_id = entry["id"]
+            other_terms = [
+                term
+                for other in all_models
+                if other["id"] != model_id
+                for term in (other["id"], other["name"])
+            ]
+            for instruction in entry[key]:
+                for term in other_terms:
+                    assert not re.search(rf"\b{re.escape(term)}\b", instruction, re.IGNORECASE), (
+                        f"Model '{model_id}' instruction mentions '{term}': {instruction}"
+                    )
+
+
+@pytest.mark.parametrize(
+    ("source_kind", "model_id", "bad_instruction"),
+    [
+        ("extra", "care", "Keep one Finance result per 'Cases'[account_key] and month."),
+        ("extra", "digital", "Compare 'Sessions'[Sessions] against Commerce demand."),
+        ("sla", "network", "Ask whether outage impact means affected enterprise services."),
+        ("sla", "enterprise", "Compare 'Service Month'[Contracted Recurring Revenue] with Finance revenue."),
+        ("sla", "finance", "Escalate billing adjustments to Customer Care."),
+    ],
+)
+def test_cross_model_mention_in_ai_instruction_raises_value_error(
+    monkeypatch, tmp_path, source_kind, model_id, bad_instruction
+):
+    if source_kind == "extra":
+        draft = deepcopy(prep.EXTRA[model_id])
+        draft["instructions"] = [bad_instruction]
+        monkeypatch.setitem(prep.EXTRA, model_id, draft)
+        with pytest.raises(ValueError, match="subject-area boundary"):
+            prep.build_packet(CATALOG, SLA)
+    else:
+        sla_copy = json.loads(SLA.read_text(encoding="utf-8"))
+        target = next(entry for entry in sla_copy["models"] if entry["id"] == model_id)
+        target["instructions"] = [bad_instruction]
+        sla_path = tmp_path / "sla-cross-model.json"
+        sla_path.write_text(json.dumps(sla_copy), encoding="utf-8")
+        with pytest.raises(ValueError, match="subject-area boundary"):
+            prep.build_packet(CATALOG, sla_path)
+        with pytest.raises(ValueError, match="subject-area boundary"):
+            prep.build_service_assurance_prep(CATALOG, sla_path)
+
+
+def test_service_assurance_ai_prep_is_deterministic_hides_technical_columns_and_covers_arms_equally():
+    sa_path = ROOT / "fabric" / "ai-prep" / "service-assurance-ai-prep.json"
+    first = prep.build_service_assurance_prep(CATALOG, SLA)
+    assert prep.build_service_assurance_prep(CATALOG, SLA) == first
+    assert sa_path.read_text(encoding="utf-8") == json.dumps(first, indent=2) + "\n"
+
+    assert first["status"] == "DRAFT_READY_FOR_PREP_DATA_FOR_AI"
+    assert first["liveApplyTodo"].startswith("TODO(verify-live):")
+    assert first["evaluationArms"]["equalPreparation"] is True
+    arms = first["evaluationArms"]["arms"]
+    assert set(arms) == {"Arm A", "Arm A+", "Arm B"}
+    assert len(set(arms.values())) == 1
+    assert [m["id"] for m in first["models"]] == ["network", "enterprise", "finance", "care"]
+
+    catalog = Catalog(CATALOG)
+    for entry in first["models"]:
+        model_id = entry["id"]
+        assert 0 < len("\n".join(entry["aiInstructions"])) <= 10_000
+        for group in ("tables", "columns", "measures"):
+            descriptions = entry["descriptions"][group]
+            assert descriptions
+            assert all(0 < len(desc) <= 200 for desc in descriptions.values())
+
+        schema = entry["aiDataSchema"]
+        assert schema["editingRoute"] == "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        assert schema["excludedDiagnosticColumns"] == ["coverage_complete", "expected_minutes"]
+        assert len(schema["includedMeasures"]) == 8
+        for table_id in catalog.models[model_id]["tables"]:
+            table_spec = catalog.tables[table_id]
+            display_name = table_spec["displayName"]
+            visible = set(schema["visibleColumnsByTable"][display_name])
+            hidden = set(schema["hiddenTechnicalColumnsByTable"][display_name])
+            assert visible | hidden == set(table_spec["columns"])
+            assert not (visible & hidden)
+            for col_name, col_kind in table_spec["columns"].items():
+                if (
+                    col_name.endswith(("_key", "_id"))
+                    or col_name in {"coverage_complete", "expected_minutes"}
+                    or col_kind == "timestamp"
+                    or (col_kind == "int64" and table_id != "calendar_date")
+                ):
+                    assert col_name in hidden and col_name not in visible
+                else:
+                    assert col_name in visible and col_name not in hidden
+
+        candidates = entry["verifiedAnswerCandidates"]
+        assert len(candidates) >= 2
+        visible_refs = {
+            f"'{t_name.replace(chr(39), chr(39) * 2)}'[{col}]"
+            for t_name, cols in schema["visibleColumnsByTable"].items()
+            for col in cols
+        }
+        for candidate in candidates:
+            assert candidate["level"] == "L1"
+            assert candidate["editingRoute"] == "USER_CONFIGURED_PREP_DATA_FOR_AI"
+            assert candidate["question"] and candidate["triggerPhrases"] and candidate["visualType"]
+            assert candidate["targetMeasure"] in schema["includedMeasures"]
+            assert set(candidate["groupBy"]) <= visible_refs
+
+
+def test_cli_writes_both_packets_when_service_assurance_output_is_given(monkeypatch, tmp_path):
+    out_all = tmp_path / "review" / "model-guidance.json"
+    out_sa = tmp_path / "review" / "service-assurance-ai-prep.json"
+    monkeypatch.setattr(
+        sys, "argv", ["build_ai_prep", "--output", str(out_all), "--service-assurance-output", str(out_sa)]
+    )
+    prep.main()
+    assert json.loads(out_all.read_bytes()) == prep.build_packet(CATALOG, SLA)
+    assert json.loads(out_sa.read_bytes()) == prep.build_service_assurance_prep(CATALOG, SLA)
+

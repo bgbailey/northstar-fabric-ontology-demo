@@ -151,7 +151,8 @@ def metrics() -> list[dict]:
     total(m, t, "repeat_contacts", "Repeat Contacts", "repeat_contact", "Subsequent same-reason contacts within seven days for the same account.")
     add(m, t, "contacted_accounts", "Contacted Accounts", "COUNT(DISTINCT account_key)",
         f"DISTINCTCOUNT({ref(t, 'account_key')})", "Distinct contacted accounts, not the sum of period-level distinct counts.", aggregation="non_additive")
-    total(m, t, "escalated_cases", "Escalated Cases", "escalated", "Cases escalated at least once.")
+    total(m, t, "escalated_cases", "Escalated Cases", "escalated",
+          "Cases escalated at least once, attributed to case opening month.")
     ratio(m, t, "first_contact_resolution", "First Contact Resolution", "first_contact_resolved", "resolved",
           "First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator.")
     add(m, t, "mean_resolution_hours", "Mean Resolution Hours", "AVG(resolution_minutes) / 60.0",
@@ -174,14 +175,16 @@ def metrics() -> list[dict]:
         "Distinct active lines exposed to actual serving-site outages.", aggregation="non_additive")
     total(m, "subscription_site_exposure", "exposure_minutes", "Exposure Minutes", "exposure_minutes",
           "Interval-unioned unavailable minutes per exposed line, additive across lines.", "line_minutes")
-    total(m, t, "failed_sessions", "Failed Sessions", "failed_sessions", "Observed failed network sessions, distinct from digital checkout sessions.")
+    total(m, t, "failed_sessions", "Failed Sessions", "failed_sessions",
+          "Observed failed radio/network sessions in the hourly monitoring window; not web or app sessions.")
     ratio(m, t, "service_degradation_percent", "Service Degradation Percent", "failed_sessions", "total_sessions", "Failed divided by monitored network sessions.")
 
     m, t = "commerce", "order_line"
     count(m, "order", "orders", "Orders", "Placed orders, including subsequent cancellations.")
     total(m, t, "units", "Booked Units", "units", "Booked merchandise units.")
     total(m, t, "booked_revenue", "Booked Revenue", "booked_revenue_cents",
-          "Booked device revenue, intentionally distinct from finance recognized service revenue.", "cents")
+          "Booked merchandise and device value in integer cents at order placement, not recurring service billing.",
+          "cents")
     total(m, "order", "cancellations", "Cancellations", "cancelled", "Orders cancelled before fulfilment.")
     total(m, t, "fulfilled_units", "Fulfilled Units", "fulfilled_units", "Units actually fulfilled.")
     ratio(m, t, "device_return_rate", "Device Return Rate", "returned_units", "fulfilled_units", "Returned units divided by fulfilled units, attributed to order month.")
@@ -195,12 +198,16 @@ def metrics() -> list[dict]:
     total(m, t, "assigned_population", "Assigned Population", "assigned", "Eligible treatment units actually assigned an offer.")
     total(m, t, "accepted_offers", "Accepted Offers", "accepted", "Assigned eligible offers accepted.")
     ratio(m, t, "acceptance_rate", "Acceptance Rate", "accepted", "assigned", "Accepted divided by assigned offers, not campaign touches.")
-    total(m, t, "offer_cost", "Offer Cost", "offer_cost_cents", "Observed accepted-offer cost.", "cents")
-    for treatment, slug, name in ((1, "treatment_retained", "Treatment Retained"), (0, "control_retained", "Control Retained")):
+    total(m, t, "offer_cost", "Offer Cost", "offer_cost_cents",
+          "Observed accepted-offer cost in integer cents for eligible assignments.", "cents")
+    for treatment, slug, name, arm_label in (
+        (1, "treatment_retained", "Treatment Retained", "treatment-arm"),
+        (0, "control_retained", "Control Retained", "control-arm"),
+    ):
         add(m, t, slug, name,
             f"SUM(CASE WHEN randomized AND eligible = 1 AND treatment = {treatment} THEN retained ELSE 0 END)",
             f"CALCULATE(SUM({ref(t, 'retained')}), KEEPFILTERS({ref(t, 'randomized')} = TRUE()), KEEPFILTERS({ref(t, 'eligible')} = 1), KEEPFILTERS({ref(t, 'treatment')} = {treatment}))",
-            "Retained eligible randomized assignment units; observational campaign excluded.")
+            f"Retained eligible randomized {arm_label} units; observational campaign excluded.")
     sql_rates, dax_rates = [], []
     for treatment in (1, 0):
         condition = f"randomized AND eligible = 1 AND treatment = {treatment}"
@@ -221,7 +228,8 @@ def metrics() -> list[dict]:
         f"DIVIDE(SUM({ref(t, 'contracted')}) - SUM({ref(t, 'breached')}), SUM({ref(t, 'contracted')}))",
         "Compliant contracted service-months divided by contracted service-months.", "ratio", "non_additive")
     total(m, t, "contracted_recurring_revenue", "Contracted Recurring Revenue", "recurring_revenue_cents",
-          "Contracted monthly recurring value, not finance recognized revenue.", "cents")
+          "Contracted monthly recurring service value in integer cents, not billed or recognized revenue.",
+          "cents")
     total(m, "sla_evaluation", "eligible_credits", "Eligible Credits", "eligible_credit_cents",
           "Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month.", "cents",
           extra_dimensions=("contract_key",))
@@ -261,6 +269,198 @@ def catalog(*, showcase: bool = False) -> dict:
             "tables": source_tables("showcase-v2") if showcase else TABLES, "metrics": metrics()}
 
 
+COLUMN_DESCRIPTIONS: dict[tuple[str, str], str] = {
+    ("account", "region"): (
+        "Geographic operating region (such as East or West) for regional grouping and row-level security."
+    ),
+    ("account", "consent"): (
+        "Current marketing contact preference flag; does not reconstruct historical campaign eligibility."
+    ),
+    ("account", "enterprise"): (
+        "True for business accounts eligible for service contracts; false for consumer accounts."
+    ),
+    ("account", "display_name"): (
+        "Customer-facing account label; deliberately non-unique across accounts, never use as a join key."
+    ),
+    ("market", "market_name"): "Human-readable home market label for customer and regional reporting.",
+    ("market", "region"): (
+        "Parent operating region grouping home markets for regional summaries and security filtering."
+    ),
+    ("calendar_date", "date"): (
+        "Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots."
+    ),
+    ("calendar_date", "year"): "Four-digit calendar year number; group or filter by year, never sum.",
+    ("calendar_date", "quarter"): "Calendar quarter number (1 to 4); group or filter by quarter, never sum.",
+    ("calendar_date", "month_number"): (
+        "Calendar month number (1 to 12) used to sort month names chronologically; never sum."
+    ),
+    ("calendar_date", "month_name"): "Full English calendar month label sorted chronologically by month_number.",
+    ("calendar_date", "day"): "Day-of-month number (1 to 31) for daily snapshot filtering; never sum.",
+    ("site", "region"): (
+        "Physical site operating region; reflects tower or facility location, not customer home market."
+    ),
+    ("device", "device_name"): "Commercial handset or hardware model label for device cohort breakdown.",
+    ("device", "operating_system"): (
+        "Device platform family (such as iOS or Android) for compatibility and cohort analysis."
+    ),
+    ("store", "store_name"): (
+        "Retail or fulfillment location label for store-level order and inventory reporting."
+    ),
+    ("campaign", "campaign_name"): (
+        "Retention or promotional program label; check assignment_method before causal comparison."
+    ),
+    ("campaign", "assignment_method"): (
+        "Experiment design type distinguishing randomized holdout trials from observational targeting."
+    ),
+    ("subscription", "plan_name"): "Commercial wireless rate-plan tier assigned to the subscription line.",
+    ("subscription_month", "month"): (
+        "First day of the reporting month for subscription state; select a single month for snapshots."
+    ),
+    ("lifecycle_event", "month"): (
+        "First day of the calendar month in which the activation or disconnection transition occurred."
+    ),
+    ("lifecycle_event", "event_type"): (
+        "Lifecycle transition category (activation or disconnect) recorded for the subscription line."
+    ),
+    ("account_month", "month"): (
+        "First day of the service month for recognized revenue, service-month credits, and cost."
+    ),
+    ("charge_line", "month"): "First day of the billed service month; separate from the posting timestamp.",
+    ("charge_line", "charge_type"): (
+        "Billing line category distinguishing recurring service charges, usage charges, and reversals."
+    ),
+    ("credit", "month"): (
+        "First day of the credit posting month (primary calendar link); differs from original service_month."
+    ),
+    ("credit", "service_month"): (
+        "First day of the original service period adjusted by a late-posted billing credit."
+    ),
+    ("session", "month"): (
+        "First day of the calendar month when the digital browsing or checkout session started."
+    ),
+    ("session", "authenticated"): (
+        "True when the session resolved to a signed-in account; false for anonymous browsing."
+    ),
+    ("session", "release_version"): (
+        "Client app or web release identifier active during the session for defect triage."
+    ),
+    ("interaction_event", "month"): (
+        "First day of the calendar month in which the in-session interaction occurred."
+    ),
+    ("interaction_event", "event_type"): (
+        "Step or action category within a session; multiple interaction events occur per session."
+    ),
+    ("case", "month"): (
+        "First day of the calendar month when the support case opened; governs case and resolution cohorts."
+    ),
+    ("case", "reason"): (
+        "Primary customer contact driver (such as connectivity, billing, or device) recorded at intake."
+    ),
+    ("case_activity", "month"): (
+        "First day of the calendar month when the agent or customer case interaction occurred."
+    ),
+    ("case_activity", "activity_type"): (
+        "Support handling step category (such as intake, escalation, or follow-up) within a case."
+    ),
+    ("case_daily_snapshot", "month"): (
+        "First day of the calendar month containing the daily open-case observation."
+    ),
+    ("case_daily_snapshot", "snapshot_date"): (
+        "Observed end-of-day date for open case backlog; select one date, never sum across days."
+    ),
+    ("incident", "month"): (
+        "First day of the calendar month when the outage started; cross-month overlap uses UTC start/end."
+    ),
+    ("incident", "severity"): (
+        "Operational impact tier (major or minor); filter to major for headline outage counts."
+    ),
+    ("site_hour", "month"): "First day of the calendar month for the bounded hourly site-monitoring window.",
+    ("site_day", "month"): "First day of the calendar month containing the daily site-monitoring rollup.",
+    ("site_day", "snapshot_date"): "Calendar day of the bounded daily site-availability rollup.",
+    ("subscription_site_exposure", "month"): (
+        "First day of the service month for interval-unioned serving-site outage exposure."
+    ),
+    ("order", "month"): (
+        "First day of the order placement month; fulfillment and return dates are tracked separately."
+    ),
+    ("order_line", "month"): (
+        "First day of the parent order placement month governing booked units, revenue, and return rates."
+    ),
+    ("store_device_day", "month"): (
+        "First day of the calendar month containing the store-device inventory observation."
+    ),
+    ("store_device_day", "snapshot_date"): (
+        "Observed end-of-day date for physical store inventory; select one date, never sum across days."
+    ),
+    ("offer_assignment", "month"): (
+        "First day of the campaign assignment month; later 28-day outcomes retain this cohort month."
+    ),
+    ("offer_assignment", "randomized"): (
+        "True for randomized treatment/control experiment units; false for observational targeting."
+    ),
+    ("offer_outcome", "month"): (
+        "First day of the original offer assignment month associated with the 28-day retention check."
+    ),
+    ("campaign_touch", "month"): (
+        "First day of the calendar month when the outbound or inbound campaign contact occurred."
+    ),
+    ("campaign_touch", "channel"): (
+        "Outreach delivery medium (such as email, SMS, or in-app) for the campaign touch."
+    ),
+    ("contract", "month"): (
+        "Contract start-month attribute only, not active service-month validity; use UTC valid_from/valid_to."
+    ),
+    ("service_site_map", "month"): (
+        "Mapping start-month attribute only, not active serving-site validity; use UTC valid_from/valid_to."
+    ),
+    ("service_month", "month"): (
+        "First day of the evaluated service month for contracted services, monitored minutes, and breaches."
+    ),
+    ("sla_evaluation", "month"): "First day of the settled SLA service month at contract-month grain.",
+    ("applied_credit", "month"): (
+        "First day of the SLA service month credited; separate from the posted_at timestamp."
+    ),
+    ("quarantine", "source_table"): (
+        "Originating staging table identifier from which the rejected record was isolated."
+    ),
+    ("quarantine", "reason_code"): (
+        "Data-quality rejection classification explaining why the record was quarantined."
+    ),
+    ("quarantine", "raw_record"): (
+        "Serialized unparsed source payload retained strictly for data-quality diagnostics."
+    ),
+}
+
+
+def column_description(identifier: str, spec: dict, column: str, kind: str) -> str:
+    explicit = COLUMN_DESCRIPTIONS.get((identifier, column))
+    if explicit is not None:
+        return explicit
+    if column == "coverage_complete":
+        return (
+            "Effective-period serving-site mapping covers every expected minute; "
+            "false means unknown outage/breach."
+        )
+    if column == "expected_minutes":
+        return "Calendar minutes clipped to contract validity; compare with actual monitored minutes."
+    if column.endswith("_cents"):
+        return "Hidden integer cents; query explicit currency measures instead of summing raw columns."
+    if column.endswith("_minutes"):
+        return "Hidden duration in minutes; query explicit duration or availability measures instead."
+    if column.endswith("_seconds"):
+        return "Hidden duration in seconds; query explicit duration measures instead of summing."
+    if kind == "timestamp":
+        return "Hidden UTC instant; half-open validity intervals include start and exclude end."
+    if kind == "date":
+        return "Calendar date (yyyy-MM-dd) with no timezone or time-of-day component."
+    if column.endswith(("_key", "_id")):
+        return "Hidden technical identifier; join only through declared relationships or identity maps."
+    if kind == "int64":
+        return f"Hidden numeric input on {spec['displayName']}; use explicit model measures instead."
+    label = column.replace("_", " ").capitalize()
+    return f"{label} attribute scoped to {spec['displayName']}."
+
+
 def format_string(metric: dict) -> str:
     if metric["unit"] in ("ratio", "percentage_points"):
         return "0.00%"
@@ -271,44 +471,49 @@ def format_string(metric: dict) -> str:
     return "#,##0"
 
 
+def _check_description(text: str, target: str) -> str:
+    if not text or not text.strip() or len(text) > 200:
+        raise ValueError(f"TMDL description must be 1..200 chars ({len(text)}): {target}")
+    return text
+
+
 def table_tmdl(model_id: str, spec: dict, measures: list[dict]) -> str:
     identifier = spec["id"]
     name = quoted(spec["displayName"])
     columns = {column.casefold() for column in spec["columns"]}
     for metric in measures:
         if metric["name"].casefold() in columns:
-            raise ValueError(f"Measure name collides with a home-table column: {model_id}.{identifier}.{metric['name']}")
-    lines = [f'/// {spec["description"]}', f"table {name}",
+            raise ValueError(
+                f"Measure name collides with a home-table column: {model_id}.{identifier}.{metric['name']}"
+            )
+    table_desc = _check_description(spec["description"], f"{model_id}.{identifier}")
+    lines = [f"/// {table_desc}", f"table {name}",
              f"\tlineageTag: {lineage(model_id + '/table/' + identifier)}"]
     if "coverage" in spec:
         lines += ["\tannotation SourceCoverage = " + json.dumps(spec["coverage"], sort_keys=True)]
     if identifier == "calendar_date":
         lines += ["\tdataCategory: Time"]
     for metric in measures:
-        lines += ["", f'\t/// {metric["description"]}', f'\tmeasure {quoted(metric["name"])} = {metric["dax"]}',
-                  f'\t\tformatString: {format_string(metric)}',
-                  f'\t\tdisplayFolder: {MODEL_NAMES[model_id]}',
+        metric_desc = _check_description(metric["description"], metric["id"])
+        lines += ["", f"\t/// {metric_desc}", f'\tmeasure {quoted(metric["name"])} = {metric["dax"]}',
+                  f"\t\tformatString: {format_string(metric)}",
+                  f"\t\tdisplayFolder: {MODEL_NAMES[model_id]}",
                   f'\t\tlineageTag: {lineage(metric["id"])}',
                   f'\t\tannotation MetricId = {metric["id"]}',
                   f'\t\tannotation Aggregation = {metric["aggregation"]}']
+    dtype_map = dict(int64="int64", string="string", bool="boolean", date="dateTime", timestamp="dateTime")
     for column, kind in spec["columns"].items():
-        hidden = column in {"coverage_complete", "expected_minutes"} or column.endswith(("_key", "_id")) or kind == "timestamp" or (
-            kind == "int64" and identifier != "calendar_date")
-        label = column.replace("_", " ").capitalize()
-        meaning = (
-            "Effective-period serving-site mapping covers every expected minute; false means unknown outage/breach."
-            if column == "coverage_complete"
-            else "Calendar minutes clipped to contract validity; compare with actual monitored minutes."
-            if column == "expected_minutes"
-            else
-            "Integer minor units; 100 cents equal one synthetic currency unit." if column.endswith("_cents")
-            else "UTC instant; validity intervals include the start and exclude the end." if kind == "timestamp"
-            else "Calendar date with no timezone or time-of-day." if kind == "date"
-            else "Technical identity; join only through the declared mapping." if column.endswith(("_key", "_id"))
-            else f"{label} at the declared {spec['displayName']} grain."
+        hidden = (
+            column in {"coverage_complete", "expected_minutes"}
+            or column.endswith(("_key", "_id"))
+            or kind == "timestamp"
+            or (kind == "int64" and identifier != "calendar_date")
+        )
+        meaning = _check_description(
+            column_description(identifier, spec, column, kind), f"{model_id}.{identifier}.{column}"
         )
         lines += ["", f"\t/// {meaning}", f"\tcolumn {quoted(column)}",
-                  f'\t\tdataType: {dict(int64="int64", string="string", bool="boolean", date="dateTime", timestamp="dateTime")[kind]}',
+                  f"\t\tdataType: {dtype_map[kind]}",
                   "\t\tsummarizeBy: none", f"\t\tsourceColumn: {column}",
                   f"\t\tlineageTag: {lineage(model_id + '/column/' + identifier + '/' + column)}"]
         if hidden:
@@ -344,10 +549,10 @@ def build(output: Path, contracts: Path, fixture_manifest: Path | None = None) -
     if fixture_manifest is not None:
         manifest = json.loads(fixture_manifest.read_text(encoding="utf-8"))
         row_counts = {item["id"]: item["rows"] for item in manifest["tables"]}
-    showcase = manifest is not None and manifest["profile"] == "showcase-v2"
+    showcase = manifest is not None and manifest["profile"] in {"showcase-v2", "service-assurance"}
     contract = catalog(showcase=showcase)
     definitions = {spec["id"]: spec for spec in contract["tables"]}
-    if showcase and (output.exists() or contracts.exists()):
+    if manifest is not None and manifest["profile"] == "showcase-v2" and (output.exists() or contracts.exists()):
         raise FileExistsError("Showcase source models/catalog require new output directories")
     census = {
         "version": "1.0", "status": "UNDEPLOYED_TEMPLATE", "upstream_commit": UPSTREAM_COMMIT,

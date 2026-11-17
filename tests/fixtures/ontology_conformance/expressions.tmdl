@@ -1,0 +1,31 @@
+expression 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK' =
+	let
+		Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/SYNTHETIC_WORKSPACE", "Synthetic network"),
+		Cubes = Table.Combine(Source[Data]),
+		Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+	in
+		Cube
+
+expression 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE' =
+	let
+		Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/SYNTHETIC_WORKSPACE", "Synthetic enterprise"),
+		Cubes = Table.Combine(Source[Data]),
+		Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+	in
+		Cube
+
+expression 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_FINANCE' =
+	let
+		Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/SYNTHETIC_WORKSPACE", "Synthetic finance"),
+		Cubes = Table.Combine(Source[Data]),
+		Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+	in
+		Cube
+
+expression 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE' =
+	let
+		Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/SYNTHETIC_WORKSPACE", "Synthetic care"),
+		Cubes = Table.Combine(Source[Data]),
+		Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+	in
+		Cube

@@ -1,0 +1,36 @@
+entity network_SiteHour
+	backingTable: network_site_hour
+	keyProperty: site_key
+	keyProperty: hour_start
+	property site_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site_hour.site_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_site_hour.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: network_site_hour.month
+	property hour_start
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: network_site_hour.hour_start
+	property eligible_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site_hour.eligible_minutes
+	property unavailable_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site_hour.unavailable_minutes
+	property failed_sessions
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site_hour.failed_sessions
+	property total_sessions
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site_hour.total_sessions

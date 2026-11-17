@@ -1,0 +1,16 @@
+table enterprise_service
+	column service_key
+		dataType: int64
+		sourceColumn: service_key
+	column service_id
+		dataType: string
+		sourceColumn: service_id
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	partition enterprise_service = entity
+		mode: directQuery
+		source
+			entityName: Services
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

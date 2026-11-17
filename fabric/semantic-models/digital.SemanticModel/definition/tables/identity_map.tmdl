@@ -2,7 +2,7 @@
 table 'Digital Identity Map'
 	lineageTag: 63a75d29-46b6-57f7-a44e-09d2409c616c
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'anonymous_id'
 		dataType: string
 		summarizeBy: none
@@ -11,7 +11,7 @@ table 'Digital Identity Map'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -21,7 +21,7 @@ table 'Digital Identity Map'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_from'
 		dataType: dateTime
 		summarizeBy: none
@@ -32,7 +32,7 @@ table 'Digital Identity Map'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_to'
 		dataType: dateTime
 		summarizeBy: none
