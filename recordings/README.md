@@ -19,8 +19,8 @@ The JSON files in this folder are marked `-text` in `.gitattributes` so that Git
 
 ## Play back locally
 
-Run the combined viewer without signing in or calling a live service:
+Run the combined viewer without signing in or calling a live service (see [../docs/run/streams.md](../docs/run/streams.md) for all playback modes):
 
 ```bash
-python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767
+northstar serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767
 ```

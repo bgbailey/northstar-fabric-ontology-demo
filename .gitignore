@@ -12,6 +12,9 @@ build/
 .env
 .env.*
 !.env.example
+.mcp.json
+!.mcp.example.json
+.vscode/mcp.json
 *.pem
 *.key
 *.pfx

@@ -2,13 +2,13 @@
 
 ## Run of show
 
-Use [demo-streams.md](demo-streams.md) as the entry point for startup and readiness checks. Open in Microsoft Fabric with the two-model quickstart ontology ([executive-demo-script.md](executive-demo-script.md)), then transition to the service assurance SLA exposure and account-priority segment ([architecture/hero-scenario.md](architecture/hero-scenario.md)).
+Use [../run/streams.md](../run/streams.md) as the entry point for startup and readiness checks. Open in Microsoft Fabric with the two-model quickstart ontology ([quickstart.md](quickstart.md)), then transition to the service assurance SLA exposure and account-priority segment ([../architecture/hero-scenario.md](../architecture/hero-scenario.md)).
 
-The local web viewer (`apps/web`) provides side-by-side evidence, DAX query receipts, and recorded fallback; it does not replace the product experience in Fabric. Before presenting live, verify recorded playback first and run live questions only after fresh demo user sign-in and rehearsal in your demo tenant.
+The local web viewer (`apps/web`) provides side-by-side evidence, DAX query receipts, and recorded fallback; it does not replace the product experience in Microsoft Fabric. Before presenting live, verify recorded playback first and run live questions only after fresh demo user sign-in and rehearsal in your demo tenant.
 
 ## Two ontology scopes
 
-Northstar includes a compact quickstart ontology over two semantic models (four entity types, three relationships, 14 metrics linked to source measures, and two rules; contract at `fabric/ontology/executive-demo.json`) alongside the eight-model Customer360 estate (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) and the four-model service assurance scenario. Calculations remain in their source semantic models.
+Northstar includes a compact quickstart ontology over two Power BI semantic models (four entity types, three relationships, 14 metrics linked to source measures, and two rules; contract at `fabric/ontology/executive-demo.json`) alongside the eight-model Customer360 estate (59 entity types, 105 relationships, 64 metrics linked to source measures, and four rules) and the four-model service assurance scenario. Calculations remain in their source semantic models.
 
 ## Choose the server mode
 
@@ -16,21 +16,21 @@ Run from the repository root after building `apps/web/dist` (`npm --prefix apps/
 
 | Mode | Command | Meaning |
 |---|---|---|
-| Both recorded streams | `python -m telco_iq.cli serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` | Quickstart answer from the ontology agent in Fabric first, Customer360 and service assurance stories second; no sign-in or live calls |
-| Recorded comparisons only | `python -m telco_iq.cli serve --recorded-comparisons recordings/northstar-recorded-live-v6-2026-10-28.json --port 8767` | Ten recorded evaluation arm pairs with no live fallback |
-| Live demo user comparison | `python -m telco_iq.cli serve --reader-config <private-demo-user.json> --live-config <private-live.json> --port 8765` | Approved demo user session in a demo tenant (see [live demo user setup](reader-demo.md)); no silent recording or fixture fallback |
-| Single ontology-agent recording | `python -m telco_iq.cli serve --recorded-native recordings/northstar-two-model-recorded-demo-2026-09-30.json --port 8768` | Historical two-model capture from the ontology agent in Fabric |
+| Both recorded streams | `northstar serve --recorded-library recordings/northstar-demo-library-v2-2026-10-28.json --port 8767` | Quickstart answer from the ontology agent in Fabric first, Customer360 and service assurance stories second; no sign-in or live calls |
+| Recorded comparisons only | `northstar serve --recorded-comparisons recordings/northstar-recorded-live-v6-2026-10-28.json --port 8767` | Ten recorded evaluation arm pairs with no live fallback |
+| Live demo user comparison | `northstar serve --reader-config <private-demo-user.json> --live-config <private-live.json> --port 8765` | Approved demo user session in a demo tenant (see [live demo user setup](../run/live.md)); no silent recording or fixture fallback |
+| Single ontology-agent recording | `northstar serve --recorded-native recordings/northstar-executive-native-demo-2026-10-28.json --port 8768` | Standalone July 2026 two-model capture from the ontology agent in Fabric |
 
-Keep private configuration files outside the repository and outside synchronized folders. For the two-model evaluation arm walkthrough inside Customer360, see [getting-started-demo-script.md](getting-started-demo-script.md).
+Keep private configuration files outside the repository and outside synchronized folders. For the two-model evaluation arm walkthrough inside Customer360, see [customer360.md](customer360.md).
 
 ## Explain the two evaluation arms
 
 Each evaluation arm (one side of a controlled comparison) uses the same language model, the same model-level AI preparation, and the same execution validators:
 
 - **Models and flat guidance:** starts from semantic-model schemas and equivalent flat business instructions.
-- **Ontology context in Fabric:** reads entity types, relationships, metrics linked to source measures, and plain-language rules from the Fabric IQ ontology (current experience, preview checked 16 November 2026).
+- **Ontology context in Fabric:** reads entity types, relationships, metrics linked to source measures, and plain-language rules from the [Fabric IQ ontology](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview) (current experience, preview checked 16 November 2026).
 
-Both arms execute governed DAX queries on the semantic models that own the measures. The execution canvas displays observed application steps, not an internal reasoning trace from the ontology agent in Fabric.
+Both evaluation arms execute governed DAX queries on the semantic models that own the measures. The execution canvas displays observed application steps, not an internal reasoning trace from the ontology agent in Fabric.
 
 ## Three multi-domain stories
 
@@ -56,4 +56,4 @@ When using recorded playback (`Customer360 deep dive` -> `SLA exposure and accou
 
 ## Limitations
 
-See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.
+See [../limitations.md](../limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

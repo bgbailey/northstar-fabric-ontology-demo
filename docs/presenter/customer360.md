@@ -1,9 +1,9 @@
-# Getting started: reuse trusted measures across customer domains
+# Customer360 getting started: reuse trusted measures across domains
 
-For the standalone two-model quickstart ontology in Fabric, see [executive-demo-script.md](executive-demo-script.md) and [quickstart ontology setup](executive-native-setup.md). This script walks through the controlled two-arm comparison over the focused four-entity slice of the Customer360 ontology in Northstar. Lead with the product experience in Fabric, then use this comparison for supporting evidence; see [demo-streams.md](demo-streams.md) for startup commands.
+For the standalone two-model quickstart ontology in Microsoft Fabric, see [quickstart.md](quickstart.md) and [quickstart ontology setup](../deploy/quickstart-ontology.md). This script walks through the controlled two-arm comparison over the focused four-entity slice of the Customer360 ontology in Northstar. Lead with the product experience in Fabric, then use this comparison for supporting evidence; see [../run/streams.md](../run/streams.md) for startup commands.
 
-- **Scenario:** three business domains across two semantic models (Subscriptions and Finance), before moving to the four-model service assurance scenario ([architecture/hero-scenario.md](architecture/hero-scenario.md)).
-- **Audience:** a first introduction to Fabric IQ ontology (current experience, preview checked 16 November 2026).
+- **Scenario:** three business domains across two Power BI semantic models (Subscriptions and Finance), before moving to the four-model service assurance scenario ([../architecture/hero-scenario.md](../architecture/hero-scenario.md)).
+- **Audience:** a first introduction to [Fabric IQ ontology](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview) (current experience, preview checked 16 November 2026).
 - **Purpose:** show reusable business context without moving or duplicating semantic-model DAX calculations.
 
 ## The small picture
@@ -23,17 +23,17 @@ Each evaluation arm (one side of a controlled comparison) receives the same sema
 | Beat | Show or do | Suggested words | What the evidence shows |
 |---|---|---|---|
 | Start with ownership | Select **Getting started** and inspect the two semantic models and three measure cards | "We already trust these semantic models. Subscriptions owns active lines. Finance owns revenue and margin. We are not rebuilding those calculations." | Each metric card links to its source semantic model, home table, and measure |
-| Show semantic models with flat guidance | In the baseline arm's receipts, open the Subscriptions and Finance DAX queries | "Each semantic model answers its part, and an agent can join the results. The extra work is carrying customer identity, period, and revenue definitions in every prompt." | Source DAX reuses the same governed measures without a weakened baseline |
+| Show semantic models with flat guidance | In the baseline evaluation arm's receipts, open the Subscriptions and Finance DAX queries | "Each semantic model answers its part, and an agent can join the results. The extra work is carrying customer identity, period, and revenue definitions in every prompt." | Source DAX reuses the same governed measures without a weakened baseline |
 | Add connected context | Open the focused ontology graph in Fabric and inspect the rule and metric links | "The ontology makes shared meaning explicit and reusable: the same customer key, the same completed month, month-end lines, and recognized service revenue." | Four entity types, the conformed account bridge, metrics linked to source measures, and capture provenance |
-| Ask once across domains | In live mode, run both arms; in recorded mode, select the dated capture | "For July, put the trusted measures together by customer. We want the business answer, not a rewritten formula." | Account-month rows, source-query receipts, and capture timestamps |
+| Ask once across domains | In live mode, run both evaluation arms; in recorded mode, select the dated capture | "For July, put the trusted measures together by customer. We want the business answer, not a rewritten formula." | Account-month rows, source-query receipts, and capture timestamps |
 | Prove reuse, not replacement | Open one Finance query receipt and its measure card | "That is still the Finance measure. The ontology added context; it did not become a second owner of revenue or margin." | Existing source-measure reference with no copied cross-model DAX formula |
-| Close on the takeaway | Compare both arms and expand assumptions and limitations | "Calculations stay where they are governed while cross-domain meaning becomes one reviewable asset shared across agents." | Honest reporting: matching numbers are expected here, and any failed arm stays visible |
+| Close on the takeaway | Compare both evaluation arms and expand assumptions and limitations | "Calculations stay where they are governed while cross-domain meaning becomes one reviewable asset shared across agents." | Honest reporting: matching numbers are expected here, and any failed evaluation arm stays visible |
 
 ## First question
 
 > For July 2026, show each registered customer account's Active Lines EOM from Subscriptions and Recognized Service Revenue and Contribution Margin from Finance, in cents. Use the reviewed shared customer identity and preserve one account-month row.
 
-Visible business clarifications in **Exact submitted business question** apply equally to both arms:
+Visible business clarifications in **Exact submitted business question** apply equally to both evaluation arms:
 
 - Active lines means the month-end snapshot, not activations or a sum of monthly snapshots.
 - Revenue means recognized service revenue, not billed charges or booked merchandise.
@@ -41,7 +41,7 @@ Visible business clarifications in **Exact submitted business question** apply e
 
 ## Follow-up month variation
 
-Changing July to August in live mode generates a fresh plan and source queries rather than replaying a stored answer. In the recorded library (`recordings/northstar-demo-library-v2-2026-10-28.json`), both July and August captures returned 24 registered accounts in each arm with four source-query receipts per arm and 144 source-matched measure cells per month. Selecting a story in recorded mode switches saved captures without calling Microsoft Fabric.
+Changing July to August in live mode generates a fresh plan and source queries rather than replaying a stored answer. In the recorded library (`recordings/northstar-demo-library-v2-2026-10-28.json`), both July and August captures returned 24 registered accounts in each evaluation arm with four source-query receipts per evaluation arm and 144 source-matched measure cells per month. Selecting a story in recorded mode switches saved captures without calling Microsoft Fabric.
 
 ### Concrete July walkthrough
 
@@ -49,7 +49,7 @@ Changing July to August in live mode generates a fresh plan and source queries r
 |---|---:|---:|---:|
 | Account 3 / Harbor Business | 3 lines | 80,000 cents | 58,000 cents |
 
-Accounts 1 and 2 share the display name **Northstar Business** while holding distinct `account_key` values and financial figures. Point out that both arms keep those accounts separate because customer identity is `account_key`, never `display_name`.
+Accounts 1 and 2 share the display name **Northstar Business** while holding distinct `account_key` values and financial figures. Point out that both evaluation arms keep those accounts separate because customer identity is `account_key`, never `display_name`.
 
 ## Claims to avoid
 
@@ -63,8 +63,8 @@ Accounts 1 and 2 share the display name **Northstar Business** while holding dis
 
 ## From metric reuse to a review candidate
 
-In the October 28 July capture, Account 1 has `0` month-end active lines, `9,000` cents recognized service revenue, and `-1,400` cents contribution margin. The viewer highlights that row as an application-owned **review candidate** for human investigation — not as a new DAX measure, rule execution, billing defect proof, or automated customer action. For the standalone answer captured directly from the ontology agent in Fabric, use [executive-demo-script.md](executive-demo-script.md).
+In the October 28 July capture, Account 1 has `0` month-end active lines, `9,000` cents recognized service revenue, and `-1,400` cents contribution margin. The viewer highlights that row as an application-owned **review candidate** for human investigation — not as a new DAX measure, rule execution, billing defect proof, or automated customer action. For the standalone answer captured directly from the ontology agent in Fabric, use [quickstart.md](quickstart.md).
 
 ## Limitations
 
-See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.
+See [../limitations.md](../limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

@@ -15,6 +15,8 @@ python -m pytest tests/test_data_models.py -q
 
 The committed small fixture is `data/fixtures/miniature`. Generated semantic model definitions sit under `fabric/semantic-models/<model_id>.SemanticModel`; `fabric/semantic-models/census.json` records tables, fixture row counts, columns, relationships, measure home tables, UUID5 lineage tags, sample security role predicates, storage mode, and template validation status. Each model folder contains `definition.pbism`, a `definition/` directory, `smoke.dax`, and `smoke.link.json`.
 
+`fabric/ai-prep/model-guidance.json` contains review-only AI preparation drafts derived from source contracts. Apply model preparation through supported Power BI tooling in your demo tenant so every evaluation arm (each tested configuration in a comparison) receives identical model instructions and equivalent business facts.
+
 | Profile | Accounts | Subscriptions | Account-month | Service months | Sites | Care cases |
 |---|---:|---:|---:|---|---:|---:|
 | miniature | 10 | 20 | 60 | March-August 2026 | 4 | 8 |
@@ -74,4 +76,4 @@ TMDL authoring follows the public [Skills for Fabric](https://github.com/microso
 
 ## Limitations
 
-See [limitations.md](limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.
+See [../limitations.md](../limitations.md) for what the offline repository and sanitized recordings show versus what requires live verification in a demo tenant.

@@ -334,7 +334,7 @@ def build(
             "freshness": "Cached baseline only; no reference refresh/network authorized in this local lane",
             "projectContracts": [
                 "tools/build_p0_packet.py", "tools/build_models.py",
-                "docs/executive-native-setup.md",
+                "docs/deploy/quickstart-ontology.md",
             ],
         },
         "evidenceGaps": [
