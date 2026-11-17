@@ -317,6 +317,125 @@ def test_metric_with_custom_dax_or_explicit_metric_fails(
     assert report2["metrics"]["different"][0]["name"] == "Major Incidents"
 
 
+def test_metric_source_model_binding_must_match_contract_alias(
+    isolated_definition: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    table_path = isolated_definition / "tables" / "network_incident.tmdl"
+    original = table_path.read_text(encoding="utf-8")
+    table_path.write_text(
+        original.replace("SYNTHETIC_NETWORK", "SYNTHETIC_FINANCE"),
+        encoding="utf-8",
+    )
+
+    code, out = _run_cli(isolated_definition, capsys)
+    report = json.loads(out)
+    assert code == 1
+    difference = next(
+        item for item in report["metrics"]["different"] if item["name"] == "Major Incidents"
+    )
+    assert any("expected source model 'network'" in reason for reason in difference["reasons"])
+
+
+def test_metric_source_model_annotation_must_not_allow_an_alias_prefix(
+    isolated_definition: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    table_path = isolated_definition / "tables" / "network_incident.tmdl"
+    original = table_path.read_text(encoding="utf-8")
+    table_path.write_text(
+        original.replace("ONT_ItemName = Synthetic network", "ONT_ItemName = Synthetic networkish"),
+        encoding="utf-8",
+    )
+
+    code, out = _run_cli(isolated_definition, capsys)
+    report = json.loads(out)
+    assert code == 1
+    difference = next(
+        item for item in report["metrics"]["different"] if item["name"] == "Major Incidents"
+    )
+    assert any("table source model annotation" in reason for reason in difference["reasons"])
+
+
+def test_exact_expected_model_evidence_rejects_identity_suffixes(
+    isolated_definition: Path,
+) -> None:
+    original_network_tables = {
+        path: path.read_text(encoding="utf-8")
+        for path in (isolated_definition / "tables").glob("network_*.tmdl")
+    }
+    expected = {
+        "network": {
+            "id": "00000000-0000-0000-0000-000000000010",
+            "displayName": "Northstar Network Service Assurance",
+        },
+    }
+
+    def write_network_identity(annotation: str, external_source: str) -> None:
+        for path, text in original_network_tables.items():
+            path.write_text(
+                text.replace("Synthetic network", annotation).replace(
+                    "SYNTHETIC_NETWORK",
+                    external_source,
+                ),
+                encoding="utf-8",
+            )
+
+    write_network_identity(
+        "Northstar Network Service Assurance Copy",
+        "00000000-0000-0000-0000-000000000010",
+    )
+    name_copy = check_ontology_conformance.check_conformance(
+        CONTRACT_PATH,
+        isolated_definition,
+        expected,
+    )
+    assert name_copy["conformant"] is False
+    difference = next(
+        item
+        for item in name_copy["metrics"]["different"]
+        if item["name"] == "Major Incidents"
+    )
+    assert any("table source model annotation" in reason for reason in difference["reasons"])
+
+    write_network_identity(
+        "Northstar Network Service Assurance",
+        "00000000-0000-0000-0000-000000000010-copy",
+    )
+    id_copy = check_ontology_conformance.check_conformance(
+        CONTRACT_PATH,
+        isolated_definition,
+        expected,
+    )
+    assert id_copy["conformant"] is False
+    difference = next(
+        item for item in id_copy["metrics"]["different"] if item["name"] == "Major Incidents"
+    )
+    assert any("EXTERNALMEASURE source" in reason for reason in difference["reasons"])
+
+    write_network_identity(
+        "Northstar Network Service Assurance",
+        "Northstar Network Service Assurance",
+    )
+    exact_name = check_ontology_conformance.check_conformance(
+        CONTRACT_PATH,
+        isolated_definition,
+        expected,
+    )
+    assert exact_name["conformant"] is True
+
+    write_network_identity(
+        "Northstar Network Service Assurance",
+        "00000000-0000-0000-0000-000000000010",
+    )
+    exact_id = check_ontology_conformance.check_conformance(
+        CONTRACT_PATH,
+        isolated_definition,
+        expected,
+    )
+    assert exact_id["conformant"] is True
+
+
 def test_missing_extra_and_modified_rules_fail(
     isolated_definition: Path,
     capsys: pytest.CaptureFixture[str],

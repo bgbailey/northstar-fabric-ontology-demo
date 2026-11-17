@@ -53,6 +53,17 @@ telco-iq = "telco_iq.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["src/telco_iq"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"tools/build_data.py" = "telco_iq/deploy/assets/build_data.py"
+"fabric/semantic-models/network.SemanticModel" = "telco_iq/deploy/assets/semantic-models/network.SemanticModel"
+"fabric/semantic-models/enterprise.SemanticModel" = "telco_iq/deploy/assets/semantic-models/enterprise.SemanticModel"
+"fabric/semantic-models/finance.SemanticModel" = "telco_iq/deploy/assets/semantic-models/finance.SemanticModel"
+"fabric/semantic-models/care.SemanticModel" = "telco_iq/deploy/assets/semantic-models/care.SemanticModel"
+"tools/build_ontology_prompts.py" = "telco_iq/ontology/assets/build_ontology_prompts.py"
+"tools/check_ontology_conformance.py" = "telco_iq/ontology/assets/check_ontology_conformance.py"
+"fabric/ontology/service-assurance.json" = "telco_iq/ontology/assets/service-assurance.json"
+"fabric/ontology/service-assurance.prompts.md" = "telco_iq/ontology/assets/service-assurance.prompts.md"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"

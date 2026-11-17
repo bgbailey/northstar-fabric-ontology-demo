@@ -13,7 +13,7 @@ import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 TMDL_NAME = r"(?:'(?:[^']|'')+'|[A-Za-z_][A-Za-z0-9_#-]*)"
 TMDL_LOOSE_NAME = r"(?:'(?:[^']|'')+'|[A-Za-z_][A-Za-z0-9_ #.-]*)"
@@ -48,6 +48,7 @@ class ParsedMeasure:
     expression: str
     is_source_link: bool
     external_measure_name: str | None
+    external_source: str | None
 
 
 @dataclass(frozen=True)
@@ -254,6 +255,9 @@ def _parse_tables(parts: dict[str, str]) -> dict[str, ParsedTable]:
                         is_source_link=ext_match is not None,
                         external_measure_name=(
                             ext_match.group(1).replace('""', '"') if ext_match else None
+                        ),
+                        external_source=(
+                            ext_match.group(2).replace('""', '"') if ext_match else None
                         ),
                     )
                 )
@@ -465,6 +469,7 @@ def _parse_explicit_metrics(parts: dict[str, str]) -> list[ParsedMeasure]:
                     expression=expr_text,
                     is_source_link=False,
                     external_measure_name=None,
+                    external_source=None,
                 )
             )
     return explicit
@@ -653,17 +658,20 @@ def _compare_metrics(
     tables: dict[str, ParsedTable],
     actual_entities: dict[str, ParsedEntity],
     explicit_metrics: list[ParsedMeasure],
+    expected_models: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, list[Any]]:
     backing_to_entity = {
         ent.backing_table: ent.name for ent in actual_entities.values() if ent.backing_table
     }
-    actual_by_name: dict[str, list[tuple[ParsedMeasure, str | None]]] = {}
+    actual_by_name: dict[str, list[tuple[ParsedMeasure, str | None, str | None]]] = {}
     for table in tables.values():
         owner_entity = backing_to_entity.get(table.name)
         for measure in table.measures:
-            actual_by_name.setdefault(measure.name, []).append((measure, owner_entity))
+            actual_by_name.setdefault(measure.name, []).append(
+                (measure, owner_entity, table.source_model_hint),
+            )
     for exp_metric in explicit_metrics:
-        actual_by_name.setdefault(exp_metric.name, []).append((exp_metric, None))
+        actual_by_name.setdefault(exp_metric.name, []).append((exp_metric, None, None))
 
     expected_metrics = {item["name"]: item for item in contract.get("metrics", [])}
     missing = sorted(expected_metrics.keys() - actual_by_name.keys())
@@ -680,7 +688,7 @@ def _compare_metrics(
         reasons: list[str] = []
         if len(entries) > 1:
             reasons.append(f"metric defined {len(entries)} times across definition parts")
-        measure, owner_entity = entries[0]
+        measure, owner_entity, table_source = entries[0]
         if not measure.is_source_link:
             reasons.append(
                 f"metric uses custom or explicit expression ({measure.expression!r}) instead of "
@@ -690,6 +698,16 @@ def _compare_metrics(
             reasons.append(
                 f"EXTERNALMEASURE targets {measure.external_measure_name!r} != expected {exp['name']!r}"
             )
+        else:
+            mismatches = _metric_source_mismatches(
+                contract,
+                exp["model"],
+                table_source,
+                measure.external_source,
+                expected_models,
+            )
+            if mismatches:
+                reasons.extend(mismatches)
         if owner_entity != exp["entity"]:
             reasons.append(
                 f"home entity {owner_entity!r} != expected {exp['entity']!r}"
@@ -698,6 +716,75 @@ def _compare_metrics(
             different.append({"name": m_name, "reasons": reasons})
 
     return {"missing": missing, "extra": extra, "different": different}
+
+
+def _metric_source_mismatches(
+    contract: dict[str, Any],
+    model_alias: str,
+    table_source: str | None,
+    external_source: str | None,
+    expected_models: Mapping[str, Mapping[str, Any]] | None,
+) -> list[str]:
+    aliases = set(expected_models or {}) | set(contract.get("sourceModels", []))
+    expected_model = (expected_models or {}).get(model_alias, {})
+    evidence = [
+        ("table source model annotation", table_source),
+        ("EXTERNALMEASURE source", external_source),
+    ]
+    reasons: list[str] = []
+    observed = [(label, value) for label, value in evidence if value]
+    if not observed:
+        return [f"metric has no source model evidence for {model_alias!r}"]
+    for label, value in observed:
+        assert value is not None
+        if not _model_evidence_matches(model_alias, value, expected_model, aliases):
+            reasons.append(
+                f"{label} {value!r} does not match expected source model {model_alias!r}",
+            )
+    return reasons
+
+
+def _model_evidence_matches(
+    model_alias: str,
+    evidence: str,
+    expected_model: Mapping[str, Any],
+    aliases: set[str],
+) -> bool:
+    candidates = _model_evidence_candidates(evidence)
+    expected_id = str(expected_model.get("id", ""))
+    if expected_id and any(candidate.casefold() == expected_id.casefold() for candidate in candidates):
+        return True
+    expected_name = str(expected_model.get("displayName", ""))
+    name_tokens = _model_tokens(expected_name)
+    if name_tokens and any(_model_tokens(candidate) == name_tokens for candidate in candidates):
+        return True
+    if expected_id or name_tokens:
+        return False
+
+    normalized = _model_tokens(evidence)
+    alias = _model_tokens(model_alias)
+    if any(
+        candidate != model_alias and set(_model_tokens(candidate)) <= set(normalized)
+        for candidate in aliases
+    ):
+        return False
+    if alias and set(alias) <= set(normalized):
+        return True
+    return False
+
+
+def _model_tokens(value: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", value.casefold())
+
+
+def _model_evidence_candidates(evidence: str) -> tuple[str, ...]:
+    cleaned = evidence.strip().strip("\"'")
+    candidates = [cleaned]
+    if "/" in cleaned:
+        candidates.append(cleaned.rstrip("/").rsplit("/", 1)[-1].strip("\"' "))
+    if " - " in cleaned:
+        candidates.append(cleaned.rsplit(" - ", 1)[-1].strip("\"' "))
+    return tuple(candidate for candidate in dict.fromkeys(candidates) if candidate)
 
 
 def _compare_rules(
@@ -742,7 +829,11 @@ def _compare_rules(
     return {"missing": missing, "extra": extra, "different": different}
 
 
-def check_conformance(contract_path: Path, definition_dir: Path) -> dict[str, Any]:
+def check_conformance(
+    contract_path: Path,
+    definition_dir: Path,
+    expected_models: Mapping[str, Mapping[str, Any]] | None = None,
+) -> dict[str, Any]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     parts = load_definition_parts(definition_dir)
     contract_entities = {item["name"] for item in contract["entities"]}
@@ -756,7 +847,13 @@ def check_conformance(contract_path: Path, definition_dir: Path) -> dict[str, An
 
     entity_diff = _compare_entities(contract, entities, tables)
     rel_diff = _compare_relationships(contract, entity_rels)
-    metric_diff = _compare_metrics(contract, tables, entities, explicit_metrics)
+    metric_diff = _compare_metrics(
+        contract,
+        tables,
+        entities,
+        explicit_metrics,
+        expected_models,
+    )
     rule_diff = _compare_rules(contract, rules)
 
     sections = {

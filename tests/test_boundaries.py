@@ -1,6 +1,7 @@
 import ast
 import importlib.util
 import json
+import tomllib
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -16,6 +17,35 @@ from telco_iq.evidence import live_claim_allowed, sanitized, write_receipt
 from telco_iq.retry import ReadOnlyRetryTransport
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_m5_wheel_force_includes_runtime_assets():
+    config = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    force_include = config["tool"]["hatch"]["build"]["targets"]["wheel"]["force-include"]
+    expected = {
+        "tools/build_data.py": "telco_iq/deploy/assets/build_data.py",
+        **{
+            f"fabric/semantic-models/{alias}.SemanticModel":
+                f"telco_iq/deploy/assets/semantic-models/{alias}.SemanticModel"
+            for alias in ("network", "enterprise", "finance", "care")
+        },
+        "tools/build_ontology_prompts.py": (
+            "telco_iq/ontology/assets/build_ontology_prompts.py"
+        ),
+        "tools/check_ontology_conformance.py": (
+            "telco_iq/ontology/assets/check_ontology_conformance.py"
+        ),
+        "fabric/ontology/service-assurance.json": (
+            "telco_iq/ontology/assets/service-assurance.json"
+        ),
+        "fabric/ontology/service-assurance.prompts.md": (
+            "telco_iq/ontology/assets/service-assurance.prompts.md"
+        ),
+    }
+
+    for source, destination in expected.items():
+        assert force_include[source] == destination
+        assert (ROOT / source).exists()
 
 
 def test_utc_source_parquet_timestamp_decodes():
