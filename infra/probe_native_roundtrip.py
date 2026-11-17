@@ -13,7 +13,12 @@ from infra.fabric_p0 import Author, load
 from infra.inspect_native_ontology import SKILL, definition_census
 from telco_iq.auth import DelegatedBearer
 from telco_iq.evidence import write_receipt
-from telco_iq.mcp_client import DiscoveredClient, Endpoint
+from telco_iq.mcp_client import (
+    DiscoveredClient,
+    Endpoint,
+    load_ontology_snapshot,
+    snapshot_endpoint_review,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -88,7 +93,10 @@ async def probe(author: Author) -> dict:
         result["exactNonPlatformMatch"] = not result["changedParts"]
         if time.monotonic() - started >= approval["maximumElapsedMinutes"] * 60:
             raise TimeoutError("Test budget elapsed; cleanup the owned clone")
-        reviewed = load(ROOT / "fabric/ontology/mcp-reviewed-tools.json")
+        snapshot = load_ontology_snapshot(ROOT / "fabric/ontology/mcp-tools.snapshot.json")
+        reviewed_hashes, reviewed_args = snapshot_endpoint_review(
+            snapshot, "ontology_item_endpoint", capabilities=("list_entities", "list_rules"),
+        )
         token = author.az_json(
             "account", "get-access-token", "--resource", "https://api.fabric.microsoft.com",
             "--tenant", approval["tenantId"],
@@ -98,11 +106,18 @@ async def probe(author: Author) -> dict:
             f"/items/{item['id']}/ontologyEndpoint", "ontology",
         )
         async with DiscoveredClient.connect(
-            endpoint, auth=DelegatedBearer(token), reviewed_hashes=reviewed["schemaHashes"],
+            endpoint, auth=DelegatedBearer(token), reviewed_hashes=reviewed_hashes,
         ) as client:
             raw = {}
-            for name in ("list_ontology_entities", "list_ontology_rules"):
-                raw[name] = (await client.call(name, reviewed["arguments"][name])).model_dump(mode="json")
+            for capability, fallback in (
+                ("list_entities", "list_ontology_entities"),
+                ("list_rules", "list_ontology_rules"),
+            ):
+                name = (
+                    client.resolve_ontology_tool(capability)
+                    if hasattr(client, "resolve_ontology_tool") else fallback
+                )
+                raw[name] = (await client.call(name, reviewed_args.get(name, {}))).model_dump(mode="json")
         context_path = write_receipt(private / "native-roundtrip-context", raw)
         result["contextReceipt"] = context_path.name
         result["originalUnchanged"] = non_platform_parts(definition(original)) == expected_parts

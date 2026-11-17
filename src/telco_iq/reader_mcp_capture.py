@@ -149,14 +149,19 @@ async def _capture_reader_mcp_metadata(reader, config: ReaderMCPMetadataCaptureC
                     inventory_capture = sink.capture(
                         tool="MCPInventory", source_alias=resource, request={"operation": "tools/list"},
                         response=inventory,
-                        context={"kind": "CURRENT_READER_MCP_INVENTORY_PROJECTION",
-                                 "binding_hash": binding.binding_hash, "code_hash": config.producer_code_hash},
+                        context={
+                            "kind": "CURRENT_READER_MCP_INVENTORY_PROJECTION",
+                            "binding_hash": binding.binding_hash,
+                            "code_hash": config.producer_code_hash,
+                            "toolset_variant": client.endpoint.toolset_variant,
+                        },
                         private_identifiers=private_identifiers(binding), synthetic=False,
                         response_kind="MCP_INVENTORY_PROJECTION", metadata=True,
                     )
                     captures.append(inventory_capture.capture_id)
                     inventories.append({
                         "resource": resource, "protocol": inventory.get("protocol"),
+                        "toolset_variant": client.endpoint.toolset_variant,
                         "capture_hash": inventory_capture.capture_id,
                     })
                     before = {name: client.schema_hash(name) for name in reviewed}
@@ -177,6 +182,7 @@ async def _capture_reader_mcp_metadata(reader, config: ReaderMCPMetadataCaptureC
                                     "binding_hash": binding.binding_hash,
                                     "code_hash": config.producer_code_hash,
                                     "tool_schema_hash": reviewed[tool],
+                                    "toolset_variant": client.endpoint.toolset_variant,
                                     "source": config.sources[alias].model_dump(mode="json")
                                     if alias in config.sources else {"ontology": str(config.ontology_item_id)},
                                 },

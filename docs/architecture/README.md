@@ -173,9 +173,9 @@ These considerations follow the [pillars of the Azure Well-Architected Framework
 | Eight Direct Lake semantic model definitions (TMDL) | Available with AI preparation, descriptions, AI data schema, and verified-answer candidates for the four hero models | Live Prep data for AI apply step |
 | Two-model quickstart ontology contract | Available | Kept as the opener |
 | Service assurance ontology contract (four models) | Available (`fabric/ontology/service-assurance.json`, authoring prompts, and TMDL conformance check) | Guided Plan and Act authoring in Fabric |
-| Recorded comparison viewer | Available (Executive quickstart, Service assurance 4-model stream, and Customer360 deep dive) | Scorecard view |
+| Recorded comparison viewer | Available (Executive quickstart, Service assurance 4-model stream with four agent surface captures, and Customer360 deep dive) | Scorecard view |
 | Two-arm evaluation harness | Golden multi-hop questions (`27` questions), DuckDB oracle with trap detection, and two offline scripted arms | Repeated runs (`k = 5`), statistical scorecard, and live run |
-| Foundry, Copilot Studio, Microsoft 365 Copilot and GitHub Copilot agents | Not yet | Agent definitions, setup guides and captures |
+| Foundry, Copilot Studio, Microsoft 365 Copilot and GitHub Copilot agents | Available ([agent guides](../agents/README.md), shared instructions, Foundry builder, Copilot Studio and VS Code setup guides, and four sanitized `L2`/`L4` captures; Fabric data agent over semantic-model bindings tested 17 Nov 2026 — does not work, route Microsoft 365 Copilot through published Copilot Studio agent) | Interactive VS Code and Agent 365 OAuth user sign-off (`G5`) |
 | Deployment to a demo tenant | Guarded scripts and live-verified Direct Lake staging recipe | Cross-platform `northstar deploy` and teardown |
 | Real-time incidents and graph-enabled spine | Not yet | Optional stretch |
 

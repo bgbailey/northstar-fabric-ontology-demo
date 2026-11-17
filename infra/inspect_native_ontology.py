@@ -11,7 +11,12 @@ from pathlib import Path
 from infra.fabric_p0 import Author
 from telco_iq.auth import DelegatedBearer
 from telco_iq.evidence import write_receipt
-from telco_iq.mcp_client import DiscoveredClient, Endpoint
+from telco_iq.mcp_client import (
+    DiscoveredClient,
+    Endpoint,
+    load_ontology_snapshot,
+    snapshot_endpoint_review,
+)
 
 SKILL = "fabriciq-ontology-cli"
 
@@ -89,19 +94,31 @@ async def inspect(author: Author, read_context: bool = False) -> dict:
         "account", "get-access-token", "--resource", "https://api.fabric.microsoft.com",
         "--tenant", author.approval["tenantId"],
     )["accessToken"]
-    reviewed = json.loads(
-        (Path(__file__).resolve().parents[1] / "fabric/ontology/mcp-reviewed-tools.json")
-        .read_text(encoding="utf-8")
+    snapshot = load_ontology_snapshot(
+        Path(__file__).resolve().parents[1] / "fabric/ontology/mcp-tools.snapshot.json",
     ) if read_context else None
+    reviewed_hashes, reviewed_args = (
+        snapshot_endpoint_review(
+            snapshot, "ontology_item_endpoint", capabilities=("list_entities", "list_rules"),
+        )
+        if snapshot else (None, {})
+    )
     context = {}
     async with DiscoveredClient.connect(
         endpoint, auth=DelegatedBearer(token),
-        reviewed_hashes=reviewed["schemaHashes"] if reviewed else None,
+        reviewed_hashes=reviewed_hashes,
     ) as client:
         inventory = client.inventory()
-        if reviewed:
-            for name in ("list_ontology_entities", "list_ontology_rules"):
-                result = await client.call(name, reviewed["arguments"][name])
+        if snapshot:
+            for capability, fallback in (
+                ("list_entities", "list_ontology_entities"),
+                ("list_rules", "list_ontology_rules"),
+            ):
+                name = (
+                    client.resolve_ontology_tool(capability)
+                    if hasattr(client, "resolve_ontology_tool") else fallback
+                )
+                result = await client.call(name, reviewed_args.get(name, {}))
                 context[name] = result.model_dump(mode="json")
     receipt = {
         "lane": "LIVE_DEV_AUTHOR_DIAGNOSTIC",

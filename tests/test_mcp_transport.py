@@ -3,6 +3,7 @@ import socket
 from contextlib import asynccontextmanager
 from dataclasses import replace
 from io import BytesIO
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -17,13 +18,19 @@ from pydantic import BaseModel, ConfigDict
 from telco_iq.contracts import Status
 from telco_iq.errors import LabError
 from telco_iq.mcp_client import (
+    DEFAULT_TOOLSET_VARIANT,
+    ONTOLOGY_CAPABILITY_CANDIDATES,
     DiscoveredClient,
     Endpoint,
     IQAdapter,
     OntologyAdapter,
     ReviewedCSVOutput,
     ReviewedOutput,
+    load_ontology_snapshot,
+    snapshot_endpoint_review,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class SyntheticEnvelope(BaseModel):
@@ -247,18 +254,284 @@ async def test_live_without_verified_auth_fails_before_network():
 
 
 def test_endpoint_separation_and_variant():
-    assert Endpoint("https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq", "iq").headers == {
-        "X-Variants": "Fabric.Routing.FabricIQ.V1",
-    }
+    iq_default = Endpoint("https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq", "iq")
+    iq_default.validate()
+    assert iq_default.toolset_variant == DEFAULT_TOOLSET_VARIANT == "service_default"
+    assert iq_default.headers == {}
+
+    iq_v2 = Endpoint(
+        "https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq",
+        "iq",
+        toolset_variant="Fabric.Routing.FabricIQ.V2",
+    )
+    iq_v2.validate()
+    assert iq_v2.headers == {"X-Variants": "Fabric.Routing.FabricIQ.V2"}
+
+    for bad_variant in ("", "   ", " leading", "Fabric.Routing\r\nInjected: 1"):
+        with pytest.raises(LabError, match="Toolset variant"):
+            Endpoint(
+                "https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq",
+                "iq",
+                toolset_variant=bad_variant,
+            ).validate()
+
     with pytest.raises(LabError):
         Endpoint("https://api.fabric.microsoft.com/v1/mcp/fabriciq", "ontology").validate()
     with pytest.raises(LabError):
         Endpoint("http://example.com/mcp", "synthetic_test").validate()
-    assert Endpoint(
+
+    direct_ontology = Endpoint(
         "https://api.fabric.microsoft.com/v1/mcp/dataPlane/workspaces/"
         "00000000-0000-0000-0000-000000000001/items/"
-        "00000000-0000-0000-0000-000000000002/ontologyEndpoint", "ontology",
-    ).headers == {}
+        "00000000-0000-0000-0000-000000000002/ontologyEndpoint",
+        "ontology",
+    )
+    direct_ontology.validate()
+    assert direct_ontology.headers == {}
+
+    agent365_ontology = Endpoint(
+        "https://agent365.svc.cloud.microsoft/agents/tenants/"
+        "00000000-0000-0000-0000-000000000001/servers/mcp_FabricIQOntology/workspaces/"
+        "00000000-0000-0000-0000-000000000002/ontologies/"
+        "00000000-0000-0000-0000-000000000003",
+        "ontology",
+    )
+    agent365_ontology.validate()
+    assert agent365_ontology.headers == {}
+
+    ontology_with_variant = Endpoint(
+        direct_ontology.url,
+        "ontology",
+        toolset_variant="Fabric.Routing.FabricIQ.V2",
+    )
+    assert ontology_with_variant.headers == {}
+    with pytest.raises(LabError, match="X-Variants"):
+        ontology_with_variant.validate()
+
+    iq_client = DiscoveredClient(SimpleNamespace(), iq_default, "2025-11-25")
+    with pytest.raises(LabError, match="does not serve ontology capabilities") as exc_info:
+        iq_client.resolve_ontology_tool("list_entities")
+    assert exc_info.value.status == Status.BLOCKED_CAPABILITY
+    with pytest.raises(LabError, match="does not serve ontology capabilities"):
+        iq_client.ontology_capabilities()
+
+
+async def test_inventory_and_capture_record_toolset_variant(server):
+    for variant in (DEFAULT_TOOLSET_VARIANT, "Fabric.Routing.FabricIQ.V2"):
+        captures = []
+        endpoint = Endpoint(server, "synthetic_test", toolset_variant=variant)
+        async with DiscoveredClient.connect(endpoint) as client:
+            assert client.toolset_variant == variant
+            inventory = client.inventory()
+            assert inventory["toolset_variant"] == variant
+            result = await client.call(
+                "ExecuteQuery",
+                {"artifactId": "synthetic-item", "daxQueries": ["1"], "maxRows": 2},
+                capture=lambda *args: captures.append(args),
+            )
+            assert result.isError is False
+            assert len(captures) == 1 and len(captures[0]) == 4
+            assert client.last_capture_metadata is not None
+            assert client.last_capture_metadata["toolset_variant"] == variant
+            assert client.last_capture_metadata["response_kind"] == "MCP_TOOL_RESULT"
+
+
+@asynccontextmanager
+async def run_fake_mcp_server(app: FastMCP):
+    sock = socket.socket()
+    sock.bind(("127.0.0.1", 0))
+    port = sock.getsockname()[1]
+    config = uvicorn.Config(app.streamable_http_app(), log_level="warning", lifespan="on")
+    runner = uvicorn.Server(config)
+    task = asyncio.create_task(runner.serve(sockets=[sock]))
+    try:
+        async with asyncio.timeout(5):
+            while not runner.started:
+                if task.done():
+                    await task
+                await asyncio.sleep(0.01)
+        yield f"http://127.0.0.1:{port}/mcp"
+    finally:
+        runner.should_exit = True
+        await asyncio.wait_for(task, 5)
+        sock.close()
+
+
+class OntologyValuesEnvelope(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    values: list[dict[str, str]]
+
+
+async def test_fake_ontology_server_set_a_direct_item_tool_names():
+    app = FastMCP("SYNTHETIC_ONTOLOGY_SET_A", stateless_http=True, json_response=True)
+    ro = ToolAnnotations(readOnlyHint=True, destructiveHint=False)
+
+    @app.tool(name="list_ontology_entities", annotations=ro)
+    def list_entities() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"name": "enterprise_Accounts"}])
+
+    @app.tool(name="list_ontology_rules", annotations=ro)
+    def list_rules() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"name": "ExposureNeedsOverlap"}])
+
+    @app.tool(name="ask_ontology", annotations=ro)
+    def ask(request: str) -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"answer": f"set-a:{request}"}])
+
+    async with run_fake_mcp_server(app) as url:
+        endpoint = Endpoint(url, "synthetic_test")
+        async with DiscoveredClient.connect(endpoint) as unreviewed:
+            assert unreviewed.ontology_capabilities() == {
+                "list_entities": "list_ontology_entities",
+                "list_rules": "list_ontology_rules",
+                "ask": "ask_ontology",
+            }
+            with pytest.raises(LabError, match="require review") as exc_info:
+                await unreviewed.call_ontology_capability("list_entities", {})
+            assert exc_info.value.status == Status.BLOCKED_CAPABILITY
+            reviewed_hashes = {
+                name: unreviewed.schema_hash(name)
+                for name in ("list_ontology_entities", "list_ontology_rules", "ask_ontology")
+            }
+
+        async with DiscoveredClient.connect(endpoint, reviewed_hashes=reviewed_hashes) as client:
+            entities = await client.call_ontology_capability("list_entities", {})
+            rules = await client.call_ontology_capability("list_rules", {})
+            answer = await client.call_ontology_capability("ask", {"request": "credit exposure"})
+            assert entities.structuredContent == {"values": [{"name": "enterprise_Accounts"}]}
+            assert rules.structuredContent == {"values": [{"name": "ExposureNeedsOverlap"}]}
+            assert answer.structuredContent == {"values": [{"answer": "set-a:credit exposure"}]}
+
+
+async def test_fake_ontology_server_set_b_agent365_tool_names():
+    app = FastMCP("SYNTHETIC_ONTOLOGY_SET_B", stateless_http=True, json_response=True)
+    ro = ToolAnnotations(readOnlyHint=True, destructiveHint=False)
+
+    @app.tool(name="list_ontology_entity_types", annotations=ro)
+    def list_entity_types() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"name": "network_Incidents"}])
+
+    @app.tool(name="list_ontology_rules", annotations=ro)
+    def list_rules() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"name": "UnknownIsNotZero"}])
+
+    @app.tool(name="search_ontology", annotations=ro)
+    def search(query: str) -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[{"answer": f"set-b:{query}"}])
+
+    async with run_fake_mcp_server(app) as url:
+        endpoint = Endpoint(url, "synthetic_test")
+        async with DiscoveredClient.connect(endpoint) as discovery:
+            assert discovery.ontology_capabilities() == {
+                "list_entities": "list_ontology_entity_types",
+                "list_rules": "list_ontology_rules",
+                "ask": "search_ontology",
+            }
+            reviewed_hashes = {
+                name: discovery.schema_hash(name)
+                for name in ("list_ontology_entity_types", "list_ontology_rules", "search_ontology")
+            }
+
+        async with DiscoveredClient.connect(endpoint, reviewed_hashes=reviewed_hashes) as client:
+            entities = await client.call_ontology_capability("list_entities", {})
+            rules = await client.call_ontology_capability("list_rules", {})
+            answer = await client.call_ontology_capability("ask", {"query": "major incidents"})
+            assert entities.structuredContent == {"values": [{"name": "network_Incidents"}]}
+            assert rules.structuredContent == {"values": [{"name": "UnknownIsNotZero"}]}
+            assert answer.structuredContent == {"values": [{"answer": "set-b:major incidents"}]}
+
+
+async def test_fake_ontology_server_missing_and_ambiguous_capabilities_fail_closed():
+    partial_app = FastMCP("SYNTHETIC_ONTOLOGY_PARTIAL", stateless_http=True, json_response=True)
+    ro = ToolAnnotations(readOnlyHint=True, destructiveHint=False)
+
+    @partial_app.tool(name="list_ontology_entity_types", annotations=ro)
+    def only_entities() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[])
+
+    async with run_fake_mcp_server(partial_app) as url:
+        async with DiscoveredClient.connect(Endpoint(url, "synthetic_test")) as client:
+            assert client.ontology_capabilities() == {"list_entities": "list_ontology_entity_types"}
+            for missing_cap, expected_candidate in (
+                ("list_rules", "list_ontology_rules"),
+                ("ask", "ask_ontology"),
+            ):
+                with pytest.raises(LabError, match=missing_cap) as exc_info:
+                    await client.call_ontology_capability(missing_cap, {})  # type: ignore[arg-type]
+                assert exc_info.value.status == Status.BLOCKED_CAPABILITY
+                assert expected_candidate in str(exc_info.value)
+
+    ambiguous_app = FastMCP("SYNTHETIC_ONTOLOGY_AMBIGUOUS", stateless_http=True, json_response=True)
+
+    @ambiguous_app.tool(name="list_ontology_entities", annotations=ro)
+    def entities_v1() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[])
+
+    @ambiguous_app.tool(name="list_ontology_entity_types", annotations=ro)
+    def entities_v2() -> OntologyValuesEnvelope:
+        return OntologyValuesEnvelope(values=[])
+
+    async with run_fake_mcp_server(ambiguous_app) as url:
+        async with DiscoveredClient.connect(Endpoint(url, "synthetic_test")) as client:
+            with pytest.raises(LabError, match="Ambiguous ontology capability 'list_entities'") as exc_info:
+                client.resolve_ontology_tool("list_entities")
+            assert exc_info.value.status == Status.BLOCKED_CAPABILITY
+            with pytest.raises(LabError, match="Ambiguous ontology capability 'list_entities'"):
+                client.ontology_capabilities()
+
+
+def test_mcp_tools_snapshot_replaces_legacy_reviewed_tools_file():
+    assert not (ROOT / "fabric" / "ontology" / "mcp-reviewed-tools.json").exists()
+    snapshot_path = ROOT / "fabric" / "ontology" / "mcp-tools.snapshot.json"
+    snapshot = load_ontology_snapshot(snapshot_path)
+    assert snapshot["schemaVersion"] == "1.0"
+    assert snapshot["reviewedAt"] == "2026-11-16"
+    assert snapshot["capabilityMap"] == {
+        key: list(values) for key, values in ONTOLOGY_CAPABILITY_CANDIDATES.items()
+    }
+    endpoints = snapshot["endpoints"]
+    assert set(endpoints) == {
+        "ontology_item_endpoint",
+        "fabric_iq_server",
+        "copilot_studio_agent365_ontology",
+    }
+
+    item_ep = endpoints["ontology_item_endpoint"]
+    assert item_ep["protocol"] == "2025-06-18"
+    assert item_ep["toolsetVariant"] == "service_default"
+    hashes, args = snapshot_endpoint_review(
+        snapshot, "ontology_item_endpoint", capabilities=("list_entities", "list_rules"),
+    )
+    assert set(hashes) == {"list_ontology_entities", "list_ontology_rules"}
+    assert all(len(value) == 64 for value in hashes.values())
+    assert args == {"list_ontology_entities": {}, "list_ontology_rules": {}}
+    all_ont_hashes, _ = snapshot_endpoint_review(snapshot, "ontology_item_endpoint")
+    assert set(all_ont_hashes) == {"ask_ontology", "list_ontology_entities", "list_ontology_rules"}
+
+    iq_ep = endpoints["fabric_iq_server"]
+    assert iq_ep["protocol"] == "2025-11-25"
+    assert iq_ep["toolsetVariant"] == "service_default"
+    iq_hashes, _ = snapshot_endpoint_review(snapshot, "fabric_iq_server")
+    assert set(iq_hashes) == {
+        "DiscoverArtifacts",
+        "ExecuteQuery",
+        "GetReportMetadata",
+        "GetSemanticModelSchema",
+        "ResolveFabricItem",
+        "ValueSearch",
+    }
+    assert all(len(value) == 64 for value in iq_hashes.values())
+
+    agent365_ep = endpoints["copilot_studio_agent365_ontology"]
+    assert agent365_ep["status"] == "DOCUMENTED_R14_VERIFY_LIVE_SCHEMA_AT_RUNTIME"
+    assert agent365_ep["schemaHashes"] is None
+    assert [tool["name"] for tool in agent365_ep["tools"]] == [
+        "list_ontology_entity_types",
+        "search_ontology",
+    ]
+    agent365_hashes, agent365_args = snapshot_endpoint_review(snapshot, "copilot_studio_agent365_ontology")
+    assert agent365_hashes == {}
+    assert agent365_args == {"list_ontology_entity_types": {}}
 
 
 def csv_fixture():

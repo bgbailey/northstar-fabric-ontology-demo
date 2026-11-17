@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "mode": "RECORDED_AGENT_SURFACE",
+  "surface_id": "fabric-ontology-mcp",
+  "surface_name": "Ontology MCP endpoint + Fabric IQ MCP server",
+  "provenance": "LIVE_DEMO_TENANT_SANITIZED_CAPTURE",
+  "captured_at": "2026-11-17T11:55:31Z",
+  "connection_summary": "Delegated demo user session in the demo tenant (F8, Central US) over https://api.fabric.microsoft.com/v1/mcp/dataPlane/workspaces/<WORKSPACE_ID>/items/<ONTOLOGY_ITEM_ID>/ontologyEndpoint (protocol 2025-06-18; list_ontology_entities 1.33s, list_ontology_rules 0.22s) paired with https://fabriciq.svc.cloud.microsoft/v1/mcp/fabriciq (protocol 2025-11-25, Fabric.Routing.FabricIQ.V2 ExecuteQuery across all four Direct Lake models).",
+  "turns": [
+    {
+      "question_id": "SA-L2-001",
+      "level": "L2",
+      "question": "Which enterprise services ran over sites that had a major incident in July 2026, and how many major incidents overlapped each service's active assignment and contract?",
+      "tool_calls": [
+        "ontologyEndpoint:list_ontology_entities",
+        "ontologyEndpoint:list_ontology_rules",
+        "fabriciq:ExecuteQuery(Northstar_Network)",
+        "fabriciq:ExecuteQuery(Northstar_Enterprise)"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise"
+      ],
+      "answer_summary": "53 exposed enterprise services matched across 13 July 2026 major-incident site groups after enforcing half-open UTC overlap across incident, service-site assignment, and contract windows (R1); 2 unmapped or incomplete items reported as unknown (R5).",
+      "answer_markdown": "Ontology MCP context + Fabric IQ MCP V2 execution (live demo tenant capture, 17 November 2026)\n\n1. Ontology context discovered live (`ontologyEndpoint`, protocol `2025-06-18`):\n   - `list_ontology_entities` (1.33s): 17 entity types across `network`, `enterprise`, `finance`, and `care`, including `network_Incidents`, `network_Sites`, `enterprise_Sites`, `enterprise_ServiceSiteMap`, `enterprise_Services`, and `enterprise_Contracts`.\n   - `list_ontology_rules` (0.22s): 5 rules returned (`ExposureNeedsOverlap`, `CreditPerContractMonth`, `FinancePerAccountMonth`, `IdentityIsAccountKey`, `UnknownIsNotZero`).\n\n2. Semantic-model queries executed live (`Fabric.Routing.FabricIQ.V2` `ExecuteQuery`, protocol `2025-11-25`):\n   - `Northstar_Network` (`Incidents` table, measure `[Major Incidents]`):\n     `EVALUATE SUMMARIZECOLUMNS('Incidents'[site_key], 'Incidents'[market_id], TREATAS({DATE(2026, 7, 1)}, 'Incidents'[month]), \"major_incidents\", [Major Incidents])` -> 13 July 2026 site-market rows (`site_key` 16, 12, 4 in `M04`; `site_key` 14, 10 in `M02`, plus remaining July major-incident sites).\n   - `Northstar_Enterprise` (`Service Site Map` and `Contracts` half-open UTC overlap check against incident windows):\n     53 exposed enterprise services matched (`service_key=1`: 3 overlapping major incidents; `service_key=2` and `service_key=6`: 2 overlapping major incidents; `service_key=3, 4, 5, 7, 8, 9, 17` and 43 further services: 1 overlapping major incident).\n\n3. Explicit exclusions (`UnknownIsNotZero` / `ExposureNeedsOverlap`):\n   - `incident_key=7` at `site_key=6` (`2026-07`): `unmapped_incident_window` (reported as unknown, not zero).\n   - `service_key=10` (`contract_key=8`, `account_key=6`, `site_key=6`, `2026-07`): `incomplete_mapping_coverage` (reported as unknown, not zero).",
+      "row_count": 53,
+      "exclusions_reported": 2
+    },
+    {
+      "question_id": "SA-L4-001",
+      "level": "L4",
+      "question": "Which enterprise customers were served from sites hit by July 2026 incidents, what SLA credit exposure do we carry on their contracts, how much revenue and margin is at stake, and who already has escalated cases?",
+      "tool_calls": [
+        "ontologyEndpoint:list_ontology_entities",
+        "ontologyEndpoint:list_ontology_rules",
+        "fabriciq:ExecuteQuery(Northstar_Network)",
+        "fabriciq:ExecuteQuery(Northstar_Enterprise)",
+        "fabriciq:ExecuteQuery(Northstar_Finance)",
+        "fabriciq:ExecuteQuery(Northstar_Care)"
+      ],
+      "models_queried": [
+        "network",
+        "enterprise",
+        "finance",
+        "care"
+      ],
+      "answer_summary": "46 affected enterprise accounts ranked by contract-month Credit Exposure across Network, Enterprise, Finance, and Care without multiplying account-month revenue or margin (R2, R3); 3 unmapped or incomplete items reported as unknown (R5).",
+      "answer_markdown": "Ontology MCP context + Fabric IQ MCP V2 four-model execution (live demo tenant capture, 17 November 2026)\n\n1. Connected seven-hop path from `list_ontology_entities` + `list_ontology_rules`:\n   - `network_Incidents` -> `network_Sites` -> `enterprise_ServiceSiteMap` -> `enterprise_Contracts` -> `enterprise_SlaEvaluation` -> `enterprise_Accounts` -> `finance_AccountMonth` and `care_Cases`.\n   - Rules applied: `ExposureNeedsOverlap` (R1), `CreditPerContractMonth` (R2), `FinancePerAccountMonth` (R3), `IdentityIsAccountKey` (R4), and `UnknownIsNotZero` (R5).\n\n2. Live `ExecuteQuery` calls across all four Direct Lake semantic models:\n   - `Northstar_Network`: `Incidents[Major Incidents]` (13 site-market rows in July 2026)\n   - `Northstar_Enterprise`: `SLA Evaluation[Credit Exposure]` and `[Eligible Credits]` (settled once per contract-month)\n   - `Northstar_Finance`: `Account Month[Recognized Service Revenue]` and `[Contribution Margin]` (deduplicated to one row per `account_key` and month)\n   - `Northstar_Care`: `Cases[Escalated Cases]` and `[Repeat Contacts]` (65 July 2026 account rows)\n\n3. Top ranked enterprise accounts (46 matched account-month rows; integer cents):\n   - `account_key=1`: Credit Exposure `13,580` cents | Revenue `9,000` cents | Margin `-1,400` cents | Escalated Cases `0`\n   - `account_key=12`: Credit Exposure `12,960` cents | Revenue `31,903` cents | Margin `18,168` cents | Escalated Cases `0`\n   - `account_key=44`: Credit Exposure `8,760` cents | Revenue `59,492` cents | Margin `36,555` cents | Escalated Cases `1`\n   - `account_key=42`: Credit Exposure `6,300` cents | Revenue `44,673` cents | Margin `25,926` cents | Escalated Cases `1`\n   - `account_key=36`: Credit Exposure `6,120` cents | Revenue `50,193` cents | Margin `28,831` cents | Escalated Cases `1`\n\n4. Explicit exclusions (`UnknownIsNotZero`):\n   - `incident_key=7` (`site_key=6`, `2026-07`): `unmapped_incident_window`\n   - `service_key=10` (`contract_key=8`, `account_key=6`, `site_key=6`, `2026-07`): `incomplete_mapping_coverage`\n   - `account_key=6` (`contract_key=8`, `2026-07`): `incomplete_mapping_coverage`",
+      "row_count": 46,
+      "exclusions_reported": 3
+    }
+  ],
+  "limitations": [
+    "Sanitized live capture from the demo tenant (F8, Central US, 17 November 2026); tenant, workspace, and semantic-model identifiers are replaced with placeholders.",
+    "Ontology MCP returned all 17 entity types, 17 relationships, and 5 rules live (1.33s / 0.22s) while DAX measures executed through Fabric IQ MCP V2 ExecuteQuery; ask_ontology requires an interactive model-binding pass in Fabric (platform-status.md row 15).",
+    "Fabric data agent over a semantic-model-bound ontology was tested live on 17 November 2026 and confirmed does not work; use the published Copilot Studio agent for Microsoft 365 Copilot and Microsoft Teams."
+  ]
+}

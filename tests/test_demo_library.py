@@ -12,10 +12,12 @@ from test_recorded_ontology import packet as ontology_fixture
 
 from telco_iq.api import create_app
 from telco_iq.demo_library import (
+    RecordedAgentSurface,
     RecordedDemoLibrary,
     RecordedExecutiveDemo,
     RecordedServiceAssuranceDemo,
 )
+from tools.build_agent_surface_captures import surface_filename
 from tools.build_service_assurance_stream import update_library
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -139,7 +141,7 @@ def test_two_stream_library_never_grants_live_reader_or_fixture_execution(tmp_pa
     assert health["mode"] == "RECORDED_DEMO_LIBRARY"
     assert not health["authenticated"] and health["scope"] is None and not health["data_ready"]
     assert client.get("/api/demo-library").json()["executive"]["separate_native_item_verified"] is True
-    for endpoint in ("/api/catalog", "/api/context", "/api/native-demo", "/api/recorded-comparisons"):
+    for endpoint in ("/api/catalog", "/api/context", "/api/native-demo", "/api/recorded-comparisons", "/api/agent-surface"):
         assert client.get(endpoint).status_code == 409
     plan = {
         "request_id": "synthetic-library-execution-boundary", "question": "Not executed",
@@ -231,4 +233,92 @@ def test_service_assurance_contract_rejects_malformed_stream_and_builder_is_dete
     ]
     with pytest.raises(ValidationError):
         RecordedServiceAssuranceDemo.model_validate(bad_sources)
+
+    dup_surfaces = deepcopy(raw)
+    dup_surfaces["agent_surfaces"].append(deepcopy(dup_surfaces["agent_surfaces"][0]))
+    with pytest.raises(ValidationError, match="repeat surface_id"):
+        RecordedServiceAssuranceDemo.model_validate(dup_surfaces)
+
+
+def test_four_sanitized_agent_surface_recordings_and_screenshots_play_standalone_and_in_library():
+    committed_library = RecordedDemoLibrary.read(
+        ROOT / "recordings" / "northstar-demo-library-v2-2026-10-28.json"
+    )
+    assert committed_library.service_assurance is not None
+    embedded = {item.surface_id: item for item in committed_library.service_assurance.agent_surfaces}
+    expected_provenances = {
+        "fabric-ontology-mcp": "LIVE_DEMO_TENANT_SANITIZED_CAPTURE",
+        "foundry-agent": "LIVE_DEMO_TENANT_SANITIZED_CAPTURE",
+        "github-copilot-vscode": "STAGED_SURFACE_PREVIEW_CAPTURE",
+        "copilot-studio-m365": "STAGED_SURFACE_PREVIEW_CAPTURE",
+    }
+    assert set(embedded) == set(expected_provenances)
+
+    plan = {
+        "request_id": "synthetic-surface-execution-boundary",
+        "question": "Not executed",
+        "principal_scope": {
+            "tenant": "synthetic",
+            "principal": "test",
+            "authorization_revision": "1",
+            "models": [],
+            "mode": "OFFLINE_SYNTHETIC",
+        },
+        "as_of": "2026-09-30T00:00:00Z",
+        "ontology_revision": "ignored",
+        "metric_selections": [],
+        "result_node": "answer",
+        "nodes": [{"id": "answer", "kind": "SynthesizeAnswer", "source": "not-executed"}],
+    }
+
+    for surface_id, expected_provenance in expected_provenances.items():
+        surface_path = ROOT / "recordings" / surface_filename(surface_id)
+        assert surface_path.is_file(), f"Missing standalone surface recording: {surface_path}"
+        surface = RecordedAgentSurface.read(surface_path)
+        assert surface == embedded[surface_id]
+        assert surface.provenance == expected_provenance
+        turns_by_level = {turn.level: turn for turn in surface.turns}
+        assert set(turns_by_level) == {"L2", "L4"}
+        assert turns_by_level["L2"].row_count == 53 and turns_by_level["L2"].exclusions_reported == 2
+        assert turns_by_level["L4"].row_count == 46 and turns_by_level["L4"].exclusions_reported == 3
+        surface.verify_private_identifiers_absent({"SYNTHETIC_ABSENT_TOKEN"})
+
+        client = TestClient(create_app(ROOT, recorded_library=surface_path), base_url="http://localhost:8765")
+        health = client.get("/api/health").json()
+        assert health["mode"] == "RECORDED_AGENT_SURFACE"
+        assert not health["authenticated"] and health["scope"] is None and not health["data_ready"]
+        served = client.get("/api/agent-surface")
+        assert served.status_code == 200
+        assert served.json()["surface_id"] == surface_id
+        for blocked_get in (
+            "/api/demo-library",
+            "/api/catalog",
+            "/api/context",
+            "/api/native-demo",
+            "/api/recorded-comparisons",
+        ):
+            assert client.get(blocked_get).status_code == 409
+        for blocked_post in ("/api/execute", "/api/execute/stream"):
+            resp = client.post(blocked_post, json=plan, headers={"X-Telco-Local": "submitted-plan"})
+            assert resp.status_code == 409 and "cannot execute" in resp.json()["detail"]
+
+        image_path = ROOT / "docs" / "agents" / "images" / f"{surface_id}.png"
+        assert image_path.is_file(), f"Missing viewer screenshot: {image_path}"
+        raw_png = image_path.read_bytes()
+        assert raw_png.startswith(b"\x89PNG\r\n\x1a\n")
+        assert len(raw_png) > 20_480
+
+    foundry = embedded["foundry-agent"]
+    with pytest.raises(ValueError, match="Private target"):
+        foundry.verify_private_identifiers_absent({"gpt-5-mini"})
+
+    missing_l4 = foundry.model_dump(mode="json")
+    missing_l4["turns"] = [turn for turn in missing_l4["turns"] if turn["level"] == "L2"]
+    with pytest.raises(ValidationError):
+        RecordedAgentSurface.model_validate(missing_l4)
+
+    unzoned = foundry.model_dump(mode="json")
+    unzoned["captured_at"] = "2026-11-17T11:55:31"
+    with pytest.raises(ValidationError):
+        RecordedAgentSurface.model_validate(unzoned)
 

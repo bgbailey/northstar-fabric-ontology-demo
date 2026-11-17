@@ -134,6 +134,7 @@ async def capture_reader_native_question(reader, config: ReaderNativeQuestionCon
                             "kind": EFFECTS, "binding_hash": binding.binding_hash,
                             "tool_schema_hash": config.reviewed_tool_hash,
                             "producer_code_hash": config.producer_code_hash,
+                            "toolset_variant": client.endpoint.toolset_variant,
                         },
                         private_identifiers=private_identifiers(binding), synthetic=False,
                         response_kind=response_kind, native_answer=True,

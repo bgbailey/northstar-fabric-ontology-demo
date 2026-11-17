@@ -1,9 +1,16 @@
 // @vitest-environment jsdom
-import { act, type MouseEvent } from "react";
+import { act, createElement, type MouseEvent } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import type { Edge, Node } from "@xyflow/react";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { DemoLibraryView, isRecordedDemoLibrary, type RecordedDemoLibrary } from "./DemoLibrary";
+import { App } from "./main";
+import {
+  AgentSurfaceCaptureView,
+  isRecordedAgentSurface,
+  type AgentSurfaceId,
+  type RecordedAgentSurface,
+} from "./ServiceAssuranceDemo";
 
 vi.mock("@xyflow/react", () => ({
   ReactFlow: ({ nodes, edges, onNodeClick }: {
@@ -24,6 +31,13 @@ vi.mock("@xyflow/react", () => ({
 }));
 
 let library: RecordedDemoLibrary;
+const surfaceRecordings = new Map<AgentSurfaceId, RecordedAgentSurface>();
+const SURFACE_FILES: readonly [AgentSurfaceId, string][] = [
+  ["fabric-ontology-mcp", "surface-fabric-ontology-mcp-2026-11-17.json"],
+  ["foundry-agent", "surface-foundry-agent-2026-11-17.json"],
+  ["github-copilot-vscode", "surface-github-copilot-vscode-2026-11-17.json"],
+  ["copilot-studio-m365", "surface-copilot-studio-m365-2026-11-17.json"],
+];
 
 beforeAll(async () => {
   const fsSpecifier = "node:" + "fs";
@@ -43,6 +57,15 @@ beforeAll(async () => {
     throw new Error("Committed northstar-demo-library-v2-2026-10-28.json failed RecordedDemoLibrary validation");
   }
   library = parsedLibrary;
+
+  for (const [surfaceId, fileName] of SURFACE_FILES) {
+    const surfaceRaw = readFileSync(resolve("..", "..", "recordings", fileName), "utf-8");
+    const parsedSurface = JSON.parse(surfaceRaw) as unknown;
+    if (!isRecordedAgentSurface(parsedSurface) || parsedSurface.surface_id !== surfaceId) {
+      throw new Error(`Committed ${fileName} failed RecordedAgentSurface validation`);
+    }
+    surfaceRecordings.set(surfaceId, parsedSurface);
+  }
 });
 
 let container: HTMLDivElement;
@@ -157,5 +180,93 @@ describe("Service assurance recorded stream in DemoLibraryView", () => {
       "Customer360 deep dive · 8 models",
     ]);
     expect(findButton("Executive quickstart · 2 models").getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("switches across all four agent surfaces and toggles L2, L4, and Both turns", async () => {
+    await act(async () => root.render(<DemoLibraryView library={library} initialStream="service_assurance" />));
+
+    const surfaceButtons = [...container.querySelectorAll<HTMLButtonElement>("[data-surface-id]")];
+    expect(surfaceButtons.map(btn => btn.getAttribute("data-surface-id"))).toEqual([
+      "fabric-ontology-mcp",
+      "foundry-agent",
+      "github-copilot-vscode",
+      "copilot-studio-m365",
+    ]);
+    expect(findButton("L4 · Service assurance").getAttribute("aria-pressed")).toBe("true");
+    expect(container.querySelectorAll("[data-turn-level]")).toHaveLength(1);
+    expect(container.querySelector('[data-turn-level="L4"]')).not.toBeNull();
+
+    const foundryBtn = container.querySelector<HTMLButtonElement>('[data-surface-id="foundry-agent"]');
+    if (!foundryBtn) throw new Error("Missing foundry-agent surface button");
+    await act(async () => foundryBtn.click());
+    expect(foundryBtn.getAttribute("aria-pressed")).toBe("true");
+    expect(container.querySelector(".surface-provenance-banner")?.getAttribute("data-provenance"))
+      .toBe("LIVE_DEMO_TENANT_SANITIZED_CAPTURE");
+    expect(container.textContent).toContain("foundry:responses(gpt-5-mini)");
+    expect(container.textContent).toContain("account_key 1");
+
+    await act(async () => findButton("L2 · Exposed services").click());
+    expect(findButton("L2 · Exposed services").getAttribute("aria-pressed")).toBe("true");
+    expect(container.querySelector('[data-turn-level="L2"]')?.textContent).toContain("53");
+    expect(container.querySelector('[data-turn-level="L2"]')?.textContent).toContain("service_key 1");
+    expect(container.querySelector('[data-turn-level="L4"]')).toBeNull();
+
+    await act(async () => findButton("Both L2 and L4").click());
+    expect(container.querySelectorAll("[data-turn-level]")).toHaveLength(2);
+
+    const copilotStudioBtn = container.querySelector<HTMLButtonElement>('[data-surface-id="copilot-studio-m365"]');
+    if (!copilotStudioBtn) throw new Error("Missing copilot-studio-m365 surface button");
+    await act(async () => copilotStudioBtn.click());
+    expect(container.querySelector(".surface-provenance-banner")?.getAttribute("data-provenance"))
+      .toBe("STAGED_SURFACE_PREVIEW_CAPTURE");
+    expect(container.textContent).toContain("mcp_FabricIQOntology:search_ontology");
+  });
+
+  it.each([
+    "fabric-ontology-mcp",
+    "foundry-agent",
+    "github-copilot-vscode",
+    "copilot-studio-m365",
+  ] as const)("plays standalone surface capture %s in AgentSurfaceCaptureView and App", async surfaceId => {
+    const surface = surfaceRecordings.get(surfaceId);
+    if (!surface) throw new Error(`Missing loaded surface ${surfaceId}`);
+
+    await act(async () => root.render(<AgentSurfaceCaptureView surface={surface} />));
+    expect(container.querySelector("h1")?.textContent).toBe(surface.surface_name);
+    expect(container.querySelectorAll("[data-turn-level]")).toHaveLength(2);
+    expect(container.textContent).toContain("53");
+    expect(container.textContent).toContain("46");
+    expect(container.querySelector("footer")?.textContent).toContain("Limits of this recording");
+
+    const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
+      if (url === "/api/health") {
+        return Response.json({
+          mode: "RECORDED_AGENT_SURFACE",
+          scope: null,
+          data_ready: false,
+          context_revision: "unit-surface-rev",
+          authenticated: false,
+          readiness: {
+            mode: "RECORDED_AGENT_SURFACE",
+            ready: false,
+            status: "RECORDED_ONLY",
+            blockers: ["Explicit single-surface capture playback; no live execution in this mode."],
+            claim: "Sanitized agent surface capture with explicit provenance, not a demo user grant.",
+          },
+        });
+      }
+      if (url === "/api/capabilities") return Response.json({ experiments: [] });
+      if (url === "/api/agent-surface") return Response.json(surface);
+      throw new Error(`Unexpected mocked request: ${String(url)}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await act(async () => root.render(createElement(App)));
+    expect(container.querySelector("h1")?.textContent).toBe(surface.surface_name);
+    expect(fetchMock.mock.calls.map(([path]) => path)).toEqual([
+      "/api/health",
+      "/api/capabilities",
+      "/api/agent-surface",
+    ]);
   });
 });

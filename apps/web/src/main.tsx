@@ -8,6 +8,9 @@ import { ComparisonView } from "./ComparisonView";
 import { RecordedComparisonsView, isRecordedComparisons, type RecordedComparisons } from "./RecordedComparisons";
 import { ContextOverview } from "./ContextOverview";
 import { DemoLibraryView, isRecordedDemoLibrary, type RecordedDemoLibrary } from "./DemoLibrary";
+import {
+  AgentSurfaceCaptureView, isRecordedAgentSurface, type RecordedAgentSurface,
+} from "./ServiceAssuranceDemo";
 import { hasResourceGrant, ResourceConsent, type ConsentResource } from "./ResourceConsent";
 import {
   executionLabel, isHealth, isRecording, readerMode, readinessStages, signInFailureMessage, type HealthState,
@@ -46,6 +49,7 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
   const [recording, setRecording] = useState<RecordedDemo | null>(null);
   const [recordedComparisons, setRecordedComparisons] = useState<RecordedComparisons | null>(null);
   const [demoLibrary, setDemoLibrary] = useState<RecordedDemoLibrary | null>(null);
+  const [agentSurface, setAgentSurface] = useState<RecordedAgentSurface | null>(null);
   const [readerVerified, setReaderVerified] = useState(false);
   const [consentPending, setConsentPending] = useState(false);
   const readerGeneration = useRef(0);
@@ -76,6 +80,12 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
         const packet = await request<unknown>("/api/demo-library", undefined, controller.signal);
         if (!isRecordedDemoLibrary(packet)) throw new Error("Invalid two-stream demo recording archive; no fallback selected.");
         if (!controller.signal.aborted) setDemoLibrary(packet);
+      } else if (h.mode === "RECORDED_AGENT_SURFACE") {
+        const surfaceCapture = await request<unknown>("/api/agent-surface", undefined, controller.signal);
+        if (!isRecordedAgentSurface(surfaceCapture)) {
+          throw new Error("Invalid recorded agent surface file; no fallback selected.");
+        }
+        if (!controller.signal.aborted) setAgentSurface(surfaceCapture);
       } else if (h.mode === "RECORDED_LIVE_COMPARISON") {
         const packet = await request<unknown>("/api/recorded-comparisons", undefined, controller.signal);
         if (!isRecordedComparisons(packet)) throw new Error("Invalid recorded comparison file; no fallback selected.");
@@ -262,6 +272,12 @@ export function App({ navigate = (uri: string) => window.location.assign(uri) }:
     if (demoLibrary) return <DemoLibraryView library={demoLibrary} />;
     return <main><h1>Demo streams in Fabric</h1>
       {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the two recorded streams...</p>}
+    </main>;
+  }
+  if (health.mode === "RECORDED_AGENT_SURFACE") {
+    if (agentSurface) return <AgentSurfaceCaptureView surface={agentSurface} />;
+    return <main><h1>Recorded agent surface</h1>
+      {error ? <p className="error" role="alert">{error}</p> : <p role="status">Loading the recorded surface capture...</p>}
     </main>;
   }
   if (health?.mode === "RECORDED_NATIVE_DEMO") {
