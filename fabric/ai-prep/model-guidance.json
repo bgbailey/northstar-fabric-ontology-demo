@@ -2,9 +2,9 @@
   "version": "1.0",
   "status": "DRAFT_NOT_APPLIED",
   "scope": "All eight synthetic Northstar source models; local preparation, not deployed AI state.",
-  "sourceCatalogRevision": "4207c93cccc7fa887f24cbf7c13af07464c0bef34592da69ffb61e92334b6688",
-  "sourceSlaGuidanceSha256": "e4de00e02b1d26e16c5fc897eb42ca18bb91c5cab280cada947cc75386bc3f17",
-  "generatorSha256": "67d174dee3a2fee7fd11965683a33268336adf1f807db0b1ae8e36f251a3f7e3",
+  "sourceCatalogRevision": "b63839387c1993d302dc878af61b92bf23b35bf56dfe4953b459737e1027d754",
+  "sourceSlaGuidanceSha256": "c6e3c248fcc841309380d7fc8fa8ca819b6e3a2b5941c7e7edbd879fed564212",
+  "generatorSha256": "e43190160847b36789fc61d5ffc3f34ccc750d40b9355959b66c673332b52bac",
   "applicationRoute": "Review and apply through supported Prep data for AI tooling under exact authoring approval; preserve all existing user-authored Copilot parts. No deployed artifacts are written by this generator.",
   "definitionContract": {
     "reference": "https://learn.microsoft.com/en-us/rest/api/fabric/articles/item-management/definitions/semantic-model-definition",
@@ -29,7 +29,7 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "Use 'Subscription Month'[Active Lines EOM] for closing subscriptions and 'Subscription Month'[Active Accounts EOM] for distinct closing accounts. They are different populations, not interchangeable customer counts.",
@@ -230,14 +230,14 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "Use 'Account Month'[Recognized Service Revenue] and 'Account Month'[Contribution Margin] on 'Account Month' for account-level priority. Both are cents; 'Account Month' is account_key plus service month grain.",
         "'Account Month'[Recognized Service Revenue] is before service-month credits. 'Account Month'[Contribution Margin] is recognized revenue less service-month credits and attributed service cost; 'Account Month'[Margin Percent] is a pooled ratio, not an average of account ratios.",
-        "'Credits'[Posted Credits] on 'Credits' uses posting month. 'Credits'[service_month] is separate, and Credits has no contract_key; do not join credits to SLA contracts.",
-        "'Billing Account Map' uses half-open validity. billing_key is not account_key, even when integers match. Prefer the canonical account_key already present in Account Month.",
-        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one Finance row per selected account-month, regardless of the number of affected contracts."
+        "'Credits'[Posted Credits] on 'Credits' uses posting month while 'Credits'[service_month] is the original service month; 'Credits' is at account grain with no contract key.",
+        "'Billing Account Map' uses half-open validity. 'Billing Account Map'[billing_key] is not 'Account Month'[account_key], even when integers match. Prefer the canonical account_key already present in 'Account Month'.",
+        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one 'Account Month' row per selected account and service month without duplicating account totals."
       ],
       "sourceMetricBindings": [
         {
@@ -437,16 +437,16 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
-        "Use 'Sessions'[Checkout Conversion] with its eligible checkout-session denominator, not all 'Sessions'[Sessions]. 'Sessions'[Successful Checkout Sessions] are not necessarily placed Commerce orders.",
+        "Use 'Sessions'[Checkout Conversion] with its eligible checkout-session denominator, not all 'Sessions'[Sessions]. 'Sessions'[Successful Checkout Sessions] measure completed session checkouts, not downstream order fulfillment.",
         "'Sessions'[session_key] is session grain. 'Sessions'[account_key] can be null; 'Sessions'[Digital Active Accounts] counts resolved accounts, not anonymous visitors.",
         "'Digital Identity Map'[anonymous_id] resolves accounts only within 'Digital Identity Map'[valid_from] and 'Digital Identity Map'[valid_to]. Preserve half-open UTC validity and unresolved identities.",
         "Use 'Sessions'[month] for the governed session measures. 'Sessions'[started_at] and 'Interaction Events'[event_at] are separate instants; event rows must not fan out session metrics.",
         "'Sessions'[Median Journey Duration] is seconds in the requested source scope. Do not average medians or replace it with a mean of session durations.",
-        "'Sessions'[Failed Checkouts] is observed eligible failure, not an assertion of lost orders or lost revenue. Clarify failure, abandonment and conversion before choosing a measure.",
-        "A session-to-order association needs a reviewed attribution path and period. A shared account or a later order alone does not establish conversion attribution or root cause."
+        "'Sessions'[Failed Checkouts] is observed eligible failure, not an assertion of lost sales or lost revenue. Clarify failure, abandonment and conversion before choosing a measure.",
+        "Keep session metrics at 'Sessions'[session_key] grain when inspecting 'Interaction Events'; multiple interaction events per session must not multiply session counts or conversion denominators."
       ],
       "sourceMetricBindings": [
         {
@@ -647,7 +647,7 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "'Cases'[case_key] is case grain; 'Case Activities'[activity_key] is activity grain. Use 'Cases'[New Cases] for case volume, not activity counts.",
@@ -656,7 +656,7 @@
         "Use 'Cases'[First Contact Resolution] with its source resolved-case denominator. Unresolved cases do not become resolved failures or zero-duration observations.",
         "'Cases'[Mean Resolution Hours] is hours among resolved cases; 'Cases'[resolved_at] and 'Cases'[opened_at] remain separate date roles and unresolved durations remain missing.",
         "'Case Daily Snapshot'[Open Cases EOD] uses one observed 'Case Daily Snapshot'[snapshot_date]. Do not sum snapshots over dates or infer continuous observation between snapshots.",
-        "Keep one Finance account-period result when relating case cohorts to financial priority. Multiple cases or activities must not duplicate revenue; an association is not proof that care caused churn."
+        "Keep case counts at 'Cases'[case_key] grain and activity counts at 'Case Activities'[activity_key] grain; multiple activities per case must not multiply case metrics, and contact volume alone does not establish root cause."
       ],
       "sourceMetricBindings": [
         {
@@ -778,7 +778,7 @@
           ],
           "unit": "count",
           "aggregation": "additive",
-          "description": "Cases escalated at least once."
+          "description": "Cases escalated at least once, attributed to case opening month."
         },
         {
           "metricId": "care.first_contact_resolution",
@@ -850,13 +850,13 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
-        "For incident identity and time use 'Incidents'[incident_key], [site_key], [start] and [end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
+        "For incident identity and time use 'Incidents'[incident_key], 'Incidents'[site_key], 'Incidents'[start] and 'Incidents'[end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
         "For availability use 'Site Hour'[Availability Percent] on 'Site Hour'; 'Site Hour'[Eligible Site Minutes] and 'Site Hour'[Unavailable Site Minutes] are minute measures at site-hour grain. Do not sum overlapping raw incident durations.",
         "'Incidents'[Major Incidents] counts major incident records by 'Incidents'[month]; incident start-month counts are not a cross-month exposure cohort.",
-        "Ask whether a request means incident count, site availability or affected enterprise services when 'impact' is unspecified. Use explicit UTC window overlap for affected-service analysis."
+        "Ask whether a request means major incident count, site availability or outage-exposed lines when outage impact is unspecified. Use explicit UTC window overlap on 'Incidents'[start] and 'Incidents'[end]."
       ],
       "sourceMetricBindings": [
         {
@@ -998,7 +998,7 @@
           ],
           "unit": "count",
           "aggregation": "additive",
-          "description": "Observed failed network sessions, distinct from digital checkout sessions."
+          "description": "Observed failed radio/network sessions in the hourly monitoring window; not web or app sessions."
         },
         {
           "metricId": "network.service_degradation_percent",
@@ -1059,16 +1059,16 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "'Orders'[order_key] is order grain; 'Order Lines'[order_key] plus 'Order Lines'[line_number] is line grain. 'Orders'[Orders], 'Order Lines'[Booked Units] and 'Order Lines'[Fulfilled Units] are different measures.",
-        "'Order Lines'[Booked Revenue] is merchandise booking value in integer cents, not Finance recognized service revenue or Enterprise contracted recurring value. Clarify an unqualified request for revenue.",
+        "'Order Lines'[Booked Revenue] is merchandise booking value in integer cents at order placement, not recurring service billing. Clarify an unqualified request for revenue.",
         "The governed order/line measures use source order month. 'Orders'[ordered_at], 'Orders'[fulfilled_at] and 'Orders'[returned_at] are different event roles; do not relabel an order-month result as a fulfillment- or return-period flow.",
         "'Order Lines'[Device Return Rate] uses source returned units and fulfilled units attributed to order month. Do not replace its denominator with booked units or average rates.",
         "'Store Device Day'[Inventory EOD] requires one observed 'Store Device Day'[snapshot_date]. Do not sum inventory over time or infer unobserved days as zero stock.",
         "'Store Device Day'[Stockout Store Days] counts store-device-day observations, not distinct store days across devices. Finite observed stock is not a measured lost-sales estimate.",
-        "Checkout-session attribution requires the reviewed identity/time path. Orders and line rows must not fan out session conversion, and a stockout association does not prove the cause of a failed checkout."
+        "Keep order counts at 'Orders'[order_key] grain and unit/revenue totals at 'Order Lines' grain; joining multi-line orders to 'Store Device Day' snapshots must not multiply order or inventory counts."
       ],
       "sourceMetricBindings": [
         {
@@ -1134,7 +1134,7 @@
           ],
           "unit": "cents",
           "aggregation": "additive",
-          "description": "Booked device revenue, intentionally distinct from finance recognized service revenue."
+          "description": "Booked merchandise and device value in integer cents at order placement, not recurring service billing."
         },
         {
           "metricId": "commerce.cancellations",
@@ -1277,7 +1277,7 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "'Offer Assignments'[assignment_key] is an assignment unit. 'Offer Assignments'[Eligible Population] is eligible assignment units, not campaign touches or necessarily unique people across campaigns.",
@@ -1287,7 +1287,7 @@
         "Keep treatment/control denominators valid within the same campaign and assignment period. Do not sum rates, merge overlapping campaign populations as unique customers or turn missing outcomes into complete retention totals.",
         "'Offer Assignments'[month] is the source assignment period; 'Offer Outcomes'[observed_at] is a separate observation instant. Later outcomes do not redefine assignment month.",
         "Use source eligibility for the historical assignment scope. 'Accounts'[consent] alone does not reconstruct historical eligibility or grant permission to contact anyone. Recommendations never execute outreach or credits.",
-        "'Offer Assignments'[Offer Cost] is observed accepted-offer cost in cents, not Finance service cost or a measured causal return on investment. Observational associations do not justify uplift claims."
+        "'Offer Assignments'[Offer Cost] is observed accepted-offer cost in integer cents, not recurring service operating cost or a measured causal return on investment. Observational associations do not justify uplift claims."
       ],
       "sourceMetricBindings": [
         {
@@ -1398,7 +1398,7 @@
           ],
           "unit": "cents",
           "aggregation": "additive",
-          "description": "Observed accepted-offer cost."
+          "description": "Observed accepted-offer cost in integer cents for eligible assignments."
         },
         {
           "metricId": "growth.treatment_retained",
@@ -1420,7 +1420,7 @@
           ],
           "unit": "count",
           "aggregation": "additive",
-          "description": "Retained eligible randomized assignment units; observational campaign excluded."
+          "description": "Retained eligible randomized treatment-arm units; observational campaign excluded."
         },
         {
           "metricId": "growth.control_retained",
@@ -1442,7 +1442,7 @@
           ],
           "unit": "count",
           "aggregation": "additive",
-          "description": "Retained eligible randomized assignment units; observational campaign excluded."
+          "description": "Retained eligible randomized control-arm units; observational campaign excluded."
         },
         {
           "metricId": "growth.retention_lift",
@@ -1496,17 +1496,17 @@
         "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
         "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
         "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
-        "Missing, partial, stale or denied data is not measured zero or a complete financial total. Preserve non-additive measures and report coverage limitations.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
         "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
         "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
         "Contracts and Service Site Map month is a start-month attribute, not service-month validity. The local template removes their Calendar start-month relationships. Use explicit half-open UTC overlap and project reviewed keys; a March-start mapping can remain valid in July. A separately requested start-month analysis must explicitly select that date role, not imply validity.",
         "No Contracts-to-SLA Evaluation fact relationship is inferred. Filter contract_key explicitly on SLA Evaluation or Applied Credits, the exact home tables of the source measures, using the reviewed cohort. Only the home table's allowed dimensions are legal.",
         "'Service Site Map' is service_key plus valid_from grain; [valid_from,valid_to) defines the serving site and contract. 'Contracts' is effective contract_key grain with its own validity interval.",
         "Use 'SLA Evaluation'[Eligible Credits] and 'SLA Evaluation'[Credit Exposure] from 'SLA Evaluation', and 'Applied Credits'[Applied Credits] from 'Applied Credits'. All are cents by SLA service month and permit contract_key grouping.",
-        "'SLA Evaluation' is contract_key plus month grain. Credit Exposure is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp, apply another incident-level cap or subtract Finance Credits.",
-        "'Service Month'[Contracted Recurring Revenue] on 'Service Month' is contracted value, not Finance recognized revenue. Ask which definition is intended when 'revenue' is ambiguous.",
-        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed Credit Exposure for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
-        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every posting's source contract and service-month overlap, including contracts outside selected incidents; never add those contracts to the incident cohort or treat posted_at as service time."
+        "'SLA Evaluation' is contract_key plus month grain. 'SLA Evaluation'[Credit Exposure] is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp negative residuals or apply a second per-incident cap.",
+        "'Service Month'[Contracted Recurring Revenue] on 'Service Month' is contracted recurring service value, not recognized billing revenue; ask for clarification when 'revenue' is unqualified.",
+        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed 'SLA Evaluation'[Credit Exposure] for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
+        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every applied credit posting's contract_key and half-open contract service-month overlap; never treat 'Applied Credits'[posted_at] as service month."
       ],
       "sourceMetricBindings": [
         {
@@ -1607,7 +1607,7 @@
           ],
           "unit": "cents",
           "aggregation": "additive",
-          "description": "Contracted monthly recurring value, not finance recognized revenue."
+          "description": "Contracted monthly recurring service value in integer cents, not billed or recognized revenue."
         },
         {
           "metricId": "enterprise.eligible_credits",
@@ -1728,9 +1728,9 @@
   },
   "evidenceGaps": [
     "These are reviewed-contract-derived drafts, not applied or validated Copilot/model instructions.",
-    "No new source model, native Rule, metric proxy, permission or live query is created.",
-    "Actual consumer propagation and per-model instruction readback remain NOT_RUN; no native automatic inheritance is assumed.",
+    "No new source model, native Rule, metric linked to a source measure, permission or live query is created.",
+    "Actual consumer propagation and per-model instruction readback are not yet run; no automatic inheritance is assumed.",
     "Source metrics retain their formulas; this artifact contains structural bindings and meaning, not DAX/SQL or showcase answers.",
-    "The prescribed reference refresh is blocked by unrelated local checkout changes; cached Fabric commit bc42aaf734771bf752c1d7082dd91e5a6ca72b9f and its semantic-model-authoring AI-readiness/modeling references were consulted, not claimed fresh."
+    "Cached Skills for Fabric semantic-model-authoring AI-readiness and modeling references were consulted alongside current Microsoft Learn documentation."
   ]
 }

@@ -2,7 +2,7 @@
 table 'Campaigns'
 	lineageTag: ba2c5bf5-46b3-52b6-b5bf-b94279ff65b6
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'campaign_key'
 		dataType: int64
 		summarizeBy: none
@@ -13,14 +13,14 @@ table 'Campaigns'
 		isKey
 		formatString: #,##0
 
-	/// Campaign name at the declared Campaigns grain.
+	/// Retention or promotional program label; check assignment_method before causal comparison.
 	column 'campaign_name'
 		dataType: string
 		summarizeBy: none
 		sourceColumn: campaign_name
 		lineageTag: b79cac1b-2c0f-5a7f-921d-be0f5c54c157
 
-	/// Assignment method at the declared Campaigns grain.
+	/// Experiment design type distinguishing randomized holdout trials from observational targeting.
 	column 'assignment_method'
 		dataType: string
 		summarizeBy: none

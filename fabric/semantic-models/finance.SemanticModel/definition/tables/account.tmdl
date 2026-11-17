@@ -2,7 +2,7 @@
 table 'Accounts'
 	lineageTag: d785c307-4eb3-5c0f-a909-4c3721565f5d
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -13,7 +13,7 @@ table 'Accounts'
 		isKey
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_id'
 		dataType: string
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Accounts'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -31,28 +31,28 @@ table 'Accounts'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Region at the declared Accounts grain.
+	/// Geographic operating region (such as East or West) for regional grouping and row-level security.
 	column 'region'
 		dataType: string
 		summarizeBy: none
 		sourceColumn: region
 		lineageTag: c90d8e0e-19c7-5cc4-9dc7-9124e7b20c61
 
-	/// Consent at the declared Accounts grain.
+	/// Current marketing contact preference flag; does not reconstruct historical campaign eligibility.
 	column 'consent'
 		dataType: boolean
 		summarizeBy: none
 		sourceColumn: consent
 		lineageTag: 75531b99-5aee-523f-b97a-67472bf04e6e
 
-	/// Enterprise at the declared Accounts grain.
+	/// True for business accounts eligible for service contracts; false for consumer accounts.
 	column 'enterprise'
 		dataType: boolean
 		summarizeBy: none
 		sourceColumn: enterprise
 		lineageTag: 0af93e2a-3abb-50a1-b1c8-caa1955e68d4
 
-	/// Display name at the declared Accounts grain.
+	/// Customer-facing account label; deliberately non-unique across accounts, never use as a join key.
 	column 'display_name'
 		dataType: string
 		summarizeBy: none

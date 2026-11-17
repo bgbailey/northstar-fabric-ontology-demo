@@ -2,7 +2,7 @@
 table 'Sites'
 	lineageTag: c662faf4-65d3-5ea4-b50b-83a1d1988ea9
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_key'
 		dataType: int64
 		summarizeBy: none
@@ -13,7 +13,7 @@ table 'Sites'
 		isKey
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_id'
 		dataType: string
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Sites'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -31,7 +31,7 @@ table 'Sites'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Region at the declared Sites grain.
+	/// Physical site operating region; reflects tower or facility location, not customer home market.
 	column 'region'
 		dataType: string
 		summarizeBy: none

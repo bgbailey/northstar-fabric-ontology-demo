@@ -1,0 +1,33 @@
+table network_site_hour
+	measure 'Unavailable Site Minutes' = EXTERNALMEASURE("Unavailable Site Minutes", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK")
+	measure 'Availability Percent' = EXTERNALMEASURE("Availability Percent", DOUBLE, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK")
+	column site_key
+		dataType: int64
+		sourceColumn: site_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column hour_start
+		dataType: dateTime
+		sourceColumn: hour_start
+	column eligible_minutes
+		dataType: int64
+		sourceColumn: eligible_minutes
+	column unavailable_minutes
+		dataType: int64
+		sourceColumn: unavailable_minutes
+	column failed_sessions
+		dataType: int64
+		sourceColumn: failed_sessions
+	column total_sessions
+		dataType: int64
+		sourceColumn: total_sessions
+	partition network_site_hour = entity
+		mode: directQuery
+		source
+			entityName: 'Site Hour'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK'
+		annotation ONT_ItemName = Synthetic network

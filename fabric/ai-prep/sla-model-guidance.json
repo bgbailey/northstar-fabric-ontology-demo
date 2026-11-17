@@ -40,10 +40,10 @@
       "id": "network",
       "name": "Network Operations",
       "instructions": [
-        "For incident identity and time use 'Incidents'[incident_key], [site_key], [start] and [end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
+        "For incident identity and time use 'Incidents'[incident_key], 'Incidents'[site_key], 'Incidents'[start] and 'Incidents'[end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
         "For availability use [Availability Percent] on 'Site Hour'; [Eligible Site Minutes] and [Unavailable Site Minutes] are minute measures at site-hour grain. Do not sum overlapping raw incident durations.",
         "[Major Incidents] counts major incident records by 'Incidents'[month]; incident start-month counts are not a cross-month exposure cohort.",
-        "Ask whether a request means incident count, site availability or affected enterprise services when 'impact' is unspecified. Use explicit UTC window overlap for affected-service analysis."
+        "Ask whether a request means major incident count, site availability or outage-exposed lines when outage impact is unspecified. Use explicit UTC window overlap on 'Incidents'[start] and 'Incidents'[end]."
       ],
       "recommendedDescriptions": [
         {
@@ -65,10 +65,10 @@
         "No Contracts-to-SLA Evaluation fact relationship is inferred. Filter contract_key explicitly on SLA Evaluation or Applied Credits, the exact home tables of the source measures, using the reviewed cohort. Only the home table's allowed dimensions are legal.",
         "'Service Site Map' is service_key plus valid_from grain; [valid_from,valid_to) defines the serving site and contract. 'Contracts' is effective contract_key grain with its own validity interval.",
         "Use [Eligible Credits] and [Credit Exposure] from 'SLA Evaluation', and [Applied Credits] from 'Applied Credits'. All are cents by SLA service month and permit contract_key grouping.",
-        "'SLA Evaluation' is contract_key plus month grain. Credit Exposure is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp, apply another incident-level cap or subtract Finance Credits.",
-        "[Contracted Recurring Revenue] on 'Service Month' is contracted value, not Finance recognized revenue. Ask which definition is intended when 'revenue' is ambiguous.",
-        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed Credit Exposure for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
-        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every posting's source contract and service-month overlap, including contracts outside selected incidents; never add those contracts to the incident cohort or treat posted_at as service time."
+        "'SLA Evaluation' is contract_key plus month grain. [Credit Exposure] is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp negative residuals or apply a second per-incident cap.",
+        "[Contracted Recurring Revenue] on 'Service Month' is contracted recurring service value, not recognized billing revenue; ask for clarification when 'revenue' is unqualified.",
+        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed [Credit Exposure] for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
+        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every applied credit posting's contract_key and half-open contract service-month overlap; never treat 'Applied Credits'[posted_at] as service month."
       ],
       "recommendedDescriptions": [
         {
@@ -92,9 +92,9 @@
       "instructions": [
         "Use [Recognized Service Revenue] and [Contribution Margin] on 'Account Month' for account-level priority. Both are cents; 'Account Month' is account_key plus service month grain.",
         "[Recognized Service Revenue] is before service-month credits. [Contribution Margin] is recognized revenue less service-month credits and attributed service cost; [Margin Percent] is a pooled ratio, not an average of account ratios.",
-        "[Posted Credits] on 'Credits' uses posting month. 'Credits'[service_month] is separate, and Credits has no contract_key; do not join credits to SLA contracts.",
-        "'Billing Account Map' uses half-open validity. billing_key is not account_key, even when integers match. Prefer the canonical account_key already present in Account Month.",
-        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one Finance row per selected account-month, regardless of the number of affected contracts."
+        "[Posted Credits] on 'Credits' uses posting month while 'Credits'[service_month] is the original service month; 'Credits' is at account grain with no contract key.",
+        "'Billing Account Map' uses half-open validity. 'Billing Account Map'[billing_key] is not 'Account Month'[account_key], even when integers match. Prefer the canonical account_key already present in 'Account Month'.",
+        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one 'Account Month' row per selected account and service month without duplicating account totals."
       ],
       "recommendedDescriptions": [
         {
@@ -110,9 +110,9 @@
     }
   ],
   "evidenceGaps": [
-    "TQ-003 population/date checks are local implementation only. Historical fixture manifests expose a structural generator format, not a generator-code revision. Actual live population capture and private binding-to-adapter wiring remain blocked pending approved evidence; no synthetic defaults apply to live sources.",
+    "Population and date checks are local implementation only. Historical fixture manifests expose a structural generator format, not a generator-code revision. Actual live population capture and private binding-to-adapter wiring remain blocked pending approved evidence; no synthetic defaults apply to live sources.",
     "Draft wording has not been applied or exercised with Copilot, a Data Agent, or either live comparison arm.",
-    "This packet does not add formal native Rules, source proxy measures or deployed model relationships.",
+    "This packet does not add formal native Rules, metrics linked to source measures or deployed model relationships.",
     "The source has no reviewed Finance posting-to-contract allocation. Account priority is not incident-attributed profit impact.",
     "Local independent-oracle regressions cover absent, zero, partial, full, overapplied, negative and unknown credit amounts, true orphan/out-of-period postings and legitimate outside-incident source contracts. These are synthetic arithmetic/diagnostic checks, not live DAX engine or native consumer certification."
   ]

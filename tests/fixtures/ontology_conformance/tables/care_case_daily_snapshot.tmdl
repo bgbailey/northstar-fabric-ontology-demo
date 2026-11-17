@@ -1,0 +1,26 @@
+table care_case_daily_snapshot
+	measure 'Open Cases EOD' = EXTERNALMEASURE("Open Cases EOD", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE")
+	column case_key
+		dataType: int64
+		sourceColumn: case_key
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column snapshot_date
+		dataType: dateTime
+		sourceColumn: snapshot_date
+	column open_eod
+		dataType: int64
+		sourceColumn: open_eod
+	partition care_case_daily_snapshot = entity
+		mode: directQuery
+		source
+			entityName: 'Case Daily Snapshot'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE'
+		annotation ONT_ItemName = Synthetic care

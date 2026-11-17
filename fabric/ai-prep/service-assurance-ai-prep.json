@@ -1,0 +1,1137 @@
+{
+  "version": "1.0",
+  "stream": "service-assurance",
+  "status": "DRAFT_READY_FOR_PREP_DATA_FOR_AI",
+  "liveApplyTodo": "TODO(verify-live): Apply AI instructions, AI data schema, and L1 verified answers in Power BI Prep data for AI UI for all four models equally across evaluation arms",
+  "editingRoutes": {
+    "tmdlDescriptions": "AGENT_EDITABLE_TMDL",
+    "aiInstructions": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+    "aiDataSchema": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+    "verifiedAnswers": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+  },
+  "references": {
+    "microsoftLearnPrepDataForAi": "https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-prepare-data-ai",
+    "skillsForFabricCommit": "e31422e7d1045ef3a0906df9ff5991f2338af010",
+    "skillsForFabricPaths": [
+      "skills/semantic-model-authoring/SKILL.md",
+      "skills/semantic-model-authoring/references/semantic-model-ai-readiness.md",
+      "skills/semantic-model-authoring/references/modeling-guidelines.md",
+      "skills/semantic-model-authoring/references/tmdl-guidelines.md",
+      "skills/semantic-model-authoring/references/dax-guidelines.md"
+    ]
+  },
+  "subjectAreaBoundary": "Model-level preparation is limited strictly to each semantic model's own subject area; cross-model relationships, shared identity bridges, and cross-domain rules belong to the ontology.",
+  "evaluationArms": {
+    "equalPreparation": true,
+    "arms": {
+      "Arm A": "Identical TMDL descriptions, single-model AI instructions, AI data schema, and L1 verified answers applied equally across Network Operations, Enterprise Services, Billing and Finance, and Customer Care.",
+      "Arm A+": "Identical TMDL descriptions, single-model AI instructions, AI data schema, and L1 verified answers applied equally across Network Operations, Enterprise Services, Billing and Finance, and Customer Care.",
+      "Arm B": "Identical TMDL descriptions, single-model AI instructions, AI data schema, and L1 verified answers applied equally across Network Operations, Enterprise Services, Billing and Finance, and Customer Care."
+    }
+  },
+  "sourceCatalogRevision": "b63839387c1993d302dc878af61b92bf23b35bf56dfe4953b459737e1027d754",
+  "sourceSlaGuidanceSha256": "c6e3c248fcc841309380d7fc8fa8ca819b6e3a2b5941c7e7edbd879fed564212",
+  "generatorSha256": "e43190160847b36789fc61d5ffc3f34ccc750d40b9355959b66c673332b52bac",
+  "heroModels": [
+    "network",
+    "enterprise",
+    "finance",
+    "care"
+  ],
+  "models": [
+    {
+      "id": "network",
+      "name": "Network Operations",
+      "status": "DRAFT_READY_FOR_PREP_DATA_FOR_AI",
+      "purpose": "Monitored availability, physical-site incidents and valid serving-site line exposure.",
+      "descriptions": {
+        "tables": {
+          "Incidents": "Raw outage intervals may overlap; union intervals before measuring unavailable minutes.",
+          "Site Hour": "Hourly monitoring for a bounded five-day window per month; overlapping outages are normalized.",
+          "Site Day": "Daily rollup of the same bounded hourly monitoring window, not full-month telemetry.",
+          "Subscription Site Exposure": "Actual serving-site exposure window; home and serving markets can differ.",
+          "Accounts": "Registered accounts, not active accounts; names are deliberately nonunique.",
+          "Calendar": "Contiguous daily calendar covering service and late posting dates.",
+          "Markets": "Four synthetic home markets; home market is not network exposure.",
+          "Sites": "Physical network sites, distinct from service and account identities."
+        },
+        "columns": {
+          "'Incidents'[incident_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Incidents'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Incidents'[start]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Incidents'[end]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Incidents'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Incidents'[month]": "First day of the calendar month when the outage started; cross-month overlap uses UTC start/end.",
+          "'Incidents'[severity]": "Operational impact tier (major or minor); filter to major for headline outage counts.",
+          "'Site Hour'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Site Hour'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Site Hour'[month]": "First day of the calendar month for the bounded hourly site-monitoring window.",
+          "'Site Hour'[hour_start]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Site Hour'[eligible_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Site Hour'[unavailable_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Site Hour'[failed_sessions]": "Hidden numeric input on Site Hour; use explicit model measures instead.",
+          "'Site Hour'[total_sessions]": "Hidden numeric input on Site Hour; use explicit model measures instead.",
+          "'Site Day'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Site Day'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Site Day'[month]": "First day of the calendar month containing the daily site-monitoring rollup.",
+          "'Site Day'[snapshot_date]": "Calendar day of the bounded daily site-availability rollup.",
+          "'Site Day'[eligible_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Site Day'[unavailable_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Subscription Site Exposure'[subscription_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Subscription Site Exposure'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Subscription Site Exposure'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Subscription Site Exposure'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Subscription Site Exposure'[month]": "First day of the service month for interval-unioned serving-site outage exposure.",
+          "'Subscription Site Exposure'[valid_from]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Subscription Site Exposure'[valid_to]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Subscription Site Exposure'[exposure_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Accounts'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[account_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[region]": "Geographic operating region (such as East or West) for regional grouping and row-level security.",
+          "'Accounts'[consent]": "Current marketing contact preference flag; does not reconstruct historical campaign eligibility.",
+          "'Accounts'[enterprise]": "True for business accounts eligible for service contracts; false for consumer accounts.",
+          "'Accounts'[display_name]": "Customer-facing account label; deliberately non-unique across accounts, never use as a join key.",
+          "'Calendar'[date]": "Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots.",
+          "'Calendar'[year]": "Four-digit calendar year number; group or filter by year, never sum.",
+          "'Calendar'[quarter]": "Calendar quarter number (1 to 4); group or filter by quarter, never sum.",
+          "'Calendar'[month_number]": "Calendar month number (1 to 12) used to sort month names chronologically; never sum.",
+          "'Calendar'[month_name]": "Full English calendar month label sorted chronologically by month_number.",
+          "'Calendar'[day]": "Day-of-month number (1 to 31) for daily snapshot filtering; never sum.",
+          "'Markets'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Markets'[market_name]": "Human-readable home market label for customer and regional reporting.",
+          "'Markets'[region]": "Parent operating region grouping home markets for regional summaries and security filtering.",
+          "'Sites'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[site_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[region]": "Physical site operating region; reflects tower or facility location, not customer home market."
+        },
+        "measures": {
+          "'Incidents'[Major Incidents]": "Raw major incident count; overlap is allowed.",
+          "'Site Hour'[Eligible Site Minutes]": "Monitored site minutes in the bounded telemetry window.",
+          "'Site Hour'[Unavailable Site Minutes]": "Per-site interval-unioned unavailability, without double-counting overlaps.",
+          "'Site Hour'[Availability Percent]": "Eligible-minute weighted availability; not the mean of site percentages.",
+          "'Site Hour'[Failed Sessions]": "Observed failed radio/network sessions in the hourly monitoring window; not web or app sessions.",
+          "'Site Hour'[Service Degradation Percent]": "Failed divided by monitored network sessions.",
+          "'Subscription Site Exposure'[Exposed Lines]": "Distinct active lines exposed to actual serving-site outages.",
+          "'Subscription Site Exposure'[Exposure Minutes]": "Interval-unioned unavailable minutes per exposed line, additive across lines."
+        }
+      },
+      "aiInstructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "For incident identity and time use 'Incidents'[incident_key], 'Incidents'[site_key], 'Incidents'[start] and 'Incidents'[end]. 'Sites'[site_key] identifies physical sites, not home markets or accounts.",
+        "For availability use 'Site Hour'[Availability Percent] on 'Site Hour'; 'Site Hour'[Eligible Site Minutes] and 'Site Hour'[Unavailable Site Minutes] are minute measures at site-hour grain. Do not sum overlapping raw incident durations.",
+        "'Incidents'[Major Incidents] counts major incident records by 'Incidents'[month]; incident start-month counts are not a cross-month exposure cohort.",
+        "Ask whether a request means major incident count, site availability or outage-exposed lines when outage impact is unspecified. Use explicit UTC window overlap on 'Incidents'[start] and 'Incidents'[end]."
+      ],
+      "aiDataSchema": {
+        "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+        "includedTables": [
+          "Incidents",
+          "Site Hour",
+          "Site Day",
+          "Subscription Site Exposure",
+          "Accounts",
+          "Calendar",
+          "Markets",
+          "Sites"
+        ],
+        "visibleColumnsByTable": {
+          "Incidents": [
+            "month",
+            "severity"
+          ],
+          "Site Hour": [
+            "month"
+          ],
+          "Site Day": [
+            "month",
+            "snapshot_date"
+          ],
+          "Subscription Site Exposure": [
+            "month"
+          ],
+          "Accounts": [
+            "region",
+            "consent",
+            "enterprise",
+            "display_name"
+          ],
+          "Calendar": [
+            "date",
+            "year",
+            "quarter",
+            "month_number",
+            "month_name",
+            "day"
+          ],
+          "Markets": [
+            "market_name",
+            "region"
+          ],
+          "Sites": [
+            "region"
+          ]
+        },
+        "hiddenTechnicalColumnsByTable": {
+          "Incidents": [
+            "incident_key",
+            "site_key",
+            "start",
+            "end",
+            "market_id"
+          ],
+          "Site Hour": [
+            "site_key",
+            "market_id",
+            "hour_start",
+            "eligible_minutes",
+            "unavailable_minutes",
+            "failed_sessions",
+            "total_sessions"
+          ],
+          "Site Day": [
+            "site_key",
+            "market_id",
+            "eligible_minutes",
+            "unavailable_minutes"
+          ],
+          "Subscription Site Exposure": [
+            "subscription_key",
+            "account_key",
+            "site_key",
+            "market_id",
+            "valid_from",
+            "valid_to",
+            "exposure_minutes"
+          ],
+          "Accounts": [
+            "account_key",
+            "account_id",
+            "market_id"
+          ],
+          "Calendar": [],
+          "Markets": [
+            "market_id"
+          ],
+          "Sites": [
+            "site_key",
+            "site_id",
+            "market_id"
+          ]
+        },
+        "excludedDiagnosticColumns": [
+          "coverage_complete",
+          "expected_minutes"
+        ],
+        "includedMeasures": [
+          "'Site Hour'[Eligible Site Minutes]",
+          "'Site Hour'[Unavailable Site Minutes]",
+          "'Site Hour'[Availability Percent]",
+          "'Incidents'[Major Incidents]",
+          "'Subscription Site Exposure'[Exposed Lines]",
+          "'Subscription Site Exposure'[Exposure Minutes]",
+          "'Site Hour'[Failed Sessions]",
+          "'Site Hour'[Service Degradation Percent]"
+        ],
+        "synonyms": {
+          "'Site Hour'[Availability Percent]": [
+            "monitored availability"
+          ],
+          "'Subscription Site Exposure'[Exposed Lines]": [
+            "outage-exposed lines"
+          ],
+          "'Subscription Site Exposure'[Exposure Minutes]": [
+            "line exposure minutes"
+          ],
+          "'Incidents'[severity]": [
+            "outage severity",
+            "incident impact tier"
+          ],
+          "'Sites'[region]": [
+            "site operating region",
+            "tower region"
+          ]
+        }
+      },
+      "verifiedAnswerCandidates": [
+        {
+          "id": "VA-NET-L1-001",
+          "level": "L1",
+          "question": "How many major incidents occurred in July 2026 by region?",
+          "triggerPhrases": [
+            "major incidents in July 2026 by region",
+            "count of major outages by region",
+            "how many major incidents per region"
+          ],
+          "targetMeasure": "'Incidents'[Major Incidents]",
+          "groupBy": [
+            "'Sites'[region]",
+            "'Incidents'[month]"
+          ],
+          "visualType": "clusteredBarChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-NET-L1-002",
+          "level": "L1",
+          "question": "What was site availability percent by market in July 2026?",
+          "triggerPhrases": [
+            "site availability percent by market",
+            "monitored availability by market in July 2026",
+            "radio availability rate per market"
+          ],
+          "targetMeasure": "'Site Hour'[Availability Percent]",
+          "groupBy": [
+            "'Markets'[market_name]",
+            "'Site Hour'[month]"
+          ],
+          "visualType": "clusteredColumnChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-NET-L1-003",
+          "level": "L1",
+          "question": "How many unavailable site minutes were recorded by region and month?",
+          "triggerPhrases": [
+            "unavailable site minutes by region",
+            "total site outage minutes per month",
+            "monitored unavailable minutes by region"
+          ],
+          "targetMeasure": "'Site Hour'[Unavailable Site Minutes]",
+          "groupBy": [
+            "'Markets'[region]",
+            "'Site Hour'[month]"
+          ],
+          "visualType": "lineChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        }
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Enterprise Services",
+      "status": "DRAFT_READY_FOR_PREP_DATA_FOR_AI",
+      "purpose": "Effective service/contract identity, governed monthly SLA settlement and contracted value.",
+      "descriptions": {
+        "tables": {
+          "Contracts": "Time-valid SLA terms; threshold per service-month, then one monetary cap per contract-month.",
+          "Service Site Map": "Half-open serving-site history; service 1 moves mid-incident without overlapping mappings.",
+          "Service Month": "Service-month operations with validity-clipped monitored minutes.",
+          "SLA Evaluation": "Operational contract-month SLA settlement; raw intervals remain available for independent reconciliation.",
+          "Applied Credits": "Actually applied SLA credits, which can be less than eligible credit.",
+          "Accounts": "Registered accounts, not active accounts; names are deliberately nonunique.",
+          "Calendar": "Contiguous daily calendar covering service and late posting dates.",
+          "Markets": "Four synthetic home markets; home market is not network exposure.",
+          "Services": "Enterprise service registry; serving sites are resolved with time-valid mappings.",
+          "Sites": "Physical network sites, distinct from service and account identities."
+        },
+        "columns": {
+          "'Contracts'[contract_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Contracts'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Contracts'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Contracts'[credit_cap_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Contracts'[credit_per_minute_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Contracts'[threshold_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Contracts'[valid_from]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Contracts'[valid_to]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Contracts'[month]": "Contract start-month attribute only, not active service-month validity; use UTC valid_from/valid_to.",
+          "'Service Site Map'[service_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Site Map'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Site Map'[contract_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Site Map'[valid_from]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Service Site Map'[valid_to]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Service Site Map'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Site Map'[month]": "Mapping start-month attribute only, not active serving-site validity; use UTC valid_from/valid_to.",
+          "'Service Month'[service_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Month'[contract_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Month'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Month'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Service Month'[month]": "First day of the evaluated service month for contracted services, monitored minutes, and breaches.",
+          "'Service Month'[contracted]": "Hidden numeric input on Service Month; use explicit model measures instead.",
+          "'Service Month'[monitored_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Service Month'[breached]": "Hidden numeric input on Service Month; use explicit model measures instead.",
+          "'Service Month'[recurring_revenue_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'SLA Evaluation'[contract_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'SLA Evaluation'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'SLA Evaluation'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'SLA Evaluation'[month]": "First day of the settled SLA service month at contract-month grain.",
+          "'SLA Evaluation'[outage_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'SLA Evaluation'[eligible_credit_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'SLA Evaluation'[applied_credit_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Applied Credits'[contract_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Applied Credits'[amount_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Applied Credits'[month]": "First day of the SLA service month credited; separate from the posted_at timestamp.",
+          "'Applied Credits'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Applied Credits'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Applied Credits'[posted_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Accounts'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[account_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[region]": "Geographic operating region (such as East or West) for regional grouping and row-level security.",
+          "'Accounts'[consent]": "Current marketing contact preference flag; does not reconstruct historical campaign eligibility.",
+          "'Accounts'[enterprise]": "True for business accounts eligible for service contracts; false for consumer accounts.",
+          "'Accounts'[display_name]": "Customer-facing account label; deliberately non-unique across accounts, never use as a join key.",
+          "'Calendar'[date]": "Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots.",
+          "'Calendar'[year]": "Four-digit calendar year number; group or filter by year, never sum.",
+          "'Calendar'[quarter]": "Calendar quarter number (1 to 4); group or filter by quarter, never sum.",
+          "'Calendar'[month_number]": "Calendar month number (1 to 12) used to sort month names chronologically; never sum.",
+          "'Calendar'[month_name]": "Full English calendar month label sorted chronologically by month_number.",
+          "'Calendar'[day]": "Day-of-month number (1 to 31) for daily snapshot filtering; never sum.",
+          "'Markets'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Markets'[market_name]": "Human-readable home market label for customer and regional reporting.",
+          "'Markets'[region]": "Parent operating region grouping home markets for regional summaries and security filtering.",
+          "'Services'[service_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Services'[service_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Services'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[site_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[site_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Sites'[region]": "Physical site operating region; reflects tower or facility location, not customer home market."
+        },
+        "measures": {
+          "'Service Month'[Contracted Services]": "Valid contracted service population in one month. Requires one month per result; never sum snapshots over time.",
+          "'Service Month'[Monitored Service Minutes]": "Calendar minutes clipped to contract validity.",
+          "'Service Month'[Breached Services]": "Service-months exceeding their contract threshold.",
+          "'Service Month'[SLA Compliance]": "Compliant contracted service-months divided by contracted service-months.",
+          "'Service Month'[Contracted Recurring Revenue]": "Contracted monthly recurring service value in integer cents, not billed or recognized revenue.",
+          "'SLA Evaluation'[Eligible Credits]": "Validity-clipped outage union per service-contract-month; threshold per service, then one monetary cap per contract-month.",
+          "'SLA Evaluation'[Credit Exposure]": "Eligible less already applied contract-month credits; not a repeated per-incident cap.",
+          "'Applied Credits'[Applied Credits]": "Applied credits attributed to SLA service month, with separate posting timestamp."
+        }
+      },
+      "aiInstructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Contracts and Service Site Map month is a start-month attribute, not service-month validity. The local template removes their Calendar start-month relationships. Use explicit half-open UTC overlap and project reviewed keys; a March-start mapping can remain valid in July. A separately requested start-month analysis must explicitly select that date role, not imply validity.",
+        "No Contracts-to-SLA Evaluation fact relationship is inferred. Filter contract_key explicitly on SLA Evaluation or Applied Credits, the exact home tables of the source measures, using the reviewed cohort. Only the home table's allowed dimensions are legal.",
+        "'Service Site Map' is service_key plus valid_from grain; [valid_from,valid_to) defines the serving site and contract. 'Contracts' is effective contract_key grain with its own validity interval.",
+        "Use 'SLA Evaluation'[Eligible Credits] and 'SLA Evaluation'[Credit Exposure] from 'SLA Evaluation', and 'Applied Credits'[Applied Credits] from 'Applied Credits'. All are cents by SLA service month and permit contract_key grouping.",
+        "'SLA Evaluation' is contract_key plus month grain. 'SLA Evaluation'[Credit Exposure] is source-owned signed eligible less applied cents, without a zero floor. Negative values indicate overapplication, classified INVALID_SETTLEMENT / OVERAPPLIED_CREDITS; never clamp negative residuals or apply a second per-incident cap.",
+        "'Service Month'[Contracted Recurring Revenue] on 'Service Month' is contracted recurring service value, not recognized billing revenue; ask for clarification when 'revenue' is unqualified.",
+        "An absent Applied Credits posting remains null, distinct from an explicit zero posting; use governed 'SLA Evaluation'[Credit Exposure] for the signed residual. A posting with an unknown amount is INCOMPLETE_SETTLEMENT / MISSING_APPLIED_AMOUNT, not zero or a complete total. Do not sum known residuals into a complete account total when a contract amount is unknown.",
+        "Negative applied SLA cents violate this local source settlement contract independently of the residual sign. Validate every applied credit posting's contract_key and half-open contract service-month overlap; never treat 'Applied Credits'[posted_at] as service month."
+      ],
+      "aiDataSchema": {
+        "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+        "includedTables": [
+          "Contracts",
+          "Service Site Map",
+          "Service Month",
+          "SLA Evaluation",
+          "Applied Credits",
+          "Accounts",
+          "Calendar",
+          "Markets",
+          "Services",
+          "Sites"
+        ],
+        "visibleColumnsByTable": {
+          "Contracts": [
+            "month"
+          ],
+          "Service Site Map": [
+            "month"
+          ],
+          "Service Month": [
+            "month"
+          ],
+          "SLA Evaluation": [
+            "month"
+          ],
+          "Applied Credits": [
+            "month"
+          ],
+          "Accounts": [
+            "region",
+            "consent",
+            "enterprise",
+            "display_name"
+          ],
+          "Calendar": [
+            "date",
+            "year",
+            "quarter",
+            "month_number",
+            "month_name",
+            "day"
+          ],
+          "Markets": [
+            "market_name",
+            "region"
+          ],
+          "Services": [],
+          "Sites": [
+            "region"
+          ]
+        },
+        "hiddenTechnicalColumnsByTable": {
+          "Contracts": [
+            "contract_key",
+            "account_key",
+            "market_id",
+            "credit_cap_cents",
+            "credit_per_minute_cents",
+            "threshold_minutes",
+            "valid_from",
+            "valid_to"
+          ],
+          "Service Site Map": [
+            "service_key",
+            "site_key",
+            "contract_key",
+            "valid_from",
+            "valid_to",
+            "market_id"
+          ],
+          "Service Month": [
+            "service_key",
+            "contract_key",
+            "account_key",
+            "market_id",
+            "contracted",
+            "monitored_minutes",
+            "breached",
+            "recurring_revenue_cents"
+          ],
+          "SLA Evaluation": [
+            "contract_key",
+            "account_key",
+            "market_id",
+            "outage_minutes",
+            "eligible_credit_cents",
+            "applied_credit_cents"
+          ],
+          "Applied Credits": [
+            "contract_key",
+            "amount_cents",
+            "market_id",
+            "account_key",
+            "posted_at"
+          ],
+          "Accounts": [
+            "account_key",
+            "account_id",
+            "market_id"
+          ],
+          "Calendar": [],
+          "Markets": [
+            "market_id"
+          ],
+          "Services": [
+            "service_key",
+            "service_id",
+            "account_key"
+          ],
+          "Sites": [
+            "site_key",
+            "site_id",
+            "market_id"
+          ]
+        },
+        "excludedDiagnosticColumns": [
+          "coverage_complete",
+          "expected_minutes"
+        ],
+        "includedMeasures": [
+          "'Service Month'[Contracted Services]",
+          "'Service Month'[Monitored Service Minutes]",
+          "'Service Month'[Breached Services]",
+          "'Service Month'[SLA Compliance]",
+          "'Service Month'[Contracted Recurring Revenue]",
+          "'SLA Evaluation'[Eligible Credits]",
+          "'Applied Credits'[Applied Credits]",
+          "'SLA Evaluation'[Credit Exposure]"
+        ],
+        "synonyms": {
+          "'SLA Evaluation'[Eligible Credits]": [
+            "eligible SLA credits"
+          ],
+          "'SLA Evaluation'[Credit Exposure]": [
+            "signed remaining SLA credits"
+          ],
+          "'Service Month'[Contracted Recurring Revenue]": [
+            "contracted recurring value"
+          ],
+          "'Service Month'[month]": [
+            "evaluated SLA month",
+            "service period"
+          ],
+          "'SLA Evaluation'[month]": [
+            "settled SLA month",
+            "contract settlement month"
+          ]
+        }
+      },
+      "verifiedAnswerCandidates": [
+        {
+          "id": "VA-ENT-L1-001",
+          "level": "L1",
+          "question": "What is total SLA credit exposure in July 2026 by market?",
+          "triggerPhrases": [
+            "SLA credit exposure in July 2026 by market",
+            "remaining SLA credits by market",
+            "unapplied SLA credit exposure per market"
+          ],
+          "targetMeasure": "'SLA Evaluation'[Credit Exposure]",
+          "groupBy": [
+            "'Markets'[market_name]",
+            "'SLA Evaluation'[month]"
+          ],
+          "visualType": "clusteredBarChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-ENT-L1-002",
+          "level": "L1",
+          "question": "What is SLA compliance by evaluated service month?",
+          "triggerPhrases": [
+            "SLA compliance rate by month",
+            "monthly SLA compliance percentage",
+            "service SLA compliance trend"
+          ],
+          "targetMeasure": "'Service Month'[SLA Compliance]",
+          "groupBy": [
+            "'Service Month'[month]"
+          ],
+          "visualType": "lineChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-ENT-L1-003",
+          "level": "L1",
+          "question": "How many eligible SLA credits were settled in July 2026 by region?",
+          "triggerPhrases": [
+            "eligible SLA credits in July 2026 by region",
+            "settled eligible credits per region",
+            "monthly contract eligible credits by region"
+          ],
+          "targetMeasure": "'SLA Evaluation'[Eligible Credits]",
+          "groupBy": [
+            "'Markets'[region]",
+            "'SLA Evaluation'[month]"
+          ],
+          "visualType": "clusteredColumnChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "name": "Billing and Finance",
+      "status": "DRAFT_READY_FOR_PREP_DATA_FOR_AI",
+      "purpose": "Recognized service revenue, billed and posted amounts, attributed cost and account-period margin.",
+      "descriptions": {
+        "tables": {
+          "Account Month": "Account service-month control totals; credits recognized in service month, not posting month.",
+          "Billing Account Map": "Half-open UTC identity intervals. Billing key 2 is reused; numeric key equality is invalid.",
+          "Charge Lines": "Signed service charges and reversals; month is service month, posting time is separate.",
+          "Credits": "Credits by posting month; late credits retain their original service month.",
+          "Accounts": "Registered accounts, not active accounts; names are deliberately nonunique.",
+          "Calendar": "Contiguous daily calendar covering service and late posting dates.",
+          "Markets": "Four synthetic home markets; home market is not network exposure."
+        },
+        "columns": {
+          "'Account Month'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Account Month'[billing_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Account Month'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Account Month'[month]": "First day of the service month for recognized revenue, service-month credits, and cost.",
+          "'Account Month'[revenue_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Account Month'[credit_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Account Month'[service_cost_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Account Month'[active_lines_eom]": "Hidden numeric input on Account Month; use explicit model measures instead.",
+          "'Billing Account Map'[billing_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Billing Account Map'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Billing Account Map'[valid_from]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Billing Account Map'[valid_to]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Charge Lines'[charge_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Charge Lines'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Charge Lines'[billing_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Charge Lines'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Charge Lines'[month]": "First day of the billed service month; separate from the posting timestamp.",
+          "'Charge Lines'[service_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Charge Lines'[posted_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Charge Lines'[amount_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Charge Lines'[charge_type]": "Billing line category distinguishing recurring service charges, usage charges, and reversals.",
+          "'Credits'[credit_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Credits'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Credits'[billing_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Credits'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Credits'[month]": "First day of the credit posting month (primary calendar link); differs from original service_month.",
+          "'Credits'[service_month]": "First day of the original service period adjusted by a late-posted billing credit.",
+          "'Credits'[posted_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Credits'[amount_cents]": "Hidden integer cents; query explicit currency measures instead of summing raw columns.",
+          "'Accounts'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[account_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[region]": "Geographic operating region (such as East or West) for regional grouping and row-level security.",
+          "'Accounts'[consent]": "Current marketing contact preference flag; does not reconstruct historical campaign eligibility.",
+          "'Accounts'[enterprise]": "True for business accounts eligible for service contracts; false for consumer accounts.",
+          "'Accounts'[display_name]": "Customer-facing account label; deliberately non-unique across accounts, never use as a join key.",
+          "'Calendar'[date]": "Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots.",
+          "'Calendar'[year]": "Four-digit calendar year number; group or filter by year, never sum.",
+          "'Calendar'[quarter]": "Calendar quarter number (1 to 4); group or filter by quarter, never sum.",
+          "'Calendar'[month_number]": "Calendar month number (1 to 12) used to sort month names chronologically; never sum.",
+          "'Calendar'[month_name]": "Full English calendar month label sorted chronologically by month_number.",
+          "'Calendar'[day]": "Day-of-month number (1 to 31) for daily snapshot filtering; never sum.",
+          "'Markets'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Markets'[market_name]": "Human-readable home market label for customer and regional reporting.",
+          "'Markets'[region]": "Parent operating region grouping home markets for regional summaries and security filtering."
+        },
+        "measures": {
+          "'Account Month'[Recognized Service Revenue]": "Recognized service revenue before service-month credits, in integer cents.",
+          "'Account Month'[Net Recognized Revenue]": "Recognized service revenue minus service-month credits.",
+          "'Account Month'[Service Cost]": "Attributed monthly service cost, not device or offer cost.",
+          "'Account Month'[Contribution Margin]": "Net recognized service revenue minus attributed service cost.",
+          "'Account Month'[Margin Percent]": "Pooled contribution margin divided by pooled net recognized revenue; never average account percentages.",
+          "'Account Month'[Revenue per Active Line]": "Service revenue per closing active line in the same account-month scope; multiple months yield a line-month denominator.",
+          "'Charge Lines'[Billed Charges]": "Signed charges including reversals, grouped by service month; not cash receipts.",
+          "'Credits'[Posted Credits]": "Credit amounts by posting month; service month remains a separate attribute."
+        }
+      },
+      "aiInstructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "Use 'Account Month'[Recognized Service Revenue] and 'Account Month'[Contribution Margin] on 'Account Month' for account-level priority. Both are cents; 'Account Month' is account_key plus service month grain.",
+        "'Account Month'[Recognized Service Revenue] is before service-month credits. 'Account Month'[Contribution Margin] is recognized revenue less service-month credits and attributed service cost; 'Account Month'[Margin Percent] is a pooled ratio, not an average of account ratios.",
+        "'Credits'[Posted Credits] on 'Credits' uses posting month while 'Credits'[service_month] is the original service month; 'Credits' is at account grain with no contract key.",
+        "'Billing Account Map' uses half-open validity. 'Billing Account Map'[billing_key] is not 'Account Month'[account_key], even when integers match. Prefer the canonical account_key already present in 'Account Month'.",
+        "Ask for service month versus posting month, and gross recognized versus net revenue, when unspecified. Keep one 'Account Month' row per selected account and service month without duplicating account totals."
+      ],
+      "aiDataSchema": {
+        "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+        "includedTables": [
+          "Account Month",
+          "Billing Account Map",
+          "Charge Lines",
+          "Credits",
+          "Accounts",
+          "Calendar",
+          "Markets"
+        ],
+        "visibleColumnsByTable": {
+          "Account Month": [
+            "month"
+          ],
+          "Billing Account Map": [],
+          "Charge Lines": [
+            "month",
+            "charge_type"
+          ],
+          "Credits": [
+            "month",
+            "service_month"
+          ],
+          "Accounts": [
+            "region",
+            "consent",
+            "enterprise",
+            "display_name"
+          ],
+          "Calendar": [
+            "date",
+            "year",
+            "quarter",
+            "month_number",
+            "month_name",
+            "day"
+          ],
+          "Markets": [
+            "market_name",
+            "region"
+          ]
+        },
+        "hiddenTechnicalColumnsByTable": {
+          "Account Month": [
+            "account_key",
+            "billing_key",
+            "market_id",
+            "revenue_cents",
+            "credit_cents",
+            "service_cost_cents",
+            "active_lines_eom"
+          ],
+          "Billing Account Map": [
+            "billing_key",
+            "account_key",
+            "valid_from",
+            "valid_to"
+          ],
+          "Charge Lines": [
+            "charge_key",
+            "account_key",
+            "billing_key",
+            "market_id",
+            "service_at",
+            "posted_at",
+            "amount_cents"
+          ],
+          "Credits": [
+            "credit_key",
+            "account_key",
+            "billing_key",
+            "market_id",
+            "posted_at",
+            "amount_cents"
+          ],
+          "Accounts": [
+            "account_key",
+            "account_id",
+            "market_id"
+          ],
+          "Calendar": [],
+          "Markets": [
+            "market_id"
+          ]
+        },
+        "excludedDiagnosticColumns": [
+          "coverage_complete",
+          "expected_minutes"
+        ],
+        "includedMeasures": [
+          "'Account Month'[Recognized Service Revenue]",
+          "'Charge Lines'[Billed Charges]",
+          "'Credits'[Posted Credits]",
+          "'Account Month'[Net Recognized Revenue]",
+          "'Account Month'[Service Cost]",
+          "'Account Month'[Contribution Margin]",
+          "'Account Month'[Margin Percent]",
+          "'Account Month'[Revenue per Active Line]"
+        ],
+        "synonyms": {
+          "'Account Month'[Recognized Service Revenue]": [
+            "recognized service revenue"
+          ],
+          "'Account Month'[Contribution Margin]": [
+            "account contribution margin"
+          ],
+          "'Credits'[Posted Credits]": [
+            "posting-period credits"
+          ],
+          "'Account Month'[month]": [
+            "recognized service month",
+            "billing service period"
+          ],
+          "'Credits'[service_month]": [
+            "adjusted service month",
+            "original credit period"
+          ]
+        }
+      },
+      "verifiedAnswerCandidates": [
+        {
+          "id": "VA-FIN-L1-001",
+          "level": "L1",
+          "question": "What is recognized service revenue in July 2026 by market?",
+          "triggerPhrases": [
+            "recognized service revenue in July 2026 by market",
+            "monthly service revenue per market",
+            "gross recognized service revenue by market"
+          ],
+          "targetMeasure": "'Account Month'[Recognized Service Revenue]",
+          "groupBy": [
+            "'Markets'[market_name]",
+            "'Account Month'[month]"
+          ],
+          "visualType": "clusteredBarChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-FIN-L1-002",
+          "level": "L1",
+          "question": "What is contribution margin by region in July 2026?",
+          "triggerPhrases": [
+            "contribution margin by region in July 2026",
+            "account contribution margin per region",
+            "service contribution margin by operating region"
+          ],
+          "targetMeasure": "'Account Month'[Contribution Margin]",
+          "groupBy": [
+            "'Markets'[region]",
+            "'Account Month'[month]"
+          ],
+          "visualType": "clusteredColumnChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-FIN-L1-003",
+          "level": "L1",
+          "question": "How much in posted credits was recorded by posting month?",
+          "triggerPhrases": [
+            "posted credits by posting month",
+            "monthly billing credits posted",
+            "total posted credit cents by month"
+          ],
+          "targetMeasure": "'Credits'[Posted Credits]",
+          "groupBy": [
+            "'Credits'[month]"
+          ],
+          "visualType": "lineChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        }
+      ]
+    },
+    {
+      "id": "care",
+      "name": "Customer Care",
+      "status": "DRAFT_READY_FOR_PREP_DATA_FOR_AI",
+      "purpose": "Case contacts and resolution, source repeat-contact definitions and observed open-case snapshots.",
+      "descriptions": {
+        "tables": {
+          "Cases": "One care case; repeat contact means same account and reason within seven days.",
+          "Case Activities": "Case interactions; must not fan out case or financial counts.",
+          "Case Daily Snapshot": "End-of-day case state; additive across cases but never across dates.",
+          "Accounts": "Registered accounts, not active accounts; names are deliberately nonunique.",
+          "Calendar": "Contiguous daily calendar covering service and late posting dates.",
+          "Markets": "Four synthetic home markets; home market is not network exposure."
+        },
+        "columns": {
+          "'Cases'[case_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Cases'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Cases'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Cases'[month]": "First day of the calendar month when the support case opened; governs case and resolution cohorts.",
+          "'Cases'[opened_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Cases'[resolved_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Cases'[resolved]": "Hidden numeric input on Cases; use explicit model measures instead.",
+          "'Cases'[repeat_contact]": "Hidden numeric input on Cases; use explicit model measures instead.",
+          "'Cases'[escalated]": "Hidden numeric input on Cases; use explicit model measures instead.",
+          "'Cases'[first_contact_resolved]": "Hidden numeric input on Cases; use explicit model measures instead.",
+          "'Cases'[resolution_minutes]": "Hidden duration in minutes; query explicit duration or availability measures instead.",
+          "'Cases'[reason]": "Primary customer contact driver (such as connectivity, billing, or device) recorded at intake.",
+          "'Case Activities'[activity_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Activities'[case_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Activities'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Activities'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Activities'[month]": "First day of the calendar month when the agent or customer case interaction occurred.",
+          "'Case Activities'[activity_at]": "Hidden UTC instant; half-open validity intervals include start and exclude end.",
+          "'Case Activities'[activity_type]": "Support handling step category (such as intake, escalation, or follow-up) within a case.",
+          "'Case Daily Snapshot'[case_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Daily Snapshot'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Daily Snapshot'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Case Daily Snapshot'[month]": "First day of the calendar month containing the daily open-case observation.",
+          "'Case Daily Snapshot'[snapshot_date]": "Observed end-of-day date for open case backlog; select one date, never sum across days.",
+          "'Case Daily Snapshot'[open_eod]": "Hidden numeric input on Case Daily Snapshot; use explicit model measures instead.",
+          "'Accounts'[account_key]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[account_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Accounts'[region]": "Geographic operating region (such as East or West) for regional grouping and row-level security.",
+          "'Accounts'[consent]": "Current marketing contact preference flag; does not reconstruct historical campaign eligibility.",
+          "'Accounts'[enterprise]": "True for business accounts eligible for service contracts; false for consumer accounts.",
+          "'Accounts'[display_name]": "Customer-facing account label; deliberately non-unique across accounts, never use as a join key.",
+          "'Calendar'[date]": "Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots.",
+          "'Calendar'[year]": "Four-digit calendar year number; group or filter by year, never sum.",
+          "'Calendar'[quarter]": "Calendar quarter number (1 to 4); group or filter by quarter, never sum.",
+          "'Calendar'[month_number]": "Calendar month number (1 to 12) used to sort month names chronologically; never sum.",
+          "'Calendar'[month_name]": "Full English calendar month label sorted chronologically by month_number.",
+          "'Calendar'[day]": "Day-of-month number (1 to 31) for daily snapshot filtering; never sum.",
+          "'Markets'[market_id]": "Hidden technical identifier; join only through declared relationships or identity maps.",
+          "'Markets'[market_name]": "Human-readable home market label for customer and regional reporting.",
+          "'Markets'[region]": "Parent operating region grouping home markets for regional summaries and security filtering."
+        },
+        "measures": {
+          "'Cases'[New Cases]": "Cases by opening month, independent of activity count.",
+          "'Cases'[Resolved Cases]": "Cases resolved by source observation, attributed to opening month.",
+          "'Cases'[Repeat Contacts]": "Subsequent same-reason contacts within seven days for the same account.",
+          "'Cases'[Contacted Accounts]": "Distinct contacted accounts, not the sum of period-level distinct counts.",
+          "'Cases'[Escalated Cases]": "Cases escalated at least once, attributed to case opening month.",
+          "'Cases'[First Contact Resolution]": "First-contact resolutions divided by resolved cases; unresolved cases excluded from denominator.",
+          "'Cases'[Mean Resolution Hours]": "Mean observed duration among resolved cases; unresolved durations remain null.",
+          "'Case Daily Snapshot'[Open Cases EOD]": "Open cases at a specified observed day end. Requires one snapshot_date per result; never sum snapshots over time."
+        }
+      },
+      "aiInstructions": [
+        "Use the source-owned measures and their declared home tables, dimensions and units. Do not replace source calculations with new formulas.",
+        "Clarify the metric, population and reporting period when unresolved. A requested date is not evidence of source coverage; do not invent a latest complete period.",
+        "Use registered keys and reviewed identity mappings, not display names or coincidentally equal integers. Preserve unknown and excluded mappings.",
+        "Missing, partial, stale or denied data is not measured zero or a complete monetary total. Preserve non-additive measures and report coverage limitations.",
+        "Keep data, source-model, ontology and context-cache clocks separate. New context does not freshen old source observations.",
+        "AI instructions and schema selection are guidance, not permissions or hard enforcement. A local object reference does not prove that an AI consumer exposes that object.",
+        "'Cases'[case_key] is case grain; 'Case Activities'[activity_key] is activity grain. Use 'Cases'[New Cases] for case volume, not activity counts.",
+        "'Cases'[month] is opening month. 'Cases'[Resolved Cases] counts source-resolved cases attributed to opening month, not a resolution-month flow; clarify a request for resolution-period throughput.",
+        "'Cases'[Repeat Contacts] uses the source seven-day, same-account, same-reason definition. 'Cases'[Contacted Accounts] is distinct accounts, not a sum of period-level distinct counts.",
+        "Use 'Cases'[First Contact Resolution] with its source resolved-case denominator. Unresolved cases do not become resolved failures or zero-duration observations.",
+        "'Cases'[Mean Resolution Hours] is hours among resolved cases; 'Cases'[resolved_at] and 'Cases'[opened_at] remain separate date roles and unresolved durations remain missing.",
+        "'Case Daily Snapshot'[Open Cases EOD] uses one observed 'Case Daily Snapshot'[snapshot_date]. Do not sum snapshots over dates or infer continuous observation between snapshots.",
+        "Keep case counts at 'Cases'[case_key] grain and activity counts at 'Case Activities'[activity_key] grain; multiple activities per case must not multiply case metrics, and contact volume alone does not establish root cause."
+      ],
+      "aiDataSchema": {
+        "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI",
+        "includedTables": [
+          "Cases",
+          "Case Activities",
+          "Case Daily Snapshot",
+          "Accounts",
+          "Calendar",
+          "Markets"
+        ],
+        "visibleColumnsByTable": {
+          "Cases": [
+            "month",
+            "reason"
+          ],
+          "Case Activities": [
+            "month",
+            "activity_type"
+          ],
+          "Case Daily Snapshot": [
+            "month",
+            "snapshot_date"
+          ],
+          "Accounts": [
+            "region",
+            "consent",
+            "enterprise",
+            "display_name"
+          ],
+          "Calendar": [
+            "date",
+            "year",
+            "quarter",
+            "month_number",
+            "month_name",
+            "day"
+          ],
+          "Markets": [
+            "market_name",
+            "region"
+          ]
+        },
+        "hiddenTechnicalColumnsByTable": {
+          "Cases": [
+            "case_key",
+            "account_key",
+            "market_id",
+            "opened_at",
+            "resolved_at",
+            "resolved",
+            "repeat_contact",
+            "escalated",
+            "first_contact_resolved",
+            "resolution_minutes"
+          ],
+          "Case Activities": [
+            "activity_key",
+            "case_key",
+            "account_key",
+            "market_id",
+            "activity_at"
+          ],
+          "Case Daily Snapshot": [
+            "case_key",
+            "account_key",
+            "market_id",
+            "open_eod"
+          ],
+          "Accounts": [
+            "account_key",
+            "account_id",
+            "market_id"
+          ],
+          "Calendar": [],
+          "Markets": [
+            "market_id"
+          ]
+        },
+        "excludedDiagnosticColumns": [
+          "coverage_complete",
+          "expected_minutes"
+        ],
+        "includedMeasures": [
+          "'Case Daily Snapshot'[Open Cases EOD]",
+          "'Cases'[New Cases]",
+          "'Cases'[Resolved Cases]",
+          "'Cases'[Repeat Contacts]",
+          "'Cases'[Contacted Accounts]",
+          "'Cases'[Escalated Cases]",
+          "'Cases'[First Contact Resolution]",
+          "'Cases'[Mean Resolution Hours]"
+        ],
+        "synonyms": {
+          "'Cases'[New Cases]": [
+            "case volume"
+          ],
+          "'Cases'[Repeat Contacts]": [
+            "repeat contact"
+          ],
+          "'Case Daily Snapshot'[Open Cases EOD]": [
+            "open case snapshot"
+          ],
+          "'Cases'[reason]": [
+            "contact reason",
+            "intake driver"
+          ],
+          "'Case Daily Snapshot'[snapshot_date]": [
+            "backlog observation date",
+            "end-of-day snapshot date"
+          ]
+        }
+      },
+      "verifiedAnswerCandidates": [
+        {
+          "id": "VA-CARE-L1-001",
+          "level": "L1",
+          "question": "How many escalated cases opened in July 2026 by contact reason?",
+          "triggerPhrases": [
+            "escalated cases in July 2026 by reason",
+            "count of escalated support cases by reason",
+            "support escalations per contact reason"
+          ],
+          "targetMeasure": "'Cases'[Escalated Cases]",
+          "groupBy": [
+            "'Cases'[reason]",
+            "'Cases'[month]"
+          ],
+          "visualType": "clusteredBarChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-CARE-L1-002",
+          "level": "L1",
+          "question": "How many repeat contacts occurred by market and opening month?",
+          "triggerPhrases": [
+            "repeat contacts by market and month",
+            "seven-day repeat support contacts per market",
+            "repeat case contacts by market"
+          ],
+          "targetMeasure": "'Cases'[Repeat Contacts]",
+          "groupBy": [
+            "'Markets'[market_name]",
+            "'Cases'[month]"
+          ],
+          "visualType": "clusteredColumnChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        },
+        {
+          "id": "VA-CARE-L1-003",
+          "level": "L1",
+          "question": "What was first contact resolution rate by contact reason in July 2026?",
+          "triggerPhrases": [
+            "first contact resolution rate by reason",
+            "FCR percentage per case reason",
+            "resolved first-contact rate in July 2026"
+          ],
+          "targetMeasure": "'Cases'[First Contact Resolution]",
+          "groupBy": [
+            "'Cases'[reason]",
+            "'Cases'[month]"
+          ],
+          "visualType": "clusteredBarChart",
+          "editingRoute": "USER_CONFIGURED_PREP_DATA_FOR_AI"
+        }
+      ]
+    }
+  ]
+}

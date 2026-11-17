@@ -3,7 +3,7 @@ table 'Calendar'
 	lineageTag: b1e8524f-d4a6-586d-aba1-e1b32c98e89b
 	dataCategory: Time
 
-	/// Calendar date with no timezone or time-of-day.
+	/// Calendar day (yyyy-MM-dd) linking first-of-month facts and daily operational snapshots.
 	column 'date'
 		dataType: dateTime
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Calendar'
 		isKey
 		formatString: yyyy-MM-dd
 
-	/// Year at the declared Calendar grain.
+	/// Four-digit calendar year number; group or filter by year, never sum.
 	column 'year'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Calendar'
 		lineageTag: b71870cc-2fa3-5504-b85e-a778c8405868
 		formatString: #,##0
 
-	/// Quarter at the declared Calendar grain.
+	/// Calendar quarter number (1 to 4); group or filter by quarter, never sum.
 	column 'quarter'
 		dataType: int64
 		summarizeBy: none
@@ -28,7 +28,7 @@ table 'Calendar'
 		lineageTag: 5685607b-542c-530c-b604-e9163b0a5c41
 		formatString: #,##0
 
-	/// Month number at the declared Calendar grain.
+	/// Calendar month number (1 to 12) used to sort month names chronologically; never sum.
 	column 'month_number'
 		dataType: int64
 		summarizeBy: none
@@ -36,7 +36,7 @@ table 'Calendar'
 		lineageTag: a4c231b0-e387-5d8c-baf5-7eaec204c09f
 		formatString: #,##0
 
-	/// Month name at the declared Calendar grain.
+	/// Full English calendar month label sorted chronologically by month_number.
 	column 'month_name'
 		dataType: string
 		summarizeBy: none
@@ -44,7 +44,7 @@ table 'Calendar'
 		lineageTag: b7c6342c-ecaa-5898-94a5-154599a3e687
 		sortByColumn: 'month_number'
 
-	/// Day at the declared Calendar grain.
+	/// Day-of-month number (1 to 31) for daily snapshot filtering; never sum.
 	column 'day'
 		dataType: int64
 		summarizeBy: none

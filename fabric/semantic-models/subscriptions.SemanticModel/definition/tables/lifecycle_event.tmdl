@@ -2,7 +2,7 @@
 table 'Lifecycle Events'
 	lineageTag: fd122443-5717-5cc6-b0a6-51bc8a09ad5a
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'event_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Lifecycle Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'subscription_key'
 		dataType: int64
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Lifecycle Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -32,7 +32,7 @@ table 'Lifecycle Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -41,7 +41,7 @@ table 'Lifecycle Events'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month in which the activation or disconnection transition occurred.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -49,7 +49,7 @@ table 'Lifecycle Events'
 		lineageTag: 516479a7-0448-5dd6-8535-d53b2e43b381
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'event_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -60,7 +60,7 @@ table 'Lifecycle Events'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Event type at the declared Lifecycle Events grain.
+	/// Lifecycle transition category (activation or disconnect) recorded for the subscription line.
 	column 'event_type'
 		dataType: string
 		summarizeBy: none

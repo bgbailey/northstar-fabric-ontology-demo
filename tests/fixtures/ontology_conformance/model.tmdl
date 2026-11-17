@@ -1,0 +1,45 @@
+model Model
+
+ref table network_incident
+ref table network_site
+ref table network_site_hour
+ref table network_account
+ref table enterprise_site
+ref table enterprise_service_site_map
+ref table enterprise_service
+ref table enterprise_service_month
+ref table enterprise_contract
+ref table enterprise_sla_evaluation
+ref table enterprise_applied_credit
+ref table enterprise_account
+ref table finance_account
+ref table finance_account_month
+ref table care_account
+ref table care_case
+ref table care_case_daily_snapshot
+
+ref entity network_Incidents
+ref entity network_Sites
+ref entity network_SiteHour
+ref entity network_Accounts
+ref entity enterprise_Sites
+ref entity enterprise_ServiceSiteMap
+ref entity enterprise_Services
+ref entity enterprise_ServiceMonth
+ref entity enterprise_Contracts
+ref entity enterprise_SlaEvaluation
+ref entity enterprise_AppliedCredits
+ref entity enterprise_Accounts
+ref entity finance_Accounts
+ref entity finance_AccountMonth
+ref entity care_Accounts
+ref entity care_Cases
+ref entity care_CaseDailySnapshot
+
+ref namespace default
+
+ref rule ExposureNeedsOverlap
+ref rule CreditPerContractMonth
+ref rule FinancePerAccountMonth
+ref rule IdentityIsAccountKey
+ref rule UnknownIsNotZero

@@ -1,0 +1,32 @@
+entity enterprise_SlaEvaluation
+	backingTable: enterprise_sla_evaluation
+	keyProperty: contract_key
+	keyProperty: month
+	property contract_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.contract_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.account_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.month
+	property outage_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.outage_minutes
+	property eligible_credit_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.eligible_credit_cents
+	property applied_credit_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_sla_evaluation.applied_credit_cents

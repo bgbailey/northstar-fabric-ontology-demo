@@ -1,0 +1,622 @@
+{
+  "schemaVersion": "1.0",
+  "stream": "service-assurance",
+  "displayName": "Northstar_Service_Assurance",
+  "ontologyGeneration": 2,
+  "sourceModels": [
+    "network",
+    "enterprise",
+    "finance",
+    "care"
+  ],
+  "entities": [
+    {
+      "name": "network_Incidents",
+      "logical": "Incident",
+      "model": "network",
+      "table": "incident",
+      "modelTable": "Incidents",
+      "key": [
+        "incident_key"
+      ],
+      "interval": {
+        "from": "start",
+        "to": "end"
+      }
+    },
+    {
+      "name": "network_Sites",
+      "logical": "Site",
+      "model": "network",
+      "table": "site",
+      "modelTable": "Sites",
+      "key": [
+        "site_key"
+      ]
+    },
+    {
+      "name": "network_SiteHour",
+      "logical": "Site hour",
+      "model": "network",
+      "table": "site_hour",
+      "modelTable": "Site Hour",
+      "key": [
+        "site_key",
+        "hour_start"
+      ]
+    },
+    {
+      "name": "network_Accounts",
+      "logical": "Account",
+      "model": "network",
+      "table": "account",
+      "modelTable": "Accounts",
+      "key": [
+        "account_key"
+      ]
+    },
+    {
+      "name": "enterprise_Sites",
+      "logical": "Site",
+      "model": "enterprise",
+      "table": "site",
+      "modelTable": "Sites",
+      "key": [
+        "site_key"
+      ]
+    },
+    {
+      "name": "enterprise_ServiceSiteMap",
+      "logical": "Service-site assignment",
+      "model": "enterprise",
+      "table": "service_site_map",
+      "modelTable": "Service Site Map",
+      "key": [
+        "service_key",
+        "site_key",
+        "valid_from"
+      ],
+      "validity": {
+        "from": "valid_from",
+        "to": "valid_to"
+      }
+    },
+    {
+      "name": "enterprise_Services",
+      "logical": "Service",
+      "model": "enterprise",
+      "table": "service",
+      "modelTable": "Services",
+      "key": [
+        "service_key"
+      ]
+    },
+    {
+      "name": "enterprise_ServiceMonth",
+      "logical": "Service month",
+      "model": "enterprise",
+      "table": "service_month",
+      "modelTable": "Service Month",
+      "key": [
+        "service_key",
+        "month"
+      ]
+    },
+    {
+      "name": "enterprise_Contracts",
+      "logical": "Contract",
+      "model": "enterprise",
+      "table": "contract",
+      "modelTable": "Contracts",
+      "key": [
+        "contract_key"
+      ],
+      "validity": {
+        "from": "valid_from",
+        "to": "valid_to"
+      }
+    },
+    {
+      "name": "enterprise_SlaEvaluation",
+      "logical": "SLA evaluation",
+      "model": "enterprise",
+      "table": "sla_evaluation",
+      "modelTable": "SLA Evaluation",
+      "key": [
+        "contract_key",
+        "month"
+      ]
+    },
+    {
+      "name": "enterprise_AppliedCredits",
+      "logical": "Applied credit",
+      "model": "enterprise",
+      "table": "applied_credit",
+      "modelTable": "Applied Credits",
+      "key": [
+        "contract_key",
+        "month"
+      ]
+    },
+    {
+      "name": "enterprise_Accounts",
+      "logical": "Account",
+      "model": "enterprise",
+      "table": "account",
+      "modelTable": "Accounts",
+      "key": [
+        "account_key"
+      ]
+    },
+    {
+      "name": "finance_Accounts",
+      "logical": "Account",
+      "model": "finance",
+      "table": "account",
+      "modelTable": "Accounts",
+      "key": [
+        "account_key"
+      ]
+    },
+    {
+      "name": "finance_AccountMonth",
+      "logical": "Account month",
+      "model": "finance",
+      "table": "account_month",
+      "modelTable": "Account Month",
+      "key": [
+        "account_key",
+        "month"
+      ]
+    },
+    {
+      "name": "care_Accounts",
+      "logical": "Account",
+      "model": "care",
+      "table": "account",
+      "modelTable": "Accounts",
+      "key": [
+        "account_key"
+      ]
+    },
+    {
+      "name": "care_Cases",
+      "logical": "Case",
+      "model": "care",
+      "table": "case",
+      "modelTable": "Cases",
+      "key": [
+        "case_key"
+      ]
+    },
+    {
+      "name": "care_CaseDailySnapshot",
+      "logical": "Case daily snapshot",
+      "model": "care",
+      "table": "case_daily_snapshot",
+      "modelTable": "Case Daily Snapshot",
+      "key": [
+        "case_key",
+        "snapshot_date"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "hop": 1,
+      "from": "network_Incidents",
+      "to": "network_Sites",
+      "on": [
+        "site_key"
+      ],
+      "crossesModels": false,
+      "meaning": "An incident occurs at one site."
+    },
+    {
+      "hop": 2,
+      "from": "network_Sites",
+      "to": "enterprise_Sites",
+      "on": [
+        "site_key"
+      ],
+      "identity": true,
+      "crossesModels": true,
+      "meaning": "Same site in both models; the site key is the identity."
+    },
+    {
+      "hop": 2,
+      "from": "enterprise_Sites",
+      "to": "enterprise_ServiceSiteMap",
+      "on": [
+        "site_key"
+      ],
+      "crossesModels": false,
+      "validity": "assignment period overlaps the incident interval",
+      "meaning": "A site serves a service for a period."
+    },
+    {
+      "hop": 3,
+      "from": "enterprise_ServiceSiteMap",
+      "to": "enterprise_Contracts",
+      "on": [
+        "contract_key"
+      ],
+      "crossesModels": false,
+      "validity": "contract period overlaps the incident interval",
+      "meaning": "The assignment is covered by a contract."
+    },
+    {
+      "hop": 4,
+      "from": "enterprise_Contracts",
+      "to": "enterprise_SlaEvaluation",
+      "on": [
+        "contract_key"
+      ],
+      "period": "month of the incident",
+      "crossesModels": false,
+      "meaning": "Credit is settled per contract and month."
+    },
+    {
+      "hop": 5,
+      "from": "enterprise_Contracts",
+      "to": "enterprise_Accounts",
+      "on": [
+        "account_key"
+      ],
+      "crossesModels": false,
+      "meaning": "A contract is held by one account."
+    },
+    {
+      "hop": 6,
+      "from": "enterprise_Accounts",
+      "to": "finance_Accounts",
+      "on": [
+        "account_key"
+      ],
+      "identity": true,
+      "crossesModels": true,
+      "meaning": "Same customer; display names are not identity."
+    },
+    {
+      "hop": 6,
+      "from": "finance_Accounts",
+      "to": "finance_AccountMonth",
+      "on": [
+        "account_key"
+      ],
+      "period": "same service month",
+      "crossesModels": false,
+      "meaning": "Finance measures stay at account and month."
+    },
+    {
+      "hop": 7,
+      "from": "enterprise_Accounts",
+      "to": "care_Accounts",
+      "on": [
+        "account_key"
+      ],
+      "identity": true,
+      "crossesModels": true,
+      "meaning": "Same customer."
+    },
+    {
+      "hop": 7,
+      "from": "care_Accounts",
+      "to": "care_Cases",
+      "on": [
+        "account_key"
+      ],
+      "crossesModels": false,
+      "meaning": "An account raises cases."
+    },
+    {
+      "from": "network_SiteHour",
+      "to": "network_Sites",
+      "on": [
+        "site_key"
+      ],
+      "crossesModels": false,
+      "meaning": "Hourly availability telemetry belongs to one site."
+    },
+    {
+      "from": "network_Accounts",
+      "to": "enterprise_Accounts",
+      "on": [
+        "account_key"
+      ],
+      "identity": true,
+      "crossesModels": true,
+      "meaning": "Same customer account across Network and Enterprise services."
+    },
+    {
+      "from": "enterprise_ServiceSiteMap",
+      "to": "enterprise_Services",
+      "on": [
+        "service_key"
+      ],
+      "crossesModels": false,
+      "meaning": "Each serving-site assignment belongs to one enterprise service."
+    },
+    {
+      "from": "enterprise_ServiceMonth",
+      "to": "enterprise_Services",
+      "on": [
+        "service_key"
+      ],
+      "crossesModels": false,
+      "meaning": "Monthly SLA performance belongs to one enterprise service."
+    },
+    {
+      "from": "enterprise_ServiceMonth",
+      "to": "enterprise_Contracts",
+      "on": [
+        "contract_key"
+      ],
+      "crossesModels": false,
+      "meaning": "Monthly service performance is governed by one contract."
+    },
+    {
+      "from": "enterprise_Contracts",
+      "to": "enterprise_AppliedCredits",
+      "on": [
+        "contract_key"
+      ],
+      "period": "same service month",
+      "crossesModels": false,
+      "meaning": "Applied SLA credits are recorded per contract and service month."
+    },
+    {
+      "from": "care_CaseDailySnapshot",
+      "to": "care_Cases",
+      "on": [
+        "case_key"
+      ],
+      "crossesModels": false,
+      "meaning": "End-of-day open-case snapshots track one care case."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "Major Incidents",
+      "model": "network",
+      "modelTable": "Incidents",
+      "entity": "network_Incidents",
+      "grain": [
+        "incident_key"
+      ],
+      "additive": true,
+      "unit": "count"
+    },
+    {
+      "name": "Unavailable Site Minutes",
+      "model": "network",
+      "modelTable": "Site Hour",
+      "entity": "network_SiteHour",
+      "grain": [
+        "site_key",
+        "hour_start"
+      ],
+      "additive": true,
+      "unit": "minutes"
+    },
+    {
+      "name": "Availability Percent",
+      "model": "network",
+      "modelTable": "Site Hour",
+      "entity": "network_SiteHour",
+      "grain": [
+        "site_key",
+        "hour_start"
+      ],
+      "additive": false,
+      "unit": "percent"
+    },
+    {
+      "name": "Eligible Credits",
+      "model": "enterprise",
+      "modelTable": "SLA Evaluation",
+      "entity": "enterprise_SlaEvaluation",
+      "grain": [
+        "contract_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "cents"
+    },
+    {
+      "name": "Credit Exposure",
+      "model": "enterprise",
+      "modelTable": "SLA Evaluation",
+      "entity": "enterprise_SlaEvaluation",
+      "grain": [
+        "contract_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "cents"
+    },
+    {
+      "name": "Applied Credits",
+      "model": "enterprise",
+      "modelTable": "Applied Credits",
+      "entity": "enterprise_AppliedCredits",
+      "grain": [
+        "contract_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "cents"
+    },
+    {
+      "name": "SLA Compliance",
+      "model": "enterprise",
+      "modelTable": "Service Month",
+      "entity": "enterprise_ServiceMonth",
+      "grain": [
+        "service_key",
+        "month"
+      ],
+      "additive": false,
+      "unit": "percent"
+    },
+    {
+      "name": "Breached Services",
+      "model": "enterprise",
+      "modelTable": "Service Month",
+      "entity": "enterprise_ServiceMonth",
+      "grain": [
+        "service_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "count"
+    },
+    {
+      "name": "Recognized Service Revenue",
+      "model": "finance",
+      "modelTable": "Account Month",
+      "entity": "finance_AccountMonth",
+      "grain": [
+        "account_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "cents"
+    },
+    {
+      "name": "Contribution Margin",
+      "model": "finance",
+      "modelTable": "Account Month",
+      "entity": "finance_AccountMonth",
+      "grain": [
+        "account_key",
+        "month"
+      ],
+      "additive": true,
+      "unit": "cents"
+    },
+    {
+      "name": "Margin Percent",
+      "model": "finance",
+      "modelTable": "Account Month",
+      "entity": "finance_AccountMonth",
+      "grain": [
+        "account_key",
+        "month"
+      ],
+      "additive": false,
+      "unit": "percent"
+    },
+    {
+      "name": "Escalated Cases",
+      "model": "care",
+      "modelTable": "Cases",
+      "entity": "care_Cases",
+      "grain": [
+        "case_key"
+      ],
+      "additive": true,
+      "unit": "count"
+    },
+    {
+      "name": "Repeat Contacts",
+      "model": "care",
+      "modelTable": "Cases",
+      "entity": "care_Cases",
+      "grain": [
+        "case_key"
+      ],
+      "additive": true,
+      "unit": "count"
+    },
+    {
+      "name": "Open Cases EOD",
+      "model": "care",
+      "modelTable": "Case Daily Snapshot",
+      "entity": "care_CaseDailySnapshot",
+      "grain": [
+        "case_key",
+        "snapshot_date"
+      ],
+      "additive": false,
+      "unit": "count"
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "name": "ExposureNeedsOverlap",
+      "linkedTo": [
+        "network_Incidents",
+        "enterprise_ServiceSiteMap",
+        "enterprise_Contracts"
+      ],
+      "statement": "A service is exposed to an incident only when the incident interval, the service-site assignment and the contract are valid at the same time. Validity periods are half-open UTC intervals."
+    },
+    {
+      "id": "R2",
+      "name": "CreditPerContractMonth",
+      "linkedTo": [
+        "enterprise_Contracts",
+        "enterprise_SlaEvaluation",
+        "enterprise_AppliedCredits"
+      ],
+      "statement": "SLA credit is evaluated per service-month against its threshold, then capped once per contract-month. It is a whole-month settlement, not a loss caused by one incident. Never allocate it to an incident and never apply the cap twice. Credit exposure is eligible credit minus applied credit, as defined by the source measure."
+    },
+    {
+      "id": "R3",
+      "name": "FinancePerAccountMonth",
+      "linkedTo": [
+        "enterprise_Accounts",
+        "finance_Accounts",
+        "finance_AccountMonth"
+      ],
+      "statement": "Recognized revenue and margin are stated per account and month. Bring the list of accounts down to one row per account-month before looking up finance measures, so that several contracts or services never multiply revenue or margin. Credits posted in Finance are not netted against Enterprise services credits."
+    },
+    {
+      "id": "R4",
+      "name": "IdentityIsAccountKey",
+      "linkedTo": [
+        "network_Accounts",
+        "enterprise_Accounts",
+        "finance_Accounts",
+        "care_Accounts"
+      ],
+      "statement": "The account key identifies a customer in every model. Display names are not identity. A billing key is not an account key even when the numbers match; map it through the billing account map for the service date."
+    },
+    {
+      "id": "R5",
+      "name": "UnknownIsNotZero",
+      "linkedTo": [
+        "network_Incidents",
+        "network_Sites",
+        "network_SiteHour",
+        "network_Accounts",
+        "enterprise_Sites",
+        "enterprise_ServiceSiteMap",
+        "enterprise_Services",
+        "enterprise_ServiceMonth",
+        "enterprise_Contracts",
+        "enterprise_SlaEvaluation",
+        "enterprise_AppliedCredits",
+        "enterprise_Accounts",
+        "finance_Accounts",
+        "finance_AccountMonth",
+        "care_Accounts",
+        "care_Cases",
+        "care_CaseDailySnapshot"
+      ],
+      "statement": "A missing mapping, an absent credit row or a period with no data is unknown. Report it as an exclusion. Do not sum ratios, distinct counts or daily snapshots over time; ask the source measure at the final grain."
+    }
+  ],
+  "businessQuestion": "Which enterprise customers were served from sites hit by July incidents, what SLA credit exposure do we carry on their contracts, how much revenue and margin is at stake, and who already has escalated cases?",
+  "checks": [
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G6",
+    "G7"
+  ]
+}

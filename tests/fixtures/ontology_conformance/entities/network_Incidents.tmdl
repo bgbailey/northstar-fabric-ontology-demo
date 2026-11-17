@@ -1,0 +1,31 @@
+entity network_Incidents
+	backingTable: network_incident
+	keyProperty: incident_key
+	property incident_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_incident.incident_key
+	property site_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_incident.site_key
+	property start
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: network_incident.start
+	property end
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: network_incident.end
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_incident.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: network_incident.month
+	property severity
+		dataType: string
+		backingConfiguration
+			valueColumn: network_incident.severity

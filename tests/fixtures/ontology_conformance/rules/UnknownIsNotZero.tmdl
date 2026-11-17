@@ -1,0 +1,19 @@
+rule UnknownIsNotZero
+	statement: A missing mapping, an absent credit row or a period with no data is unknown. Report it as an exclusion. Do not sum ratios, distinct counts or daily snapshots over time; ask the source measure at the final grain.
+	ruleReferencedEntity network_Incidents
+	ruleReferencedEntity network_Sites
+	ruleReferencedEntity network_SiteHour
+	ruleReferencedEntity network_Accounts
+	ruleReferencedEntity enterprise_Sites
+	ruleReferencedEntity enterprise_ServiceSiteMap
+	ruleReferencedEntity enterprise_Services
+	ruleReferencedEntity enterprise_ServiceMonth
+	ruleReferencedEntity enterprise_Contracts
+	ruleReferencedEntity enterprise_SlaEvaluation
+	ruleReferencedEntity enterprise_AppliedCredits
+	ruleReferencedEntity enterprise_Accounts
+	ruleReferencedEntity finance_Accounts
+	ruleReferencedEntity finance_AccountMonth
+	ruleReferencedEntity care_Accounts
+	ruleReferencedEntity care_Cases
+	ruleReferencedEntity care_CaseDailySnapshot

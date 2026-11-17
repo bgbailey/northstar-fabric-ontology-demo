@@ -1,0 +1,28 @@
+table care_account
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column account_id
+		dataType: string
+		sourceColumn: account_id
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column region
+		dataType: string
+		sourceColumn: region
+	column consent
+		dataType: boolean
+		sourceColumn: consent
+	column enterprise
+		dataType: boolean
+		sourceColumn: enterprise
+	column display_name
+		dataType: string
+		sourceColumn: display_name
+	partition care_account = entity
+		mode: directQuery
+		source
+			entityName: Accounts
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_CARE'
+		annotation ONT_ItemName = Synthetic care

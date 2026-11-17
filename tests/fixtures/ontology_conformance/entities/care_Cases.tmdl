@@ -1,0 +1,51 @@
+entity care_Cases
+	backingTable: care_case
+	keyProperty: case_key
+	property case_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.case_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.account_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: care_case.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: care_case.month
+	property opened_at
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: care_case.opened_at
+	property resolved_at
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: care_case.resolved_at
+	property resolved
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.resolved
+	property repeat_contact
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.repeat_contact
+	property escalated
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.escalated
+	property first_contact_resolved
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.first_contact_resolved
+	property resolution_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case.resolution_minutes
+	property reason
+		dataType: string
+		backingConfiguration
+			valueColumn: care_case.reason

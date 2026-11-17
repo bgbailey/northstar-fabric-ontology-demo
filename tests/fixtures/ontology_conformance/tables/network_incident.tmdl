@@ -1,0 +1,29 @@
+table network_incident
+	measure 'Major Incidents' = EXTERNALMEASURE("Major Incidents", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK")
+	column incident_key
+		dataType: int64
+		sourceColumn: incident_key
+	column site_key
+		dataType: int64
+		sourceColumn: site_key
+	column start
+		dataType: dateTime
+		sourceColumn: start
+	column end
+		dataType: dateTime
+		sourceColumn: end
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column severity
+		dataType: string
+		sourceColumn: severity
+	partition network_incident = entity
+		mode: directQuery
+		source
+			entityName: Incidents
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_NETWORK'
+		annotation ONT_ItemName = Synthetic network

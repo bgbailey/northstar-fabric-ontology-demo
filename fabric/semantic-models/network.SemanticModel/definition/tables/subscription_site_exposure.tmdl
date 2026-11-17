@@ -18,7 +18,7 @@ table 'Subscription Site Exposure'
 		annotation MetricId = network.exposure_minutes
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'subscription_key'
 		dataType: int64
 		summarizeBy: none
@@ -28,7 +28,7 @@ table 'Subscription Site Exposure'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -38,7 +38,7 @@ table 'Subscription Site Exposure'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'site_key'
 		dataType: int64
 		summarizeBy: none
@@ -48,7 +48,7 @@ table 'Subscription Site Exposure'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -57,7 +57,7 @@ table 'Subscription Site Exposure'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the service month for interval-unioned serving-site outage exposure.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -65,7 +65,7 @@ table 'Subscription Site Exposure'
 		lineageTag: 80b1271c-56c1-5880-8305-d144bc30148f
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_from'
 		dataType: dateTime
 		summarizeBy: none
@@ -76,7 +76,7 @@ table 'Subscription Site Exposure'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_to'
 		dataType: dateTime
 		summarizeBy: none
@@ -87,7 +87,7 @@ table 'Subscription Site Exposure'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Exposure minutes at the declared Subscription Site Exposure grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'exposure_minutes'
 		dataType: int64
 		summarizeBy: none

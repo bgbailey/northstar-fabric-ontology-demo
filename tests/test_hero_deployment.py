@@ -69,7 +69,7 @@ def test_plan_reads_actual_full_packet_without_auth_or_transport(packet_dir, mon
     assert report["status"] == "VALIDATED_LOCAL_PLAN_NOT_APPROVED"
     assert report["models"] == ["enterprise", "finance", "network"]
     assert report["packetSha256"] == sha256((packet_dir / "packet.json").read_bytes())
-    assert report["rows"] == packet["rows"] == 7181
+    assert report["rows"] == packet["rows"] == 7212
     assert report["sourceCompatibilityLevel"] == 1702
     assert report["sourcePbismVersion"] == "4.2"
     assert report["sourceMeasureCount"] == 24

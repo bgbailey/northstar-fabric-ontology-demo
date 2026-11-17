@@ -1,0 +1,39 @@
+entity enterprise_Contracts
+	backingTable: enterprise_contract
+	keyProperty: contract_key
+	property contract_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_contract.contract_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_contract.account_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_contract.market_id
+	property credit_cap_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_contract.credit_cap_cents
+	property credit_per_minute_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_contract.credit_per_minute_cents
+	property threshold_minutes
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_contract.threshold_minutes
+	property valid_from
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_contract.valid_from
+	property valid_to
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_contract.valid_to
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_contract.month

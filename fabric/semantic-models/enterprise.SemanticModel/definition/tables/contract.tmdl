@@ -2,7 +2,7 @@
 table 'Contracts'
 	lineageTag: ceb10b29-cff8-591a-a9ce-1be16d5d25f4
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'contract_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Contracts'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Contracts'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -31,7 +31,7 @@ table 'Contracts'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'credit_cap_cents'
 		dataType: int64
 		summarizeBy: none
@@ -41,7 +41,7 @@ table 'Contracts'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'credit_per_minute_cents'
 		dataType: int64
 		summarizeBy: none
@@ -51,7 +51,7 @@ table 'Contracts'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Threshold minutes at the declared Contracts grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'threshold_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -61,7 +61,7 @@ table 'Contracts'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_from'
 		dataType: dateTime
 		summarizeBy: none
@@ -72,7 +72,7 @@ table 'Contracts'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'valid_to'
 		dataType: dateTime
 		summarizeBy: none
@@ -83,7 +83,7 @@ table 'Contracts'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Calendar date with no timezone or time-of-day.
+	/// Contract start-month attribute only, not active service-month validity; use UTC valid_from/valid_to.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none

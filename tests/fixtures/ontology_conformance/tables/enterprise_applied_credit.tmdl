@@ -1,0 +1,26 @@
+table enterprise_applied_credit
+	measure 'Applied Credits' = EXTERNALMEASURE("Applied Credits", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE")
+	column contract_key
+		dataType: int64
+		sourceColumn: contract_key
+	column amount_cents
+		dataType: int64
+		sourceColumn: amount_cents
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column posted_at
+		dataType: dateTime
+		sourceColumn: posted_at
+	partition enterprise_applied_credit = entity
+		mode: directQuery
+		source
+			entityName: 'Applied Credits'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_ENTERPRISE'
+		annotation ONT_ItemName = Synthetic enterprise

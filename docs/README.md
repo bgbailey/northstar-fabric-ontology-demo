@@ -19,6 +19,7 @@ This index organizes the architecture, scenarios, demo runbooks, deployment guid
 | [Demo streams and server modes](run/streams.md) | Recorded playback modes, local synthetic fixture workbench, and live fallback rules |
 | [Live demo user setup](run/live.md) | Delegated Microsoft Entra ID sign-in, private configuration, and live execution safeguards in a demo tenant |
 | [Presenter guide](presenter/README.md) | Run of show, two-arm comparison framing, and evidence walkthrough |
+| [Service assurance run of show](presenter/service-assurance.md) | Twenty-minute presenter script across Network, Enterprise services, Finance, and Care with recording fallbacks and claims boundaries |
 | [Executive quickstart talk track](presenter/quickstart.md) | Six-beat presenter script for the small Subscriptions and Finance ontology in Microsoft Fabric |
 | [Customer360 comparison talk track](presenter/customer360.md) | Guided walkthrough of the two-arm comparison over Subscriptions and Finance |
 

@@ -1,0 +1,19 @@
+entity network_Sites
+	backingTable: network_site
+	keyProperty: site_key
+	property site_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: network_site.site_key
+	property site_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_site.site_id
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: network_site.market_id
+	property region
+		dataType: string
+		backingConfiguration
+			valueColumn: network_site.region

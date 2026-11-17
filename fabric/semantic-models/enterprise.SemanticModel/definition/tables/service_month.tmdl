@@ -34,7 +34,7 @@ table 'Service Month'
 		annotation MetricId = enterprise.sla_compliance
 		annotation Aggregation = non_additive
 
-	/// Contracted monthly recurring value, not finance recognized revenue.
+	/// Contracted monthly recurring service value in integer cents, not billed or recognized revenue.
 	measure 'Contracted Recurring Revenue' = SUM('Service Month'[recurring_revenue_cents])
 		formatString: #,##0" cents"
 		displayFolder: Enterprise Services
@@ -42,7 +42,7 @@ table 'Service Month'
 		annotation MetricId = enterprise.contracted_recurring_revenue
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'service_key'
 		dataType: int64
 		summarizeBy: none
@@ -52,7 +52,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'contract_key'
 		dataType: int64
 		summarizeBy: none
@@ -62,7 +62,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -72,7 +72,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -81,7 +81,7 @@ table 'Service Month'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the evaluated service month for contracted services, monitored minutes, and breaches.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -89,7 +89,7 @@ table 'Service Month'
 		lineageTag: fe6e08f4-8fd1-5c1c-8370-99674aa90290
 		formatString: yyyy-MM-dd
 
-	/// Contracted at the declared Service Month grain.
+	/// Hidden numeric input on Service Month; use explicit model measures instead.
 	column 'contracted'
 		dataType: int64
 		summarizeBy: none
@@ -99,7 +99,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Monitored minutes at the declared Service Month grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'monitored_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -109,7 +109,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Breached at the declared Service Month grain.
+	/// Hidden numeric input on Service Month; use explicit model measures instead.
 	column 'breached'
 		dataType: int64
 		summarizeBy: none
@@ -119,7 +119,7 @@ table 'Service Month'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'recurring_revenue_cents'
 		dataType: int64
 		summarizeBy: none

@@ -2,7 +2,7 @@
 table 'Offer Outcomes'
 	lineageTag: 9291b023-8ec5-5491-83a3-6edc7ce5543f
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'assignment_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Offer Outcomes'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Offer Outcomes'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -31,7 +31,7 @@ table 'Offer Outcomes'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the original offer assignment month associated with the 28-day retention check.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -39,7 +39,7 @@ table 'Offer Outcomes'
 		lineageTag: c02522f2-03a6-5309-b967-b5178ab25aeb
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'observed_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -50,7 +50,7 @@ table 'Offer Outcomes'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Retained at the declared Offer Outcomes grain.
+	/// Hidden numeric input on Offer Outcomes; use explicit model measures instead.
 	column 'retained'
 		dataType: int64
 		summarizeBy: none

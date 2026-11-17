@@ -1,0 +1,28 @@
+entity care_CaseDailySnapshot
+	backingTable: care_case_daily_snapshot
+	keyProperty: case_key
+	keyProperty: snapshot_date
+	property case_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.case_key
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.account_key
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.market_id
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.month
+	property snapshot_date
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.snapshot_date
+	property open_eod
+		dataType: int64
+		backingConfiguration
+			valueColumn: care_case_daily_snapshot.open_eod

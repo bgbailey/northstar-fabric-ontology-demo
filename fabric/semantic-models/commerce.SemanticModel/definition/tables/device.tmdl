@@ -2,7 +2,7 @@
 table 'Devices'
 	lineageTag: 3e46bbd9-eab5-5e35-bf4c-5a58c7127e03
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'device_key'
 		dataType: int64
 		summarizeBy: none
@@ -13,14 +13,14 @@ table 'Devices'
 		isKey
 		formatString: #,##0
 
-	/// Device name at the declared Devices grain.
+	/// Commercial handset or hardware model label for device cohort breakdown.
 	column 'device_name'
 		dataType: string
 		summarizeBy: none
 		sourceColumn: device_name
 		lineageTag: 8f7a07c2-84fb-5f0f-8124-0c32d834a883
 
-	/// Operating system at the declared Devices grain.
+	/// Device platform family (such as iOS or Android) for compatibility and cohort analysis.
 	column 'operating_system'
 		dataType: string
 		summarizeBy: none

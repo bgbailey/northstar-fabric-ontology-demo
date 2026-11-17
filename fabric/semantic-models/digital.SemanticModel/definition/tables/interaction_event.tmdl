@@ -2,7 +2,7 @@
 table 'Interaction Events'
 	lineageTag: f9a24dd9-e639-54f8-95a6-e439f8fffbda
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'event_key'
 		dataType: int64
 		summarizeBy: none
@@ -12,7 +12,7 @@ table 'Interaction Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'session_key'
 		dataType: int64
 		summarizeBy: none
@@ -22,7 +22,7 @@ table 'Interaction Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -32,7 +32,7 @@ table 'Interaction Events'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -41,7 +41,7 @@ table 'Interaction Events'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month in which the in-session interaction occurred.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -49,7 +49,7 @@ table 'Interaction Events'
 		lineageTag: 9dfaeb9b-3e80-505e-8a4a-f0161edebbf7
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'event_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -60,7 +60,7 @@ table 'Interaction Events'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Event type at the declared Interaction Events grain.
+	/// Step or action category within a session; multiple interaction events occur per session.
 	column 'event_type'
 		dataType: string
 		summarizeBy: none

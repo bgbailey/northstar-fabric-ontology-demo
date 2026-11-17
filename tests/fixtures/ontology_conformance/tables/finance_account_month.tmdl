@@ -1,0 +1,34 @@
+table finance_account_month
+	measure 'Recognized Service Revenue' = EXTERNALMEASURE("Recognized Service Revenue", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_FINANCE")
+	measure 'Contribution Margin' = EXTERNALMEASURE("Contribution Margin", INTEGER, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_FINANCE")
+	measure 'Margin Percent' = EXTERNALMEASURE("Margin Percent", DOUBLE, "DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_FINANCE")
+	column account_key
+		dataType: int64
+		sourceColumn: account_key
+	column billing_key
+		dataType: int64
+		sourceColumn: billing_key
+	column market_id
+		dataType: string
+		sourceColumn: market_id
+	column month
+		dataType: dateTime
+		sourceColumn: month
+	column revenue_cents
+		dataType: int64
+		sourceColumn: revenue_cents
+	column credit_cents
+		dataType: int64
+		sourceColumn: credit_cents
+	column service_cost_cents
+		dataType: int64
+		sourceColumn: service_cost_cents
+	column active_lines_eom
+		dataType: int64
+		sourceColumn: active_lines_eom
+	partition finance_account_month = entity
+		mode: directQuery
+		source
+			entityName: 'Account Month'
+			expressionSource: 'DirectQuery to AS - SYNTHETIC_WORKSPACE/SYNTHETIC_FINANCE'
+		annotation ONT_ItemName = Synthetic finance

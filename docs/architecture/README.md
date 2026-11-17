@@ -169,14 +169,14 @@ These considerations follow the [pillars of the Azure Well-Architected Framework
 
 | Element | In this repository today | Planned |
 |---|---|---|
-| Synthetic telco data generator | Available (seeded profiles) | Larger service-assurance profile |
-| Eight Direct Lake semantic model definitions (TMDL) | Available as templates with workspace placeholders | AI preparation for the four hero models |
+| Synthetic telco data generator | Available (`miniature`, `smoke`, `showcase-v2`, and 240-account `service-assurance` profiles) | Live eventstream stretch |
+| Eight Direct Lake semantic model definitions (TMDL) | Available with AI preparation, descriptions, AI data schema, and verified-answer candidates for the four hero models | Live Prep data for AI apply step |
 | Two-model quickstart ontology contract | Available | Kept as the opener |
-| Service assurance ontology contract (four models) | Not yet | Contract, authoring prompts and conformance check |
-| Recorded comparison viewer | Available | Service-assurance stream and scorecard view |
-| Two-arm evaluation harness | Offline oracle and runners exist | Golden multi-hop questions, repeated runs, scorecard |
+| Service assurance ontology contract (four models) | Available (`fabric/ontology/service-assurance.json`, authoring prompts, and TMDL conformance check) | Guided Plan and Act authoring in Fabric |
+| Recorded comparison viewer | Available (Executive quickstart, Service assurance 4-model stream, and Customer360 deep dive) | Scorecard view |
+| Two-arm evaluation harness | Golden multi-hop questions (`27` questions), DuckDB oracle with trap detection, and two offline scripted arms | Repeated runs (`k = 5`), statistical scorecard, and live run |
 | Foundry, Copilot Studio, Microsoft 365 Copilot and GitHub Copilot agents | Not yet | Agent definitions, setup guides and captures |
-| Deployment to a demo tenant | Guarded scripts for parts of the flow | Cross-platform deploy and teardown |
+| Deployment to a demo tenant | Guarded scripts and live-verified Direct Lake staging recipe | Cross-platform `northstar deploy` and teardown |
 | Real-time incidents and graph-enabled spine | Not yet | Optional stretch |
 
 Update this table as each milestone lands.

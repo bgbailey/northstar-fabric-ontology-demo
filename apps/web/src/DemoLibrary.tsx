@@ -3,6 +3,9 @@ import {
   isRecordedComparisons, RecordedComparisonsView, type RecordedComparisons,
 } from "./RecordedComparisons";
 import { isRecordedOntology, RecordedOntologyView, type RecordedOntology } from "./RecordedOntology";
+import {
+  isRecordedServiceAssuranceDemo, ServiceAssuranceDemoView, type RecordedServiceAssuranceDemo,
+} from "./ServiceAssuranceDemo";
 
 type ExecutiveAccount = {
   account_id: string; account_key: number; active_lines_eom: number;
@@ -25,7 +28,9 @@ export type RecordedExecutiveDemo = {
 };
 export type RecordedDemoLibrary = {
   schema_version: "1.0"; mode: "RECORDED_DEMO_LIBRARY"; exported_at: string;
-  executive: RecordedExecutiveDemo; customer360: RecordedComparisons; limitations: string[];
+  executive: RecordedExecutiveDemo; customer360: RecordedComparisons;
+  service_assurance?: RecordedServiceAssuranceDemo | null;
+  limitations: string[];
 };
 function object(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
@@ -74,12 +79,19 @@ export function isRecordedExecutiveDemo(value: unknown): value is RecordedExecut
   return true;
 }
 export function isRecordedDemoLibrary(value: unknown): value is RecordedDemoLibrary {
-  return object(value) && value.schema_version === "1.0" && value.mode === "RECORDED_DEMO_LIBRARY"
-    && zoned(value.exported_at) && isRecordedExecutiveDemo(value.executive)
-    && isRecordedComparisons(value.customer360) && value.customer360.ontology !== undefined
-    && value.customer360.ontology.sources.length > 2 && value.customer360.ontology.entities.length > 4
-    && value.customer360.ontology.native_snapshot_hash !== value.executive.ontology.native_snapshot_hash
-    && strings(value.limitations);
+  if (!object(value) || value.schema_version !== "1.0" || value.mode !== "RECORDED_DEMO_LIBRARY"
+    || !zoned(value.exported_at) || !isRecordedExecutiveDemo(value.executive)
+    || !isRecordedComparisons(value.customer360) || value.customer360.ontology === undefined
+    || value.customer360.ontology.sources.length <= 2 || value.customer360.ontology.entities.length <= 4
+    || value.customer360.ontology.native_snapshot_hash === value.executive.ontology.native_snapshot_hash
+    || !strings(value.limitations)) return false;
+  if (value.service_assurance !== undefined && value.service_assurance !== null) {
+    if (!isRecordedServiceAssuranceDemo(value.service_assurance)) return false;
+    const saHash = value.service_assurance.ontology.native_snapshot_hash;
+    if (saHash === value.executive.ontology.native_snapshot_hash
+      || saHash === value.customer360.ontology.native_snapshot_hash) return false;
+  }
+  return true;
 }
 
 function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) {
@@ -139,23 +151,39 @@ function ExecutiveDemoView({ recording }: { recording: RecordedExecutiveDemo }) 
   </main>;
 }
 
-export function DemoLibraryView({ library }: { library: RecordedDemoLibrary }) {
-  const [stream, setStream] = useState<"executive" | "customer360">("executive");
+export function DemoLibraryView({ library, initialStream = "executive" }: {
+  library: RecordedDemoLibrary;
+  initialStream?: "executive" | "service_assurance" | "customer360";
+}) {
+  const hasServiceAssurance = Boolean(library.service_assurance);
+  const [stream, setStream] = useState<"executive" | "service_assurance" | "customer360">(
+    initialStream === "service_assurance" && !hasServiceAssurance ? "executive" : initialStream,
+  );
   return <>
     <section className="card" aria-label="Choose the demo stream">
-      <p className="eyebrow">TWO ONTOLOGIES IN FABRIC / TWO CONVERSATIONS</p>
-      <div className="story-presets demo-stream-switch" role="group" aria-label="Demo streams">
+      <p className="eyebrow">{hasServiceAssurance
+        ? "RECORDED DEMO STREAMS / THREE SCOPES"
+        : "TWO ONTOLOGIES IN FABRIC / TWO CONVERSATIONS"}</p>
+      <div className={`story-presets demo-stream-switch${hasServiceAssurance ? " three-streams" : ""}`}
+        role="group" aria-label="Demo streams">
         <button aria-pressed={stream === "executive"} onClick={() => setStream("executive")}>
           Executive quickstart · 2 models
         </button>
+        {library.service_assurance && (
+          <button aria-pressed={stream === "service_assurance"} onClick={() => setStream("service_assurance")}>
+            Service assurance · 4 models
+          </button>
+        )}
         <button aria-pressed={stream === "customer360"} onClick={() => setStream("customer360")}>
           Customer360 deep dive · 8 models
         </button>
       </div>
-      <p className="muted">Explicit recorded playback. Separate ontology definitions in Fabric and original capture clocks;
+      <p className="muted">Explicit recorded playback. Separate ontology definitions and original capture clocks;
         no sign-in, model call or source query runs when switching streams.</p>
     </section>
     {stream === "executive" ? <ExecutiveDemoView recording={library.executive} />
-      : <RecordedComparisonsView recording={library.customer360} startWithAdvanced />}
+      : stream === "service_assurance" && library.service_assurance
+        ? <ServiceAssuranceDemoView recording={library.service_assurance} />
+        : <RecordedComparisonsView recording={library.customer360} startWithAdvanced />}
   </>;
 }

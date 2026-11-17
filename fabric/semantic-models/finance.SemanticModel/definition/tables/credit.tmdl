@@ -10,7 +10,7 @@ table 'Credits'
 		annotation MetricId = finance.posted_credits
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'credit_key'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -30,7 +30,7 @@ table 'Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'billing_key'
 		dataType: int64
 		summarizeBy: none
@@ -40,7 +40,7 @@ table 'Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -49,7 +49,7 @@ table 'Credits'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the credit posting month (primary calendar link); differs from original service_month.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -57,7 +57,7 @@ table 'Credits'
 		lineageTag: 76476bec-ef04-58a6-83b0-03ae3aae3508
 		formatString: yyyy-MM-dd
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the original service period adjusted by a late-posted billing credit.
 	column 'service_month'
 		dataType: dateTime
 		summarizeBy: none
@@ -65,7 +65,7 @@ table 'Credits'
 		lineageTag: b256929f-552c-5093-8ecd-efe5fa73d0cd
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'posted_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -76,7 +76,7 @@ table 'Credits'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'amount_cents'
 		dataType: int64
 		summarizeBy: none

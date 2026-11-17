@@ -11,7 +11,12 @@ from test_recorded_comparison import packet as comparison_fixture
 from test_recorded_ontology import packet as ontology_fixture
 
 from telco_iq.api import create_app
-from telco_iq.demo_library import RecordedDemoLibrary, RecordedExecutiveDemo
+from telco_iq.demo_library import (
+    RecordedDemoLibrary,
+    RecordedExecutiveDemo,
+    RecordedServiceAssuranceDemo,
+)
+from tools.build_service_assurance_stream import update_library
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -161,3 +166,69 @@ def test_a_large_capture_cannot_be_substituted_for_both_native_streams():
     value["customer360"]["entries"][0]["result"]["arms"][1]["execution"]["answer"]["clocks"]["ontology"] = "d" * 64
     with pytest.raises(ValidationError, match="distinct actual"):
         RecordedDemoLibrary.model_validate(value)
+
+
+def test_committed_demo_library_serves_four_model_service_assurance_stream():
+    committed_path = ROOT / "recordings" / "northstar-demo-library-v2-2026-10-28.json"
+    library = RecordedDemoLibrary.read(committed_path)
+    assert library.service_assurance is not None
+    sa = library.service_assurance
+    assert sa.mode == "RECORDED_SERVICE_ASSURANCE"
+    assert sa.profile == "service-assurance"
+    assert sa.period == "2026-07"
+    assert sa.ontology.sources == ["network", "enterprise", "finance", "care"]
+    assert len(sa.ontology.entities) == 17
+    assert len(sa.ontology.relationships) == 17
+    assert len(sa.ontology.metrics) == 14
+    assert {rule.id for rule in sa.ontology.rules} == {"R1", "R2", "R3", "R4", "R5"}
+    assert [hop.hop for hop in sa.hops] == [1, 2, 3, 4, 5, 6, 7]
+    assert [hop.hop for hop in sa.hops if hop.crosses_models] == [2, 6, 7]
+    assert [item.model_id for item in sa.model_evidence] == ["network", "enterprise", "finance", "care"]
+
+    top = sa.ranked_accounts[0]
+    assert top.account_key == 1
+    assert top.credit_exposure_cents == 13580
+    assert top.recognized_service_revenue_cents == 9000
+    assert top.contribution_margin_cents == -1400
+    ranked_keys = {row.account_key for row in sa.ranked_accounts}
+    assert 6 not in ranked_keys and 9 not in ranked_keys
+    assert any("account_key=6" in item.subject and item.rule_id == "R5" for item in sa.exclusions)
+    assert any("service_key=12" in item.subject and item.rule_id == "R1" for item in sa.exclusions)
+    assert any("contract_key=10" in item.subject and item.rule_id == "R1" for item in sa.exclusions)
+
+    client = TestClient(create_app(ROOT, recorded_library=committed_path), base_url="http://localhost:8765")
+    payload = client.get("/api/demo-library").json()
+    assert payload["service_assurance"]["mode"] == "RECORDED_SERVICE_ASSURANCE"
+    assert len(payload["service_assurance"]["hops"]) == 7
+    assert len(payload["service_assurance"]["ranked_accounts"]) == len(sa.ranked_accounts)
+
+
+def test_service_assurance_contract_rejects_malformed_stream_and_builder_is_deterministic(tmp_path):
+    committed_path = ROOT / "recordings" / "northstar-demo-library-v2-2026-10-28.json"
+    copy_path = tmp_path / "library-copy.json"
+    copy_path.write_bytes(committed_path.read_bytes())
+
+    work_dir = tmp_path / "work"
+    update_library(library_path=copy_path, work_dir=work_dir)
+    first_bytes = copy_path.read_bytes()
+    update_library(library_path=copy_path, work_dir=work_dir)
+    assert copy_path.read_bytes() == first_bytes
+    assert first_bytes == committed_path.read_bytes()
+
+    raw = RecordedDemoLibrary.read(copy_path).service_assurance.model_dump(mode="json")
+    bad_order = deepcopy(raw)
+    bad_order["ranked_accounts"][0], bad_order["ranked_accounts"][1] = (
+        bad_order["ranked_accounts"][1],
+        bad_order["ranked_accounts"][0],
+    )
+    with pytest.raises(ValidationError):
+        RecordedServiceAssuranceDemo.model_validate(bad_order)
+
+    bad_sources = deepcopy(raw)
+    bad_sources["ontology"]["sources"] = ["network", "enterprise", "finance"]
+    bad_sources["ontology"]["entities"] = [
+        entity for entity in bad_sources["ontology"]["entities"] if entity["model"] != "care"
+    ]
+    with pytest.raises(ValidationError):
+        RecordedServiceAssuranceDemo.model_validate(bad_sources)
+

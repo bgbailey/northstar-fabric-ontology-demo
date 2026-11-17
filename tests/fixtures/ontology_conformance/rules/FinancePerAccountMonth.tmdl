@@ -1,0 +1,5 @@
+rule FinancePerAccountMonth
+	statement: Recognized revenue and margin are stated per account and month. Bring the list of accounts down to one row per account-month before looking up finance measures, so that several contracts or services never multiply revenue or margin. Credits posted in Finance are not netted against Enterprise services credits.
+	ruleReferencedEntity enterprise_Accounts
+	ruleReferencedEntity finance_Accounts
+	ruleReferencedEntity finance_AccountMonth

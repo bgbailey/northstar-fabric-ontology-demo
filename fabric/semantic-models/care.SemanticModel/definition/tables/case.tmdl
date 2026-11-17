@@ -34,7 +34,7 @@ table 'Cases'
 		annotation MetricId = care.contacted_accounts
 		annotation Aggregation = non_additive
 
-	/// Cases escalated at least once.
+	/// Cases escalated at least once, attributed to case opening month.
 	measure 'Escalated Cases' = SUM('Cases'[escalated])
 		formatString: #,##0
 		displayFolder: Customer Care
@@ -58,7 +58,7 @@ table 'Cases'
 		annotation MetricId = care.mean_resolution_hours
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'case_key'
 		dataType: int64
 		summarizeBy: none
@@ -68,7 +68,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -78,7 +78,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -87,7 +87,7 @@ table 'Cases'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the calendar month when the support case opened; governs case and resolution cohorts.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -95,7 +95,7 @@ table 'Cases'
 		lineageTag: bce7a624-57b1-50db-8f1d-30882a4bbf04
 		formatString: yyyy-MM-dd
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'opened_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -106,7 +106,7 @@ table 'Cases'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'resolved_at'
 		dataType: dateTime
 		summarizeBy: none
@@ -117,7 +117,7 @@ table 'Cases'
 		formatString: yyyy-MM-dd HH:mm:ss
 		annotation Timezone = UTC
 
-	/// Resolved at the declared Cases grain.
+	/// Hidden numeric input on Cases; use explicit model measures instead.
 	column 'resolved'
 		dataType: int64
 		summarizeBy: none
@@ -127,7 +127,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Repeat contact at the declared Cases grain.
+	/// Hidden numeric input on Cases; use explicit model measures instead.
 	column 'repeat_contact'
 		dataType: int64
 		summarizeBy: none
@@ -137,7 +137,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Escalated at the declared Cases grain.
+	/// Hidden numeric input on Cases; use explicit model measures instead.
 	column 'escalated'
 		dataType: int64
 		summarizeBy: none
@@ -147,7 +147,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// First contact resolved at the declared Cases grain.
+	/// Hidden numeric input on Cases; use explicit model measures instead.
 	column 'first_contact_resolved'
 		dataType: int64
 		summarizeBy: none
@@ -157,7 +157,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Resolution minutes at the declared Cases grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'resolution_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -167,7 +167,7 @@ table 'Cases'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Reason at the declared Cases grain.
+	/// Primary customer contact driver (such as connectivity, billing, or device) recorded at intake.
 	column 'reason'
 		dataType: string
 		summarizeBy: none

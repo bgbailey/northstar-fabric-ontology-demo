@@ -1,0 +1,28 @@
+entity enterprise_AppliedCredits
+	backingTable: enterprise_applied_credit
+	keyProperty: contract_key
+	keyProperty: month
+	property contract_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.contract_key
+	property amount_cents
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.amount_cents
+	property month
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.month
+	property market_id
+		dataType: string
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.market_id
+	property account_key
+		dataType: int64
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.account_key
+	property posted_at
+		dataType: dateTime
+		backingConfiguration
+			valueColumn: enterprise_applied_credit.posted_at

@@ -10,7 +10,7 @@ table 'Applied Credits'
 		annotation MetricId = enterprise.applied_credits
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'contract_key'
 		dataType: int64
 		summarizeBy: none
@@ -20,7 +20,7 @@ table 'Applied Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'amount_cents'
 		dataType: int64
 		summarizeBy: none
@@ -30,7 +30,7 @@ table 'Applied Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the SLA service month credited; separate from the posted_at timestamp.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -38,7 +38,7 @@ table 'Applied Credits'
 		lineageTag: 2b23a08b-b2fa-5caa-b265-33a543961017
 		formatString: yyyy-MM-dd
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'Applied Credits'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -57,7 +57,7 @@ table 'Applied Credits'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// UTC instant; validity intervals include the start and exclude the end.
+	/// Hidden UTC instant; half-open validity intervals include start and exclude end.
 	column 'posted_at'
 		dataType: dateTime
 		summarizeBy: none

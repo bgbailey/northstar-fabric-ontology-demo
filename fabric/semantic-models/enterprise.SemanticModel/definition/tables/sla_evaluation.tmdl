@@ -18,7 +18,7 @@ table 'SLA Evaluation'
 		annotation MetricId = enterprise.credit_exposure
 		annotation Aggregation = additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'contract_key'
 		dataType: int64
 		summarizeBy: none
@@ -28,7 +28,7 @@ table 'SLA Evaluation'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -38,7 +38,7 @@ table 'SLA Evaluation'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -47,7 +47,7 @@ table 'SLA Evaluation'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the settled SLA service month at contract-month grain.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -55,7 +55,7 @@ table 'SLA Evaluation'
 		lineageTag: 5ac2e139-b4f7-5d3f-a51b-0b64ccc6a974
 		formatString: yyyy-MM-dd
 
-	/// Outage minutes at the declared SLA Evaluation grain.
+	/// Hidden duration in minutes; query explicit duration or availability measures instead.
 	column 'outage_minutes'
 		dataType: int64
 		summarizeBy: none
@@ -65,7 +65,7 @@ table 'SLA Evaluation'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'eligible_credit_cents'
 		dataType: int64
 		summarizeBy: none
@@ -75,7 +75,7 @@ table 'SLA Evaluation'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'applied_credit_cents'
 		dataType: int64
 		summarizeBy: none

@@ -34,7 +34,7 @@ table 'Offer Assignments'
 		annotation MetricId = growth.acceptance_rate
 		annotation Aggregation = non_additive
 
-	/// Observed accepted-offer cost.
+	/// Observed accepted-offer cost in integer cents for eligible assignments.
 	measure 'Offer Cost' = SUM('Offer Assignments'[offer_cost_cents])
 		formatString: #,##0" cents"
 		displayFolder: Offers and Retention
@@ -42,7 +42,7 @@ table 'Offer Assignments'
 		annotation MetricId = growth.offer_cost
 		annotation Aggregation = additive
 
-	/// Retained eligible randomized assignment units; observational campaign excluded.
+	/// Retained eligible randomized treatment-arm units; observational campaign excluded.
 	measure 'Treatment Retained' = CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 1))
 		formatString: #,##0
 		displayFolder: Offers and Retention
@@ -50,7 +50,7 @@ table 'Offer Assignments'
 		annotation MetricId = growth.treatment_retained
 		annotation Aggregation = additive
 
-	/// Retained eligible randomized assignment units; observational campaign excluded.
+	/// Retained eligible randomized control-arm units; observational campaign excluded.
 	measure 'Control Retained' = CALCULATE(SUM('Offer Assignments'[retained]), KEEPFILTERS('Offer Assignments'[randomized] = TRUE()), KEEPFILTERS('Offer Assignments'[eligible] = 1), KEEPFILTERS('Offer Assignments'[treatment] = 0))
 		formatString: #,##0
 		displayFolder: Offers and Retention
@@ -66,7 +66,7 @@ table 'Offer Assignments'
 		annotation MetricId = growth.retention_lift
 		annotation Aggregation = non_additive
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'assignment_key'
 		dataType: int64
 		summarizeBy: none
@@ -76,7 +76,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'account_key'
 		dataType: int64
 		summarizeBy: none
@@ -86,7 +86,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'market_id'
 		dataType: string
 		summarizeBy: none
@@ -95,7 +95,7 @@ table 'Offer Assignments'
 		isHidden
 		isAvailableInMdx: false
 
-	/// Calendar date with no timezone or time-of-day.
+	/// First day of the campaign assignment month; later 28-day outcomes retain this cohort month.
 	column 'month'
 		dataType: dateTime
 		summarizeBy: none
@@ -103,7 +103,7 @@ table 'Offer Assignments'
 		lineageTag: 2c54e978-e96a-5293-9a3a-38f639b206a8
 		formatString: yyyy-MM-dd
 
-	/// Technical identity; join only through the declared mapping.
+	/// Hidden technical identifier; join only through declared relationships or identity maps.
 	column 'campaign_key'
 		dataType: int64
 		summarizeBy: none
@@ -113,7 +113,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Eligible at the declared Offer Assignments grain.
+	/// Hidden numeric input on Offer Assignments; use explicit model measures instead.
 	column 'eligible'
 		dataType: int64
 		summarizeBy: none
@@ -123,7 +123,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Assigned at the declared Offer Assignments grain.
+	/// Hidden numeric input on Offer Assignments; use explicit model measures instead.
 	column 'assigned'
 		dataType: int64
 		summarizeBy: none
@@ -133,7 +133,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Treatment at the declared Offer Assignments grain.
+	/// Hidden numeric input on Offer Assignments; use explicit model measures instead.
 	column 'treatment'
 		dataType: int64
 		summarizeBy: none
@@ -143,14 +143,14 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Randomized at the declared Offer Assignments grain.
+	/// True for randomized treatment/control experiment units; false for observational targeting.
 	column 'randomized'
 		dataType: boolean
 		summarizeBy: none
 		sourceColumn: randomized
 		lineageTag: 350eb6e7-0781-59e3-87b8-aff83d150073
 
-	/// Accepted at the declared Offer Assignments grain.
+	/// Hidden numeric input on Offer Assignments; use explicit model measures instead.
 	column 'accepted'
 		dataType: int64
 		summarizeBy: none
@@ -160,7 +160,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Integer minor units; 100 cents equal one synthetic currency unit.
+	/// Hidden integer cents; query explicit currency measures instead of summing raw columns.
 	column 'offer_cost_cents'
 		dataType: int64
 		summarizeBy: none
@@ -170,7 +170,7 @@ table 'Offer Assignments'
 		isAvailableInMdx: false
 		formatString: #,##0
 
-	/// Retained at the declared Offer Assignments grain.
+	/// Hidden numeric input on Offer Assignments; use explicit model measures instead.
 	column 'retained'
 		dataType: int64
 		summarizeBy: none
